@@ -43,7 +43,8 @@ package body Utils is
 
       Close (Data_File);
 
-      Print_String_List (Routine_Name & "Hex_Data", Hex_Data, 1, 40);
+      Print_String_List (Routine_Name &
+                           "Hex_Data items 1 - 40", Hex_Data, 1, 40);
 
       return Hex_Data;
 
@@ -53,6 +54,39 @@ package body Utils is
          return Hex_Data;
 
    end Load_Data;
+
+   --  -------------------------------------------------------------------------
+
+   procedure OEM_Data (Source_File, OEM_Directory : String) is
+      use Ada.Text_IO;
+      Routine_Name : constant String := "Utils.OEM_Data ";
+      OEM_00_File  : constant String := OEM_Directory & "OEM_00.txt";
+      OEM_01_File  : constant String := OEM_Directory & "OEM_01.txt";
+      OEM_10_File  : constant String := OEM_Directory & "OEM_10.txt";
+      OEM_11_File  : constant String := OEM_Directory & "OEM_11.txt";
+      Source_ID    : File_Type;
+      OEM_00_ID    : File_Type;
+      OEM_01_ID    : File_Type;
+      OEM_10_ID    : File_Type;
+      OEM_11_ID    : File_Type;
+   begin
+      Open (Source_ID, In_File, Source_File);
+      Create (OEM_00_ID, Out_File, OEM_00_File);
+      Create (OEM_10_ID, Out_File, OEM_10_File);
+      Create (OEM_01_ID, Out_File, OEM_01_File);
+      Create (OEM_11_ID, Out_File, OEM_11_File);
+      for index in Data.First_Index .. Data.Last_Index loop
+         Put (File_ID, Data (index));
+      end loop;
+      Close (OEM_00_ID);
+      Close (OEM_10_ID);
+      Close (OEM_01_ID);
+      Close (OEM_11_ID);
+      Close (Source_ID);
+
+      Ada.Text_IO.Put_Line (Routine_Name & "OEM files written.");
+
+   end OEM_Data;
 
    --  -------------------------------------------------------------------------
 

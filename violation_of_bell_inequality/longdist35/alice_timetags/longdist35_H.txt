@@ -1,6 +1,5 @@
-Pump 390, Meﬂzeit 10s, Kontrast im Labor fast 100,
+Pump 390, Measuring time 10s, Contrast in the laboratory nearly 100,
 offset:off offCountA: 197470
 CountB: 190985
 Arm Time:   0.00000482000
-22.04.98
-20:33:34
+22.04.98. 20:33:34
