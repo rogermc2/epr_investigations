@@ -60,28 +60,53 @@ package body Utils is
    procedure OEM_Data (Source_File, OEM_Directory : String) is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.OEM_Data ";
-      OEM_00_File  : constant String := OEM_Directory & "OEM_00.txt";
-      OEM_01_File  : constant String := OEM_Directory & "OEM_01.txt";
-      OEM_10_File  : constant String := OEM_Directory & "OEM_10.txt";
-      OEM_11_File  : constant String := OEM_Directory & "OEM_11.txt";
+      OEM_0_File   : constant String := OEM_Directory & "OEM_0.txt";
+      OEM_1_File   : constant String := OEM_Directory & "OEM_1.txt";
       Source_ID    : File_Type;
-      OEM_00_ID    : File_Type;
-      OEM_01_ID    : File_Type;
-      OEM_10_ID    : File_Type;
-      OEM_11_ID    : File_Type;
+      OEM_0_ID     : File_Type;
+      OEM_1_ID     : File_Type;
+      Val          : String (1 .. 4);
+      First_0      : Boolean := True;
+      First_1      : Boolean := True;
    begin
       Open (Source_ID, In_File, Source_File);
-      Create (OEM_00_ID, Out_File, OEM_00_File);
-      Create (OEM_10_ID, Out_File, OEM_10_File);
-      Create (OEM_01_ID, Out_File, OEM_01_File);
-      Create (OEM_11_ID, Out_File, OEM_11_File);
-      for index in Data.First_Index .. Data.Last_Index loop
-         Put (File_ID, Data (index));
+      Create (OEM_0_ID, Out_File, OEM_0_File);
+      Create (OEM_1_ID, Out_File, OEM_1_File);
+      while not End_Of_File (Source_ID) loop
+         Get (Source_ID, Val);
+         if Val = "0000" then
+            if First_0 then
+               First_0 := False;
+            else
+               Put (OEM_0_ID, ",");
+            end if;
+            Put (OEM_0_ID, "0");
+         elsif Val = "0001" then
+            if First_0 then
+               First_0 := False;
+            else
+               Put (OEM_0_ID, ",");
+            end if;
+            Put (OEM_0_ID, "1");
+         elsif Val = "0002" then
+            if First_1 then
+               First_1 := False;
+            else
+               Put (OEM_1_ID, ",");
+            end if;
+            Put (OEM_1_ID, "0");
+         elsif Val = "0003" then
+            if First_1 then
+               First_1 := False;
+            else
+               Put (OEM_1_ID, ",");
+            end if;
+            Put (OEM_1_ID, "1");
+         end if;
       end loop;
-      Close (OEM_00_ID);
-      Close (OEM_10_ID);
-      Close (OEM_01_ID);
-      Close (OEM_11_ID);
+
+      Close (OEM_0_ID);
+      Close (OEM_1_ID);
       Close (Source_ID);
 
       Ada.Text_IO.Put_Line (Routine_Name & "OEM files written.");
