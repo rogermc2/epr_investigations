@@ -60,8 +60,8 @@ package body Utils is
    procedure OEM_Data (Source_File, OEM_Directory : String) is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.OEM_Data ";
-      OEM_0_File   : constant String := OEM_Directory & "OEM_0.txt";
-      OEM_1_File   : constant String := OEM_Directory & "OEM_1.txt";
+      OEM_0_File   : constant String := OEM_Directory & "OEM_0.csv";
+      OEM_1_File   : constant String := OEM_Directory & "OEM_1.csv";
       Source_ID    : File_Type;
       OEM_0_ID     : File_Type;
       OEM_1_ID     : File_Type;
@@ -72,6 +72,7 @@ package body Utils is
       Open (Source_ID, In_File, Source_File);
       Create (OEM_0_ID, Out_File, OEM_0_File);
       Create (OEM_1_ID, Out_File, OEM_1_File);
+
       while not End_Of_File (Source_ID) loop
          Get (Source_ID, Val);
          if Val = "0000" then
@@ -81,6 +82,7 @@ package body Utils is
                Put (OEM_0_ID, ",");
             end if;
             Put (OEM_0_ID, "0");
+
          elsif Val = "0001" then
             if First_0 then
                First_0 := False;
@@ -88,6 +90,7 @@ package body Utils is
                Put (OEM_0_ID, ",");
             end if;
             Put (OEM_0_ID, "1");
+
          elsif Val = "0002" then
             if First_1 then
                First_1 := False;
@@ -95,6 +98,7 @@ package body Utils is
                Put (OEM_1_ID, ",");
             end if;
             Put (OEM_1_ID, "0");
+
          elsif Val = "0003" then
             if First_1 then
                First_1 := False;
@@ -109,7 +113,8 @@ package body Utils is
       Close (OEM_1_ID);
       Close (Source_ID);
 
-      Ada.Text_IO.Put_Line (Routine_Name & "OEM files written.");
+      Ada.Text_IO.Put_Line (Routine_Name & "OEM files written to " &
+                            OEM_Directory);
 
    end OEM_Data;
 
