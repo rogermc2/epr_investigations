@@ -12,5 +12,5 @@ print (paste("Mean:", result.mean))
 result.var <- var(data)
 print (paste("Variance:", result.var))
 
-df_data = as.data.frame(data)
-print(summary(df_data))
+#df_data = as.data.frame(data)
+#print(summary(df_data))
