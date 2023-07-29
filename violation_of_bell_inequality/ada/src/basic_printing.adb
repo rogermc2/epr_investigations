@@ -1,5 +1,4 @@
 
-with Ada.Containers;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Basic_Printing is

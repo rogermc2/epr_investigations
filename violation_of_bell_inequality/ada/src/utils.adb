@@ -12,6 +12,15 @@ package body Utils is
 
    --  ------------------------------------------------------------------------
 
+   procedure Convert_To_Text (Hex_Source_File, Text_Target_File : String) is
+      Hex_Data : Types.Bounded_String_List;
+   begin
+      Hex_Data := Load_Data (Hex_Source_File);
+      Save_Data (Text_Target_File, Hex_Data);
+   end Convert_To_Text;
+
+   --  ------------------------------------------------------------------------
+
    function Hex (Byte : Interfaces.Unsigned_8) return String is
       use Interfaces;
       Hex_Chars    : constant array (Unsigned_8 range 0 .. 15)
