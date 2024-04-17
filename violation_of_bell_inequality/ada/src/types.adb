@@ -1,13 +1,9 @@
 
---  with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Assertions; use Ada.Assertions;
-
 package body Types is
 
-   Precision : constant Float := 10.0 ** (-6);
+--     Precision : constant Float := 10.0 ** (-6);
 
    --  ------------------------------------------------------------------------
-
 
    function Transpose (Values : Integer_List_2D) return  Integer_List_2D is
       use Ada.Containers;

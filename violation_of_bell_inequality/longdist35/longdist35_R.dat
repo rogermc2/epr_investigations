@@ -1,6 +1,5 @@
 Coincidence Evaluation
-09.02.99
-15:52:31
+09.02.99   15:52:31
 longdist35
 Shift [ns]:	  3.800
 Window [ns]:	  2.000
@@ -11,8 +10,8 @@ E(1,1):		 -0.708	  0.013
 S:		  2.728	  0.024
 Violation:	 29.796
 Coincidences:	  14573
-A0blau:	   104122	A1blau:	    93348	B0blau:	   100144	B1blau:	    90841
-A0rot:	    77988	A1rot:	    75892	B0rot:	    74935	B1rot:	    73456
+A0blue:	   104122	A1blue:	    93348	B0blue:	   100144	B1blue:	    90841
+A0red:	    77988	A1red:	    75892	B0red:	    74935	B1red:	    73456
 Matrix:
 
     313	   1636	   1728	    179
