@@ -1,7 +1,10 @@
 with Interfaces;
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Sequential_IO;
+with Ada.Streams;
+with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
 
 with Basic_Printing; use Basic_Printing;
@@ -23,19 +26,18 @@ package body Utils is
 
    function Hex (Byte : Interfaces.Unsigned_8) return String is
       use Interfaces;
-      Hex_Chars    : constant array (Unsigned_8 range 0 .. 15)
-        of Character := ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                        'A', 'B', 'C', 'D', 'E', 'F');
-      Half_Byte_1  : constant Unsigned_8 := Byte mod 16;
-      Half_Byte_2  : constant Unsigned_8 := Byte / 16;
+      Hex_Chars   : constant array (Unsigned_8 range 0 .. 15) of Character :=
+        ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+         'E', 'F');
+      Half_Byte_1 : constant Unsigned_8 := Byte mod 16;
+      Half_Byte_2 : constant Unsigned_8 := Byte / 16;
    begin
       return Hex_Chars (Half_Byte_2) & Hex_Chars (Half_Byte_1);
    end Hex;
 
    --  ------------------------------------------------------------------------
 
-   function Load_Data (File_Name : String)
-                       return Types.Bounded_String_List is
+   function Load_Data (File_Name : String) return Types.Bounded_String_List is
       use Seq_IO_U8;
       Routine_Name : constant String := "Utils.Load_Data ";
       Data_File    : File_Type;
@@ -52,8 +54,8 @@ package body Utils is
 
       Close (Data_File);
 
-      Print_String_List (Routine_Name &
-                           "Hex_Data items 1 - 40", Hex_Data, 1, 40);
+      Print_String_List
+        (Routine_Name & "Hex_Data items 1 - 40", Hex_Data, 1, 40);
 
       return Hex_Data;
 
@@ -67,61 +69,70 @@ package body Utils is
    --  -------------------------------------------------------------------------
 
    procedure OEM_Data (Source_File, OEM_Directory : String) is
+      use Ada.Streams;
       use Ada.Text_IO;
-      Routine_Name : constant String := "Utils.OEM_Data ";
-      OEM_File     : constant String := OEM_Directory & "OEM.csv";
+      type String_4 is new String (1 .. 4);
+      Routine_Name : constant String  := "Utils.OEM_Data ";
+      OEM_File     : constant String  := OEM_Directory & "OEM.csv";
       Source_Size  : constant Natural := Natural (Size (Source_File));
-      Source_ID    : File_Type;
-      OEM_ID       : File_Type;
-      Line_Num     : Natural := 0;
-      Val          : String (1 .. 4);
+      Data_Stream  : Stream_IO.Stream_Access;
+      Source_ID    : Stream_IO.File_Type;
+      OEM_ID       : Ada.Text_IO.File_Type;
+      Line_Num     : Natural          := 1;
+      Val          : String_4;
    begin
-      Ada.Text_IO.Put_Line (Routine_Name & "Source File: " &
-                              Source_File);
-      Open (Source_ID, In_File, Source_File);
-      Create (OEM_ID, Out_File, OEM_File);
+      Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
+      --  Ada.Text_IO.Put_Line
+      --    (Routine_Name & "Source_Size: " & Integer'Image (Source_Size) &
+      --     "  Source_Size:/4 " & Integer'Image (Source_Size / 4));
+      Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
+      Data_Stream := Stream_IO.Stream (Source_ID);
+      Ada.Text_IO.Create (OEM_ID, Out_File, OEM_File);
+      while Line_Num <= Source_Size - 4 and then
+        not Stream_IO.End_Of_File (Source_ID) loop
+         String_4'Read (Data_Stream, Val);
+         if Val = "0000" then
+            Put (OEM_ID, "0,0");
 
-      --  while Line_Num < Source_Size / 8 and then
-      while Line_Num < Source_Size / 4 and then
-        not End_Of_File (Source_ID) loop
-         Line_Num := Line_Num + 1;
-         --  for field_num in 1 .. 2 loop
-            --  if not End_Of_File (Source_ID) then
-               Get (Source_ID, Val);
-               if Val = "0000" then
-                  Put (OEM_ID, "0,0");
+         elsif Val = "0001" then
+            Put (OEM_ID, "0,1");
 
-               elsif Val = "0001" then
-                  Put (OEM_ID, "0,1");
+         elsif Val = "0002" then
+            Put (OEM_ID, "1,0");
 
-               elsif Val = "0002" then
-                  Put (OEM_ID, "1,0");
+         elsif Val = "0003" then
+            Put (OEM_ID, "1,1");
+         end if;
 
-               elsif Val = "0003" then
-                  Put (OEM_ID, "1,1");
-               end if;
+         if not Stream_IO.End_Of_File (Source_ID) then
+            Put (OEM_ID, ",");
+         end if;
 
-            --  if field_num = 1 then
-               if not End_Of_File (Source_ID) then
-                  Put (OEM_ID, ",");
-               end if;
-            --  end if;
-         --  end loop;
-
+         Line_Num := Line_Num + 4;
          New_Line (OEM_ID);
       end loop;
 
-      Close (OEM_ID);
-      Close (Source_ID);
+      Ada.Text_IO.Close (OEM_ID);
+      Stream_IO.Close (Source_ID);
 
-      Ada.Text_IO.Put_Line (Routine_Name & "OEM files written to " &
-                              OEM_Directory);
+      Ada.Text_IO.Put_Line
+        (Routine_Name & "OEM files written to " & OEM_Directory);
+      Ada.Text_IO.Put_Line
+        (Routine_Name & "OEM file length: " &
+           Natural'Image (Natural (Size (OEM_Directory & "OEM.csv"))));
+      Ada.Text_IO.New_Line;
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Line_Num" & Integer'Image (Line_Num));
+         Put_Line (Routine_Name & Exception_Information (Error));
+      raise;
    end OEM_Data;
 
    --  -------------------------------------------------------------------------
 
-   procedure Save_Data (File_Name : String; Data : Types.Bounded_String_List) is
+   procedure Save_Data (File_Name : String; Data : Types.Bounded_String_List)
+   is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Save_Data ";
       File_ID      : File_Type;
