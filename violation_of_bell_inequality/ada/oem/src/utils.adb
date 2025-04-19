@@ -1,4 +1,3 @@
-with Interfaces;
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
@@ -69,53 +68,73 @@ package body Utils is
    --  -------------------------------------------------------------------------
 
    procedure OEM_Data (Source_File, OEM_Directory : String) is
+      use Interfaces;
       use Ada.Streams;
       use Ada.Text_IO;
-      type String_4 is new String (1 .. 4);
       Routine_Name : constant String  := "Utils.OEM_Data ";
       OEM_File     : constant String  := OEM_Directory & "OEM.csv";
       Source_Size  : constant Natural := Natural (Size (Source_File));
       Data_Stream  : Stream_IO.Stream_Access;
       Source_ID    : Stream_IO.File_Type;
       OEM_ID       : Ada.Text_IO.File_Type;
-      Line_Num     : Natural          := 1;
-      Val          : String_4;
+      Line_Num     : Natural := 1;
+      Val          : Unsigned_16;
+      Num_Invalid  : Natural := 0;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
       Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
       Data_Stream := Stream_IO.Stream (Source_ID);
       Ada.Text_IO.Create (OEM_ID, Out_File, OEM_File);
-      while Line_Num <= Source_Size - 4 and then
+
+      while Line_Num < Source_Size and then
         not Stream_IO.End_Of_File (Source_ID) loop
-         String_4'Read (Data_Stream, Val);
-         if Val = "0000" then
-            Ada.Text_IO.Put (OEM_ID, "0,0");
-
-         elsif Val = "0001" then
-            Ada.Text_IO.Put (OEM_ID, "0,1");
-
-         elsif Val = "0002" then
-            Ada.Text_IO.Put (OEM_ID, "1,0");
-
-         elsif Val = "0003" then
-            Ada.Text_IO.Put (OEM_ID, "1,1");
-         else
+         Unsigned_16'Read (Data_Stream, Val);
+         if Line_Num < 3 then
             Ada.Text_IO.Put_Line
               (Routine_Name & "line " & Integer'Image (Line_Num) &
-              " Val: " & String (Val));
+                 "  Val: " & Unsigned_16'Image (Val));
+         end if;
+         Swap_Endian (Val);
+         if Line_Num < 3 then
+            Ada.Text_IO.Put_Line
+              (Routine_Name & "line " & Integer'Image (Line_Num) &
+                 " swapped Val: " & Unsigned_16'Image (Val));
+         end if;
+
+         if Val = 0 then
+            Ada.Text_IO.Put (OEM_ID, "0,0");
+
+         elsif Val = 1 then
+            Ada.Text_IO.Put (OEM_ID, "0,1");
+
+         elsif Val = 2 then
+            Ada.Text_IO.Put (OEM_ID, "1,0");
+
+         elsif Val = 3 then
+            Ada.Text_IO.Put (OEM_ID, "1,1");
+         else
+            Num_Invalid := Num_Invalid + 1;
+            if Num_Invalid < 5 then
+               Ada.Text_IO.Put_Line
+                 (Routine_Name & "line " & Integer'Image (Line_Num) &
+                    " Invalid Val: " & Unsigned_16'Image (Val));
+            end if;
          end if;
 
          if not Stream_IO.End_Of_File (Source_ID) then
             Ada.Text_IO.Put (OEM_ID, ",");
          end if;
 
-         Line_Num := Line_Num + 4;
+         Line_Num := Line_Num + 1;
          Ada.Text_IO.New_Line (OEM_ID);
       end loop;
 
       Ada.Text_IO.Close (OEM_ID);
       Stream_IO.Close (Source_ID);
 
+      Ada.Text_IO.Put_Line
+        (Routine_Name & "Number of invalid items: " &
+           Integer'Image (Num_Invalid));
       Ada.Text_IO.Put_Line
         (Routine_Name & "OEM files written to " & OEM_Directory);
       Ada.Text_IO.Put_Line
@@ -147,6 +166,17 @@ package body Utils is
       Ada.Text_IO.Put_Line (Routine_Name & File_Name & " written.");
 
    end Save_Data;
+
+   --  -------------------------------------------------------------------------
+
+   procedure Swap_Endian (Data : in out Interfaces.Unsigned_16) is
+      use Interfaces;
+      Right_Byte   : constant Unsigned_16 := Data and 16#FF#;
+   begin
+      Data := Shift_Left (Right_Byte, 8) +
+        Shift_Right (Data and 16#FF00#, 8);
+
+   end Swap_Endian;
 
    --  -------------------------------------------------------------------------
 

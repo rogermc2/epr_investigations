@@ -1,0 +1,71 @@
+A big-endian system stores the most significant byte of a word at the lowest memory address and the least significant byte at the largest.
+A little-endian system stores the least-significant byte at the lowest address.
+
+ Photon arrival times where the "arm" time has already been subtracted are
+IEEE-8bit double precision numbers in "Big Endian"-form naturally sorted ascendingly.
+Actual time resolution is 10^-10 seconds but accuracy is only 0.5 ns.
+ Example: 3EC2 25E0 8677 939E => 2.16340508861703e-6
+
+
+Structure of a Double-Precision Floating-Point Number:
+ Sign (1 bit) determines if the number is positive or negative (0 for positive, 1 for negative).
+ Exponent (11 bits) represents the power of 2 by which the significand is multiplied.
+ Fraction (52 bits) represents the fractional part of the number (also called the
+ Sign := Unsigned_8 (Shift_Right (Raw_Value, 63) and 1);
+
+Big endian value: 3E  C2  25  E0  86  77  93  9E
+0011 1110 1100 0010 0010 0101 1110 0000 1000 0110 0111 0111 1001 0011 1001 1110 
+Sign (1 bit) = 0
+Exponent  (11 bits) 011 1110 1100 = 3EC = 1004
+Adjust for bias of 1023: Exponent = -19
+2^-19 = 0.000 001 91
+Fraction (52 bits) 2 25E0 8677 939E = 0.604596212306846
+2^-19 x 1.604596212306846 = 00000306 = 3.06 x 10^-6
+
+An example of an IEEE 754 64-bit (double-precision) floating-point number in big-endian form representing the value 3.14159, is: 0x40 49 0F DA 16 3F 46 2E. 
+Here's a breakdown: 
+IEEE 754 64-bit format: This format uses 64 bits to represent floating-point numbers with 1 bit for the sign, 11 bits for the exponent and 52 bits for the significand (mantissa).
+In big-endian the most significant byte (or the byte with the highest address) comes first.
+Sign: The sign bit is 0 for positive numbers and 1 for negative numbers.
+Exponent: The exponent is represented using 11 bits with a bias of 1023.
+Significand: The significand represents the fractional part of the number.
+
+0100 0000 0100 1001 0000 1111 1101 1010 0001 0110 0011 1111 0100 0110 0010 1110
+Sign (1 bit) = 0
+Exponent  (11 bits) 100 0000 0100  = 0x404 = 1028 
+Adjust for bias of 1023: Exponent = 5
+2^5 = 32
+Fraction (52 bits) 9 0F DA 16 3F 46 2E = 0.2550704140928558
+(1 + Fraction) * 2 ^ Exponent  = 1.2550704140928558 x 32 = 40.162
+
+Shift Fraction 9 0F DA 16 3F 46 2E left by 5 bits:
+ 1001 0000 1111 1101 1010 0001 0110 0011 1111 0100 0110 0010 1110 00000 =
+ 1 0010 0001 1111 1011 0100 0010 1100 0111 1110 1000 1100 0101 1100 0000 =
+1 21 FB 42 C7 E8 35 60 = 0.81622532509676896
+1.81622532509676896 x 32 =58.119 58.119
+
+Change only mantissa to little endian:
+2E 46 3F 16 DA 0F 09 = 0.13025085708963593
+1.13025085708963593 x 32 = 36.168
+
+Change to little endian:
+2E 46 3F 16 DA 0F 49 40
+0010 1110 0100 0011 1111 0001 0110 1101 1010 0000 1111 0100 1001 0100 0000
+
+Sign (1 bit) = 0
+Exponent  (11 bits) 010 1110 0100 = 2E4 = 740
+Adjust for bias of 1023: Exponent = -283
+2^-283
+Fraction (52 bits) 6 3F 16 DA 0F 49 40 = 0.1758217240529216
+(1 + Fraction) * 2 ^ Exponent  = 7.56 e^-86
+
+
+0100 0000 0100 1001 0000 1111 1101 1010 0001 0110 0011 1111 0100 0110 0010 1110
+Sign (1 bit) = 0
+Exponent  (11 bits) 100 0000 0100  = 0x404
+Change to little endian: 044 = 68
+Adjust for bias of 1023: Exponent = -955
+2^-955 = 3.28362944e^-288
+Little endian Fraction (52 bits) 9 0F DA 16 3F 46 2E
+2E 46 3F 16 DA 0F 09 = 0.13025085708963595 
+(1 + Fraction) * 2 ^ Exponent  = 3.7^-288

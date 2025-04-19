@@ -8,12 +8,8 @@ procedure Longdist_OEM is
    B_Directory : constant String :=
      "../../longdist35/bob_timetags/";
    A_Source    : constant String := A_Directory & "longdist35_C.dat";
-   --  A_Target    : constant String := A_Directory & "longdist35_C.csv";
    B_Source    : constant String := B_Directory & "longdist35_C.dat";
-   --  B_Target    : constant String := B_Directory & "longdist35_C.csv";
 begin
-   --  Convert_To_Text (A_Source, A_Target);
-   --  Convert_To_Text (B_Source, B_Target);
 
    OEM_Data (A_Source, A_Directory);
    OEM_Data (B_Source, B_Directory);
