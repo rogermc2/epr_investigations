@@ -1,4 +1,6 @@
 
+with Interfaces;
+
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Vectors;
@@ -7,6 +9,10 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Types is
    pragma Preelaborate;
+
+   subtype Byte is Interfaces.Unsigned_8;
+   type Byte_Array is array (Integer range <>) of Byte;
+   for Byte_Array'Alignment use 1;
 
    package Integer_Package is new
       Ada.Containers.Vectors (Positive, Integer);

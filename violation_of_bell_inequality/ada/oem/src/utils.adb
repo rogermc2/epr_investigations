@@ -71,6 +71,7 @@ package body Utils is
       use Interfaces;
       use Ada.Streams;
       use Ada.Text_IO;
+      use Types;
       Routine_Name : constant String  := "Utils.OEM_Data ";
       OEM_File     : constant String  := OEM_Directory & "OEM.csv";
       Source_Size  : constant Natural := Natural (Size (Source_File));
@@ -78,7 +79,8 @@ package body Utils is
       Source_ID    : Stream_IO.File_Type;
       OEM_ID       : Ada.Text_IO.File_Type;
       Line_Num     : Natural := 1;
-      Val          : Unsigned_16;
+      Data         : Byte_Array (1 .. 2);
+      Swap         : Byte;
       Num_Invalid  : Natural := 0;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
@@ -88,36 +90,25 @@ package body Utils is
 
       while Line_Num < Source_Size and then
         not Stream_IO.End_Of_File (Source_ID) loop
-         Unsigned_16'Read (Data_Stream, Val);
-         if Line_Num < 3 then
-            Ada.Text_IO.Put_Line
-              (Routine_Name & "line " & Integer'Image (Line_Num) &
-                 "  Val: " & Unsigned_16'Image (Val));
-         end if;
-         Swap_Endian (Val);
-         if Line_Num < 3 then
-            Ada.Text_IO.Put_Line
-              (Routine_Name & "line " & Integer'Image (Line_Num) &
-                 " swapped Val: " & Unsigned_16'Image (Val));
-         end if;
+         Byte_Array'Read (Data_Stream, Data);
 
-         if Val = 0 then
+         if Data (2) = 0 then
             Ada.Text_IO.Put (OEM_ID, "0,0");
 
-         elsif Val = 1 then
+         elsif Data (2) = 1 then
             Ada.Text_IO.Put (OEM_ID, "0,1");
 
-         elsif Val = 2 then
+         elsif Data (2) = 2 then
             Ada.Text_IO.Put (OEM_ID, "1,0");
 
-         elsif Val = 3 then
+         elsif Data (2) = 3 then
             Ada.Text_IO.Put (OEM_ID, "1,1");
          else
             Num_Invalid := Num_Invalid + 1;
             if Num_Invalid < 5 then
                Ada.Text_IO.Put_Line
                  (Routine_Name & "line " & Integer'Image (Line_Num) &
-                    " Invalid Val: " & Unsigned_16'Image (Val));
+                    " Invalid Val: " & Byte'Image (Data (2)));
             end if;
          end if;
 
