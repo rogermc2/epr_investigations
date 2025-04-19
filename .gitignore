@@ -36,3 +36,4 @@ access token.txt
 *sublime-workspace
 *sublime-project
 *.code-workspace
+.Rproj.user

@@ -1,4 +1,5 @@
 Version: 1.0
+ProjectId: d31444e8-821c-4a3c-87a9-f79a3696bfcc
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
@@ -11,3 +12,5 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
+
+QuitChildProcessesOnExit: Yes

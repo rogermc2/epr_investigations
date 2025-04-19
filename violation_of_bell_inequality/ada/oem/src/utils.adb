@@ -78,34 +78,35 @@ package body Utils is
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " &
                               Source_File);
-      New_Line;
       Open (Source_ID, In_File, Source_File);
       Create (OEM_ID, Out_File, OEM_File);
 
-      while Line_Num < Source_Size / 8 and then
+      --  while Line_Num < Source_Size / 8 and then
+      while Line_Num < Source_Size / 4 and then
         not End_Of_File (Source_ID) loop
          Line_Num := Line_Num + 1;
-         for field_num in 1 .. 2 loop
-            if not End_Of_File (Source_ID) then
+         --  for field_num in 1 .. 2 loop
+            --  if not End_Of_File (Source_ID) then
                Get (Source_ID, Val);
                if Val = "0000" then
-                  Put (OEM_ID, "0");
+                  Put (OEM_ID, "0,0");
 
                elsif Val = "0001" then
-                  Put (OEM_ID, "1");
+                  Put (OEM_ID, "0,1");
 
                elsif Val = "0002" then
-                  Put (OEM_ID, "2");
+                  Put (OEM_ID, "1,0");
 
                elsif Val = "0003" then
-                  Put (OEM_ID, "3");
+                  Put (OEM_ID, "1,1");
                end if;
 
-               if field_num = 1 then
+            --  if field_num = 1 then
+               if not End_Of_File (Source_ID) then
                   Put (OEM_ID, ",");
                end if;
-            end if;
-         end loop;
+            --  end if;
+         --  end loop;
 
          New_Line (OEM_ID);
       end loop;
