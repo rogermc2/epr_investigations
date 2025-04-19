@@ -1,0 +1,45 @@
+V "GNAT Lib v14"
+M P W=b
+A -gnatA
+A -gnatw.u
+A -gnatwf
+A -gnatwk
+A -gnatwp
+A -gnatwr
+A -gnatwu
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyu
+A -gnatyx
+A -mmacosx-version-min=15.0.0
+A -mcpu=apple-m1
+A -mlittle-endian
+A -mabi=lp64
+A -fPIC
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U photon_times%b	photon_times.adb	0f7bfdb2 NE OO SU
+W process_data%s	process_data.adb	process_data.ali
+
+D photon_times.adb	20250418134958 1d35613a photon_times%b
+D process_data.ads	20250324094130 124e9c88 process_data%s
+D system.ads		20240503102042 70765b54 system%s
+G a e
+G c Z b b [photon_times standard 4 11 none]
+G r c none [photon_times standard 4 11 none] [photon_data process_data 4 14 none]
+X 1 photon_times.adb
+4U11*Photon_Times 4b11 15l5 15t17
+5a4 A_Directory{string} 9r37 12r27
+7a4 B_Directory{string} 10r37 13r27
+9a4 A_Source{string} 12r17
+10a4 B_Source{string} 13r17
+X 2 process_data.ads
+2K9*Process_Data 1|2w6 2r24 2|6e17
+4U14*Photon_Data 1|12s4 13s4
+

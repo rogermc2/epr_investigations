@@ -28,7 +28,7 @@ package body Utils is
       use Interfaces;
       Hex_Chars   : constant array (Unsigned_8 range 0 .. 15) of Character :=
         ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
-         'E', 'F');
+        'E', 'F');
       Half_Byte_1 : constant Unsigned_8 := Byte mod 16;
       Half_Byte_2 : constant Unsigned_8 := Byte / 16;
    begin
@@ -82,9 +82,6 @@ package body Utils is
       Val          : String_4;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
-      --  Ada.Text_IO.Put_Line
-      --    (Routine_Name & "Source_Size: " & Integer'Image (Source_Size) &
-      --     "  Source_Size:/4 " & Integer'Image (Source_Size / 4));
       Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
       Data_Stream := Stream_IO.Stream (Source_ID);
       Ada.Text_IO.Create (OEM_ID, Out_File, OEM_File);
@@ -92,24 +89,28 @@ package body Utils is
         not Stream_IO.End_Of_File (Source_ID) loop
          String_4'Read (Data_Stream, Val);
          if Val = "0000" then
-            Put (OEM_ID, "0,0");
+            Ada.Text_IO.Put (OEM_ID, "0,0");
 
          elsif Val = "0001" then
-            Put (OEM_ID, "0,1");
+            Ada.Text_IO.Put (OEM_ID, "0,1");
 
          elsif Val = "0002" then
-            Put (OEM_ID, "1,0");
+            Ada.Text_IO.Put (OEM_ID, "1,0");
 
          elsif Val = "0003" then
-            Put (OEM_ID, "1,1");
+            Ada.Text_IO.Put (OEM_ID, "1,1");
+         else
+            Ada.Text_IO.Put_Line
+              (Routine_Name & "line " & Integer'Image (Line_Num) &
+              " Val: " & String (Val));
          end if;
 
          if not Stream_IO.End_Of_File (Source_ID) then
-            Put (OEM_ID, ",");
+            Ada.Text_IO.Put (OEM_ID, ",");
          end if;
 
          Line_Num := Line_Num + 4;
-         New_Line (OEM_ID);
+         Ada.Text_IO.New_Line (OEM_ID);
       end loop;
 
       Ada.Text_IO.Close (OEM_ID);
@@ -126,7 +127,7 @@ package body Utils is
       when Error : others =>
          Put_Line (Routine_Name & "Line_Num" & Integer'Image (Line_Num));
          Put_Line (Routine_Name & Exception_Information (Error));
-      raise;
+         raise;
    end OEM_Data;
 
    --  -------------------------------------------------------------------------

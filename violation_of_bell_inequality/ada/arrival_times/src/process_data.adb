@@ -24,11 +24,8 @@ package body Process_Data is
    procedure Photon_Data (Source_File, Photon_Times_Directory : String) is
       use Ada.Streams;
       use Ada.Text_IO;
-      --  use Printing;
       use Types;
       use Utils;
-      --  type  Char_64 is array (1 .. 64) of Character;
-      --  pragma Unreferenced (Char_64);
 
       Routine_Name      : constant String := "Utils.Photon_Data ";
       Photon_Times_File : constant String :=
@@ -47,7 +44,6 @@ package body Process_Data is
       Data_Stream := Stream_IO.Stream (Source_ID);
       Ada.Text_IO.Create (PT_ID, Ada.Text_IO.Out_File, Photon_Times_File);
 
-      --  while Line_Num < 2 and not Stream_IO.End_Of_File (Source_ID) loop
       while not Stream_IO.End_Of_File (Source_ID) loop
          Line_Num := Line_Num + 1;
          Byte_Array'Read (Data_Stream, Data);

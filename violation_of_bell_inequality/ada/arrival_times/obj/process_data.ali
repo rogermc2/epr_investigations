@@ -1,0 +1,177 @@
+V "GNAT Lib v14"
+A -gnatA
+A -gnatw.u
+A -gnatwf
+A -gnatwk
+A -gnatwp
+A -gnatwr
+A -gnatwu
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyu
+A -gnatyx
+A -mmacosx-version-min=15.0.0
+A -mcpu=apple-m1
+A -mlittle-endian
+A -mabi=lp64
+A -fPIC
+P SS ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IO
+RV NO_IMPLICIT_CONDITIONALS
+RV NO_LOCAL_ALLOCATORS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_STREAMS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_IMPLICIT_LOOPS
+
+U process_data%b	process_data.adb	4f094176 NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.streams%s		a-stream.adb		a-stream.ali
+W ada.streams.stream_io%s  a-ststio.adb		a-ststio.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+Z system.concat_2%s	s-conca2.adb		s-conca2.ali
+Z system.img_flt%s	s-imgflt.ads		s-imgflt.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+W types%s		types.adb		types.ali
+W utils%s		utils.adb		utils.ali
+
+U process_data%s	process_data.ads	124e9c88 EE NE OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+
+D ada.ads		20240503102042 76789da1 ada%s
+D a-charac.ads		20240503102042 2d3ec45b ada.characters%s
+D a-chlat1.ads		20240503102042 e0d72e76 ada.characters.latin_1%s
+D a-contai.ads		20240503102042 61e5e089 ada.containers%s
+D a-cdlili.ads		20240503102042 2434d8f6 ada.containers.doubly_linked_lists%s
+D a-conhel.ads		20240503102042 46fe1ce3 ada.containers.helpers%s
+D a-cidlli.ads		20240503102042 2b10d805 ada.containers.indefinite_doubly_linked_lists%s
+D a-coinve.ads		20240503102042 728ad523 ada.containers.indefinite_vectors%s
+D a-convec.ads		20240503102042 91fb49f3 ada.containers.vectors%s
+D a-except.ads		20240503102042 e7970cd9 ada.exceptions%s
+D a-finali.ads		20240503102042 bf4f806b ada.finalization%s
+D a-ioexce.ads		20240503102042 40018c65 ada.io_exceptions%s
+D a-iteint.ads		20240503102042 49a8bee2 ada.iterator_interfaces%s
+D a-stream.ads		20240503102042 119b8fb3 ada.streams%s
+D a-ststio.ads		20240503102042 d6d358e8 ada.streams.stream_io%s
+D a-string.ads		20240503102042 90ac6797 ada.strings%s
+D a-strmap.ads		20240503102042 1f91ebb6 ada.strings.maps%s
+D a-sttebu.ads		20240503102042 f1ad67a2 ada.strings.text_buffers%s
+D a-strunb.ads		20240503102042 98c60381 ada.strings.unbounded%s
+D a-stuten.ads		20240503102042 c6ced0ae ada.strings.utf_encoding%s
+D a-tags.ads		20240503102042 9eaa38c6 ada.tags%s
+D a-textio.ads		20240503102042 34ef47de ada.text_io%s
+D a-unccon.ads		20240503102042 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20240503102042 9111f9c1 interfaces%s
+D i-cstrea.ads		20240503102042 ffd01b9d interfaces.c_streams%s
+D process_data.ads	20250324094130 124e9c88 process_data%s
+D process_data.adb	20250419072108 136023be process_data%b
+D system.ads		20240503102042 70765b54 system%s
+D s-atocou.ads		20240503102042 dc18efc3 system.atomic_counters%s
+D s-conca2.ads		20240503102042 b5fb73f7 system.concat_2%s
+D s-crtl.ads		20240503102042 beb39b9e system.crtl%s
+D s-exctab.ads		20240503102042 91bef6ef system.exception_table%s
+D s-ficobl.ads		20240503102042 dc5161d4 system.file_control_block%s
+D s-finmas.ads		20240503102042 28987ac5 system.finalization_masters%s
+D s-finroo.ads		20240503102042 4ff27390 system.finalization_root%s
+D s-imager.ads		20240503102042 45c7157d system.image_r%s
+D s-imageu.ads		20240503102042 b0b50650 system.image_u%s
+D s-imgflt.ads		20240503102042 d12816b5 system.img_flt%s
+D s-imguns.ads		20240503102042 c4e23690 system.img_uns%s
+D s-parame.ads		20240503102042 3597fc11 system.parameters%s
+D s-pooglo.ads		20240503102042 91708d21 system.pool_global%s
+D s-powflt.ads		20240503102042 a51ab9b8 system.powten_flt%s
+D s-putima.ads		20240503102042 17291fe4 system.put_images%s
+D s-retsta.ads		20240503102042 0f6b06cb system.return_stack%s
+D s-secsta.ads		20240503102042 578279f5 system.secondary_stack%s
+D s-soflin.ads		20240503102042 df77073e system.soft_links%s
+D s-stache.ads		20240503102042 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20240503102042 1c9580f6 system.standard_library%s
+D s-stoele.ads		20240503102042 ccded4e8 system.storage_elements%s
+D s-stopoo.ads		20240503102042 e9fa2dd8 system.storage_pools%s
+D s-stratt.ads		20240503102042 a1861007 system.stream_attributes%s
+D s-traent.ads		20240503102042 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20240503102042 fa2a7f59 system.unsigned_types%s
+D s-valspe.ads		20240503102042 b0fcd073 system.val_spec%s
+D s-vauspe.ads		20240503102042 89269ba5 system.value_u_spec%s
+D s-vs_uns.ads		20240503102042 e7f47a27 system.vs_uns%s
+D s-wchcon.ads		20240503102042 d9032363 system.wch_con%s
+D types.ads		20250324095120 1e0a206f types%s
+D utils.ads		20250324095600 441d4273 utils%s
+G a e
+G c Z s b [photon_data process_data 4 14 none]
+G r c none [photon_data process_data 4 14 none] [to_ieee_double_big_endian utils 10 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 27|2r6 2r26 3r6 4r6 5r6 25r11 26r11 35r21 41r7 42r7 45r7 45r34
+. 57r7 60r7
+X 5 a-cdlili.ads
+80V14*"="{boolean} 44i19[58|67]
+X 9 a-convec.ads
+127V25*"="{boolean} 65i19[58|17]
+X 10 a-except.ads
+44K13*Exceptions 309e19 27|2w10 2r30
+94V13*Exception_Information{string} 27|66s35
+X 13 a-iteint.ads
+24h9 Forward_Iterator
+32h9 Reversible_Iterator<24R9[7|76]>
+X 14 a-stream.ads
+36K13*Streams 87e16 27|3w10 4r10 25r15
+X 15 a-ststio.ads
+39K21*Stream_IO 224e26 27|4w18 34r21 36r21 43r7 43r34 44r22 47r17 52r17 58r7
+42P9*Stream_Access(14|39R9) 27|36r31
+44P9*File_Type 27|34r31
+47n23*In_File{47E9} 27|43r44
+74U14*Open 27|43s17
+80U14*Close 27|58s17
+90V13*End_Of_File{boolean} 27|47s27 52s27
+92V13*Stream{42P9} 27|44s32
+X 19 a-strunb.ads
+246V14*"="{boolean} 5|44i19 9|65i19
+X 22 a-textio.ads
+58K13*Text_IO 785e16 27|5w10 26r15 35r25 41r11 42r11 45r11 45r38 57r11 60r11
+67P9*File_Type 27|35r33
+69n32*Out_File{69E9} 27|45r46
+99U14*Create 27|45s19
+131U14*Close 27|57s19
+284U14*New_Line 27|42s19
+508U14*Put 27|51s10 53s13
+565U14*Put_Line 27|41s19 60s19 66s10
+X 24 interfac.ads
+70M9*Unsigned_8
+X 26 process_data.ads
+2K9*Process_Data 6l5 6e17 27|11b14 70l5 70t17
+4U14*Photon_Data 4>27 4>40 27|24b14 68l8 68t19
+4a27 Source_File{string} 27|24b27 41r62 43r53
+4a40 Photon_Times_Directory{string} 27|24b40 32r9 62r12
+X 27 process_data.adb
+30a7 Routine_Name{string} 41r29 61r10 66r20
+31a7 Photon_Times_File=32:32{string} 45r56
+34p7 Source_ID{15|44P9} 43m23 43r23 44r40 47r40 52r40 58m24 58r24
+35p7 PT_ID{22|67P9} 45m27 45r27 51r15 53r18 57m26 57r26
+36p7 Data_Stream{15|42P9} 44m7 49r27
+37i7 Line_Num{natural} 48m10 48r22
+38a7 Data{58|14A9} 49m40 49r40 50r47
+39f7 Number{float} 50m10 51r22
+65r12 Error{10|53R9} 66r58
+X 58 types.ads
+10K9*Types 27|8w6 27r11 58|84e10
+13M12*Byte{24|70M9}
+14A9*Byte_Array(13M12)<integer> 27|38r21 49r10
+X 59 utils.ads
+4K9*Utils 27|9w6 28r11 59|12e10
+10V13*To_IEEE_Double_Big_Endian{float} 27|50s20
+
