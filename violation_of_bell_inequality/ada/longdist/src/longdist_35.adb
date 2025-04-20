@@ -18,7 +18,7 @@ begin
    Photon_Data (AV_Source, AV_Target);
    Photon_Data (BV_Source, BV_Target);
 
-   OEM_Data (AC_Source, A_Directory, AC_Target);
-   OEM_Data (BC_Source, B_Directory, BC_Target);
+   OEM_Data (AC_Source, AC_Target);
+   OEM_Data (BC_Source, BC_Target);
 
 end Longdist_35;

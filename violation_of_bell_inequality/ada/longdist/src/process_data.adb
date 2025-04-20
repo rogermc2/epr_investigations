@@ -12,7 +12,7 @@ with Utils;
 
 package body Process_Data is
 
-   procedure OEM_Data (Source_File, OEM_Directory, OEM_File : String) is
+   procedure OEM_Data (Source_File, OEM_File : String) is
       use Interfaces;
       use Ada.Streams;
       use Ada.Text_IO;
@@ -69,10 +69,10 @@ package body Process_Data is
         (Routine_Name & "Number of invalid items: " &
            Integer'Image (Num_Invalid));
       Ada.Text_IO.Put_Line
-        (Routine_Name & "OEM files written to " & OEM_Directory);
+        (Routine_Name & "OEM file written to " & OEM_File);
       Ada.Text_IO.Put_Line
         (Routine_Name & "OEM file length: " &
-           Natural'Image (Natural (Size (OEM_Directory & "OEM.csv"))));
+           Natural'Image (Natural (Size (OEM_File))));
       Ada.Text_IO.New_Line;
 
    exception
@@ -99,7 +99,7 @@ package body Process_Data is
       use Ada.Streams;
       use Ada.Text_IO;
       use Utils;
-      Routine_Name : constant String := "Process_Data.Photon_Data";
+      Routine_Name : constant String := "Process_Data.Photon_Data ";
       Source_ID   : Stream_IO.File_Type;
       PT_ID       : Ada.Text_IO.File_Type;
       Data_Stream : Stream_IO.Stream_Access;
@@ -129,6 +129,9 @@ package body Process_Data is
       Ada.Text_IO.Put_Line
         (Routine_Name & "Photon times file written to " &
            Target_File);
+      Ada.Text_IO.Put_Line
+        (Routine_Name & "Photon times file length: " &
+           Natural'Image (Natural (Size (Target_File))));
 
    exception
       when Error : others =>
