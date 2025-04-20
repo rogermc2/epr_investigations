@@ -1,3 +1,0 @@
-types.adb:2:01: error: spec of this package does not allow a body
-types.adb:2:01: error: either remove the body or add pragma Elaborate_Body in the spec
-types.adb:3:01: (style) multiple blank lines [-gnatyu]

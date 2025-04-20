@@ -7,7 +7,7 @@ package Types is
    pragma Preelaborate;
 
    subtype Byte is Interfaces.Unsigned_8;
-   type Byte_Array is array (1 .. 8) of Byte;
+   type Byte_Array is array (Integer range <>) of Byte;
    for Byte_Array'Alignment use 1;
 
    package Bounded_Strings_Package is new Ada.Containers.Indefinite_Vectors
