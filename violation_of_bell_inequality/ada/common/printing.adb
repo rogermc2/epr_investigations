@@ -136,7 +136,7 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   procedure Print_String2_Array (Name  : String; Data : Types.String2_Array;
+   procedure Print_String3_Array (Name  : String; Data : Types.String3_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
       use Interfaces;
       Last  : Positive;
@@ -160,15 +160,15 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_String2_Array called with invalid start or finish index.");
+           ("Print_String3_Array called with invalid start or finish index.");
       end if;
       New_Line;
 
-   end Print_String2_Array;
+   end Print_String3_Array;
 
    --  ------------------------------------------------------------------------
 
-   procedure Print_String6_Array (Name  : String; Data : Types.String6_Array;
+   procedure Print_String30_Array (Name  : String; Data : Types.String30_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
       use Interfaces;
       Last  : Positive;
@@ -192,11 +192,11 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_String6_Array called with invalid start or finish index.");
+           ("Print_String30_Array called with invalid start or finish index.");
       end if;
       New_Line;
 
-   end Print_String6_Array;
+   end Print_String30_Array;
 
    --  ------------------------------------------------------------------------
 

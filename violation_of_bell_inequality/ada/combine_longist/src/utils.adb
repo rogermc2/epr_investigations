@@ -24,7 +24,7 @@ package body Utils is
 
       while not Stream_IO.End_Of_File (Data_ID) loop
          String_13'Read (Data_Stream, Data (Row));
-         if Row < 12 then
+         if Row < 5 then
             Put_Line (Routine_Name & Integer'Image (Row) & "   " &
                         Data (Row));
          end if;
@@ -34,7 +34,7 @@ package body Utils is
    end Load_Photon_Data;
 
    procedure Load_OEM_Data (Data_File : String;
-                            Data      : out String2_Array) is
+                            Data      : out String3_Array) is
       use Ada.Streams;
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Load_OEM_Data ";
@@ -47,31 +47,27 @@ package body Utils is
       Data_Stream := Stream_IO.Stream (Data_ID);
 
       while not Stream_IO.End_Of_File (Data_ID) loop
-         String_2'Read (Data_Stream, Data (Row));
+         String_3'Read (Data_Stream, Data (Row));
          Row := Row + 1;
       end loop;
 
    end Load_OEM_Data;
 
-   procedure Save_Data (Data_File : String; Data : String6_Array) is
+   procedure Save_Data (Data_File : String; Data : String30_Array) is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Save_Data ";
       Out_ID       : File_Type;
-      aRow         : String_6;
+      aRow         : String_30;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
       Create (Out_ID, Out_File, Data_File);
 
       for row in Data'Range loop
          aRow := Data (row);
-         for index in 1 .. 5 loop
-            Put (Out_ID, aRow (index) & ",");
-         end loop;
-
-         Put (Out_ID, aRow (6));
-         if row < Data'Last then
-            Put (Out_ID, ",");
-         end if;
+         Put (Out_ID, aRow (1 .. 13) & ",");
+         Put (Out_ID, aRow (14 .. 26) & ",");
+         Put (Out_ID, aRow (27 .. 28) & ",");
+         Put_Line (Out_ID, aRow (29 .. 30));
       end loop;
 
       Close (Out_ID);
