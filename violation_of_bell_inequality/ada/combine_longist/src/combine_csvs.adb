@@ -6,7 +6,7 @@ with Printing; use Printing;
 with Types; use Types;
 with Utils; use Utils;
 
-procedure Combine_Csvs is
+procedure Combine_CSVs is
    A_Directory : constant String :=
      "../../longdist35/alice_timetags/";
    B_Directory : constant String :=
@@ -17,25 +17,28 @@ procedure Combine_Csvs is
    OEM_Data_B_CSV    : constant String := B_Directory & "OEM.csv";
    Long_Dist_CSV     : constant String := "../Long_Dist.csv";
 
-   Photon_Data_A : String1_Array (1 .. Positive (Size (Photon_Data_A_CSV)));
-   Photon_Data_B : String1_Array (1 .. Positive (Size (Photon_Data_B_CSV)));
-   OEM_Data_A    : String2_Array (1 .. Positive (Size (OEM_Data_A_CSV)));
-   OEM_Data_B    : String2_Array (1 .. Positive (Size (OEM_Data_B_CSV)));
-   Combined      : String6_Array (1 .. 1000);
+   Photon_Data_A : UB_String_Array (1 .. Positive (Size (Photon_Data_A_CSV)) / 10);
+   --  Photon_Data_A : UB_String_Array (1 .. Positive (Size (Photon_Data_A_CSV)));
+   --  Photon_Data_B : UB_String_Array (1 .. Positive (Size (Photon_Data_B_CSV)));
+   --  OEM_Data_A    : String2_Array (1 .. Positive (Size (OEM_Data_A_CSV)));
+   --  OEM_Data_B    : String2_Array (1 .. Positive (Size (OEM_Data_B_CSV)));
+   --  Combined      : String6_Array (1 .. 1000);
 begin
-   --  Set stack size:  ulimit -s 20000
+   --  Set stack size:  ulimit -s 30000
+   Put_Line ("Loading Photon_Data_A");
    Load_Photon_Data (Photon_Data_A_CSV, Photon_Data_A);
-   Load_Photon_Data (Photon_Data_B_CSV, Photon_Data_B);
+   --  Load_Photon_Data (Photon_Data_B_CSV, Photon_Data_B);
+   Print_UB_String_Array ("Photon_Data_A", Photon_Data_A, 1, 1);
 
-   Load_OEM_Data (OEM_Data_A_CSV, OEM_Data_A);
-   Load_OEM_Data (OEM_Data_B_CSV, OEM_Data_B);
+   --  Load_OEM_Data (OEM_Data_A_CSV, OEM_Data_A);
+   --  Load_OEM_Data (OEM_Data_B_CSV, OEM_Data_B);
 
-   for row in Combined'Range loop
-      Combined (row) := Photon_Data_A (row) & Photon_Data_B (row) &
-      OEM_Data_A (row) & OEM_Data_B (row);
-   end loop;
-   Print_String6_Array ("Combined", Combined, 1, 4);
+   --  for row in Combined'Range loop
+   --     Combined (row) := Photon_Data_A (row) & Photon_Data_B (row) &
+   --     OEM_Data_A (row) & OEM_Data_B (row);
+   --  end loop;
+   --  Print_String6_Array ("Combined", Combined, 1, 4);
+   --
+   --  Save_Data (Long_Dist_CSV, Combined);
 
-   Save_Data (Long_Dist_CSV, Combined);
-
-end Combine_Csvs;
+end Combine_CSVs;

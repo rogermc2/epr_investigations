@@ -3,12 +3,14 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 package body Utils is
 
    procedure Load_Photon_Data (Data_File : String;
-                               Data      : out String1_Array) is
+                               Data      : out UB_String_Array) is
+      use Ada.Strings.Unbounded;
       use Ada.Streams;
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Load_Photon_Data ";
@@ -21,7 +23,11 @@ package body Utils is
       Data_Stream := Stream_IO.Stream (Data_ID);
 
       while not Stream_IO.End_Of_File (Data_ID) loop
-         String_1'Read (Data_Stream, Data (Row));
+         Unbounded_String'Read (Data_Stream, Data (Row));
+         if Row < 2 then
+            Put_Line (Routine_Name & Integer'Image (Row) & "   " &
+                        To_String (Data (Row)));
+         end if;
          Row := Row + 1;
       end loop;
 

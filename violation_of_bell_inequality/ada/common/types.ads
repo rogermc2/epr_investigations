@@ -2,6 +2,7 @@
 with Interfaces;
 
 with Ada.Containers.Indefinite_Vectors;
+with Ada.Strings.Unbounded;
 
 package Types is
    pragma Preelaborate;
@@ -17,5 +18,8 @@ package Types is
    type String1_Array is array (Integer range <>) of String_1;
    type String2_Array is array (Integer range <>) of String_2;
    type String6_Array is array (Integer range <>) of String_6;
+
+   type UB_String_Array is Array (Integer range <>) of
+     Ada.Strings.Unbounded.Unbounded_String;
 
 end Types;

@@ -35,16 +35,16 @@ package body Process_Data is
          Byte_Array'Read (Data_Stream, Data);
 
          if Data (2) = 0 then
-            Ada.Text_IO.Put (OEM_ID, "0,0");
+            Ada.Text_IO.Put_Line (OEM_ID, "0,0");
 
          elsif Data (2) = 1 then
-            Ada.Text_IO.Put (OEM_ID, "0,1");
+            Ada.Text_IO.Put_Line (OEM_ID, "0,1");
 
          elsif Data (2) = 2 then
-            Ada.Text_IO.Put (OEM_ID, "1,0");
+            Ada.Text_IO.Put_Line (OEM_ID, "1,0");
 
          elsif Data (2) = 3 then
-            Ada.Text_IO.Put (OEM_ID, "1,1");
+            Ada.Text_IO.Put_Line (OEM_ID, "1,1");
          else
             Num_Invalid := Num_Invalid + 1;
             if Num_Invalid < 5 then
@@ -54,12 +54,7 @@ package body Process_Data is
             end if;
          end if;
 
-         if not Stream_IO.End_Of_File (Source_ID) then
-            Ada.Text_IO.Put (OEM_ID, ",");
-         end if;
-
          Line_Num := Line_Num + 1;
-         Ada.Text_IO.New_Line (OEM_ID);
       end loop;
 
       Ada.Text_IO.Close (OEM_ID);
@@ -117,10 +112,7 @@ package body Process_Data is
          Line_Num := Line_Num + 1;
          Byte_Array'Read (Data_Stream, Data);
          Number := To_IEEE_Double_Big_Endian (Data);
-         Put (PT_ID, Number'Image);
-         if not Stream_IO.End_Of_File (Source_ID) then
-            Put (PT_ID, ",");
-         end if;
+         Put_Line (PT_ID, Number'Image);
       end loop;
 
       Ada.Text_IO.Close (PT_ID);
