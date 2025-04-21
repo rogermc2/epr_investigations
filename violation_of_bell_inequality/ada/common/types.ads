@@ -10,8 +10,12 @@ package Types is
    type Byte_Array is array (Integer range <>) of Byte;
    for Byte_Array'Alignment use 1;
 
-   package Bounded_Strings_Package is new Ada.Containers.Indefinite_Vectors
-     (Positive, String);
-   subtype Bounded_String_List is Bounded_Strings_Package.Vector;
+   subtype String_1 is String (1 .. 1);
+   subtype String_2 is String (1 .. 2);
+   subtype String_6 is String (1 .. 6);
+
+   type String1_Array is array (Integer range <>) of String_1;
+   type String2_Array is array (Integer range <>) of String_2;
+   type String6_Array is array (Integer range <>) of String_6;
 
 end Types;

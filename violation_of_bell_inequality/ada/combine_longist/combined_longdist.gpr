@@ -1,6 +1,9 @@
 project Combined_Longdist is
-    for Source_Dirs use ("src");
-    for Object_Dir use "obj";
-    for Exec_Dir use ".";
-    for Main use ("combine_csvs.adb");
+
+   for Source_Dirs use ("src", "../common");
+   for Object_Dir use "obj";
+   for Exec_Dir use ".";
+   for Main use ("combine_csvs.adb");
+
 end Combined_Longdist;
+

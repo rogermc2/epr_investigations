@@ -37,3 +37,5 @@ access token.txt
 *sublime-project
 *.code-workspace
 .Rproj.user
+combine_csvs
+longdist_35

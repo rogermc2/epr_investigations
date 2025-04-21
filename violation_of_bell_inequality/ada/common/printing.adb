@@ -39,8 +39,40 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   procedure Print_Hex_Byte_Array (Name  : String; Data : Types.Byte_Array;
-      Start : Positive := 1; Finish : Natural := 0) is
+   --  procedure Print_Hex_Byte_Array (Name  : String; Data : Types.Byte_Array;
+   --     Start : Positive := 1; Finish : Natural := 0) is
+   --     Last  : Positive;
+   --     Count : Integer := 1;
+   --  begin
+   --     if Finish > 0 then
+   --        Last := Finish;
+   --     else
+   --        Last := Data'Length;
+   --     end if;
+   --
+   --     Put_Line (Name & ": ");
+   --     if Start >= Data'First and then Finish <= Data'Last then
+   --        for Index in Start .. Last loop
+   --           Put (Utils.Hex (Data (Index)) & "  ");
+   --           Count := Count + 1;
+   --           if Count > 10 then
+   --              New_Line;
+   --              Count := 1;
+   --           end if;
+   --        end loop;
+   --     else
+   --        Put_Line
+   --          ("Print_Hex_Byte_Array called with invalid start or finish index.");
+   --     end if;
+   --     New_Line;
+   --
+   --  end Print_Hex_Byte_Array;
+
+   --  ------------------------------------------------------------------------
+
+   procedure Print_String6_Array (Name  : String; Data : Types.String6_Array;
+                                 Start : Positive := 1; Finish : Natural := 0) is
+      use Interfaces;
       Last  : Positive;
       Count : Integer := 1;
    begin
@@ -53,7 +85,7 @@ package body Printing is
       Put_Line (Name & ": ");
       if Start >= Data'First and then Finish <= Data'Last then
          for Index in Start .. Last loop
-            Put (Utils.Hex (Data (Index)) & "  ");
+            Put (Data (Index) & "  ");
             Count := Count + 1;
             if Count > 10 then
                New_Line;
@@ -62,11 +94,11 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_Hex_Byte_Array called with invalid start or finish index.");
+           ("Print_String6_Array called with invalid start or finish index.");
       end if;
       New_Line;
 
-   end Print_Hex_Byte_Array;
+   end Print_String6_Array;
 
    --  ------------------------------------------------------------------------
 
