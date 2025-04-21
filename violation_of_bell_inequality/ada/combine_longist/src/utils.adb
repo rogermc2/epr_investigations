@@ -9,7 +9,7 @@ with Ada.Text_IO;
 package body Utils is
 
    procedure Load_Photon_Data (Data_File : String;
-                               Data      : out UB_String_Array) is
+                               Data      : out String13_Array) is
       use Ada.Strings.Unbounded;
       use Ada.Streams;
       use Ada.Text_IO;
@@ -23,10 +23,10 @@ package body Utils is
       Data_Stream := Stream_IO.Stream (Data_ID);
 
       while not Stream_IO.End_Of_File (Data_ID) loop
-         Unbounded_String'Read (Data_Stream, Data (Row));
-         if Row < 2 then
+         String_13'Read (Data_Stream, Data (Row));
+         if Row < 12 then
             Put_Line (Routine_Name & Integer'Image (Row) & "   " &
-                        To_String (Data (Row)));
+                        Data (Row));
          end if;
          Row := Row + 1;
       end loop;

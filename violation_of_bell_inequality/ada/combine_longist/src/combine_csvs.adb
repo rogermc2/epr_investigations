@@ -17,9 +17,8 @@ procedure Combine_CSVs is
    OEM_Data_B_CSV    : constant String := B_Directory & "OEM.csv";
    Long_Dist_CSV     : constant String := "../Long_Dist.csv";
 
-   Photon_Data_A : UB_String_Array (1 .. Positive (Size (Photon_Data_A_CSV)) / 10);
-   --  Photon_Data_A : UB_String_Array (1 .. Positive (Size (Photon_Data_A_CSV)));
-   --  Photon_Data_B : UB_String_Array (1 .. Positive (Size (Photon_Data_B_CSV)));
+   Photon_Data_A : String13_Array (1 .. Positive (Size (Photon_Data_A_CSV))/10);
+   --  Photon_Data_B : String11_Array (1 .. Positive (Size (Photon_Data_B_CSV)));
    --  OEM_Data_A    : String2_Array (1 .. Positive (Size (OEM_Data_A_CSV)));
    --  OEM_Data_B    : String2_Array (1 .. Positive (Size (OEM_Data_B_CSV)));
    --  Combined      : String6_Array (1 .. 1000);
@@ -28,7 +27,7 @@ begin
    Put_Line ("Loading Photon_Data_A");
    Load_Photon_Data (Photon_Data_A_CSV, Photon_Data_A);
    --  Load_Photon_Data (Photon_Data_B_CSV, Photon_Data_B);
-   Print_UB_String_Array ("Photon_Data_A", Photon_Data_A, 1, 1);
+   Print_String13_Array ("Photon_Data_A", Photon_Data_A, 1, 1);
 
    --  Load_OEM_Data (OEM_Data_A_CSV, OEM_Data_A);
    --  Load_OEM_Data (OEM_Data_B_CSV, OEM_Data_B);

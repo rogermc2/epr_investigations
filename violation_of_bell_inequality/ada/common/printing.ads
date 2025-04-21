@@ -11,6 +11,8 @@ package Printing is
 
    procedure Print_String1_Array (Name  : String; Data : Types.String1_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
+   procedure Print_String13_Array (Name  : String; Data : Types.String13_Array;
+                                  Start : Positive := 1; Finish : Natural := 0);
    procedure Print_String2_Array (Name  : String; Data : Types.String2_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
    procedure Print_String6_Array (Name  : String; Data : Types.String6_Array;
