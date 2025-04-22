@@ -47,7 +47,7 @@ package body Process_Data is
             Ada.Text_IO.Put_Line (OEM_ID, "1,1");
          else
             Num_Invalid := Num_Invalid + 1;
-            if Num_Invalid < 5 then
+            if Num_Invalid < 4 then
                Ada.Text_IO.Put_Line
                  (Routine_Name & "line " & Integer'Image (Line_Num) &
                     " Invalid Val: " & Byte'Image (Data (2)));
