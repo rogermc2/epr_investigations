@@ -65,6 +65,8 @@ package body Utils is
       Put_Line (Routine_Name & "Source File: " & Data_File);
       Create (Out_ID, Out_File, Data_File);
 
+      Put_Line (Out_ID,
+               "A Arrival Time,B Arrival Time,A Set, B Set, A Polarization, B Polarization");
       for row in Data'Range loop
          Put_Line (Out_ID, Data (row));
       end loop;
