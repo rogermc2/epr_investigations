@@ -172,7 +172,6 @@ package body Printing is
                                  Start : Positive := 1; Finish : Natural := 0) is
       use Interfaces;
       Last  : Positive;
-      Count : Integer := 1;
    begin
       if Finish > 0 then
          Last := Finish;
@@ -183,12 +182,7 @@ package body Printing is
       Put_Line (Name & ": ");
       if Start >= Data'First and then Finish <= Data'Last then
          for Index in Start .. Last loop
-            Put (Data (Index) & "  ");
-            Count := Count + 1;
-            if Count > 10 then
-               New_Line;
-               Count := 1;
-            end if;
+            Put_Line (Data (Index));
          end loop;
       else
          Put_Line

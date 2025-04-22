@@ -17,21 +17,36 @@ procedure Combine_CSVs is
    OEM_Data_B_CSV    : constant String := B_Directory & "OEM.csv";
    Long_Dist_CSV     : constant String := "../Long_Dist.csv";
 
-   Photon_Data_A : String13_Array (1 .. Positive (Size (Photon_Data_A_CSV))/3);
-   Photon_Data_B : String13_Array (1 .. Positive (Size (Photon_Data_B_CSV))/2);
-   OEM_Data_A    : String4_Array (1 .. Positive (Size (OEM_Data_A_CSV)));
-   OEM_Data_B    : String4_Array (1 .. Positive (Size (OEM_Data_B_CSV)));
+   Photon_A_Length   : constant Positive :=
+     Positive (Size (Photon_Data_A_CSV));
+   Photon_B_Length   : constant Positive :=
+     Positive (Size (Photon_Data_B_CSV));
+   OEM_A_Length      : constant Positive := Positive (Size (OEM_Data_A_CSV));
+   OEM_B_Length      : constant Positive := Positive (Size (OEM_Data_B_CSV));
+   Photon_AB_Length   : constant Positive :=
+     Integer'Min (Photon_A_Length, Photon_B_Length);
+   OEM_AB_Length     : constant Positive :=
+     Integer'Min (OEM_A_Length, OEM_B_Length);
+   --  Set photon array lengths to lesser of Photon A and B Lengths
+   --  to prevent stack oveflow
+   Photon_Data_A : String13_Array (1 .. Photon_AB_Length / 2);
+   Photon_Data_B : String13_Array (1 .. Photon_AB_Length / 2);
+   OEM_Data_A    : String4_Array (1 .. OEM_AB_Length);
+   OEM_Data_B    : String4_Array (1 .. OEM_AB_Length);
    aRow          : String_33;
-   Combined      : String33_Array (1 .. 1000);
+   Combined      : String33_Array (1 .. 10000);
 begin
    --  Set stack size:  ulimit -s 64000
+   Put_Line ("Photon_Data_A length:" & Integer'Image (Photon_A_Length));
+   Put_Line ("Photon_Data_B length:" & Integer'Image (Photon_B_Length));
+   Put_Line ("OEM_Data_A length:" & Integer'Image (OEM_A_Length));
+   Put_Line ("OEM_Data_B length:" & Integer'Image (OEM_B_Length));
+
    Load_Photon_Data (Photon_Data_A_CSV, Photon_Data_A);
    Load_Photon_Data (Photon_Data_B_CSV, Photon_Data_B);
-   --  Print_String13_Array ("Photon_Data_A", Photon_Data_A, 1, 3);
 
    Load_OEM_Data (OEM_Data_A_CSV, OEM_Data_A);
    Load_OEM_Data (OEM_Data_B_CSV, OEM_Data_B);
-   --  Print_String4_Array ("OEM_Data_A", OEM_Data_A, 1, 3);
 
    new_Line;
    for row in Combined'Range loop
