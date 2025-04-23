@@ -6,7 +6,7 @@ with Ada.Streams.Stream_IO;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-package body Utils is
+package body Process_Data is
 
    procedure Load_Photon_Data (Data_File : String;
                                Data      : out String13_Array) is
@@ -57,7 +57,7 @@ package body Utils is
 
    end Load_OEM_Data;
 
-   procedure Save_Data (Data_File : String; Data : String33_Array) is
+   procedure Save_Data (Data_File : String; Data : String46_Array) is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Save_Data ";
       Out_ID       : File_Type;
@@ -76,4 +76,19 @@ package body Utils is
 
    end Save_Data;
 
-end Utils;
+   function Time_Diff (A, B : String_13) return String_12 is
+      use Ada.Text_IO;
+      Mantissa_A : constant Float := Float'Value (A (1 .. 8));
+      Mantissa_B : constant Float := Float'Value (B (1 .. 8));
+      Exp_A : constant Integer := Integer'Value (A (10 .. 12));
+      Exp_B : constant Integer := Integer'Value (B (10 .. 12));
+      FA     : constant Float := Float (Mantissa_A) * 10.0 ** Exp_A;
+      FB     : constant Float := Float (Mantissa_B) * 10.0 ** Exp_B;
+      F_Diff : constant Float := Abs (FA - FB);
+      Diff   : constant String_12 := Float'Image (F_Diff);
+   begin
+      return Diff;
+
+   end ;
+
+end Process_Data;

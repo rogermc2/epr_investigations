@@ -4,7 +4,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Printing; use Printing;
 with Types; use Types;
-with Utils; use Utils;
+with Process_Data; use Process_Data;
 
 procedure Combine_CSVs is
    A_Directory : constant String :=
@@ -33,10 +33,11 @@ procedure Combine_CSVs is
    Photon_Data_B : String13_Array (1 .. Photon_AB_Length / 2);
    OEM_Data_A    : String4_Array (1 .. OEM_AB_Length);
    OEM_Data_B    : String4_Array (1 .. OEM_AB_Length);
-   aRow          : String_33;
-   Combined      : String33_Array (1 .. 10000);
+   aRow          : String_46;
+   Combined      : String46_Array (1 .. 10000);
 begin
    --  Set stack size:  ulimit -s 64000
+   --  Original photon data is sorted ascendingly
    Put_Line ("Photon_Data_A length:" & Integer'Image (Photon_A_Length));
    Put_Line ("Photon_Data_B length:" & Integer'Image (Photon_B_Length));
    Put_Line ("OEM_Data_A length:" & Integer'Image (OEM_A_Length));
@@ -57,9 +58,12 @@ begin
       aRow (27 .. 29) := OEM_Data_A (row)(1 .. 3);
       aRow (30) := ',';
       aRow (31 .. 33) := OEM_Data_B (row)(1 .. 3);
+      aRow (34) := ',';
+      aRow (35 .. 46) :=
+        Time_Diff (Photon_Data_A (row), Photon_Data_B (row)) (1 .. 12);
       Combined (row) := aRow;
    end loop;
-   Print_String33_Array ("Combined", Combined, 1, 2);
+   Print_String46_Array ("Combined", Combined, 1, 6);
 
    Save_Data (Long_Dist_CSV, Combined);
    Put_Line ("Long_Dist_CSV length: " &
