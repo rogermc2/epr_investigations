@@ -1,0 +1,230 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Bell’s Four Positions
+\end_layout
+
+\begin_layout Standard
+Bell offered four quite different positions which one might like to take as being compatible with his mathematical results:
+\end_layout
+
+\begin_layout Enumerate
+Quantum mechanics is wrong.
+\end_layout
+
+\begin_layout Enumerate
+Predetermination.
+ (An observable attribute has a value whether it is observed or not?)
+\end_layout
+
+\begin_layout Enumerate
+Nature is non-local.
+\end_layout
+
+\begin_layout Enumerate
+Don’t care (Bohr) .
+\end_layout
+
+\begin_layout Standard
+In the opinion of Gill 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section 5.A"
+key "Gill2018"
+literal "false"
+
+\end_inset
+
+ Bell missed a fifth position:
+\end_layout
+
+\begin_layout Standard
+5.
+ A decisive experiment cannot be done.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section 6"
+key "Gill2018"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+That statistical independence holds when well separated physical systems are each used to generate randomness is not harder to understand.
+\end_layout
+
+\begin_layout Standard
+These considerations mean that,
+ for me,
+ Bell’s theorem has more
+\end_layout
+
+\begin_layout Standard
+or less nothing to do with interpretations of probability.
+\end_layout
+
+\begin_layout Standard
+Classical physical randomness and classical physical independence are what are at stake.
+\end_layout
+
+\begin_layout Standard
+My conclusion (excluding the fifth position) is that quantum mechanics is definitely non-classical.
+\end_layout
+
+\begin_layout Standard
+In order to establish that quantum mechanics is non classical we had to assume that physical independence between randomization devices at separate locations in space is possible.
+\end_layout
+
+\begin_layout Standard
+Bell’s conditional independence assumption
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Bell (1964,
+ 1987) used a statistical conditional independence assumption,
+ together with an assumption that conditional probability distributions of outcomes in one wing of the experiment do not depend on settings in the other wing.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "page 16"
+key "Gill2018"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is a way to express the physical intuition,
+ that even though this might introduce more statistical variation into the outcome,
+ it cannot carry information from the other wing of the experiment,
+ concerning the randomization outcome there.
+\end_layout
+
+\begin_layout Standard
+I find it fascinating that in order to prove that quantum mechanics is intrinsically probabilistic (the outcomes cannot be traced back to variation in initial conditions) we must assume that we can ourselves generate randomness.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "/System/Volumes/Data/Physics/QuantumMechanics"
+options "plain"
+encoding "default"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

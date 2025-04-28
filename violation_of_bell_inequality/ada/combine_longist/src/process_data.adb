@@ -66,7 +66,7 @@ package body Process_Data is
       Create (Out_ID, Out_File, Data_File);
 
       Put_Line (Out_ID,
-               "A Arrival Time,B Arrival Time,A Set, B Set, A Polarization, B Polarization");
+               "A Arrival Time,B Arrival Time,A Set, B Set, A Polarization, B Polarization, Time Difference");
       for row in Data'Range loop
          Put_Line (Out_ID, Data (row));
       end loop;
