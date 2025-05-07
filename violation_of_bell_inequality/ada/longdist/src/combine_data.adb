@@ -1,6 +1,6 @@
 
 --  with Ada.Directories; use Ada.Directories;
---  with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
@@ -11,7 +11,7 @@ package body Combine_Data is
                                Data      : out String13_Array) is
       use Ada.Streams;
       --  use Ada.Text_IO;
-      Routine_Name : constant String := "Utils.Load_Photon_Data ";
+      Routine_Name : constant String := "Combine_Data.Load_Photon_Data ";
       Data_ID      : Stream_IO.File_Type;
       Data_Stream  : Stream_IO.Stream_Access;
       Row          : Positive := 1;
@@ -28,6 +28,11 @@ package body Combine_Data is
          --  end if;
          Row := Row + 1;
       end loop;
+
+   exception
+      when Error : others =>
+         Ada.Text_IO.Put_Line (Routine_Name & Exception_Information (Error));
+         Ada.Text_IO.Put_Line (Routine_Name & "Row: " & Integer'Image (Row));
 
    end Load_Photon_Data;
 
@@ -55,7 +60,7 @@ package body Combine_Data is
 
    end Load_OEM_Data;
 
-   procedure Save_Data (Data_File : String; Data : String46_Array) is
+   procedure Save_Data (Data_File : String; Data : String33_Array) is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Save_Data ";
       Out_ID       : File_Type;
@@ -64,7 +69,7 @@ package body Combine_Data is
       Create (Out_ID, Out_File, Data_File);
 
       Put_Line (Out_ID,
-               "A Arrival Time,B Arrival Time,A Set, B Set, A Polarization, B Polarization, Time Difference");
+               "A Arrival Time,B Arrival Time,A Set,B Set,A Polarization,B Polarization");
       for row in Data'Range loop
          Put_Line (Out_ID, Data (row));
       end loop;

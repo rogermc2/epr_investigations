@@ -27,14 +27,14 @@ package body Utils is
 
    --  -------------------------------------------------------------------------
 
-   function To_IEEE_Double_Big_Endian (Data : Types.Byte_Array) return Float is
+   function To_IEEE_Double_Big_Endian (Data : Types.Byte_Array) return Double is
       use Interfaces;
       Bias        : constant Integer := 1023;
       Raw_Value   : Unsigned_64 := 0;
       Sign        : Unsigned_8;
       Exponent    : Unsigned_16;
-      Fraction    : Float;
-      Float_Val   : Float;
+      Fraction    : Double;
+      Float_Val   : Double;
    begin
       --  Combine 8 bytes into a single 64-bit integer
       for I in 1 .. 8 loop
@@ -51,7 +51,7 @@ package body Utils is
       --  Extract exponent (bits 52-62)
       Exponent := Unsigned_16 ((Shift_Right (Raw_Value, 52) and 16#7FF#));
       --  Extract fraction (mantissa) (bits 0-51)
-      Fraction := Float (Raw_Value and 16#FFFFFFFFFFFFF#) / 2.0 ** 52;
+      Fraction := Double (Raw_Value and 16#FFFFFFFFFFFFF#) / 2.0 ** 52;
 
       if Exponent = 0 then
          --  Subnormal number (denormalized)
@@ -59,10 +59,10 @@ package body Utils is
       elsif Exponent = 16#7FF# then
          --  NaN (Not a Number)
          if Fraction = 0.0 then
-            Float_Val := Float'Last;
+            Float_Val := Double'Last;
          else
             --  NaN (Not a Number)
-            Float_Val := Float'Last;
+            Float_Val := Double'Last;
          end if;
       else
          Float_Val := (1.0 + Fraction) * 2.0 ** (Integer (Exponent) - Bias);

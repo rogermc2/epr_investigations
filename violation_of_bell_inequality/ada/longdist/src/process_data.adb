@@ -100,7 +100,7 @@ package body Process_Data is
       Data_Stream : Stream_IO.Stream_Access;
       Line_Num    : Natural := 0;
       Data        : Byte_Array (1 .. 8);
-      Number      : Float;
+      Number      : Double;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
       Ada.Text_IO.New_Line;

@@ -1,11 +1,10 @@
 
 with Interfaces;
 
-with Ada.Containers.Indefinite_Vectors;
-with Ada.Strings.Unbounded;
-
 package Types is
    pragma Preelaborate;
+
+   type Double is digits 15;
 
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Integer range <>) of Byte;
@@ -23,8 +22,5 @@ package Types is
    type String13_Array is array (Integer range <>) of String_13;
    type String33_Array is array (Integer range <>) of String_33;
    type String46_Array is array (Integer range <>) of String_46;
-
-   --  type UB_String_Array is Array (Integer range <>) of
-   --  Ada.Strings.Unbounded.Unbounded_String;
 
 end Types;
