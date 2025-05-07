@@ -1,0 +1,7 @@
+Lokaler schnell geschaltener Bell-Test, durch Abgleich auf Koinzidenzen und Verstellen des Modulator - BIAS am System ROT(B) bis S ca. = 2.4 
+RNG Frequenzen ca. 2.5 MHZ 
+100000 Counts pro Seite, keine HWPCountA: 45982
+CountB: 54018
+Arm Time:   0.00011676000
+11.01.98
+17:58:52

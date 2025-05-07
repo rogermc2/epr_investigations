@@ -1,0 +1,6 @@
+Pump 390, Meﬂzeit 10s, Kontrast im Labor fast 100,
+offset: on onCountA: 199377
+CountB: 192514
+Arm Time:   0.00010500000
+22.04.98
+17:26:06

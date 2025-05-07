@@ -1,0 +1,5 @@
+Lokaler schnell geschaltener Bell-Test, durch Abgleich auf Koinzidenzen und Drehen einr HWP um 11.25° RNG Frequenzen ca. 2.5 MHZ CountA: 50314
+CountB: 49686
+Arm Time:   0.00015634000
+11.01.98
+17:28:10

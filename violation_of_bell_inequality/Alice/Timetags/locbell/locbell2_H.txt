@@ -1,0 +1,7 @@
+Korelationen OffsA On OffsB Off
+30s Zaehlzeit
+250mW PumpeCountA: 665759
+CountB: 616328
+Arm Time:   0.00015396000
+26.03.98
+22:32:08

@@ -1,0 +1,382 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Weihs1998"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using an auxiliary input of our time interval analyzers we synchronized Alice’s and Bob’s time scales by sending laser pulses (670 nm wavelength,
+ 3 ns width) through a second optical fiber from the center to the observing stations.
+\end_layout
+
+\begin_layout Standard
+While the actual jitter between these pulses was measured in the laboratory to be less than 0.5 ns,
+ the auxiliary input of the time interval analyzers had a resolution not better than 20 ns thus limiting synchronizatioaccuracy.
+ 
+\end_layout
+
+\begin_layout Standard
+This non-perfect synchronization only limited our ability to exactly predict the apparent time shift between Alice’s and Bob’s data series,
+ but did not in any way degrade time resolution or accuracy.
+\end_layout
+
+\begin_layout Standard
+It is important that this uncertainty was smaller than the dead time of our detectors because otherwise data analysis would have been much more complex.
+\end_layout
+
+\begin_layout Standard
+Coincidences were identified by calculating time diﬀerences between Alice’s and Bob’s time tags and comparing these with a time window (typically a few ns).
+ 
+\end_layout
+
+\begin_layout Standard
+The coincidence peak was nearly noise-free (SNR > 100) with approximately Gaussian shape and a width (FWHM) of about 2 ns.
+\end_layout
+
+\begin_layout Standard
+All data reported here were calculated with a window of 6 ns.
+\end_layout
+
+\begin_layout Subsection*
+J.
+ H.
+ Bigelow Commentary
+\end_layout
+
+\begin_layout Standard
+From the time-tag series we extracted coincidences after all measurements had been finished.
+\end_layout
+
+\begin_layout Standard
+From A Close Look at the EPR Data of Weihs et al,
+ James H.
+ Bigelow:
+\end_layout
+
+\begin_layout Standard
+Thus the data produced by each experiment consists of two sequences of triples:
+\begin_inset Formula 
+\begin{eqnarray*}
+A_{log} & = & \left\{ \left(t_{A,k},s_{A,k},r_{A,k}\right),k=1,\cdots,N_{A}\right\} \\
+B_{log} & = & \left\{ \left(t_{B,l},s_{B,l},r_{B,l}\right),l=1,\cdots,N_{B}\right\} 
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I consider three rules for identifying a pair of detections,
+ one from each log,
+ as a coinicidence.
+ 
+\end_layout
+
+\begin_layout Standard
+The rule I use in the remainder of this paper accepts as a coincidence any pair of detections 
+\begin_inset Formula $\left(t_{A,k},s_{A,k},r_{A,k}\right)\in A_{log}$
+\end_inset
+
+ and 
+\begin_inset Formula $t_{B,l},s_{B,l},r_{B,l}\in B_{log}$
+\end_inset
+
+ for which 
+\begin_inset Formula $u\leq t_{B}-t_{A}\leq v$
+\end_inset
+
+ for specified 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+It is convenient to describe this rule in an equivalent but slightly different form:
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $\delta=\frac{v+u}{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $w=\frac{v-u}{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This rule accepts any pair of detections that occur within a time w of one another after Alice’s log has been shifted by a time 
+\begin_inset Formula $δ$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+I call this rule 
+\begin_inset Formula $allpr$
+\end_inset
+
+ (for allpairs) it being the most inclusive rule considered.
+\end_layout
+
+\begin_layout Standard
+The resulting set of coincidences is:
+\begin_inset Formula 
+\begin{eqnarray*}
+C_{allpr}\left(w,\delta\right) & = & \left\{ k,l\left|t_{B,l}-\left(t_{A,k}+\delta\right)\right|\leq w\right\} 
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The rule used by most authors includes the subset of pairs in 
+\begin_inset Formula $C_{allpr}\left(w,\delta\right)$
+\end_inset
+
+ for which detections occur in sequence,
+ without a third detection occurring in between.
+\end_layout
+
+\begin_layout Standard
+This rule yields this set of coincidences:
+\begin_inset Formula 
+\begin{eqnarray*}
+C_{inseq}\left(w,\delta\right) & = & \left(k,l\right)\begin{cases}
+\left|t_{B,l}-\left(t_{A,k}+\delta\right)\right| & \leq w\\
+t_{A,k}+\delta & >t_{B,l-1}\\
+t_{A,k+l}+\delta & >t_{B,l}\\
+t_{A,k-l}+\delta & <t_{B,l}\\
+t_{A,k}+\delta & <t_{B,l+1}
+\end{cases}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first condition ensures that the pair 
+\begin_inset Formula $\left(k,l\right)\in C_{allpr}\left(w,\delta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $t_{A,k}+\delta<t_{B,l}$
+\end_inset
+
+ then the second and third conditions ensure that neither Bob’s detection 
+\begin_inset Formula $l-1$
+\end_inset
+
+ nor Alice’s detection 
+\begin_inset Formula $k+11$
+\end_inset
+
+ occur between Alice’s detection 
+\begin_inset Formula $k$
+\end_inset
+
+ and Bob’s detection 
+\begin_inset Formula $l$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The fourth and fifth conditions are trivially satisfied.
+ 
+\end_layout
+
+\begin_layout Standard
+If instead ( t
+\end_layout
+
+\begin_layout Standard
+k
+\end_layout
+
+\begin_layout Standard
++ δ A t
+\end_layout
+
+\begin_layout Standard
+,
+\end_layout
+
+\begin_layout Standard
+)l
+\end_layout
+
+\begin_layout Standard
+>
+\end_layout
+
+\begin_layout Standard
+B
+\end_layout
+
+\begin_layout Standard
+,
+ then the second and third
+\end_layout
+
+\begin_layout Standard
+,
+\end_layout
+
+\begin_layout Standard
+conditions are trivially satisfied,
+ while the fourth and fifth ensure that neither Alice’s
+\end_layout
+
+\begin_layout Standard
+detection 1−
+\end_layout
+
+\begin_layout Standard
+k nor Bob’s detection 1
+\end_layout
+
+\begin_layout Standard
+l occur between Alice’s detection k and Bob’s
+\end_layout
+
+\begin_layout Standard
++
+\end_layout
+
+\begin_layout Standard
+detection l .
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "/System/Volumes/Data/Physics/QuantumMechanics"
+options "plain"
+encoding "default"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

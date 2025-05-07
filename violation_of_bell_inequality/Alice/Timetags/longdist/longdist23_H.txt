@@ -1,0 +1,7 @@
+Wrap Error Offset Off On
+Pump 400mW
+30sCountA: 616147
+CountB: 620243
+Arm Time:   0.00003848000
+19.04.98
+15:58:15

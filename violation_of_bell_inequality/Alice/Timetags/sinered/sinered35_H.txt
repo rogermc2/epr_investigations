@@ -1,0 +1,5 @@
+Sine curve red -130 :10:110
+CountA: 33168
+CountB: 34219
+Arm Time:   0.00012852000
+30.03.98  18:24:16

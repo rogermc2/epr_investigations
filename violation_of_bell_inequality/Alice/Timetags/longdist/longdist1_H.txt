@@ -1,0 +1,7 @@
+Pump 380mW l.r.
+10s Messzeit 
+Offset rot OnCountA: 234248
+CountB: 237046
+Arm Time:   0.00016034000
+15.04.98
+20:28:41

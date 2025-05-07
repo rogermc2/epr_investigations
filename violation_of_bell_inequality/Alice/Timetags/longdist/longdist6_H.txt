@@ -1,0 +1,8 @@
+LAngzeit Testmessung Korrelationsgrad vorher ca 94%
+Pump 380mW
+Offset Off On
+CountA: 952776
+CountB: 985127
+Arm Time:   0.00001410306
+16.04.98
+22:47:55

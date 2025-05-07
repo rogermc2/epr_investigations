@@ -1,0 +1,6 @@
+Bell-Ugl  Off On
+CountA: 445197
+CountB: 408788
+Arm Time:   0.00013562000
+30.03.98
+13:43:04

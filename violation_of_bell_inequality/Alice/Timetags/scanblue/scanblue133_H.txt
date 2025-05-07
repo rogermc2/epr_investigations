@@ -1,0 +1,8 @@
+Longdist-SCan Blaue Seite 375 mW Pump l.r.
+CountA: 96100
+CountB: 105802
+Arm Time:   0.00003174000
+Bias: 15.00
+
+01.05.98
+16:57:43

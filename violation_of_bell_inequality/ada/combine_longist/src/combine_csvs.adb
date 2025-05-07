@@ -13,8 +13,8 @@ procedure Combine_CSVs is
      "../../longdist35/bob_timetags/";
    Photon_Data_A_CSV : constant String := A_Directory & "Photon_Times.csv";
    Photon_Data_B_CSV : constant String := B_Directory & "Photon_Times.csv";
-   OEM_Data_A_CSV    : constant String := A_Directory & "OEM.csv";
-   OEM_Data_B_CSV    : constant String := B_Directory & "OEM.csv";
+   OEM_Data_A_CSV    : constant String := A_Directory & "A_OEM.csv";
+   OEM_Data_B_CSV    : constant String := B_Directory & "B_OEM.csv";
    Long_Dist_CSV     : constant String := "../Long_Dist.csv";
 
    Photon_A_Length   : constant Positive :=

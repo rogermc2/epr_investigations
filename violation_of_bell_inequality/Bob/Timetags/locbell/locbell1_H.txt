@@ -1,0 +1,6 @@
+Korellationen OffsA Off OffsB On
+10s ZaehlzeitCountA: 255963
+CountB: 268421
+Arm Time:   0.00014868000
+26.03.98
+22:15:58

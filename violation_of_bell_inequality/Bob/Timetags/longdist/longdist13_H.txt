@@ -1,0 +1,8 @@
+Pump 397mW
+20s Messzeit
+Offset Off On
+CountA: 342222
+CountB: 247783
+Arm Time:   0.00011986000
+17.04.98
+19:07:02

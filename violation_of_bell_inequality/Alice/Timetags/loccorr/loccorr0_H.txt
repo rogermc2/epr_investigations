@@ -1,0 +1,6 @@
+Perfekte Koorrelationen Off Off
+CountA: 446135
+CountB: 409379
+Arm Time:   0.00008224000
+30.03.98
+13:39:42

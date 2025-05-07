@@ -13,8 +13,8 @@ procedure Longdist_35 is
    BC_Source    : constant String := B_Directory & "longdist35_C.dat";
    AV_Target    : constant String := A_Directory & "Photon_Times.csv";
    BV_Target    : constant String := B_Directory & "Photon_Times.csv";
-   AC_Target    : constant String := A_Directory & "OEM.csv";
-   BC_Target    : constant String := B_Directory & "OEM.csv";
+   AC_Target    : constant String := A_Directory & "A_OEM.csv";
+   BC_Target    : constant String := B_Directory & "B_OEM.csv";
 begin
    Photon_Data (AV_Source, AV_Target);
    Photon_Data (BV_Source, BV_Target);

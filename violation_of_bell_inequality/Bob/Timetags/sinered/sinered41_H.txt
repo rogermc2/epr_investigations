@@ -1,0 +1,6 @@
+Sinuskurve rot -130 :10:110
+CountA: 48883
+CountB: 45667
+Arm Time:   0.00013090000
+30.03.98
+18:27:56
