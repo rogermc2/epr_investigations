@@ -10,7 +10,6 @@ package body Combine_Data is
    procedure Load_Photon_Data (Data_File : String;
                                Data      : out String13_Array) is
       use Ada.Streams;
-      --  use Ada.Text_IO;
       Routine_Name : constant String := "Combine_Data.Load_Photon_Data ";
       Data_ID      : Stream_IO.File_Type;
       Data_Stream  : Stream_IO.Stream_Access;
@@ -22,10 +21,10 @@ package body Combine_Data is
 
       while not Stream_IO.End_Of_File (Data_ID) loop
          String_13'Read (Data_Stream, Data (Row));
-         --  if Row < 3 then
-         --     Put_Line (Routine_Name & Integer'Image (Row) & "   " &
-         --                 Data (Row));
-         --  end if;
+         if Row < 3 then
+            Ada.Text_IO.Put_Line (Routine_Name & Integer'Image (Row) & "   " &
+                        Data (Row));
+         end if;
          Row := Row + 1;
       end loop;
 
