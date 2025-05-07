@@ -1,6 +1,6 @@
 
-
 with Process_Data; use Process_Data;
+with Combine_CSVs; use Combine_CSVs;
 
 procedure Longdist_35 is
    A_Directory : constant String :=
@@ -21,5 +21,7 @@ begin
 
    OEM_Data (AC_Source, AC_Target);
    OEM_Data (BC_Source, BC_Target);
+
+   Combine (AV_Target, BV_Target, AC_Target, BC_Target);
 
 end Longdist_35;
