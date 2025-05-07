@@ -9,9 +9,9 @@ cwd = os.getcwd()
 print ("cwd: ", cwd)
 # os.chdir("/System/Volumes/Data/Education/Python/Python_For_Data_Analytics/Python_For_Data_Analytics")
 # cwd = os.getcwd()
-pd.set_option('display.precision', 12)
-pd.set_option("display.chop_threshold", 12)
-pd.options.display.float_format = '{:.12f}'.format
+# pd.set_option('display.precision', 12)
+# pd.set_option("display.chop_threshold", 12)
+# pd.options.display.float_format = '{:.12f}'.format
 
 data=pd.read_csv("Long_Dist.csv")
 data.drop(columns=" Time Difference", inplace=True)

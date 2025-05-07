@@ -7,25 +7,29 @@ Created on Tue May  6 11:53:24 2025
 """
 
 def all_pairs(A, B, match):
-    u = 1e-06
-    v = 5e-06
-    delta = (u + v)/2
-    w = abs(v - u)/2
+    # u = 1e-06
+    # v = 5e-06
+    # delta = (u + v)/2
+    # w = abs(v - u)/2
+    w = 4e-08
     C = []
     print("A.head\n", A.head())
     print("B.head\n", B.head())
     print ("all_pairs match\n", match.head(10))
+
     print("w: ", w)
     for k, value in match.items():   
         a_index=k
         b_index=value
-        if (k < 30):
-            print("Match diff: ", (A.at[a_index,"A Arrival Time"] - B.at[b_index,"B Arrival Time"]).round(12))
-        
         if (abs(B.at[b_index,"B Arrival Time"] - A.at[a_index,"A Arrival Time"]) <= w):
-            C.append([A.at[a_index,"A Arrival Time"],B.at[b_index,"B Arrival Time"]])
-    # head = C[0]
+            C.append([a_index,b_index])
     print("C size: ", len(C))
+    for i in C[:10]:  
+        print(i[0],i[1],A.at[i[0],"A Arrival Time"],B.at[i[1],"B Arrival Time"])
+    # For individual values
+    print(f"A[196]: {A.at[196, 'A Arrival Time']:.12f}")
+    print(f"B[112]: {B.at[112, 'B Arrival Time']:.12f}")
+
     return C
 
 def process_data (data, match):  

@@ -304,65 +304,104 @@ The fourth and fifth conditions are trivially satisfied.
 \end_layout
 
 \begin_layout Standard
-If instead ( t
+If instead 
+\begin_inset Formula $t_{A,k}+\delta>t_{B,l}$
+\end_inset
+
+ then the second and third conditions are trivially satisfied while the fourth and fifth ensure that neither Alice’s detection 
+\begin_inset Formula $k-1$
+\end_inset
+
+ nor Bob’s detection 
+\begin_inset Formula $l+1$
+\end_inset
+
+ occur between Alice’s detection 
+\begin_inset Formula $k$
+\end_inset
+
+ and Bob’s detection 
+\begin_inset Formula $l$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-k
+The first two rules permit a detection to participate in two or more identified coincidences whereas a detection cannot actually be a part of more than one true coincidence.
 \end_layout
 
 \begin_layout Standard
-+ δ A t
+The third rule identifies only pairs 
+\begin_inset Formula $\left(k,l\right)\in C_{allpr}\left(w,\delta\right)$
+\end_inset
+
+ for which neither Alice’s detection 
+\begin_inset Formula $k$
+\end_inset
+
+nor Bob’s detection 
+\begin_inset Formula $l$
+\end_inset
+
+ can be paired under this rule with any other detections than each other.
+ I call such pairs unambiguous.
+ 
 \end_layout
 
 \begin_layout Standard
-,
+The resulting set of coincidences is:
+\begin_inset Formula 
+\begin{eqnarray*}
+C_{unambig}\left(w,\delta\right) & = & \left(k,l\right)\begin{cases}
+\left|t_{B,l}-\left(t_{A,k}+\delta\right)\right| & \leq w\\
+\left|t_{B,l-1}-\left(t_{A,k}+\delta\right)\right| & >w\\
+\left|t_{B,l+1}-\left(t_{A,k}+\delta\right)\right| & >w\\
+\left|t_{B,l}-\left(t_{A,k-1}+\delta\right)\right| & >w\\
+\left|t_{B,l}-\left(t_{A,k+1}+\delta\right)\right| & >w
+\end{cases}
+\end{eqnarray*}
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
-)l
+The first condition ensures that 
+\begin_inset Formula $\left(k,l\right)\in C_{allpr}\left(w,\delta\right)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
->
+The second and third conditions ensure that Alice’s detection k does not form a coincidence with either of Bob’s detections 
+\begin_inset Formula $l-1$
+\end_inset
+
+1 or 
+\begin_inset Formula $l+1$
+\end_inset
+
+ which implies that it cannot form a coincidence with any of Bob’s earlier or later detections.
+ Similarly,
+ the fourth and fifth conditions ensure that Bob’s detection 
+\begin_inset Formula $l$
+\end_inset
+
+ does not form a coincidence with any of Alice’s detections 
+\begin_inset Formula $k$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-B
-\end_layout
+\begin_inset Formula $C_{unambig}\left(w,\delta\right)\subseteq C_{inseq}\left(w,\delta\right)$
+\end_inset
 
-\begin_layout Standard
-,
- then the second and third
-\end_layout
 
-\begin_layout Standard
-,
-\end_layout
-
-\begin_layout Standard
-conditions are trivially satisfied,
- while the fourth and fifth ensure that neither Alice’s
-\end_layout
-
-\begin_layout Standard
-detection 1−
-\end_layout
-
-\begin_layout Standard
-k nor Bob’s detection 1
-\end_layout
-
-\begin_layout Standard
-l occur between Alice’s detection k and Bob’s
-\end_layout
-
-\begin_layout Standard
-+
-\end_layout
-
-\begin_layout Standard
-detection l .
 \end_layout
 
 \begin_layout Standard
