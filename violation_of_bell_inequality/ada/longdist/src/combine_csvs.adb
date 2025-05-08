@@ -64,7 +64,7 @@ package body Combine_CSVs is
       OEM_Data_A    : String4_Array (1 .. OEM_AB_Length);
       OEM_Data_B    : String4_Array (1 .. OEM_AB_Length);
       aRow          : String_33 := (others => '#');
-      Combined      : String33_Array (1 .. 10000) :=
+      Combined      : String33_Array (1 .. 302000) :=
         (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
