@@ -11,10 +11,10 @@ def all_pairs(A, B, match):
     # v = 5e-06
     # delta = (u + v)/2
     # w = abs(v - u)/2
-    w = 4e-08
+    w = 5e-09
     C = []
-    print("A.head\n", A.head())
-    print("B.head\n", B.head())
+    print("all_pairs A.head\n", A.head())
+    print("all_pairs B.head\n", B.head())
     print ("all_pairs match\n", match.head(10))
 
     print("w: ", w)
@@ -27,8 +27,8 @@ def all_pairs(A, B, match):
     for i in C[:10]:  
         print(i[0],i[1],A.at[i[0],"A Arrival Time"],B.at[i[1],"B Arrival Time"])
     # For individual values
-    print(f"A[196]: {A.at[196, 'A Arrival Time']:.12f}")
-    print(f"B[112]: {B.at[112, 'B Arrival Time']:.12f}")
+    print("all_pairs ndividual A values",f"A[221]: {A.at[221, 'A Arrival Time']:.12f}")
+    print("all_pairs ndividual B values",f"B[140]: {B.at[140, 'B Arrival Time']:.12f}")
 
     return C
 
@@ -36,3 +36,5 @@ def process_data (data, match):
     A_Log = data[["A Arrival Time","A Set"," A Polarization"]]
     B_Log = data[["B Arrival Time"," B Set"," B Polarization"]]
     C_all = all_pairs(A_Log, B_Log, match)
+    for i in range (6):
+        print ("process_data.C_all", C_all[i])
