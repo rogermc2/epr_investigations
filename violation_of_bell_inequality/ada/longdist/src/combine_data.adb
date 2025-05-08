@@ -8,7 +8,7 @@ with Ada.Text_IO;
 package body Combine_Data is
 
    procedure Load_Photon_Data (Data_File : String;
-                               Data      : out String13_Array) is
+                               Data      : out String20_Array) is
       use Ada.Streams;
       Routine_Name : constant String := "Combine_Data.Load_Photon_Data ";
       Data_ID      : Stream_IO.File_Type;
@@ -21,7 +21,7 @@ package body Combine_Data is
 
       while Row < Integer (Stream_IO.Size (Data_ID)) / 13 and
         not Stream_IO.End_Of_File (Data_ID) loop
-         String_13'Read (Data_Stream, Data (Row));
+         String_20'Read (Data_Stream, Data (Row));
          if Row < 3 then
             Ada.Text_IO.Put_Line (Routine_Name & Integer'Image (Row) & "   " &
                         Data (Row));
@@ -80,20 +80,5 @@ package body Combine_Data is
       Put_Line (Routine_Name & "Data written to " & Data_File);
 
    end Save_Data;
-
-   function Time_Diff (A, B : String_13) return String_12 is
-      --  use Ada.Text_IO;
-      Mantissa_A : constant Float := Float'Value (A (1 .. 8));
-      Mantissa_B : constant Float := Float'Value (B (1 .. 8));
-      Exp_A : constant Integer := Integer'Value (A (10 .. 12));
-      Exp_B : constant Integer := Integer'Value (B (10 .. 12));
-      FA     : constant Float := Mantissa_A * 10.0 ** Exp_A;
-      FB     : constant Float := Mantissa_B * 10.0 ** Exp_B;
-      F_Diff : constant Float := Abs (FA - FB);
-      Diff   : constant String_12 := Float'Image (F_Diff);
-   begin
-      return Diff;
-
-   end Time_Diff;
 
 end Combine_Data;

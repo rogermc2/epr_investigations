@@ -1,5 +1,5 @@
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+--  with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Types;
 
 package Printing is
@@ -11,7 +11,7 @@ package Printing is
 
    procedure Print_String1_Array (Name  : String; Data : Types.String1_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
-   procedure Print_String13_Array (Name  : String; Data : Types.String13_Array;
+   procedure Print_String20_Array (Name  : String; Data : Types.String20_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
    procedure Print_String4_Array (Name  : String; Data : Types.String4_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
@@ -21,6 +21,5 @@ package Printing is
                                   Start : Positive := 1; Finish : Natural := 0);
    --  procedure Print_UB_String_Array (Name  : String; Data : Types.UB_String_Array;
    --                                   Start : Positive := 1; Finish : Natural := 0);
-
 
 end Printing;

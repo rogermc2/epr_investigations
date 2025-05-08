@@ -1,11 +1,7 @@
 
 with Interfaces;
 
-
-with Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
-
-with Utils;
 
 package body Printing is
 
@@ -74,7 +70,6 @@ package body Printing is
 
    procedure Print_String1_Array (Name  : String; Data : Types.String1_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
-      use Interfaces;
       Last  : Positive;
       Count : Integer := 1;
    begin
@@ -104,9 +99,8 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   procedure Print_String13_Array (Name  : String; Data : Types.String13_Array;
+   procedure Print_String20_Array (Name  : String; Data : Types.String20_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
-      use Interfaces;
       Last  : Positive;
       Count : Integer := 1;
    begin
@@ -128,17 +122,16 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_String13_Array called with invalid start or finish index.");
+           ("Print_String20_Array called with invalid start or finish index.");
       end if;
       New_Line;
 
-   end Print_String13_Array;
+   end Print_String20_Array;
 
    --  ------------------------------------------------------------------------
 
    procedure Print_String4_Array (Name  : String; Data : Types.String4_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
-      use Interfaces;
       Last  : Positive;
       Count : Integer := 1;
    begin
@@ -170,7 +163,6 @@ package body Printing is
 
    procedure Print_String33_Array (Name  : String; Data : Types.String33_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
-      use Interfaces;
       Last  : Positive;
    begin
       if Finish > 0 then
@@ -182,7 +174,7 @@ package body Printing is
       Put_Line (Name & ": ");
       if Start >= Data'First and then Finish <= Data'Last then
          for Index in Start .. Last loop
-            Put_Line (Data (Index));
+            Put_Line (Integer'Image (Index) & ": " & Data (Index));
          end loop;
       else
          Put_Line
@@ -196,7 +188,6 @@ package body Printing is
 
    procedure Print_String46_Array (Name  : String; Data : Types.String46_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
-      use Interfaces;
       Last  : Positive;
    begin
       if Finish > 0 then
