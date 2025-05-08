@@ -17,9 +17,7 @@ package Printing is
                                   Start : Positive := 1; Finish : Natural := 0);
    procedure Print_String33_Array (Name  : String; Data : Types.String33_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
-   procedure Print_String46_Array (Name  : String; Data : Types.String46_Array;
-                                  Start : Positive := 1; Finish : Natural := 0);
-   --  procedure Print_UB_String_Array (Name  : String; Data : Types.UB_String_Array;
+    --  procedure Print_UB_String_Array (Name  : String; Data : Types.UB_String_Array;
    --                                   Start : Positive := 1; Finish : Natural := 0);
 
 end Printing;

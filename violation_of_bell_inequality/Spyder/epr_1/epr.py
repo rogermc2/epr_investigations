@@ -16,9 +16,7 @@ print ("cwd: ", cwd)
 data=pd.read_csv("Long_Dist.csv")
 data['A Arrival Shifted'] = data['A Arrival Time'].shift(-5, fill_value=0)
 data.info()
-# %%
 data["A Arrival Time"].describe()
-# %%
 data["B Arrival Time"].describe()
 # %%
 Arrival_Times = data[["A Arrival Time","B Arrival Time"]]
@@ -29,13 +27,15 @@ Arrival_Times.head(10)
 data['Difference'] = data['B Arrival Time'] - data['A Arrival Time']
 print('Differences\n', data.head())
 
-Diff_Times = data[["Difference"]].round(12)
-Diff_Times.plot(kind='line', title='Arrival Time Differences')
-plt.show()
+# Diff_Times = data[["Difference"]].round(12)
+# Diff_Times.plot(kind='line', title='Arrival Time Differences')
+# plt.show()
 # %%
+print("Computing closest_indices takes a few minutes:\n");
 closest_indices = utilities.get_closest_indices(data, 'A Arrival Time', 'B Arrival Time')
 print(closest_indices)
 print("closest_indices\n", closest_indices.head(20))
+# %%
 print()
 print ("A10-B5", (data.at[10, 'A Arrival Time'] - data.at[5, 'B Arrival Time']))
 print ("A11-B5", (data.at[11, 'A Arrival Time'] - data.at[5, 'B Arrival Time']))

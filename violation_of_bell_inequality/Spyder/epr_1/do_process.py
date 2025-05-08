@@ -33,8 +33,8 @@ def all_pairs(A, B, match):
     return C
 
 def process_data (data, match):  
-    A_Log = data[["A Arrival Time","A Set"," A Polarization"]]
-    B_Log = data[["B Arrival Time"," B Set"," B Polarization"]]
+    A_Log = data[["A Arrival Time","A Set","A Polarization"]]
+    B_Log = data[["B Arrival Time","B Set","B Polarization"]]
     C_all = all_pairs(A_Log, B_Log, match)
     for i in range (6):
         print ("process_data.C_all", C_all[i])

@@ -1,6 +1,8 @@
 
 with Interfaces;
 
+with Ada.Containers.Vectors;
+
 package Types is
    pragma Preelaborate;
 
@@ -15,12 +17,14 @@ package Types is
    subtype String_12 is String (1 .. 12);
    subtype String_20 is String (1 .. 20);
    subtype String_33 is String (1 .. 33);
-   subtype String_46 is String (1 .. 46);
 
    type String1_Array is array (Integer range <>) of String_1;
    type String4_Array is array (Integer range <>) of String_4;
    type String20_Array is array (Integer range <>) of String_20;
    type String33_Array is array (Integer range <>) of String_33;
-   type String46_Array is array (Integer range <>) of String_46;
+
+   package String33_Package is new
+     Ada.Containers.Vectors (Positive, String_33);
+   subtype String33_List is String33_Package.Vector;
 
 end Types;
