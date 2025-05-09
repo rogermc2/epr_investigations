@@ -35,41 +35,47 @@ package body Process_Data is
          return abs (B_Val - A_Val);
       end Difference;
 
-      procedure Find_Closest (B_Curs : String33_Package.Cursor) is
+      procedure Find_Closest (A_Curs : String33_Package.Cursor) is
+         B_Index  : Extended_Index;
+         B_Val    : Double;
          Min_Diff : Double := Double'Safe_Last;
          Diff     : Double := Min_Diff - 1.0;
+         Inc      : Integer range -1 .. 1;
       begin
+         A_Index := To_Index (A_Curs);
+         A_Val := Double'Value (Element (A_Curs));
+         B_Index := A_Index;
+         B_Val := Double'Value (Element (B_Data, B_Index));
+         if  B_Val < A_Val then
+            Inc := -1;
+         else
+            Inc := 1;
+         end if;
+
          while Diff < Min_Diff loop
-            Diff := Double'Value (Element (B_Curs)) - A_Val;
+            Diff := abs (B_Val - A_Val);
             if Diff < Min_Diff then
                Min_Diff := Diff;
             end if;
          end loop;
 
+         Put_Line (Integer'Image (A_Index) & ","  & Integer'Image (B_Index));
+
       end Find_Closest;
-
-      procedure B_Iterate (A_Curs : String33_Package.Cursor) is
-      begin
-         A_Index := To_Index (A_Curs);
-         A_Val := Double'Value (Element (A_Curs));
-         Iterate (B_Data, Find_Closest'Access);
-
-      end B_Iterate;
 
    begin
       Load_Data (CSV_A, A_Data);
       Load_Data (CSV_B, B_Data);
 
       Create (Match_ID, Out_File, CSV_Match);
-      Iterate (A_Data, B_Iterate'Access);
+      Iterate (A_Data, Find_Closest'Access);
 
-      Ada.Text_IO.Close (Match_ID);
+      Close (Match_ID);
 
-      Ada.Text_IO.Put_Line (Routine_Name & "CSV_Match file written to " &
+      Put_Line (Routine_Name & "CSV_Match file written to " &
                               CSV_Match);
-      Ada.Text_IO.Put_Line
-        (Routine_Name & "CSV_Match file length: " &
-           Natural'Image (Natural (Size (CSV_Match))));
+      Put_Line (Routine_Name & "CSV_Match file length: " &
+                  Natural'Image (Natural (Size (CSV_Match))));
 
    exception
       when Error : others =>
