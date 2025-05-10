@@ -7,14 +7,25 @@ with Types; use Types;
 
 package body Process_Data is
 
-   procedure Load_Data (CSV_Data : String; Data : out String33_List) is
-      use String33_Package;
+   procedure Load_Data (CSV_Data : String; Data : out String19_List) is
+      use String19_Package;
       File_ID  : File_Type;
+<<<<<<< Updated upstream
       --  aLine    : String_33;
    begin
       Open (File_ID, In_File, CSV_Data);
       while not End_Of_File (File_ID) loop
          Data.Append (Get_Line (File_ID));
+=======
+      aLine    : String_19;
+   begin
+      Open (File_ID, In_File, CSV_Data);
+      while not End_Of_File (File_ID) loop
+         --  Put_Line ("aLine length: " &
+         --              Integer'Image (Integer (Get_Line (File_ID)'Length)));
+         aLine := Get_Line (File_ID);
+         Data.Append (aLine);
+>>>>>>> Stashed changes
       end loop;
 
       Close (File_ID);
@@ -23,14 +34,14 @@ package body Process_Data is
 
    procedure Match_Photon_Times (CSV_A, CSV_B, CSV_Match : String) is
       Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
-      use String33_Package;
+      use String19_Package;
       Match_ID     : File_Type;
-      A_Data       : String33_List;
-      B_Data       : String33_List;
+      A_Data       : String19_List;
+      B_Data       : String19_List;
       A_Index      : Extended_Index;
       A_Val        : Double;
 
-      procedure Find_Closest (A_Curs : String33_Package.Cursor) is
+      procedure Find_Closest (A_Curs : String19_Package.Cursor) is
          B_Index  : Extended_Index;
          B_Val    : Double;
          Min_Diff : Double := Double'Safe_Last;
@@ -60,7 +71,7 @@ package body Process_Data is
             end loop;
          end if;
 
-         Put_Line (Integer'Image (A_Index - 1) & ","  &
+         Put_Line (Match_ID, Integer'Image (A_Index - 1) & ","  &
                    Integer'Image (B_Index - 1));
 
       end Find_Closest;
