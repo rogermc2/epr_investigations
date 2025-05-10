@@ -34,7 +34,7 @@ package body Process_Data is
       A_Val        : Double;
 
       procedure Find_Closest (A_Curs : String19_Package.Cursor) is
-         B_Size   : Integer := Integer (Length (B_Data));
+         B_Size   : constant Integer := Integer (Length (B_Data));
          B_Index  : Extended_Index;
          B_Val    : Double;
          Min_Diff : Double := Double'Safe_Last;
@@ -54,7 +54,9 @@ package body Process_Data is
                Inc := 1;
             end if;
 
-            if not (Inc = 0) then
+            if Inc = 0 then
+               Min_Diff := Diff;
+            else
                while B_Index < B_Size -1 and then Diff < Min_Diff loop
                   B_Index := B_Index + Inc;
                   B_Val := Double'Value (Element (B_Data, B_Index));
@@ -66,7 +68,7 @@ package body Process_Data is
             end if;
 
             Put_Line (Match_ID, Integer'Image (A_Index) & ","  &
-                        Integer'Image (B_Index));
+                        Integer'Image (B_Index) & ","  & Double'Image (Min_Diff));
          end if;
 
       exception
