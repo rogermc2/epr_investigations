@@ -10,13 +10,6 @@ package body Process_Data is
    procedure Load_Data (CSV_Data : String; Data : out String19_List) is
       use String19_Package;
       File_ID  : File_Type;
-<<<<<<< Updated upstream
-      --  aLine    : String_33;
-   begin
-      Open (File_ID, In_File, CSV_Data);
-      while not End_Of_File (File_ID) loop
-         Data.Append (Get_Line (File_ID));
-=======
       aLine    : String_19;
    begin
       Open (File_ID, In_File, CSV_Data);
@@ -25,7 +18,6 @@ package body Process_Data is
          --              Integer'Image (Integer (Get_Line (File_ID)'Length)));
          aLine := Get_Line (File_ID);
          Data.Append (aLine);
->>>>>>> Stashed changes
       end loop;
 
       Close (File_ID);
