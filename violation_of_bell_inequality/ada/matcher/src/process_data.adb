@@ -34,6 +34,7 @@ package body Process_Data is
       A_Val        : Double;
 
       procedure Find_Closest (A_Curs : String19_Package.Cursor) is
+         B_Size   : Integer := Integer (Length (B_Data));
          B_Index  : Extended_Index;
          B_Val    : Double;
          Min_Diff : Double := Double'Safe_Last;
@@ -43,28 +44,37 @@ package body Process_Data is
          A_Index := To_Index (A_Curs);
          A_Val := Double'Value (Element (A_Curs));
          B_Index := A_Index;
-         B_Val := Double'Value (Element (B_Data, B_Index));
-         Diff := abs (B_Val - A_Val);
+         if B_Index < B_Size - 1 then
+            B_Val := Double'Value (Element (B_Data, B_Index));
+            Diff := abs (B_Val - A_Val);
 
-         if  B_Val < A_Val then
-            Inc := -1;
-         else
-            Inc := 1;
+            if  B_Val < A_Val then
+               Inc := -1;
+            else
+               Inc := 1;
+            end if;
+
+            if not (Inc = 0) then
+               while B_Index < B_Size -1 and then Diff < Min_Diff loop
+                  B_Index := B_Index + Inc;
+                  B_Val := Double'Value (Element (B_Data, B_Index));
+                  Diff := abs (B_Val - A_Val);
+                  if Diff < Min_Diff then
+                     Min_Diff := Diff;
+                  end if;
+               end loop;
+            end if;
+
+            Put_Line (Match_ID, Integer'Image (A_Index) & ","  &
+                        Integer'Image (B_Index));
          end if;
 
-         if not (Inc = 0) then
-            while Diff < Min_Diff loop
-               B_Index := B_Index + Inc;
-               B_Val := Double'Value (Element (B_Data, B_Index));
-               Diff := abs (B_Val - A_Val);
-               if Diff < Min_Diff then
-                  Min_Diff := Diff;
-               end if;
-            end loop;
-         end if;
-
-         Put_Line (Match_ID, Integer'Image (A_Index - 1) & ","  &
-                   Integer'Image (B_Index - 1));
+      exception
+         when Error : others =>
+            Put_Line (Routine_Name & "B_Index, B_Size: " & Integer'Image (B_Size) &
+                        "  " & Integer'Image (B_Size));
+            Put_Line (Routine_Name & "Find_Closest " & Exception_Information (Error));
+            raise;
 
       end Find_Closest;
 
@@ -78,7 +88,7 @@ package body Process_Data is
       Close (Match_ID);
 
       Put_Line (Routine_Name & "CSV_Match file written to " &
-                              CSV_Match);
+                  CSV_Match);
       Put_Line (Routine_Name & "CSV_Match file length: " &
                   Natural'Image (Natural (Size (CSV_Match))));
 
