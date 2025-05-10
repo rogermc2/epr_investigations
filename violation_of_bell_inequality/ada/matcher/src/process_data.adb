@@ -29,37 +29,39 @@ package body Process_Data is
       B_Data       : String33_List;
       A_Index      : Extended_Index;
       A_Val        : Double;
-      function Difference (B_Curs : String33_Package.Cursor) return Double is
-         B_Val : constant Double := Double'Value (Element (B_Curs));
-      begin
-         return abs (B_Val - A_Val);
-      end Difference;
 
       procedure Find_Closest (A_Curs : String33_Package.Cursor) is
          B_Index  : Extended_Index;
          B_Val    : Double;
          Min_Diff : Double := Double'Safe_Last;
          Diff     : Double := Min_Diff - 1.0;
-         Inc      : Integer range -1 .. 1;
+         Inc      : Integer range -1 .. 1 := 0;
       begin
          A_Index := To_Index (A_Curs);
          A_Val := Double'Value (Element (A_Curs));
          B_Index := A_Index;
          B_Val := Double'Value (Element (B_Data, B_Index));
+         Diff := abs (B_Val - A_Val);
+
          if  B_Val < A_Val then
             Inc := -1;
          else
             Inc := 1;
          end if;
 
-         while Diff < Min_Diff loop
-            Diff := abs (B_Val - A_Val);
-            if Diff < Min_Diff then
-               Min_Diff := Diff;
-            end if;
-         end loop;
+         if not (Inc = 0) then
+            while Diff < Min_Diff loop
+               B_Index := B_Index + Inc;
+               B_Val := Double'Value (Element (B_Data, B_Index));
+               Diff := abs (B_Val - A_Val);
+               if Diff < Min_Diff then
+                  Min_Diff := Diff;
+               end if;
+            end loop;
+         end if;
 
-         Put_Line (Integer'Image (A_Index) & ","  & Integer'Image (B_Index));
+         Put_Line (Integer'Image (A_Index - 1) & ","  &
+                   Integer'Image (B_Index - 1));
 
       end Find_Closest;
 
