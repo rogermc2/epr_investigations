@@ -30,20 +30,18 @@ package body Process_Data is
       Match_ID     : File_Type;
       A_Data       : String19_List;
       B_Data       : String19_List;
-      A_Index      : Extended_Index;
-      A_Val        : Double;
 
       procedure Find_Closest (A_Curs : String19_Package.Cursor) is
+         A_Index  : constant Extended_Index:= To_Index (A_Curs);
+         A_Val    : constant Double := Double'Value (Element (A_Curs));
          B_Size   : constant Integer := Integer (Length (B_Data));
-         B_Index  : Extended_Index;
+         B_Index  : Extended_Index := A_Index;
          B_Val    : Double;
          Min_Diff : Double := Double'Safe_Last;
-         Diff     : Double := Min_Diff - 1.0;
+         Diff     : Double;
          Inc      : Integer range -1 .. 1 := 0;
+         Done     : Boolean := False;
       begin
-         A_Index := To_Index (A_Curs);
-         A_Val := Double'Value (Element (A_Curs));
-         B_Index := A_Index;
          if B_Index < B_Size - 1 then
             B_Val := Double'Value (Element (B_Data, B_Index));
             Diff := abs (B_Val - A_Val);
@@ -57,18 +55,21 @@ package body Process_Data is
             if Inc = 0 then
                Min_Diff := Diff;
             else
-               while B_Index < B_Size -1 and then Diff < Min_Diff loop
+               while B_Index < B_Size -1 and then not Done loop
                   B_Index := B_Index + Inc;
                   B_Val := Double'Value (Element (B_Data, B_Index));
                   Diff := abs (B_Val - A_Val);
-                  if Diff < Min_Diff then
+                  Done := Diff >= Min_Diff;
+                  if not Done then
                      Min_Diff := Diff;
                   end if;
                end loop;
             end if;
+            B_Index := B_Index - Inc;
 
-            Put_Line (Match_ID, Integer'Image (A_Index) & ","  &
-                        Integer'Image (B_Index) & ","  & Double'Image (Min_Diff));
+            Put_Line (Match_ID, Integer'Image (A_Index - 1) & ","  &
+                        Integer'Image (B_Index - 1) & ","  &
+                        Double'Image (Min_Diff));
          end if;
 
       exception
