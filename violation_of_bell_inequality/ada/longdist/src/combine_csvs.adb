@@ -63,8 +63,8 @@ package body Combine_CSVs is
         Integer'Min (Photon_AB_Length, OEM_AB_Length);
       --  Set photon array lengths to lesser of Photon A and B Lengths
       --  to prevent stack oveflow
-      OEM_Data_A    : String4_Array (1 .. OEM_AB_Length);
-      OEM_Data_B    : String4_Array (1 .. OEM_AB_Length);
+      OEM_Data_A    : String3_Array (1 .. OEM_AB_Length);
+      OEM_Data_B    : String3_Array (1 .. OEM_AB_Length);
       aRow          : String_47 := (others => '#');
       Combined      : String47_Array (1 .. Combined_Length) :=
       (others => (others => '#'));

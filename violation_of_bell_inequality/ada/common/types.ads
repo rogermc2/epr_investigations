@@ -13,6 +13,7 @@ package Types is
    for Byte_Array'Alignment use 1;
 
    subtype String_1 is String (1 .. 1);
+   subtype String_3 is String (1 .. 3);
    subtype String_4 is String (1 .. 4);
    subtype String_12 is String (1 .. 12);
    subtype String_19 is String (1 .. 19);
@@ -21,7 +22,7 @@ package Types is
    subtype String_47 is String (1 .. 47);
 
    type String1_Array is array (Integer range <>) of String_1;
-   type String4_Array is array (Integer range <>) of String_4;
+   type String3_Array is array (Integer range <>) of String_3;
    type String20_Array is array (Integer range <>) of String_20;
    type String33_Array is array (Integer range <>) of String_33;
    type String47_Array is array (Integer range <>) of String_47;

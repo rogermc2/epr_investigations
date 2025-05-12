@@ -18,7 +18,7 @@ package body Combine_Data is
       Stream_IO.Open (Data_ID, Stream_IO.In_File, Data_File);
       Data_Stream := Stream_IO.Stream (Data_ID);
 
-      while Row < Integer (Stream_IO.Size (Data_ID)) / 13 and
+      while Row <= Integer (Stream_IO.Size (Data_ID)) and
         not Stream_IO.End_Of_File (Data_ID) loop
          String_20'Read (Data_Stream, Data (Row));
          --  if Row < 3 then
@@ -38,20 +38,25 @@ package body Combine_Data is
    end Load_Photon_Data;
 
    procedure Load_OEM_Data (Data_File : String;
-                            Data      : out String4_Array) is
+                            Data      : out String3_Array) is
       use Ada.Streams;
-      --  use Ada.Text_IO;
-      Routine_Name : constant String := "Utils.Load_OEM_Data ";
+      Routine_Name : constant String := "Combine_Data.Load_OEM_Data ";
       Data_ID      : Stream_IO.File_Type;
       Data_Stream  : Stream_IO.Stream_Access;
+      DataIn       : String_4;
       Row          : Positive := 1;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Data_File);
       Stream_IO.Open (Data_ID, Stream_IO.In_File, Data_File);
       Data_Stream := Stream_IO.Stream (Data_ID);
 
-      while not Stream_IO.End_Of_File (Data_ID) loop
-         String_4'Read (Data_Stream, Data (Row));
+      while Row <= Data'Length and then not Stream_IO.End_Of_File (Data_ID) loop
+         String_4'Read (Data_Stream, DataIn);
+         Data (Row) := DataIn (1 .. 3);
+         --  if Row < 6 then
+         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " & Integer'Image (Row)
+         --                           & ",   !" & Data (Row) & "!");
+         --  end if;
          Row := Row + 1;
       end loop;
 
@@ -59,7 +64,7 @@ package body Combine_Data is
 
    procedure Save_Data (Data_File : String; Data : String47_Array) is
       use Ada.Text_IO;
-      Routine_Name : constant String := "Utils.Save_Data ";
+      Routine_Name : constant String := "Combine_Data.Save_Data ";
       Out_ID       : File_Type;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);

@@ -130,7 +130,7 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   procedure Print_String4_Array (Name  : String; Data : Types.String4_Array;
+   procedure Print_String3_Array (Name  : String; Data : Types.String3_Array;
                                  Start : Positive := 1; Finish : Natural := 0) is
       Last  : Positive;
       Count : Integer := 1;
@@ -153,11 +153,11 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_String4_Array called with invalid start or finish index.");
+           ("Print_String3_Array called with invalid start or finish index.");
       end if;
       New_Line;
 
-   end Print_String4_Array;
+   end Print_String3_Array;
 
    --  ------------------------------------------------------------------------
 

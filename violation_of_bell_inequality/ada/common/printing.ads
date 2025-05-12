@@ -13,7 +13,7 @@ package Printing is
                                   Start : Positive := 1; Finish : Natural := 0);
    procedure Print_String20_Array (Name  : String; Data : Types.String20_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
-   procedure Print_String4_Array (Name  : String; Data : Types.String4_Array;
+   procedure Print_String3_Array (Name  : String; Data : Types.String3_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
    procedure Print_String33_Array (Name  : String; Data : Types.String33_Array;
                                   Start : Positive := 1; Finish : Natural := 0);
