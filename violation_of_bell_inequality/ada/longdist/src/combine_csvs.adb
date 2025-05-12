@@ -11,8 +11,8 @@ package body Combine_CSVs is
 
    procedure Add_Photon_Data
      (Data_CSV : String; Combined : in out String47_Array; A : Boolean;
-      AB_Length    : Positive; Portion : Positive) is
-      Data         : String20_Array (1 .. AB_Length / Portion);
+      AB_Length    : Positive) is
+      Data         : String20_Array (1 .. AB_Length);
       aRow         : String_47 := (others => '$');
       Item_Start   : Positive;
       Item_End     : Positive;
@@ -52,20 +52,22 @@ package body Combine_CSVs is
         Positive (Size (Photon_Data_A_CSV));
       Photon_B_Length   : constant Positive :=
         Positive (Size (Photon_Data_B_CSV));
+      Portion           : constant Positive := 8;
       OEM_A_Length      : constant Positive := Positive (Size (OEM_Data_A_CSV));
       OEM_B_Length      : constant Positive := Positive (Size (OEM_Data_B_CSV));
       Photon_AB_Length  : constant Positive :=
-        Integer'Min (Photon_A_Length, Photon_B_Length);
-      Portion           : constant Positive := 3;
+        Integer'Min (Photon_A_Length, Photon_B_Length) / Portion;
       OEM_AB_Length     : constant Positive :=
-        Integer'Min (OEM_A_Length, OEM_B_Length);
+        Integer'Min (OEM_A_Length, OEM_B_Length) / Portion;
+      Combined_Length   : constant Positive :=
+        Integer'Min (Photon_AB_Length, OEM_AB_Length);
       --  Set photon array lengths to lesser of Photon A and B Lengths
       --  to prevent stack oveflow
       OEM_Data_A    : String4_Array (1 .. OEM_AB_Length);
       OEM_Data_B    : String4_Array (1 .. OEM_AB_Length);
       aRow          : String_47 := (others => '#');
-      Combined      : String47_Array (1 .. 302200) :=
-        (others => (others => '#'));
+      Combined      : String47_Array (1 .. Combined_Length) :=
+      (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
       --  Original photon data is sorted ascendingly
@@ -78,10 +80,9 @@ package body Combine_CSVs is
       Load_OEM_Data (OEM_Data_B_CSV, OEM_Data_B);
 
       new_Line;
-      Add_Photon_Data (Photon_Data_A_CSV, Combined, True,
-                       Photon_AB_Length, Portion);
-      Add_Photon_Data (Photon_Data_B_CSV, Combined, False,
-                       Photon_AB_Length, Portion);
+      Add_Photon_Data (Photon_Data_A_CSV, Combined, True, Photon_AB_Length);
+      Add_Photon_Data (Photon_Data_B_CSV, Combined, False, Photon_AB_Length);
+
       for row in Combined'Range loop
          aRow := Combined (row);
          aRow (41 .. 43) := OEM_Data_A (row)(1 .. 3);

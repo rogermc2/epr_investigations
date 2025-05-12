@@ -2,7 +2,6 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import utilities
 import do_process
 
 cwd = os.getcwd()
@@ -27,14 +26,6 @@ Arrival_Times.head(10)
 data['Difference'] = data['B Arrival Time'] - data['A Arrival Time']
 print('Differences\n', data.head())
 
-# Diff_Times = data[["Difference"]].round(12)
-# Diff_Times.plot(kind='line', title='Arrival Time Differences')
-# plt.show()
-# %%
-print("Computing closest_indices takes a few minutes:\n");
-closest_indices = utilities.get_closest_indices(data, 'A Arrival Time', 'B Arrival Time')
-print(closest_indices)
-print("closest_indices\n", closest_indices.head(20))
 # %%
 print()
 print ("A10-B5", (data.at[10, 'A Arrival Time'] - data.at[5, 'B Arrival Time']))
