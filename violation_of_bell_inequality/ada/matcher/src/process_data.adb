@@ -41,12 +41,17 @@ package body Process_Data is
          Inc      : Integer range -1 .. 1   := 0;
          Done     : Boolean                 := False;
       begin
-         if B_Index < B_Size - 1 then
+         --  if B_Index < B_Size - 1 then
+         if B_Index < 4 then
+            Put_Line ("A_Index, A_Val: " & Integer'Image (A_Index) &
+                              "  " & Double'Image (A_Val));
             B_Val := Double'Value (Element (B_Data, B_Index));
+            Put_Line ("B_Val: " &  Double'Image (B_Val));
             Done := B_Val = A_Val;
             if not Done then
                Diff := abs (B_Val - A_Val);
                Min_Diff := Diff;
+               Put_Line ("Min_Diff: " & Double'Image (Min_Diff));
                if B_Val < A_Val then
                   Inc := -1;
                else
@@ -57,12 +62,15 @@ package body Process_Data is
                   B_Index := B_Index + Inc;
                   B_Val   := Double'Value (Element (B_Data, B_Index));
                   Diff    := abs (B_Val - A_Val);
+                  Put_Line ("B_Index, Diff: " & Integer'Image (B_Index) &
+                              "  " & Double'Image (Diff));
                   Done    := Diff >= Min_Diff;
                   if Done then
                      B_Index := B_Index - Inc;
                   else
                      Min_Diff := Diff;
                   end if;
+                  New_Line;
                end loop;
 
             end if;

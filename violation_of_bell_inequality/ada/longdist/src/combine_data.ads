@@ -7,6 +7,6 @@ package Combine_Data is
                                Data      : out String20_Array);
    procedure Load_OEM_Data (Data_File : String;
                             Data      : out String4_Array);
-   procedure Save_Data (Data_File : String; Data : String33_Array);
+   procedure Save_Data (Data_File : String; Data : String47_Array);
 
 end Combine_Data;

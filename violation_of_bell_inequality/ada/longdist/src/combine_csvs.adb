@@ -10,33 +10,33 @@ with Types; use Types;
 package body Combine_CSVs is
 
    procedure Add_Photon_Data
-     (Data_CSV : String; Combined : in out String33_Array; A : Boolean;
+     (Data_CSV : String; Combined : in out String47_Array; A : Boolean;
       AB_Length    : Positive; Portion : Positive) is
       Data         : String20_Array (1 .. AB_Length / Portion);
-      aRow         : String_33 := (others => '$');
+      aRow         : String_47 := (others => '$');
       Item_Start   : Positive;
       Item_End     : Positive;
    begin
       if A then
          Item_Start := 1;
-         Item_End := 12;
+         Item_End := 19;
       else
-         Item_Start := 14;
-         Item_End := 25;
+         Item_Start := 21;
+         Item_End := 39;
       end if;
 
       Load_Photon_Data (Data_CSV, Data);
       New_Line;
 
       for row in Combined'Range loop
-         if row < 6 then
-            Put_Line ("Add_Photon_Data.Data " & Integer'Image (row) &
-                      ":  " & String (Data (row)));
-         end if;
+         --  if row < 4 then
+         --     Put_Line ("Add_Photon_Data.Data " & Integer'Image (row) &
+         --               ":  " & String (Data (row)));
+         --  end if;
          if not A then
             aRow := Combined (row);
          end if;
-         aRow (Item_Start .. Item_End) := Data (row)(1 .. 12);
+         aRow (Item_Start .. Item_End) := Data (row)(1 .. 19);
          aRow (Item_End + 1) := ',';
          Combined (row) := aRow;
       end loop;
@@ -63,8 +63,8 @@ package body Combine_CSVs is
       --  to prevent stack oveflow
       OEM_Data_A    : String4_Array (1 .. OEM_AB_Length);
       OEM_Data_B    : String4_Array (1 .. OEM_AB_Length);
-      aRow          : String_33 := (others => '#');
-      Combined      : String33_Array (1 .. 302000) :=
+      aRow          : String_47 := (others => '#');
+      Combined      : String47_Array (1 .. 302200) :=
         (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
@@ -84,12 +84,12 @@ package body Combine_CSVs is
                        Photon_AB_Length, Portion);
       for row in Combined'Range loop
          aRow := Combined (row);
-         aRow (27 .. 29) := OEM_Data_A (row)(1 .. 3);
-         aRow (30) := ',';
-         aRow (31 .. 33) := OEM_Data_B (row)(1 .. 3);
+         aRow (41 .. 43) := OEM_Data_A (row)(1 .. 3);
+         aRow (44) := ',';
+         aRow (45 .. 47) := OEM_Data_B (row)(1 .. 3);
          Combined (row) := aRow;
       end loop;
-      Print_String33_Array ("Combined", Combined, 1, 6);
+      Print_String47_Array ("Combined", Combined, 1, 6);
 
       Save_Data (Long_Dist_CSV, Combined);
       Put_Line ("Long_Dist_CSV length: " &

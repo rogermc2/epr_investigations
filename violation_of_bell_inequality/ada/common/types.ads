@@ -18,11 +18,13 @@ package Types is
    subtype String_19 is String (1 .. 19);
    subtype String_20 is String (1 .. 20);
    subtype String_33 is String (1 .. 33);
+   subtype String_47 is String (1 .. 47);
 
    type String1_Array is array (Integer range <>) of String_1;
    type String4_Array is array (Integer range <>) of String_4;
    type String20_Array is array (Integer range <>) of String_20;
    type String33_Array is array (Integer range <>) of String_33;
+   type String47_Array is array (Integer range <>) of String_47;
 
    package String19_Package is new
      Ada.Containers.Vectors (Natural, String_19);

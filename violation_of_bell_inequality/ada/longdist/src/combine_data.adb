@@ -1,5 +1,4 @@
 
---  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
@@ -22,10 +21,10 @@ package body Combine_Data is
       while Row < Integer (Stream_IO.Size (Data_ID)) / 13 and
         not Stream_IO.End_Of_File (Data_ID) loop
          String_20'Read (Data_Stream, Data (Row));
-         if Row < 3 then
-            Ada.Text_IO.Put_Line (Routine_Name & Integer'Image (Row) & "   " &
-                        Data (Row));
-         end if;
+         --  if Row < 3 then
+         --     Ada.Text_IO.Put_Line (Routine_Name & Integer'Image (Row) & "   " &
+         --                 Data (Row));
+         --  end if;
          Row := Row + 1;
       end loop;
       Ada.Text_IO.Put_Line (Routine_Name & "Number of rows: " &
@@ -53,16 +52,12 @@ package body Combine_Data is
 
       while not Stream_IO.End_Of_File (Data_ID) loop
          String_4'Read (Data_Stream, Data (Row));
-         --  if Row < 4 then
-         --     Put_Line (Routine_Name & Integer'Image (Row) & "   " &
-         --                 Data (Row));
-         --  end if;
          Row := Row + 1;
       end loop;
 
    end Load_OEM_Data;
 
-   procedure Save_Data (Data_File : String; Data : String33_Array) is
+   procedure Save_Data (Data_File : String; Data : String47_Array) is
       use Ada.Text_IO;
       Routine_Name : constant String := "Utils.Save_Data ";
       Out_ID       : File_Type;
