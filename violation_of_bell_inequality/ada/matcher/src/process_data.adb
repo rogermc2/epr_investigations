@@ -10,7 +10,8 @@ package body Process_Data is
 
    procedure Match_Photon_Times (CSV_A, CSV_B, CSV_Match : String) is
       use String19_Package;
-      Routine_Name : constant String := "Process_Data.Closest_Match_With_Vectors ";
+      Routine_Name : constant String :=
+        "Process_Data.Closest_Match_With_Vectors ";
       Match_ID     : File_Type;
       A_Data       : String19_List;  --  Float_Vectors.Vector;
       B_Data       : String19_List;  --  Float_Vectors.Vector;
@@ -21,23 +22,31 @@ package body Process_Data is
 
       procedure Find_Closest (A_Curs : String19_Package.Cursor) is
          A_Index   : constant Extended_Index := To_Index (A_Curs);
-         A_Value   : constant Double         := Double'Value (Element (A_Curs));
-         Best_Diff : Double := abs (A_Value - Double'Value (B_Data.Element (B_Index)));
+         A_Value   : constant Double := Double'Value (Element (A_Curs));
+         Best_Diff : Double                  :=
+           abs (A_Value - Double'Value (B_Data.Element (B_Index)));
          New_Diff  : Double;
+         Done      : Boolean                 := False;
       begin
          --  Try to move forward in B_Data if it improves the match
-         loop
-            exit when B_Index + 1 >= Integer (B_Data.Length);
+         while not Done loop
+            Done := B_Index + 1 >= Integer (B_Data.Length);
 
-            New_Diff := abs (A_Value - Double'Value (B_Data.Element (B_Index + 1)));
-            exit when New_Diff >= Best_Diff;
-
-            B_Index := B_Index + 1;
-            Best_Diff := New_Diff;
+            if not Done then
+               New_Diff :=
+                 abs (A_Value - Double'Value (B_Data.Element (B_Index + 1)));
+               Done     := New_Diff >= Best_Diff;
+               if not Done then
+                  B_Index   := B_Index + 1;
+                  Best_Diff := New_Diff;
+               end if;
+            end if;
          end loop;
 
-         Put_Line (Match_ID, Integer'Image (A_Index) & "," &
-                     Integer'Image (B_Index) & "," & Double'Image (Best_Diff));
+         Put_Line
+           (Match_ID,
+            Integer'Image (A_Index) & "," & Integer'Image (B_Index) & "," &
+              Double'Image (Best_Diff));
 
          Match_Index := Match_Index + 1;
 
