@@ -28,13 +28,40 @@ package body Data_Selection is
 
    end Parse_Line;
 
-   procedure Select_Pairs (Match_CSV : String; U, V : Double; Selected : out Match_List) is
-      Routine_Name : constant String := "Process_Data.Select_Pairs ";
-      w            : constant Double := Double (0.5 * abs (V - U));
+   procedure Select_OEM_Data (OEM_A, OEM_B, Selected_OEM : String;
+                              Selected_Indices : Match_List) is
+      use Match_Package;
+      Routine_Name : constant String := "Process_Data.Select_OEM_Data ";
+      OEM_A_ID   : File_Type;
+      OEM_B_ID   : File_Type;
+      Select_ID  : File_Type;
+      A_Line     : String_3;
+      B_Line     : String_3;
+      Indices    : Match_Record;
+   begin
+      Open (OEM_A_ID, In_File, OEM_A);
+      Open (OEM_B_ID, In_File, OEM_B);
+      Create (Select_ID, Out_File, Selected_OEM);
+
+      for item of Selected_Indices loop
+         Indices := item;
+         A_Line := Get_Line (OEM_A_ID);
+         B_Line := Get_Line (OEM_B_ID);
+         --  Put (Select_ID, );
+      end loop;
+
+      Close (OEM_A_ID);
+      Close (OEM_B_ID);
+      Close (Select_ID);
+
+   end Select_OEM_Data;
+
+   procedure Pair_Indices (Match_CSV : String; U, V : Double; Selected : out Match_List) is
+      Routine_Name : constant String := "Process_Data.Pair_Indices ";
+      W            : constant Double := Double (0.5 * abs (V - U));
       File_ID      : File_Type;
       --  delta       : Double :=  Double (0.5 * (U + V));
       Count        : Natural := 0;
-
    begin
       Put_Line (Routine_Name & "w: " & Double'Image (w));
 
@@ -44,20 +71,21 @@ package body Data_Selection is
             aLine : constant String := Get_Line (File_ID);
             Data  : constant Data_Record := Parse_Line (aLine);
          begin
-            if Data.Difference < w then
+            if Data.Difference < W then
                Count := Count + 1;
                Selected.Append ((Data.A_Index, Data.B_Index));
                if Count < 10 then
                   Put_Line (Routine_Name &
-                              "C: " & Integer'Image (Data.A_Index) & "   " &
+                              "Selected: " & Integer'Image (Data.A_Index) & "   " &
                               Integer'Image (Data.B_Index));
                end if;
             end if;
          end ;
       end loop;
 
+      Close (File_ID);
       Put_Line (Routine_Name & "Selected length:" & Integer'Image (Integer (Selected.Length)));
 
-   end Select_Pairs;
+   end Pair_Indices;
 
 end Data_Selection;
