@@ -10,8 +10,7 @@ package body Process_Data is
 
    procedure Match_Photon_Times (CSV_A, CSV_B, CSV_Match : String) is
       use String19_Package;
-      Routine_Name : constant String :=
-        "Process_Data.Closest_Match_With_Vectors ";
+      Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
       Match_ID     : File_Type;
       A_Data       : String19_List;
       B_Data       : String19_List;
