@@ -13,10 +13,8 @@ package body Process_Data is
       Routine_Name : constant String :=
         "Process_Data.Closest_Match_With_Vectors ";
       Match_ID     : File_Type;
-      A_Data       : String19_List;  --  Float_Vectors.Vector;
-      B_Data       : String19_List;  --  Float_Vectors.Vector;
-
-      --  For output
+      A_Data       : String19_List;
+      B_Data       : String19_List;
       Match_Index  : Natural := 0;
       B_Index      : Natural := 0;
 
