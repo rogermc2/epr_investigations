@@ -34,15 +34,15 @@ package body Data_Selection is
 
    procedure Select_Pairs (Match_CSV : String; C : out Match_List) is
       Routine_Name : constant String := "Process_Data.Select_Pairs ";
-      u            : constant Double := Double (10.0 ** (-6));
-      v            : constant Double := Double (5.0 * 10.0 ** (-6));
-      w            : Double := Double (0.5 * abs (v - u));
+      u            : constant Double := Double (4.0 * 10.0 ** (-9));
+      v            : constant Double := Double (8.0 * 10.0 ** (-9));
+      w            : constant Double := Double (0.5 * abs (v - u));
       File_ID      : File_Type;
       --  delta       : Double :=  Double (0.5 * (u + v));
       Count        : Natural := 0;
 
    begin
-      w := 5.0 * 10.0 ** (-9);
+      --  w := 5.0 * 10.0 ** (-9);
       Put_Line (Routine_Name & "w: " & Double'Image (w));
 
       Open (File_ID, In_File, Match_CSV);
