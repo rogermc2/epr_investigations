@@ -1,10 +1,6 @@
 
---  with Ada.Integer_Text_IO;
---  with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
-
-with Types; use Types;
 
 package body Data_Selection is
 
@@ -32,17 +28,14 @@ package body Data_Selection is
 
    end Parse_Line;
 
-   procedure Select_Pairs (Match_CSV : String; C : out Match_List) is
+   procedure Select_Pairs (Match_CSV : String; U, V : Double; Selected : out Match_List) is
       Routine_Name : constant String := "Process_Data.Select_Pairs ";
-      u            : constant Double := Double (4.0 * 10.0 ** (-9));
-      v            : constant Double := Double (8.0 * 10.0 ** (-9));
-      w            : constant Double := Double (0.5 * abs (v - u));
+      w            : constant Double := Double (0.5 * abs (V - U));
       File_ID      : File_Type;
-      --  delta       : Double :=  Double (0.5 * (u + v));
+      --  delta       : Double :=  Double (0.5 * (U + V));
       Count        : Natural := 0;
 
    begin
-      --  w := 5.0 * 10.0 ** (-9);
       Put_Line (Routine_Name & "w: " & Double'Image (w));
 
       Open (File_ID, In_File, Match_CSV);
@@ -53,7 +46,7 @@ package body Data_Selection is
          begin
             if Data.Difference < w then
                Count := Count + 1;
-               C.Append ((Data.A_Index, Data.B_Index));
+               Selected.Append ((Data.A_Index, Data.B_Index));
                if Count < 10 then
                   Put_Line (Routine_Name &
                               "C: " & Integer'Image (Data.A_Index) & "   " &
@@ -63,7 +56,7 @@ package body Data_Selection is
          end ;
       end loop;
 
-      Put_Line (Routine_Name & "C length:" & Integer'Image (Integer (C.Length)));
+      Put_Line (Routine_Name & "Selected length:" & Integer'Image (Integer (Selected.Length)));
 
    end Select_Pairs;
 

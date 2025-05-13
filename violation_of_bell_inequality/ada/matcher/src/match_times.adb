@@ -1,6 +1,7 @@
 
-with Process_Data; use Process_Data;
 with Data_Selection; use Data_Selection;
+with Process_Data; use Process_Data;
+with Types; use Types;
 
 procedure Match_Times is
    A_Directory : constant String :=
@@ -10,9 +11,11 @@ procedure Match_Times is
    Photon_Times_A  : constant String := A_Directory & "Photon_Times.csv";
    Photon_Times_B  : constant String := B_Directory & "Photon_Times.csv";
    Matched_Times   : constant String := "../Matched_Times.csv";
+   U               : constant Double := Double (2.0 * 10.0 ** (-9));
+   V               : constant Double := Double (10.0 * 10.0 ** (-9));
    Selected_Pairs  : Match_List;
   begin
    Match_Photon_Times (Photon_Times_A, Photon_Times_B, Matched_Times);
-   Select_Pairs (Matched_Times, Selected_Pairs);
+   Select_Pairs (Matched_Times, U, V, Selected_Pairs);
 
 end Match_Times;

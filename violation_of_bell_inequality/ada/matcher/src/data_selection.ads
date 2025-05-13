@@ -1,6 +1,8 @@
 
 with Ada.Containers.Vectors;
 
+with Types; use Types;
+
 package Data_Selection is
 
    type Match_Record is record
@@ -11,7 +13,6 @@ package Data_Selection is
    package Match_Package is new
      Ada.Containers.Vectors (Natural, Match_Record);
    subtype Match_List is Match_Package.Vector;
-
-   procedure Select_Pairs (Match_CSV : String; C : out Match_List);
+   procedure Select_Pairs (Match_CSV : String; U, V : Double; Selected : out Match_List);
 
     end Data_Selection;
