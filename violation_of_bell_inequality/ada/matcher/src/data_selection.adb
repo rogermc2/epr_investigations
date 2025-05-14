@@ -1,4 +1,5 @@
 
+with Ada.Directories;
 with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -29,9 +30,9 @@ package body Data_Selection is
    end Parse_Line;
 
    procedure Select_OEM_Data (OEM_A, OEM_B, Selected_OEM : String;
-                              Selected_Indices : Match_List) is
+                              Selected_Indices           : Match_List) is
       use Match_Package;
-      --  Routine_Name : constant String := "Process_Data.Select_OEM_Data ";
+      --  Routine_Name : constant String := "Data_Selection.Select_OEM_Data ";
       OEM_A_ID   : File_Type;
       OEM_B_ID   : File_Type;
       Select_ID  : File_Type;
@@ -56,15 +57,19 @@ package body Data_Selection is
 
    end Select_OEM_Data;
 
-   procedure Pair_Indices (Match_CSV : String; Width : Double; Selected : out Match_List) is
-      Routine_Name : constant String := "Process_Data.Pair_Indices ";
+   procedure Pair_Indices (Match_CSV : String; Width : Double;
+                           Selected  : out Match_List) is
+      use Ada.Directories;
+      use Match_Package;
+      Routine_Name : constant String := "Data_Selection.Pair_Indices ";
       --  Width        : Double := Double (0.5 * abs (V - U));
       File_ID      : File_Type;
       Count        : Natural := 0;
    begin
-      Put_Line (Routine_Name & "Width: " & Double'Image (Width));
-
       Open (File_ID, In_File, Match_CSV);
+      Put_Line (Routine_Name & "Match_CSV file size:" &
+                  Integer'Image (Integer (Size (Match_CSV))) & " bytes");
+
       while not End_Of_File (File_ID) loop
          declare
             aLine : constant String := Get_Line (File_ID);
@@ -75,15 +80,16 @@ package body Data_Selection is
                Selected.Append ((Data.A_Index, Data.B_Index));
                if Count < 10 then
                   Put_Line (Routine_Name &
-                              "Selected: " & Integer'Image (Data.A_Index) & "   " &
-                              Integer'Image (Data.B_Index));
+                            "Selected: " & Integer'Image (Data.A_Index)
+                            & "   " & Integer'Image (Data.B_Index));
                end if;
             end if;
          end ;
       end loop;
 
       Close (File_ID);
-      Put_Line (Routine_Name & "Selected length:" & Integer'Image (Integer (Selected.Length)));
+      Put_Line (Routine_Name & "Selected length:" &
+                  Integer'Image (Integer (Selected.Length)));
 
    end Pair_Indices;
 
