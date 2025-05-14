@@ -81,7 +81,8 @@ package body Data_Selection is
                if Count < 10 then
                   Put_Line (Routine_Name &
                             "Selected: " & Integer'Image (Data.A_Index)
-                            & "   " & Integer'Image (Data.B_Index));
+                            & "   " & Integer'Image (Data.B_Index) & "   " &
+                              Double'Image (Data.Difference));
                end if;
             end if;
          end ;
