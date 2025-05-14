@@ -31,7 +31,7 @@ package body Data_Selection is
    procedure Select_OEM_Data (OEM_A, OEM_B, Selected_OEM : String;
                               Selected_Indices : Match_List) is
       use Match_Package;
-      Routine_Name : constant String := "Process_Data.Select_OEM_Data ";
+      --  Routine_Name : constant String := "Process_Data.Select_OEM_Data ";
       OEM_A_ID   : File_Type;
       OEM_B_ID   : File_Type;
       Select_ID  : File_Type;

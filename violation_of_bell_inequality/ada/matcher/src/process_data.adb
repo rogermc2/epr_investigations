@@ -19,10 +19,10 @@ package body Process_Data is
       procedure Find_Closest (A_Curs : String19_Package.Cursor) is
          A_Index   : constant Extended_Index := To_Index (A_Curs);
          A_Value   : constant Double := Double'Value (Element (A_Curs)) + Delta_A;
-         Best_Diff : Double                  :=
+         Best_Diff : Double :=
            abs (A_Value - Double'Value (B_Data.Element (B_Index)));
          New_Diff  : Double;
-         Done      : Boolean                 := False;
+         Done      : Boolean := False;
       begin
          --  Try to move forward in B_Data if it improves the match
          while not Done loop
