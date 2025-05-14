@@ -119,8 +119,7 @@ package body Process_Data is
       Stream_IO.Close (Source_ID);
 
       Ada.Text_IO.Put_Line
-        (Routine_Name & "Photon times file written to " &
-           Target_File);
+        (Routine_Name & "Photon times file written to " & Target_File);
       Ada.Text_IO.Put_Line
         (Routine_Name & "Photon times file length: " &
            Natural'Image (Natural (Size (Target_File))));
