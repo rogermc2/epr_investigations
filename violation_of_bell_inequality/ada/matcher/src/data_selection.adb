@@ -75,7 +75,7 @@ package body Data_Selection is
             aLine : constant String := Get_Line (File_ID);
             Data  : constant Data_Record := Parse_Line (aLine);
          begin
-            if Data.Difference < Width then
+            if Data.Difference <= Width then
                Count := Count + 1;
                Selected.Append ((Data.A_Index, Data.B_Index));
                if Count < 10 then

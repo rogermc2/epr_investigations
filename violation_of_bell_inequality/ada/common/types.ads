@@ -28,7 +28,7 @@ package Types is
    type String47_Array is array (Integer range <>) of String_47;
 
    package String19_Package is new
-     Ada.Containers.Vectors (Natural, String_19);
+     Ada.Containers.Vectors (Positive, String_19);
    subtype String19_List is String19_Package.Vector;
 
    package String33_Package is new
