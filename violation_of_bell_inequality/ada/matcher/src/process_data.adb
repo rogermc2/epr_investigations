@@ -39,7 +39,12 @@ package body Process_Data is
       begin
          --  Try to move forward in B_Data if it improves the match
          while not Done loop
-            Done := B_Index + 1 >= Integer (B_Data.Length);
+            Done := B_Index + 1 > Integer (B_Data.Length);
+            if A_Index < 10 then
+               Put_Line
+                 (Routine_Name & "A and B indices: " &
+                    Integer'Image (A_Index) & "," & Integer'Image (B_Index));
+            end if;
 
             if not Done then
                New_Diff :=
