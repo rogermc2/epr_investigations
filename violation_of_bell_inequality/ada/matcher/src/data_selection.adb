@@ -56,14 +56,13 @@ package body Data_Selection is
 
    end Select_OEM_Data;
 
-   procedure Pair_Indices (Match_CSV : String; U, V : Double; Selected : out Match_List) is
+   procedure Pair_Indices (Match_CSV : String; Width : Double; Selected : out Match_List) is
       Routine_Name : constant String := "Process_Data.Pair_Indices ";
-      W            : constant Double := Double (0.5 * abs (V - U));
+      --  Width        : Double := Double (0.5 * abs (V - U));
       File_ID      : File_Type;
-      --  delta       : Double :=  Double (0.5 * (U + V));
       Count        : Natural := 0;
    begin
-      Put_Line (Routine_Name & "w: " & Double'Image (w));
+      Put_Line (Routine_Name & "Width: " & Double'Image (Width));
 
       Open (File_ID, In_File, Match_CSV);
       while not End_Of_File (File_ID) loop
@@ -71,7 +70,7 @@ package body Data_Selection is
             aLine : constant String := Get_Line (File_ID);
             Data  : constant Data_Record := Parse_Line (aLine);
          begin
-            if Data.Difference < W then
+            if Data.Difference < Width then
                Count := Count + 1;
                Selected.Append ((Data.A_Index, Data.B_Index));
                if Count < 10 then

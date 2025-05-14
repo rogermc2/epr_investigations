@@ -14,7 +14,7 @@ package Data_Selection is
      Ada.Containers.Vectors (Natural, Match_Record);
    subtype Match_List is Match_Package.Vector;
 
-   procedure Pair_Indices (Match_CSV : String; U, V : Double;
+   procedure Pair_Indices (Match_CSV : String; Width : Double;
                            Selected : out Match_List);
    procedure Select_OEM_Data (OEM_A, OEM_B, Selected_OEM : String;
                               Selected_Indices : Match_List);

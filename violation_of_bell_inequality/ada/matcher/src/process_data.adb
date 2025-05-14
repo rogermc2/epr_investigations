@@ -2,13 +2,12 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO;     use Ada.Text_IO;
 
-with Types; use Types;
-
 package body Process_Data is
 
    procedure Load_Data (CSV_Data : String; Data : out String19_List);
 
-   procedure Match_Photon_Times (CSV_A, CSV_B, CSV_Match : String) is
+   procedure Match_Photon_Times
+     (CSV_A, CSV_B, CSV_Match : String; Delta_A : Double) is
       use String19_Package;
       Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
       Match_ID     : File_Type;
@@ -19,7 +18,7 @@ package body Process_Data is
 
       procedure Find_Closest (A_Curs : String19_Package.Cursor) is
          A_Index   : constant Extended_Index := To_Index (A_Curs);
-         A_Value   : constant Double := Double'Value (Element (A_Curs));
+         A_Value   : constant Double := Double'Value (Element (A_Curs)) + Delta_A;
          Best_Diff : Double                  :=
            abs (A_Value - Double'Value (B_Data.Element (B_Index)));
          New_Diff  : Double;

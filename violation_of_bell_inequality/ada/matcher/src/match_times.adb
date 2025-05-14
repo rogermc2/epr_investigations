@@ -14,12 +14,12 @@ procedure Match_Times is
    OEM_B           : constant String := B_Directory & "B_OEM.csv";
    Selected_OEM    : constant String := "../Selected_OEM.csv";
    Matched_Times   : constant String := "../Matched_Times.csv";
-   U               : constant Double := Double (2.0 * 10.0 ** (-9));
-   V               : constant Double := Double (10.0 * 10.0 ** (-9));
+   Width           : constant Double := Double (2.0 * 10.0 ** (-9));
+   Delta_A         : constant Double := (3.8 * 10.0 ** (-9));
    Selected_Pairs  : Match_List;
   begin
-   Match_Photon_Times (Photon_Times_A, Photon_Times_B, Matched_Times);
-   Pair_Indices (Matched_Times, U, V, Selected_Pairs);
+   Match_Photon_Times (Photon_Times_A, Photon_Times_B, Matched_Times, Delta_A);
+   Pair_Indices (Matched_Times, Width, Selected_Pairs);
    Select_OEM_Data (OEM_A, OEM_B, Selected_OEM, Selected_Pairs);
 
 end Match_Times;
