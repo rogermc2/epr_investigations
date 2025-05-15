@@ -28,6 +28,52 @@ package body Process_Data is
       B_Data       : String19_List;
       B_Index      : Positive := 1;
 
+      --  ----------------
+      --  Time_Window  : constant Double := 4.0E-9;  -- 4 ns
+      Time_Window  : constant Double := 4.0 * 10.0 ** (-9);  -- 4 ns
+
+      procedure Find_All_Matches (A_Curs : String19_Package.Cursor) is
+         A_Index   : constant Extended_Index := To_Index (A_Curs);
+         A_Value   : constant Double := Double'Value (Element (A_Curs));
+         B_Value   : Double;
+      begin
+         if A_Index < 8 then
+            Put_Line
+              (Routine_Name & "Find_All_Matches A and B indices: " &
+                 Integer'Image (A_Index) & "," & Integer'Image (B_Index));
+         end if;
+
+         --  Move B_Index forward until B_Value is >= (A_Value - Time_Window)
+         while B_Index < Integer (B_Data.Length) and then
+           Double'Value (B_Data.Element (B_Index)) < A_Value - Time_Window
+         loop
+            B_Index := B_Index + 1;
+         end loop;
+
+         --  From B_Index, check all within A_Value + Time_Window
+         declare
+            Temp_B_Index : Integer := B_Index;
+         begin
+            while Temp_B_Index < Integer (B_Data.Length) loop
+               B_Value := Double'Value (B_Data.Element (Temp_B_Index));
+               exit when B_Value > A_Value + Time_Window;
+
+               --  Match found within window
+               Put_Line (Match_ID,
+                         Integer'Image (A_Index) & "," &
+                           Integer'Image (Temp_B_Index) & "," &
+                           --  Double'Image (A_Value) & "," &
+                           --  Double'Image (B_Value) & "," &
+                           Double'Image (abs (A_Value - B_Value))
+                        );
+
+               Temp_B_Index := Temp_B_Index + 1;
+            end loop;
+         end;
+      end Find_All_Matches;
+
+      --   -------
+
       procedure Closest_B_To_A (A_Curs : String19_Package.Cursor) is
          A_Index   : constant Extended_Index := To_Index (A_Curs);
          A_Value   : constant Double :=
@@ -66,7 +112,8 @@ package body Process_Data is
       Load_Data (CSV_B, B_Data);
 
       Create (Match_ID, Out_File, CSV_Match);
-      A_Data.Iterate (Closest_B_To_A'Access);
+      --  A_Data.Iterate (Closest_B_To_A'Access);
+      A_Data.Iterate (Find_All_Matches'Access);
       Close (Match_ID);
 
       Put_Line (Routine_Name & "CSV_Match file written to " & CSV_Match);
