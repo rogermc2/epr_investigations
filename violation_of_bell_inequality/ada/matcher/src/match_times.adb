@@ -16,7 +16,7 @@ procedure Match_Times is
    OEM_B           : constant String := B_Directory & "B_OEM.csv";
    Selected_OEM    : constant String := A_Directory & "Selected_OEM.csv";
    Matched_Times   : constant String := B_Directory & "Matched_Times.csv";
-   Width           : constant Double := Double (2.0 * 10.0 ** (-9));
+   Width           : constant Double := Double (4.0 * 10.0 ** (-9));
    Delta_A         : constant Double := (3.8 * 10.0 ** (-9));
    Selected_Pairs  : Match_List;
   begin

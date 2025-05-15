@@ -38,22 +38,19 @@ package body Process_Data is
          Done      : Boolean := False;
       begin
          --  Try to move forward in B_Data if it improves the match
-         while not Done loop
-            Done := B_Index + 1 > Integer (B_Data.Length);
-            if A_Index < 10 then
-               Put_Line
-                 (Routine_Name & "A and B indices: " &
-                    Integer'Image (A_Index) & "," & Integer'Image (B_Index));
-            end if;
+         while B_Index < Integer (B_Data.Length) and then not Done loop
+            --  if A_Index < 10 then
+            --     Put_Line
+            --       (Routine_Name & "A and B indices: " &
+            --          Integer'Image (A_Index) & "," & Integer'Image (B_Index));
+            --  end if;
 
+            New_Diff :=
+              abs (A_Value - Double'Value (B_Data.Element (B_Index + 1)));
+            Done := New_Diff >= Best_Diff;
             if not Done then
-               New_Diff :=
-                 abs (A_Value - Double'Value (B_Data.Element (B_Index + 1)));
-               Done := New_Diff >= Best_Diff;
-               if not Done then
-                  B_Index   := B_Index + 1;
-                  Best_Diff := New_Diff;
-               end if;
+               B_Index   := B_Index + 1;
+               Best_Diff := New_Diff;
             end if;
          end loop;
 
