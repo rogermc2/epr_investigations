@@ -37,4 +37,14 @@ package Types is
      Ada.Containers.Vectors (Positive, String_33);
    subtype String33_List is String33_Package.Vector;
 
+   type Data_Record is record
+      A_Index    : Natural;
+      B_Index    : Natural;
+      Difference : Double;
+   end record;
+
+   package Match_Package is new
+     Ada.Containers.Vectors (Natural, Data_Record);
+   subtype Match_List is Match_Package.Vector;
+
 end Types;
