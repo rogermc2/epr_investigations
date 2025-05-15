@@ -6,7 +6,7 @@ with Ada.Containers.Vectors;
 package Types is
    pragma Preelaborate;
 
-   type Double is digits 13;
+   type Double is digits 15;
 
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Integer range <>) of Byte;

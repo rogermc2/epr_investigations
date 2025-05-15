@@ -112,6 +112,9 @@ package body Process_Data is
          Line_Num := Line_Num + 1;
          Byte_Array'Read (Data_Stream, Data);
          Number := To_IEEE_Double_Big_Endian (Data);
+         if Line_Num < 4 then
+            Put_Line (Routine_Name & "Number: " & Double'Image (Number));
+         end if;
          Put_Line (PT_ID, Double'Image (Number));
       end loop;
 
