@@ -24,7 +24,7 @@ procedure Match_Times is
                   Integer'Image (Integer (Size (Photon_Times_A))) & " bytes");
    Put_Line (Routine_Name & "Photon_Times_B file size:" &
                   Integer'Image (Integer (Size (Photon_Times_B))) & " bytes");
-   Match_Photon_Times (Photon_Times_A, Photon_Times_B, Matched_Times, Delta_A);
+   Match_Photon_Times (Photon_Times_A, Photon_Times_B, Matched_Times, Delta_A, Width);
    Pair_Indices (Matched_Times, Width, Selected_Pairs);
    Select_OEM_Data (OEM_A, OEM_B, Selected_OEM, Selected_Pairs);
 

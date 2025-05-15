@@ -62,13 +62,13 @@ package body Data_Selection is
       use Ada.Directories;
       use Match_Package;
       Routine_Name : constant String := "Data_Selection.Pair_Indices ";
-      --  Width        : Double := Double (0.5 * abs (V - U));
       File_ID      : File_Type;
       Count        : Natural := 0;
    begin
       Open (File_ID, In_File, Match_CSV);
       Put_Line (Routine_Name & "Match_CSV file size:" &
                   Integer'Image (Integer (Size (Match_CSV))) & " bytes");
+      Put_Line (Routine_Name & "Width:" & Double'Image (Width));
 
       while not End_Of_File (File_ID) loop
          declare
