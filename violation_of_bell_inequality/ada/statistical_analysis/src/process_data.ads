@@ -11,6 +11,6 @@ package Process_Data is
      Ada.Containers.Vectors (Positive, Sample_Data_Record);
    subtype Sample_Data_List is Sample_Data_Package.Vector;
 
-   function Get_Sample_Data (OEM : String) return Sample_Data_List;
+   function Get_Detections (OEM : String) return Sample_Data_List;
 
 end Process_Data;
