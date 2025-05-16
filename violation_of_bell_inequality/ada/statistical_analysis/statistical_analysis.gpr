@@ -2,13 +2,15 @@ with "../../../../../../../Ada_Source/mathpaqs/mathpaqs.gpr";
 
 project Statistical_Analysis is
 
-   for Source_Dirs use ("src");
+   for Source_Dirs use ("src", "../common");
    for Object_Dir use "obj";
    for Main use ("statistics.adb");
 
    package Compiler is
       for Switches ("ada") use ("-gnatw.ufkpru", "-gnatybcdefux");
    end Compiler;
+
+   for Exec_Dir use ".";
 
 end Statistical_Analysis;
 
