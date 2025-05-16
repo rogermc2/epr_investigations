@@ -25,18 +25,19 @@ package body Data_Selection is
       use String4_IO;
       use Match_Package;
       Routine_Name : constant String := "Data_Selection.Select_OEM_Data ";
-      OEM_A_ID   : String4_IO.File_Type;
-      OEM_B_ID   : String4_IO.File_Type;
-      OEM_00_ID  : Ada.Text_IO.File_Type;
-      OEM_01_ID  : Ada.Text_IO.File_Type;
-      OEM_10_ID  : Ada.Text_IO.File_Type;
-      OEM_11_ID  : Ada.Text_IO.File_Type;
-      OEM_A_Line : String_4;
-      OEM_B_Line : String_4;
-      Indices    : Data_Record;
-      A_Index    : Integer;
-      B_Index    : Integer;
-      Count      : Natural := 0;
+      OEM_Header   : constant String := "A Set,A Det,B Set,B Det'";
+      OEM_A_ID       : String4_IO.File_Type;
+      OEM_B_ID       : String4_IO.File_Type;
+      OEM_00_ID     : Ada.Text_IO.File_Type;
+      OEM_01_ID     : Ada.Text_IO.File_Type;
+      OEM_10_ID     : Ada.Text_IO.File_Type;
+      OEM_11_ID      : Ada.Text_IO.File_Type;
+      OEM_A_Line    : String_4;
+      OEM_B_Line    : String_4;
+      Indices               : Data_Record;
+      A_Index             : Integer;
+      B_Index             : Integer;
+      Count                 : Natural := 0;
    begin
       Open (OEM_A_ID, In_File, OEM_A);
       Open (OEM_B_ID, In_File, OEM_B);
@@ -52,6 +53,10 @@ package body Data_Selection is
          B_Index :=  item.B_Index;
          Read (OEM_A_ID, OEM_A_Line, String4_IO.Positive_Count (A_Index));
          Read (OEM_B_ID, OEM_B_Line, String4_IO.Positive_Count (B_Index));
+         Put_Line (OEM_00_ID,  OEM_Header);
+         Put_Line (OEM_01_ID,  OEM_Header);
+         Put_Line (OEM_10_ID,  OEM_Header);
+         Put_Line (OEM_11_ID,  OEM_Header);
 
          if OEM_A_Line (1) = '0' and then OEM_B_Line (1) = '0' then
             Put_Line (OEM_00_ID, OEM_Data (OEM_A_Line, OEM_B_Line));
