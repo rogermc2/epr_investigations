@@ -15,6 +15,7 @@ package Types is
    subtype String_1 is String (1 .. 1);
    subtype String_3 is String (1 .. 3);
    subtype String_4 is String (1 .. 4);
+   subtype OEM_String is String (1 .. 9);
    subtype String_12 is String (1 .. 12);
    subtype String_19 is String (1 .. 19);
    subtype String_20 is String (1 .. 20);
