@@ -76,11 +76,15 @@ package body Data_Selection is
       Close (OEM_10_ID);
       Close (OEM_11_ID);
 
-      Put_Line (Routine_Name & "OEM selected data files written.");
       Put_Line (Routine_Name & "OEM_00 length:" & Integer'Image (Integer (Size (OEM_00))));
       Put_Line (Routine_Name & "OEM_01 length:" & Integer'Image (Integer (Size (OEM_01))));
       Put_Line (Routine_Name & "OEM_10 length:" & Integer'Image (Integer (Size (OEM_10))));
       Put_Line (Routine_Name & "OEM_11 length:" & Integer'Image (Integer (Size (OEM_11))));
+      Put_Line ("OEM selected data files written to:");
+      Put_Line (OEM_00);
+      Put_Line (OEM_01);
+      Put_Line (OEM_10);
+      Put_Line (OEM_11);
 
    end Select_OEM_Data;
 
