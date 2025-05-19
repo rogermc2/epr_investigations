@@ -24,8 +24,8 @@ package body Data_Selection is
       OEM_A, OEM_B, OEM_00, OEM_01, OEM_10, OEM_11 : String) is
       use String4_IO;
       use Match_Package;
-      Routine_Name          : constant String := "Data_Selection.Select_OEM_Data ";
-      OEM_Header            : constant String := "A Det,B Det,AB,A + B";
+      Routine_Name       : constant String := "Data_Selection.Select_OEM_Data ";
+      OEM_Header          : constant String := "A Det,B Det,AB,A+B";
       OEM_A_ID              : String4_IO.File_Type;
       OEM_B_ID              : String4_IO.File_Type;
       OEM_00_ID             : Ada.Text_IO.File_Type;
