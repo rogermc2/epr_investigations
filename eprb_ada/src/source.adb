@@ -1,39 +1,36 @@
 
-with Ada.Text_IO;               use Ada.Text_IO;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
-with Ada.Numerics;              use Ada.Numerics;
+with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
-with Ada.Calendar;              use Ada.Calendar;
-with Ada.Command_Line;          use Ada.Command_Line;
-with Ada.Streams;               --  For binary file writing
+with Ada.Calendar; use Ada.Calendar;
+with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Streams;   --  For binary file writing
 with Ada.Streams.Stream_IO;
-with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Types; use Types;
 
 package body Source is
 
-   procedure Build_Source (Num_Particles : Positive) is
+   subtype Index_Angles is Integer range 1 .. 33;
+   subtype Index_Ps is Integer range 1 .. 1000;
+
+   procedure Build_Source (Num_Particles         : Positive;
+                           Left_File, Right_File : String) is
       --  Set stack size:  ulimit -s 64000 to prevent stack overflow
 
-      type Particle is record
-         E     : Float;
-         P     : Float;
-         SpinN : Float;
-      end record;
-
-      type Particle_Array is array  (Positive range <>) of Particle;
-
-      Gen : Generator;
-
-      Left_Particles  : Particle_Array  (1 .. Num_Particles);
-      Right_Particles : Particle_Array  (1 .. Num_Particles);
-      Left_Count      : Natural := 0;
-      Right_Count     : Natural := 0;
-      Time_Spent      : Duration := 60.0;
+      Left_Particles  : Particle_Vector;
+      Right_Particles : Particle_Vector;
+      --  Left_Count      : Natural := 0;
+      --  Right_Count     : Natural := 0;
       Spin            : Float := 1.0;
       N               : Float;
       Phase           : Float;
       Angles          : array  (1 .. 33) of Float;
       Ps              : array  (1 .. 1000) of Float;
+      Time_Spent      : Duration := 60.0;
+      Gen             : Generator;
 
       --  Helper function to create linearly spaced array
       --  function Linspace  (Start_Val, End_Val : Float; Num : Positive)
@@ -50,18 +47,17 @@ package body Source is
 
       --  We will implement Linspace manually here for Angles and Ps
       --  For simplicity, define local arrays for Angles and Ps
-      subtype Index_Angles is Integer range 1 .. 33;
-      subtype Index_Ps is Integer range 1 .. 1000;
 
       --  We will fill Angles and Ps in initialization
       --  Emit procedure: chooses random angle and p, appends particles to
       --  left and right arrays
       procedure Emit is
-         E       : Float;
-         P       : Float;
-         Rand    : Integer := 0;
-         I_Angle : Index_Angles;
-         I_P     : Index_Ps;
+         --  Routine_Name : constant String := "Source.Emit ";
+         E            : Float;
+         P            : Float;
+         Rand         : Integer := 0;
+         I_Angle      : Index_Angles;
+         I_P          : Index_Ps;
       begin
          while Rand < 1 or else Rand > 33 loop
             Rand := Integer (Float_Random.Random (Gen) * 33.0) + 1;
@@ -77,30 +73,25 @@ package body Source is
          E := Angles (I_Angle);
          P := Ps (I_P);
 
-         if Left_Count < Left_Particles'Length then
-            Left_Count := Left_Count + 1;
-            Left_Particles (Left_Count) :=  (E => E, P => P, SpinN => N);
-         end if;
-
-         if Right_Count < Right_Particles'Length then
-            Right_Count := Right_Count + 1;
-            Right_Particles (Right_Count) :=
-              (E => E + Phase, P => P, SpinN => N);
-         end if;
+         Left_Particles.Append ((E, P, N));
+         Right_Particles.Append ((E + Phase, P, N));
 
       end Emit;
 
       --  Save procedure: saves particle array to a binary file
       --  (simple binary dump)
-      procedure Save (Filename : String; Particles : Particle_Array) is
+      procedure Save (File_Name : String; Particles : Particle_Vector) is
          use Ada.Streams.Stream_IO;
+         use Particle_Vector_Package;
          File_ID    : Ada.Streams.Stream_IO.File_Type;
          Out_Stream : Stream_Access;
+         Curs       : Cursor := Particles.First;
       begin
-         Create (File_ID, Out_File, Filename);
+         Create (File_ID, Out_File, File_Name);
          Out_Stream := Stream (File_ID);
-         for I in Particles'Range loop
-            Particle'Write (Out_Stream, Particles (I));
+         while Has_Element (Curs) loop
+            Particle_Data'Write (Out_Stream, Element (Curs));
+            Next  (Curs);
          end loop;
          Close (File_ID);
 
@@ -110,7 +101,7 @@ package body Source is
       --  procedure Print_Progress (ETA : Duration; Count : Natural) is
       --  begin
       --     New_Line;
-      --     Put ("ETA: " & Duration'Image (ETA));
+      --     Put ("Time to go: " & Duration'Image (ETA));
       --     --  Put (Integer (ETA), Width => 4);
       --     --  Put (Integer (Count), Width => 8);
       --     Put_Line ("s [" & Integer'Image (Count) & " pairs generated]");
@@ -185,28 +176,25 @@ package body Source is
       end loop;
 
       declare
-         Left_File    : constant String := "data/source_left.bin";
-         Right_File   : constant String := "data/source_right.bin";
          Start_Time   : constant Time := Clock;
          Count        : Natural := 0;
          Current_Time : Time;
-         Elapsed      : Duration;
+         Elapsed      : Duration := 0.0;
          ETA          : Duration;
       begin
-         Put_Line ("Generating particle spin" & Float'Image (Spin) &
-                     " particle pairs");
+         Put_Line ("Generating particle pairs with spin" & Float'Image (Spin));
          Count := 0;
-         loop
+         while Elapsed < Time_Spent loop
             Current_Time := Clock;
             Elapsed := Current_Time - Start_Time;
-            exit when Elapsed >= Time_Spent;
 
             Emit;
             Count := Count + 1;
 
             ETA := Time_Spent - Elapsed;
             if Count mod 5000000 = 0 then
-               Put ("ETA: " & Duration'Image (ETA));   --  , Width => 4);
+               Put ("Time to go: ");
+               Put (Duration'Image (ETA));   --  , Width => 4);
                Put ("s [" &  Integer'Image (Count));  --  , Width => 8);
                Put_Line (" pairs generated]");
                Flush;
@@ -218,9 +206,10 @@ package body Source is
          --  Save arrays to files
          Save (Left_File, Left_Particles);
          Save (Right_File, Right_Particles);
-         Put_Line (Integer'Image (Left_Count) & " particles in " &
-                     Left_File);
-         Put_Line (Integer'Image (Right_Count) & " particles in " &
+         Put_Line (Integer'Image (Integer (Left_Particles.Length)) &
+                     " particles in " & Left_File);
+         Put_Line (Integer'Image (Integer (Right_Particles.Length)) &
+                     " particles in " &
                      Right_File);
       end;
 

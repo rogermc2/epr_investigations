@@ -3,51 +3,34 @@ with Interfaces.C;
 
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Containers;
---  with Ada.Containers.Vectors;
---  with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Indefinite_Vectors;
---  with Ada.Containers.Indefinite_Doubly_Linked_Lists;
---  with Ada.Directories; use Ada.Directories;
---  with Ada.Exceptions;
---  with Ada.Float_Text_IO; use Ada.Float_Text_IO;
+with Ada.Containers.Vectors;
 with Ada.Numerics.Elementary_Functions;
---  with Ada.Numerics.Generic_Elementary_Functions;
-with Ada.Numerics;  use Ada.Numerics;
+with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Float_Random;
 with Ada.Streams.Stream_IO;
 with Ada.Streams;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
---  with Ada.Strings.Unbounded.Text_IO;
---  with Ada.Task_Identification;
---  with Ada.Synchronous_Task_Control;
---  with Ada.Task_Attributes;
---  with Ada.Task_Attributes.Dispatching;
---  with Ada.Task_Attributes.Dispatching.Task_Attributes;
---  with Ada.Task_Attributes.Dispatching.Task_Attributes.Dispatching;
-with Ada.Text_IO;               use Ada.Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Types; use Types;
 
 package body Detection is
-
-   type Float_Array is array (Positive range <>) of Float;
-
-   type Particle_Data is record
-      E : Float := 0.0;
-      P : Float := 0.0;
-      N : Integer := 0;
-   end record;
-   type Particle_Array is array (Positive range <>) of Particle_Data;
 
    type Result_Data is record
       Setting : Float := 0.0;
       Outcome : Float := 999.9;  --  Use Float to represent sign
    end record;
-   type Result_Array is array (Positive range <>) of Result_Data;
+   --  type Result_Array is array (Positive range <>) of Result_Data;
+   package Result_Vector_Package is new
+     Ada.Containers.Vectors (Positive, Result_Data);
+   subtype Result_Vector is Result_Vector_Package.Vector;
 
    type Station_Type (Num_Particles : Positive) is record
       Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
-      Particles : Particle_Array (1 .. Num_Particles);
-      Results   : Result_Array (1 .. Num_Particles);
+      --  Particles : Particle_Array (1 .. Num_Particles);
+      Particles : Particle_Vector;
+      Results   : Result_Vector;
+      --  Results   : Result_Array (1 .. Num_Particles);
    end record;
 
    type Particle_Record is record
@@ -59,11 +42,21 @@ package body Detection is
    --  Random number generator for angles
    Gen : Float_Random.Generator;
 
-   package Float_Vector_Package is new
-     Ada.Containers.Indefinite_Vectors (Positive, Float);
-   subtype Float_Vector is Float_Vector_Package.Vector;
+   function File_Length (File_Name : String) return Natural is
+      use Ada.Streams.Stream_IO;
+      File_ID  : Ada.Streams.Stream_IO.File_Type;
+      Length   : Natural := 0;
+   begin
+      Open (File_ID, In_File, File_Name);
+      Length := Natural (Ada.Streams.Stream_IO.Size (File_ID));
+      Close (File_ID);
 
-   procedure Station_Detection  (Num_Particles : Positive) is
+      return Length;
+
+   end File_Length;
+
+   procedure Station_Detection (File_Name : String) is
+      Num_Particles : constant Natural := File_Length (File_Name);
       --  NaN representation
       --  function NaN return Float is
       --     use Ada.Numerics.Elementary_Functions;
@@ -97,8 +90,8 @@ package body Detection is
       begin
          --  Put_Line ("Detect_Particle Particle.N: " &
          --              Integer'Image (Particle.N));
-         C := double ((-1) ** Particle.N) *
-           double (Cos (Float (Particle.N) * (Setting - Particle.E)));
+         C := double ((-1) ** Natural (Particle.Spin_N)) *
+           double (Cos (Particle.Spin_N * (Setting - Particle.E)));
          if double (Particle.P) < abs (C) then
             Result := Float (Sign (C));
          else
@@ -112,15 +105,21 @@ package body Detection is
       --  Procedure to save results to a file  (binary)
       procedure Save (Station : Station_Type; File_Name : String) is
          use Ada.Streams.Stream_IO;
+         use Result_Vector_Package;
          File_ID    : Ada.Streams.Stream_IO.File_Type;
          Out_Stream : Stream_Access;
+         Curs       : Cursor := Station.Results.First;
       begin
          Create (File_ID, Out_File, File_Name);
          Out_Stream := Stream (File_ID);
-         for I in Station.Results'Range loop
+         --  for I in Station.Results'Range loop
+         while Has_Element (Curs) loop
             --  Write Setting and Outcome as Float values
-            Float'Write (Out_Stream, Station.Results (I).Setting);
-            Float'Write (Out_Stream, Station.Results (I).Outcome);
+            --  Float'Write (Out_Stream, Station.Results (I).Setting);
+            --  Float'Write (Out_Stream, Station.Results (I).Outcome);
+            Float'Write (Out_Stream, Element (Curs).Setting);
+            Float'Write (Out_Stream, Element (Curs).Outcome);
+            Next (Curs);
          end loop;
          Close (File_ID);
 
@@ -143,7 +142,7 @@ package body Detection is
       procedure Run (Station : in out Station_Type;
                      Angles  : Float_Array) is
          --  Infos      : Record_Array (1 .. Station.Particles'Length);
-         Results    : Result_Array (1 .. Station.Particles'Length);
+         Results    : Result_Vector;
          Start_Time : Time;
          End_Time   : Time;
       begin
@@ -152,12 +151,11 @@ package body Detection is
 
          --  Prepare infos array
          declare
+            use Result_Vector_Package;
             subtype Index_Type is
-              Positive range 1 .. Station.Particles'Length;
+              Positive range 1 .. Integer (Station.Particles.Length);
 
             Infos_Array : Record_Array (Index_Type);
-            --  Particle    : Particle_Data;
-            --  Setting     : Float;
          begin
             for I in Index_Type loop
                Infos_Array (I).Particle := Station.Particles (I);
@@ -165,20 +163,20 @@ package body Detection is
             end loop;
 
             --  Sequential processing  (no multiprocessing in Ada standard)
-            for I in Index_Type loop
-               Results (I) := Detect_Particle
-                 (Infos_Array (I).Particle, Infos_Array (I).Setting);
+            for I in Infos_Array'Range loop
+               Append (Results, Detect_Particle
+                       (Infos_Array (I).Particle, Infos_Array (I).Setting));
             end loop;
          end;
 
          End_Time := Clock;
-         Put_Line ("Done: " & Integer'Image (Station.Particles'Length) &
-                     " particles detected in " &
-                     Float'Image (Float (End_Time - Start_Time)) & " sec!");
+         Put_Line
+           ("Done: " & Integer'Image (Integer (Station.Particles.Length)) &
+              " particles detected in " &
+              Float'Image (Float (End_Time - Start_Time)) & " seconds.");
 
          Station.Results := Results;
          --  Note: gzip not implemented here, just filename
-         --  Save (Station, Station.Name & ".npy.gz");
          Save (Station, "data/" & To_String (Station.Name) & ".bin");
 
       end Run;
@@ -202,12 +200,7 @@ package body Detection is
             --     package Float_IO is new Ada.Float_Text_IO (Float);
             --     use Float_IO;
             --  begin
-            --     Val_IO := 0.0;
             Val_IO := Float'Value (Val_Str);
-            --  exception
-            --     when others =>
-            --        Val_IO := 0.0;
-            --  end;
 
             Result.Append (Val_IO);
          end Form_Value;
@@ -250,26 +243,26 @@ package body Detection is
 
       --  Load particles from file  (dummy implementation)
       --  function Load_Particles (File_Name : String) return Particle_Array is
-      function Load_Particles return Particle_Array is
+      function Load_Particles (File_Name : String) return Particle_Vector is
          --  This is a stub: real load and gzip not implemented
          --  Return dummy data for demonstration
-         Dummy : Particle_Array (1 .. Num_Particles);
+         Dummy : Particle_Vector;
       begin
-         Dummy (1) :=  (E => 0.0, P => 0.5, N => 1);
-         Dummy (2) :=  (E => 1.0, P => 0.3, N => 2);
-         Dummy (3) :=  (E => 2.0, P => 0.7, N => 3);
+         --  Dummy (1) :=  (E => 0.0, P => 0.5, Spin_N => 1.0);
+         --  Dummy (2) :=  (E => 1.0, P => 0.3, Spin_N => 2.0);
+         --  Dummy (3) :=  (E => 2.0, P => 0.7, Spin_N => 3.0);
          return Dummy;
       end Load_Particles;
 
       --  Convert degrees to radians
       function To_Radians (Degrees : Float) return Float is
-         Pi : constant Float := 3.14159265358979323846;
+         --  Pi : constant Float := 3.14159265358979323846;
       begin
          return Degrees * Pi / 180.0;
       end To_Radians;
 
-      function Linspace (Start_Val, End_Val : Float; Num : Positive)
-                         return Float_Vector is
+      function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
+                             return Float_Vector is
          Step   : constant Float :=  (End_Val - Start_Val) / Float (Num - 1);
          Result : Float_Vector;
       begin
@@ -278,9 +271,8 @@ package body Detection is
          end loop;
 
          return Result;
-      end Linspace;
+      end Linear_Space;
 
-      --  Main program
       Arg_Count     : constant Integer := Argument_Count;
       Angles_Vector : Float_Vector;
       --  Angles_Array  : Float_Array;
@@ -308,59 +300,55 @@ package body Detection is
          return;
       end if;
 
-      declare
-         File_Name : constant String := Argument (1);
-      begin
-         if Arg_Count = 1 then
-            --  angles = numpy.linspace (0, 2*pi, 33)
-            Angles_Vector := Linspace (0.0, 2.0 * 3.14159265358979323846, 33);
-         else
-            --  parse angles from second argument
+      New_Line;
+      if Arg_Count = 1 then
+         Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
+      else
+         --  parse angles from second argument
+         declare
+            Angles_Str    : constant String := Argument (2);
+            Parsed_Floats : Float_Vector;
+            --  package Float_Vector is new
+            --    Ada.Containers.Indefinite_Vectors (Float);
+         begin
+            Parsed_Floats := Parse_Floats (Angles_Str);
+            --  convert degrees to radians
             declare
-               Angles_Str    : constant String := Argument (2);
-               Parsed_Floats : Float_Vector;
                --  package Float_Vector is new
                --    Ada.Containers.Indefinite_Vectors (Float);
+               --  Temp_Vector : Float_Vector.Vector;
+               Temp_Vector : Float_Vector;
             begin
-               Parsed_Floats := Parse_Floats (Angles_Str);
-               --  convert degrees to radians
-               declare
-                  --  package Float_Vector is new
-                  --    Ada.Containers.Indefinite_Vectors (Float);
-                  --  Temp_Vector : Float_Vector.Vector;
-                  Temp_Vector : Float_Vector;
-               begin
-                  for I in Parsed_Floats.First_Index ..
-                    Parsed_Floats.Last_Index loop
-                     Temp_Vector.Append
-                       (To_Radians (Parsed_Floats.Element (I)));
-                  end loop;
-                  Angles_Vector := Temp_Vector;
-               end;
+               for I in Parsed_Floats.First_Index ..
+                 Parsed_Floats.Last_Index loop
+                  Temp_Vector.Append
+                    (To_Radians (Parsed_Floats.Element (I)));
+               end loop;
+               Angles_Vector := Temp_Vector;
             end;
+         end;
+      end if;
+
+      --  Convert Angles_Vector to array for easier indexing
+      declare
+         Angles_Array : constant Float_Array :=
+           Angles_Vector_To_Array (Angles_Vector);
+      begin
+         --  Load particles
+         --  Particles := Load_Particles (File_Name);
+
+         --  Determine name
+         if File_Name = "data/source_left.bin" then
+            Name := To_Unbounded_String ("A");
+         elsif File_Name = "data/source_right.bin" then
+            Name := To_Unbounded_String ("B");
          end if;
 
-         --  Convert Angles_Vector to array for easier indexing
-         declare
-            Angles_Array : constant Float_Array :=
-              Angles_Vector_To_Array (Angles_Vector);
-         begin
-            --  Load particles
-            --  Particles := Load_Particles (File_Name);
-            Station.Particles := Load_Particles;
+         Station.Name := Name;
+         Station.Particles := Load_Particles (File_Name);
 
-            --  Determine name
-            if File_Name = "data/source_left.bin" then
-               Name := To_Unbounded_String ("A");
-            elsif File_Name = "data/source_right.bin" then
-               Name := To_Unbounded_String ("B");
-            end if;
-
-            Station.Name := Name;
-
-            --  Run detection
-            Run (Station, Angles_Array);
-         end;
+         --  Run detection
+         Run (Station, Angles_Array);
       end;
 
    end Station_Detection;
