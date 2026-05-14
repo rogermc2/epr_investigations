@@ -3,7 +3,6 @@ with Interfaces.C;
 
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Containers.Vectors;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Float_Random;
@@ -13,24 +12,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Types; use Types;
+with Utilities; use Utilities;
 
 package body Detection is
 
-   type Result_Data is record
-      Setting : Float := 0.0;
-      Outcome : Float := 999.9;  --  Use Float to represent sign
-   end record;
-   --  type Result_Array is array (Positive range <>) of Result_Data;
-   package Result_Vector_Package is new
-     Ada.Containers.Vectors (Positive, Result_Data);
-   subtype Result_Vector is Result_Vector_Package.Vector;
-
    type Station_Type (Num_Particles : Positive) is record
       Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
-      --  Particles : Particle_Array (1 .. Num_Particles);
       Particles : Particle_Vector;
       Results   : Result_Vector;
-      --  Results   : Result_Array (1 .. Num_Particles);
    end record;
 
    type Particle_Record is record
@@ -41,19 +30,6 @@ package body Detection is
 
    --  Random number generator for angles
    Gen : Float_Random.Generator;
-
-   function File_Length (File_Name : String) return Natural is
-      use Ada.Streams.Stream_IO;
-      File_ID  : Ada.Streams.Stream_IO.File_Type;
-      Length   : Natural := 0;
-   begin
-      Open (File_ID, In_File, File_Name);
-      Length := Natural (Ada.Streams.Stream_IO.Size (File_ID));
-      Close (File_ID);
-
-      return Length;
-
-   end File_Length;
 
    procedure Station_Detection (File_Name : String) is
       Num_Particles : constant Natural := File_Length (File_Name);
@@ -240,19 +216,6 @@ package body Detection is
          return Result;
 
       end Parse_Floats;
-
-      --  Load particles from file  (dummy implementation)
-      --  function Load_Particles (File_Name : String) return Particle_Array is
-      function Load_Particles (File_Name : String) return Particle_Vector is
-         --  This is a stub: real load and gzip not implemented
-         --  Return dummy data for demonstration
-         Dummy : Particle_Vector;
-      begin
-         --  Dummy (1) :=  (E => 0.0, P => 0.5, Spin_N => 1.0);
-         --  Dummy (2) :=  (E => 1.0, P => 0.3, Spin_N => 2.0);
-         --  Dummy (3) :=  (E => 2.0, P => 0.7, Spin_N => 3.0);
-         return Dummy;
-      end Load_Particles;
 
       --  Convert degrees to radians
       function To_Radians (Degrees : Float) return Float is
