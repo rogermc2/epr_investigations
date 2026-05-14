@@ -104,32 +104,25 @@ package body Detection is
 
    end Run_Detection;
 
-   procedure Station_Detection (File_Name : String) is
-      Num_Particles : constant Natural := File_Length (File_Name);
+   function Process_Command_Line return Float_Vector is
       Arg_Count     : constant Integer := Argument_Count;
       Angles_Vector : Float_Vector;
-      Station       : Station_Type (Num_Particles);
    begin
       if Arg_Count < 1 then
          Put_Line ("Usage: ");
          Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
-         return;
-      end if;
-
-      New_Line;
-      if Arg_Count = 1 then
-         Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
       else
-         --  parse angles from second argument
-         declare
-            Angles_Str    : constant String := Argument (2);
-            Parsed_Floats : Float_Vector;
-         begin
-            Parsed_Floats := Parse_Floats (Angles_Str);
-            --  convert degrees to radians
+         New_Line;
+         if Arg_Count = 1 then
+            Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
+         else
+            --  parse angles from second argument
             declare
                use Float_Vector_Package;
-               Temp_Vector : Float_Vector;
+               Angles_Str    : constant String := Argument (2);
+               Parsed_Floats : constant Float_Vector :=
+                 Parse_Floats (Angles_Str);
+               Temp_Vector   : Float_Vector;
             begin
                for I in Parsed_Floats.First_Index ..
                  Parsed_Floats.Last_Index loop
@@ -138,9 +131,18 @@ package body Detection is
                end loop;
                Angles_Vector := Temp_Vector;
             end;
-         end;
+         end if;
       end if;
 
+      return Angles_Vector;
+
+   end Process_Command_Line;
+
+   procedure Station_Detection (File_Name : String) is
+      Num_Particles : constant Natural := File_Length (File_Name);
+      Angles_Vector : constant Float_Vector := Process_Command_Line;
+      Station       : Station_Type (Num_Particles);
+   begin
       declare
          Angles_Array : constant Float_Array :=
            Angles_Vector_To_Array (Angles_Vector);
