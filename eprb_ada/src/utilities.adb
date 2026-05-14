@@ -1,7 +1,11 @@
 
+with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Numerics;
 with Ada.Streams;               --  For binary file writing
 with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
+
+with Maths;
 
 package body Utilities is
 
@@ -113,6 +117,40 @@ package body Utilities is
       return Result;
 
    end Parse_Floats;
+
+   function Process_Command_Line return Float_Vector is
+      use Ada.Numerics;
+      use Ada.Text_IO;
+      use Maths;
+      Arg_Count     : constant Integer := Argument_Count;
+      Angles_Vector : Float_Vector;
+   begin
+      if Arg_Count < 1 then
+         Put_Line ("Usage: ");
+         Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
+      else
+         New_Line;
+         if Arg_Count = 1 then
+            Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
+         else
+            --  parse angles from second argument
+            declare
+               use Float_Vector_Package;
+               Parsed_Floats : constant Float_Vector :=
+                 Parse_Floats (Argument (2));
+            begin
+               for I in Parsed_Floats.First_Index ..
+                 Parsed_Floats.Last_Index loop
+                  Angles_Vector.Append
+                    (To_Radians (Parsed_Floats.Element (I)));
+               end loop;
+            end;
+         end if;
+      end if;
+
+      return Angles_Vector;
+
+   end Process_Command_Line;
 
    procedure Save (Station : Station_Type; File_Name : String) is
       use Ada.Streams.Stream_IO;

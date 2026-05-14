@@ -2,14 +2,12 @@
 with Interfaces.C;
 
 with Ada.Calendar; use Ada.Calendar;
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths; use Maths;
-with Types; use Types;
 with Utilities; use Utilities;
 
 package body Detection is
@@ -57,38 +55,7 @@ package body Detection is
 
    end Get_Particles;
 
-   function Process_Command_Line return Float_Vector is
-      Arg_Count     : constant Integer := Argument_Count;
-      Angles_Vector : Float_Vector;
-   begin
-      if Arg_Count < 1 then
-         Put_Line ("Usage: ");
-         Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
-      else
-         New_Line;
-         if Arg_Count = 1 then
-            Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
-         else
-            --  parse angles from second argument
-            declare
-               use Float_Vector_Package;
-               Parsed_Floats : constant Float_Vector :=
-                 Parse_Floats (Argument (2));
-            begin
-               for I in Parsed_Floats.First_Index ..
-                 Parsed_Floats.Last_Index loop
-                  Angles_Vector.Append
-                    (To_Radians (Parsed_Floats.Element (I)));
-               end loop;
-            end;
-         end if;
-      end if;
-
-      return Angles_Vector;
-
-   end Process_Command_Line;
-
-   procedure Run_Detection (File_Name : String) is
+   procedure Run_Detection (Settings : Float_Vector; File_Name : String) is
       use Float_Vector_Package;
       Routine_Name  : constant String := "Detection.Run_Detection ";
       --  Infos      : Record_Array (1 .. Station.Particles'Length);
