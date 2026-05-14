@@ -6,7 +6,8 @@ with Types; use Types;
 package Maths is
 
    function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
-                             return Float_Vector;
+                          return Float_Vector;
+   function Random_Choice (Angles : Float_Array) return Float;
    function Sign (X : Interfaces.C.double) return Integer;
    function To_Radians (Degrees : Float) return Float;
 

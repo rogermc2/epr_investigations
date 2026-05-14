@@ -1,7 +1,11 @@
 
 with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics.Float_Random;
 
 package body Maths is
+
+   --  Random number generator for angles
+   Gen : Float_Random.Generator;
 
    --  NaN representation
    --  function NaN return Float is
@@ -12,6 +16,19 @@ package body Maths is
    --  exception
    --     when others => return 0.0 / 0.0;
    --  end NaN;
+
+   function Random_Choice (Angles : Float_Array) return Float is
+      Index : Integer :=
+        Integer (Float (Angles'Length) * Float_Random.Random (Gen)) + 1;
+   begin
+      if Index > Angles'Length then
+         Index := Angles'Length;
+      elsif Index < 1 then
+         Index := 1;
+      end if;
+      return Angles (Index);
+
+   end Random_Choice;
 
    function Sign (X : Interfaces.C.double) return Integer is
    begin
@@ -32,7 +49,7 @@ package body Maths is
    end To_Radians;
 
    function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
-                       return Float_Vector is
+                          return Float_Vector is
       Step   : constant Float :=  (End_Val - Start_Val) / Float (Num - 1);
       Result : Float_Vector;
    begin
