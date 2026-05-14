@@ -1,5 +1,6 @@
 
 with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Types is
 
@@ -32,5 +33,11 @@ package Types is
    package Result_Vector_Package is new
      Ada.Containers.Vectors (Positive, Result_Data);
    subtype Result_Vector is Result_Vector_Package.Vector;
+
+   type Station_Type (Num_Particles : Positive) is record
+      Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
+      Particles : Particle_Vector;
+      Results   : Result_Vector;
+   end record;
 
 end Types;

@@ -17,12 +17,6 @@ with Utilities; use Utilities;
 
 package body Detection is
 
-   type Station_Type (Num_Particles : Positive) is record
-      Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
-      Particles : Particle_Vector;
-      Results   : Result_Vector;
-   end record;
-
    type Record_Array is array (Positive range <>) of Particle_Record;
 
    --  Random number generator for angles
@@ -30,16 +24,6 @@ package body Detection is
 
    procedure Station_Detection (File_Name : String) is
       Num_Particles : constant Natural := File_Length (File_Name);
-      --  NaN representation
-      --  function NaN return Float is
-      --     use Ada.Numerics.Elementary_Functions;
-      --     X : constant Float := 0.0 / 0.0;
-      --  begin
-      --     return X;
-      --  exception
-      --     when others => return 0.0 / 0.0;
-      --  end NaN;
-
       --  Detect particle function
       function Detect_Particle (Particle : Particle_Data; Setting : Float)
                                 return Result_Data is
@@ -72,11 +56,8 @@ package body Detection is
       begin
          Create (File_ID, Out_File, File_Name);
          Out_Stream := Stream (File_ID);
-         --  for I in Station.Results'Range loop
          while Has_Element (Curs) loop
             --  Write Setting and Outcome as Float values
-            --  Float'Write (Out_Stream, Station.Results (I).Setting);
-            --  Float'Write (Out_Stream, Station.Results (I).Outcome);
             Float'Write (Out_Stream, Element (Curs).Setting);
             Float'Write (Out_Stream, Element (Curs).Outcome);
             Next (Curs);
@@ -122,7 +103,6 @@ package body Detection is
                Infos_Array (I).Setting := Random_Choice (Angles);
             end loop;
 
-            --  Sequential processing  (no multiprocessing in Ada standard)
             for I in Infos_Array'Range loop
                Append (Results, Detect_Particle
                        (Infos_Array (I).Particle, Infos_Array (I).Setting));
@@ -140,66 +120,6 @@ package body Detection is
          Save (Station, "data/" & To_String (Station.Name) & ".bin");
 
       end Run;
-
-      --  Helper to parse comma separated floats from string
-      function Parse_Floats (Str : String) return Float_Vector is
-         use Float_Vector_Package;
-         Result    : Float_Vector;
-         Start_Pos : Natural := 0;
-         Comma_Pos : Natural := 0;
-         --  Val       : Float;
-
-         procedure Form_Value (Val_Str : String) is
-            --  Val_Str : String := Sub_Str;
-            --  Val_Pos : Positive := Val_Str'First;
-            --  Val_End : Positive := Val_Str'Last;
-            Val_IO : Float := 0.0;
-            --  Last : Positive;
-         begin
-            --  declare
-            --     package Float_IO is new Ada.Float_Text_IO (Float);
-            --     use Float_IO;
-            --  begin
-            Val_IO := Float'Value (Val_Str);
-
-            Result.Append (Val_IO);
-         end Form_Value;
-
-      begin
-         loop
-            Comma_Pos := 0;
-            for I in Start_Pos .. Str'Length loop
-               if Str (I) = ',' then
-                  Comma_Pos := I;
-                  exit;
-               end if;
-            end loop;
-
-            if Comma_Pos = 0 then
-               declare
-                  Sub_Str : constant String := Str (Start_Pos .. Str'Last);
-               begin
-                  Form_Value (Sub_Str);
-               end;
-            else
-               declare
-                  Sub_Str : constant String :=
-                    Str (Start_Pos .. Comma_Pos - 1);
-               begin
-                  Form_Value (Sub_Str);
-               end;
-            end if;
-
-            if Comma_Pos = 0 then
-               exit;
-            else
-               Start_Pos := Comma_Pos + 1;
-            end if;
-         end loop;
-
-         return Result;
-
-      end Parse_Floats;
 
       --  Convert degrees to radians
       function To_Radians (Degrees : Float) return Float is

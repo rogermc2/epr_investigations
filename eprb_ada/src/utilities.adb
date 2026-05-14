@@ -37,6 +37,87 @@ package body Utilities is
 
    end Load_Particles;
 
+   function Parse_Floats (Str : String) return Float_Vector is
+         use Float_Vector_Package;
+         Result    : Float_Vector;
+         Start_Pos : Natural := 0;
+         Comma_Pos : Natural := 0;
+         --  Val       : Float;
+
+         procedure Form_Value (Val_Str : String) is
+            --  Val_Str : String := Sub_Str;
+            --  Val_Pos : Positive := Val_Str'First;
+            --  Val_End : Positive := Val_Str'Last;
+            Val_IO : Float := 0.0;
+            --  Last : Positive;
+         begin
+            --  declare
+            --     package Float_IO is new Ada.Float_Text_IO (Float);
+            --     use Float_IO;
+            --  begin
+            Val_IO := Float'Value (Val_Str);
+
+            Result.Append (Val_IO);
+         end Form_Value;
+
+      begin
+         loop
+            Comma_Pos := 0;
+            for I in Start_Pos .. Str'Length loop
+               if Str (I) = ',' then
+                  Comma_Pos := I;
+                  exit;
+               end if;
+            end loop;
+
+            if Comma_Pos = 0 then
+               declare
+                  Sub_Str : constant String := Str (Start_Pos .. Str'Last);
+               begin
+                  Form_Value (Sub_Str);
+               end;
+            else
+               declare
+                  Sub_Str : constant String :=
+                    Str (Start_Pos .. Comma_Pos - 1);
+               begin
+                  Form_Value (Sub_Str);
+               end;
+            end if;
+
+            if Comma_Pos = 0 then
+               exit;
+            else
+               Start_Pos := Comma_Pos + 1;
+            end if;
+         end loop;
+
+         return Result;
+
+      end Parse_Floats;
+
+   procedure Save (Station : Station_Type; File_Name : String) is
+      use Ada.Streams.Stream_IO;
+      use Result_Vector_Package;
+      File_ID    : Ada.Streams.Stream_IO.File_Type;
+      Out_Stream : Stream_Access;
+      Curs       : Cursor := Station.Results.First;
+   begin
+      Create (File_ID, Out_File, File_Name);
+      Out_Stream := Stream (File_ID);
+      --  for I in Station.Results'Range loop
+      while Has_Element (Curs) loop
+         --  Write Setting and Outcome as Float values
+         --  Float'Write (Out_Stream, Station.Results (I).Setting);
+         --  Float'Write (Out_Stream, Station.Results (I).Outcome);
+         Float'Write (Out_Stream, Element (Curs).Setting);
+         Float'Write (Out_Stream, Element (Curs).Outcome);
+         Next (Curs);
+      end loop;
+      Close (File_ID);
+
+   end Save;
+
    procedure Save (Filename : String; Particles : Particle_Vector) is
       use Ada.Streams.Stream_IO;
       use Particle_Vector_Package;
