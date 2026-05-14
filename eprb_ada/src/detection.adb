@@ -47,10 +47,6 @@ package body Detection is
       end if;
 
       declare
-         use Particle_Vector_Package;
-         Angles_Vector : constant Particle_Vector :=
-           Load_Particles (File_Name);
-         Vector_Length : constant Natural := Natural (Length (Angles_Vector));
          Station       : Station_Type;
       begin
          Station.Name := Name;
@@ -92,61 +88,57 @@ package body Detection is
 
    end Process_Command_Line;
 
-   procedure Run_Detection (File_Name : String; Station : in out Station_Type;
-                            Angles    : Float_Array) is
+   procedure Run_Detection (File_Name : String) is
+      use Float_Vector_Package;
+      Routine_Name  : constant String := "Detection.Run_Detection ";
       --  Infos      : Record_Array (1 .. Station.Particles'Length);
-      Results    : Result_Vector;
-      Start_Time : Time;
-      End_Time   : Time;
-   begin
-      Put_Line ("Detecting particles for arm " & To_String (Station.Name));
-      Station :=  Get_Particles (File_Name);
-      Start_Time := Clock;
-
-      --  Prepare infos array
-      declare
-         use Result_Vector_Package;
-         subtype Index_Type is
-           Positive range 1 .. Integer (Station.Particles.Length);
-
-         Infos_Array : Record_Array (Index_Type);
-      begin
-         for I in Index_Type loop
-            Infos_Array (I).Particle := Station.Particles (I);
-            Infos_Array (I).Setting := Random_Choice (Angles);
-         end loop;
-
-         for I in Infos_Array'Range loop
-            Append (Results, Detect_Particle
-                    (Infos_Array (I).Particle, Infos_Array (I).Setting));
-         end loop;
-      end;
-
-      End_Time := Clock;
-      Put_Line
-        ("Done: " & Integer'Image (Integer (Station.Particles.Length)) &
-           " particles detected in " &
-           Float'Image (Float (End_Time - Start_Time)) & " seconds.");
-
-      Station.Results := Results;
-      Save (Station, "data/" & To_String (Station.Name) & ".bin");
-
-   end Run_Detection;
-
-   procedure Station_Detection (File_Name : String) is
-      Routine_Name  : constant String := "Detection.Station_Detection ";
       Num_Particles : constant Natural := File_Length (File_Name);
       Angles_Vector : constant Float_Vector := Process_Command_Line;
+      --  Vector_Length : constant Natural := Natural (Length (Angles_Vector));
       Angles_Array  : constant Float_Array :=
         Angles_Vector_To_Array (Angles_Vector);
+      --  Angles        : Float_Array (1 .. Vector_Length);
       Station       : Station_Type := Get_Particles (File_Name);
+      Results       : Result_Vector;
+      Start_Time    : Time;
+      End_Time      : Time;
    begin
       if Num_Particles > 0 then
-         Run_Detection (File_Name, Station, Angles_Array);
+         Put_Line ("Detecting particles for arm " & To_String (Station.Name));
+         Station :=  Get_Particles (File_Name);
+         Start_Time := Clock;
+
+         --  Prepare infos array
+         declare
+            use Result_Vector_Package;
+            subtype Index_Type is
+              Positive range 1 .. Integer (Station.Particles.Length);
+
+            Infos_Array : Record_Array (Index_Type);
+         begin
+            for I in Index_Type loop
+               Infos_Array (I).Particle := Station.Particles (I);
+               Infos_Array (I).Setting := Random_Choice (Angles_Array);
+            end loop;
+
+            for I in Infos_Array'Range loop
+               Append (Results, Detect_Particle
+                       (Infos_Array (I).Particle, Infos_Array (I).Setting));
+            end loop;
+         end;
+
+         End_Time := Clock;
+         Put_Line
+           ("Done: " & Integer'Image (Integer (Station.Particles.Length)) &
+              " particles detected in " &
+              Float'Image (Float (End_Time - Start_Time)) & " seconds.");
+
+         Station.Results := Results;
+         Save (Station, "data/" & To_String (Station.Name) & ".bin");
       else
          Put_Line (Routine_Name & "empty file: " & File_Name);
       end if;
 
-   end Station_Detection;
+   end Run_Detection;
 
 end Detection;

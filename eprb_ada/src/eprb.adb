@@ -4,7 +4,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Source; use Source;
 with Detection; use Detection;
 
-procedure EPRB_Ada is
+procedure EPRB is
    --  Set stack size:  ulimit -s 64000 to prevent stack overflow
 
    Left_Source_File  : constant String := "data/source_left.bin";
@@ -13,7 +13,7 @@ procedure EPRB_Ada is
 begin
    Put_Line ("Set stack size: ulimit -s 64000");
    Build_Source (Num_Particles, Left_Source_File, Right_Source_File);
-   Station_Detection (Left_Source_File);
-   Station_Detection (Right_Source_File);
+   Run_Detection (Left_Source_File);
+   Run_Detection (Right_Source_File);
 
-end EPRB_Ada;
+end EPRB;

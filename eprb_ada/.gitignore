@@ -2,5 +2,15 @@
 /bin/
 /alire/
 /config/
+.DS_Store
+b__*
+*.ali
+*.stderr
+*.stdout
+*.cswi
+*bexch
+*.o
+*.cpgr
 *.bin
 */*.bin
+eprb
