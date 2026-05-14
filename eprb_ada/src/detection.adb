@@ -11,6 +11,7 @@ with Ada.Streams;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Maths; use Maths;
 with Types; use Types;
 with Utilities; use Utilities;
 
@@ -22,10 +23,6 @@ package body Detection is
       Results   : Result_Vector;
    end record;
 
-   type Particle_Record is record
-      Particle : Particle_Data;
-      Setting  : Float;
-   end record;
    type Record_Array is array (Positive range <>) of Particle_Record;
 
    --  Random number generator for angles
@@ -42,19 +39,6 @@ package body Detection is
       --  exception
       --     when others => return 0.0 / 0.0;
       --  end NaN;
-
-      function Sign (X : Interfaces.C.double) return Integer is
-         use Interfaces.C;
-      begin
-         if X > 0.0 then
-            return 1;
-         elsif X < 0.0 then
-            return -1;
-         else
-            return 0;
-         end if;
-
-      end Sign;
 
       --  Detect particle function
       function Detect_Particle (Particle : Particle_Data; Setting : Float)

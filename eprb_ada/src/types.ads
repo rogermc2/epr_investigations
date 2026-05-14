@@ -19,6 +19,11 @@ package Types is
      Ada.Containers.Vectors (Positive, Particle_Data);
    subtype Particle_Vector is Particle_Vector_Package.Vector;
 
+   type Particle_Record is record
+      Particle : Particle_Data;
+      Setting  : Float;
+   end record;
+
    type Result_Data is record
       Setting : Float := 0.0;
       Outcome : Float := 999.9;  --  Use Float to represent sign
