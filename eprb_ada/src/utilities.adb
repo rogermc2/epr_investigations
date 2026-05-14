@@ -5,6 +5,23 @@ with Ada.Text_IO;
 
 package body Utilities is
 
+   --  Convert Angles_Vector to array for easier indexing
+   function Angles_Vector_To_Array
+     (Angles_Vector : Float_Vector) return Float_Array is
+      use Float_Vector_Package;
+      Curs       : Cursor := Angles_Vector.First;
+      Temp_Array : Float_Array  (1 .. Integer (Length (Angles_Vector)));
+      Index      : Natural := 0;
+   begin
+      while Has_Element (Curs) loop
+         Index := Index + 1;
+         Temp_Array (Index) := Element (Curs);
+         Next (Curs);
+      end loop;
+      return Temp_Array;
+
+   end Angles_Vector_To_Array;
+
    function File_Length (File_Name : String) return Natural is
       use Ada.Streams.Stream_IO;
       File_ID  : Ada.Streams.Stream_IO.File_Type;
@@ -38,63 +55,63 @@ package body Utilities is
    end Load_Particles;
 
    function Parse_Floats (Str : String) return Float_Vector is
-         use Float_Vector_Package;
-         Result    : Float_Vector;
-         Start_Pos : Natural := 0;
-         Comma_Pos : Natural := 0;
-         --  Val       : Float;
+      use Float_Vector_Package;
+      Result    : Float_Vector;
+      Start_Pos : Natural := 0;
+      Comma_Pos : Natural := 0;
+      --  Val       : Float;
 
-         procedure Form_Value (Val_Str : String) is
-            --  Val_Str : String := Sub_Str;
-            --  Val_Pos : Positive := Val_Str'First;
-            --  Val_End : Positive := Val_Str'Last;
-            Val_IO : Float := 0.0;
-            --  Last : Positive;
-         begin
-            --  declare
-            --     package Float_IO is new Ada.Float_Text_IO (Float);
-            --     use Float_IO;
-            --  begin
-            Val_IO := Float'Value (Val_Str);
-
-            Result.Append (Val_IO);
-         end Form_Value;
-
+      procedure Form_Value (Val_Str : String) is
+         --  Val_Str : String := Sub_Str;
+         --  Val_Pos : Positive := Val_Str'First;
+         --  Val_End : Positive := Val_Str'Last;
+         Val_IO : Float := 0.0;
+         --  Last : Positive;
       begin
-         loop
-            Comma_Pos := 0;
-            for I in Start_Pos .. Str'Length loop
-               if Str (I) = ',' then
-                  Comma_Pos := I;
-                  exit;
-               end if;
-            end loop;
+         --  declare
+         --     package Float_IO is new Ada.Float_Text_IO (Float);
+         --     use Float_IO;
+         --  begin
+         Val_IO := Float'Value (Val_Str);
 
-            if Comma_Pos = 0 then
-               declare
-                  Sub_Str : constant String := Str (Start_Pos .. Str'Last);
-               begin
-                  Form_Value (Sub_Str);
-               end;
-            else
-               declare
-                  Sub_Str : constant String :=
-                    Str (Start_Pos .. Comma_Pos - 1);
-               begin
-                  Form_Value (Sub_Str);
-               end;
-            end if;
+         Result.Append (Val_IO);
+      end Form_Value;
 
-            if Comma_Pos = 0 then
+   begin
+      loop
+         Comma_Pos := 0;
+         for I in Start_Pos .. Str'Length loop
+            if Str (I) = ',' then
+               Comma_Pos := I;
                exit;
-            else
-               Start_Pos := Comma_Pos + 1;
             end if;
          end loop;
 
-         return Result;
+         if Comma_Pos = 0 then
+            declare
+               Sub_Str : constant String := Str (Start_Pos .. Str'Last);
+            begin
+               Form_Value (Sub_Str);
+            end;
+         else
+            declare
+               Sub_Str : constant String :=
+                 Str (Start_Pos .. Comma_Pos - 1);
+            begin
+               Form_Value (Sub_Str);
+            end;
+         end if;
 
-      end Parse_Floats;
+         if Comma_Pos = 0 then
+            exit;
+         else
+            Start_Pos := Comma_Pos + 1;
+         end if;
+      end loop;
+
+      return Result;
+
+   end Parse_Floats;
 
    procedure Save (Station : Station_Type; File_Name : String) is
       use Ada.Streams.Stream_IO;

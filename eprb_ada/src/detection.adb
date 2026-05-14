@@ -22,6 +22,32 @@ package body Detection is
    --  Random number generator for angles
    Gen : Float_Random.Generator;
 
+   function Get_Particles (File_Name : String) return Station_Type is
+      --  Angles_Array : constant Float_Array :=
+      --    Angles_Vector_To_Array (Angles_Vector);
+      Name : Unbounded_String;
+   begin
+      if File_Name = "data/source_left.bin" then
+         Name := To_Unbounded_String ("A");
+      elsif File_Name = "data/source_right.bin" then
+         Name := To_Unbounded_String ("B");
+      end if;
+
+      declare
+         use Particle_Vector_Package;
+         Angles_Vector : constant Particle_Vector :=
+           Load_Particles (File_Name);
+         Vector_Length : constant Natural := Natural (Length (Angles_Vector));
+         Station       : Station_Type (Vector_Length);
+      begin
+         Station.Name := Name;
+         Station.Particles := Load_Particles (File_Name);
+
+         return Station;
+      end;
+
+   end Get_Particles;
+
    procedure Station_Detection (File_Name : String) is
       Num_Particles : constant Natural := File_Length (File_Name);
       --  Detect particle function
@@ -116,49 +142,14 @@ package body Detection is
               Float'Image (Float (End_Time - Start_Time)) & " seconds.");
 
          Station.Results := Results;
-         --  Note: gzip not implemented here, just filename
          Save (Station, "data/" & To_String (Station.Name) & ".bin");
 
       end Run;
 
-      --  Convert degrees to radians
-      function To_Radians (Degrees : Float) return Float is
-         --  Pi : constant Float := 3.14159265358979323846;
-      begin
-         return Degrees * Pi / 180.0;
-      end To_Radians;
-
-      function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
-                             return Float_Vector is
-         Step   : constant Float :=  (End_Val - Start_Val) / Float (Num - 1);
-         Result : Float_Vector;
-      begin
-         for I in 0 .. Num - 1 loop
-            Result.Append (Start_Val + Step * Float (I));
-         end loop;
-
-         return Result;
-      end Linear_Space;
-
       Arg_Count     : constant Integer := Argument_Count;
       Angles_Vector : Float_Vector;
-      --  Angles_Array  : Float_Array;
-      --  Particles     : Particle_Array (1 .. Num_Particles);
       Station       : Station_Type (Num_Particles);
       Name          : Unbounded_String := To_Unbounded_String ("Unknown");
-
-      --  Convert Angles_Vector to array for easier indexing
-      function Angles_Vector_To_Array
-        (aVector : Float_Vector) return Float_Array is
-         Len        : constant Positive := Integer (aVector.Length);
-         Temp_Array : Float_Array  (1 .. Len);
-      begin
-         for I in 1 .. Len loop
-            Temp_Array (I) := Angles_Vector.Element (I);
-         end loop;
-         return Temp_Array;
-
-      end Angles_Vector_To_Array;
 
    begin
       if Arg_Count < 1 then
@@ -175,15 +166,11 @@ package body Detection is
          declare
             Angles_Str    : constant String := Argument (2);
             Parsed_Floats : Float_Vector;
-            --  package Float_Vector is new
-            --    Ada.Containers.Indefinite_Vectors (Float);
          begin
             Parsed_Floats := Parse_Floats (Angles_Str);
             --  convert degrees to radians
             declare
-               --  package Float_Vector is new
-               --    Ada.Containers.Indefinite_Vectors (Float);
-               --  Temp_Vector : Float_Vector.Vector;
+               use Float_Vector_Package;
                Temp_Vector : Float_Vector;
             begin
                for I in Parsed_Floats.First_Index ..
@@ -196,7 +183,6 @@ package body Detection is
          end;
       end if;
 
-      --  Convert Angles_Vector to array for easier indexing
       declare
          Angles_Array : constant Float_Array :=
            Angles_Vector_To_Array (Angles_Vector);
@@ -217,6 +203,10 @@ package body Detection is
          --  Run detection
          Run (Station, Angles_Array);
       end;
+
+      Station := Get_Particles (File_Name);
+      --  Run detection
+      --  Run (Station, Angles_Array);
 
    end Station_Detection;
 

@@ -3,6 +3,8 @@ with Types; use Types;
 
 package Utilities is
 
+   function Angles_Vector_To_Array
+     (Angles_Vector : Float_Vector) return Float_Array;
    function File_Length (File_Name : String) return Natural;
    function Load_Particles (File_Name : String) return Particle_Vector;
    function Parse_Floats (Str : String) return Float_Vector;
