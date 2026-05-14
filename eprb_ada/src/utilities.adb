@@ -49,6 +49,7 @@ package body Utilities is
          Particle_Data'Read (In_Stream, Item);
          Particles.Append (Item);
       end loop;
+      Close (File_ID);
 
       return Particles;
 

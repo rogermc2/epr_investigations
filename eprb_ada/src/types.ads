@@ -34,7 +34,7 @@ package Types is
      Ada.Containers.Vectors (Positive, Result_Data);
    subtype Result_Vector is Result_Vector_Package.Vector;
 
-   type Station_Type (Num_Particles : Positive) is record
+   type Station_Type is record
       Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
       Particles : Particle_Vector;
       Results   : Result_Vector;

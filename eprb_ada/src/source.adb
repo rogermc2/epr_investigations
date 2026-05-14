@@ -22,8 +22,6 @@ package body Source is
 
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
-      --  Left_Count      : Natural := 0;
-      --  Right_Count     : Natural := 0;
       Spin            : Float := 1.0;
       N               : Float;
       Phase           : Float;

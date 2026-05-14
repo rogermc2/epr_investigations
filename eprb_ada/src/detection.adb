@@ -51,7 +51,7 @@ package body Detection is
          Angles_Vector : constant Particle_Vector :=
            Load_Particles (File_Name);
          Vector_Length : constant Natural := Natural (Length (Angles_Vector));
-         Station       : Station_Type (Vector_Length);
+         Station       : Station_Type;
       begin
          Station.Name := Name;
          Station.Particles := Load_Particles (File_Name);
@@ -61,6 +61,37 @@ package body Detection is
 
    end Get_Particles;
 
+   function Process_Command_Line return Float_Vector is
+      Arg_Count     : constant Integer := Argument_Count;
+      Angles_Vector : Float_Vector;
+   begin
+      if Arg_Count < 1 then
+         Put_Line ("Usage: ");
+         Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
+      else
+         New_Line;
+         if Arg_Count = 1 then
+            Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
+         else
+            --  parse angles from second argument
+            declare
+               use Float_Vector_Package;
+               Parsed_Floats : constant Float_Vector :=
+                 Parse_Floats (Argument (2));
+            begin
+               for I in Parsed_Floats.First_Index ..
+                 Parsed_Floats.Last_Index loop
+                  Angles_Vector.Append
+                    (To_Radians (Parsed_Floats.Element (I)));
+               end loop;
+            end;
+         end if;
+      end if;
+
+      return Angles_Vector;
+
+   end Process_Command_Line;
+
    procedure Run_Detection (File_Name : String; Station : in out Station_Type;
                             Angles    : Float_Array) is
       --  Infos      : Record_Array (1 .. Station.Particles'Length);
@@ -69,9 +100,7 @@ package body Detection is
       End_Time   : Time;
    begin
       Put_Line ("Detecting particles for arm " & To_String (Station.Name));
-
       Station :=  Get_Particles (File_Name);
-
       Start_Time := Clock;
 
       --  Prepare infos array
@@ -104,53 +133,19 @@ package body Detection is
 
    end Run_Detection;
 
-   function Process_Command_Line return Float_Vector is
-      Arg_Count     : constant Integer := Argument_Count;
-      Angles_Vector : Float_Vector;
-   begin
-      if Arg_Count < 1 then
-         Put_Line ("Usage: ");
-         Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
-      else
-         New_Line;
-         if Arg_Count = 1 then
-            Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
-         else
-            --  parse angles from second argument
-            declare
-               use Float_Vector_Package;
-               Angles_Str    : constant String := Argument (2);
-               Parsed_Floats : constant Float_Vector :=
-                 Parse_Floats (Angles_Str);
-               Temp_Vector   : Float_Vector;
-            begin
-               for I in Parsed_Floats.First_Index ..
-                 Parsed_Floats.Last_Index loop
-                  Temp_Vector.Append
-                    (To_Radians (Parsed_Floats.Element (I)));
-               end loop;
-               Angles_Vector := Temp_Vector;
-            end;
-         end if;
-      end if;
-
-      return Angles_Vector;
-
-   end Process_Command_Line;
-
    procedure Station_Detection (File_Name : String) is
+      Routine_Name  : constant String := "Detection.Station_Detection ";
       Num_Particles : constant Natural := File_Length (File_Name);
       Angles_Vector : constant Float_Vector := Process_Command_Line;
-      Station       : Station_Type (Num_Particles);
+      Angles_Array  : constant Float_Array :=
+        Angles_Vector_To_Array (Angles_Vector);
+      Station       : Station_Type := Get_Particles (File_Name);
    begin
-      declare
-         Angles_Array : constant Float_Array :=
-           Angles_Vector_To_Array (Angles_Vector);
-      begin
+      if Num_Particles > 0 then
          Run_Detection (File_Name, Station, Angles_Array);
-      end;
-
-      Station := Get_Particles (File_Name);
+      else
+         Put_Line (Routine_Name & "empty file: " & File_Name);
+      end if;
 
    end Station_Detection;
 
