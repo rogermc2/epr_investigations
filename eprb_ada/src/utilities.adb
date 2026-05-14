@@ -122,8 +122,10 @@ package body Utilities is
       use Ada.Numerics;
       use Ada.Text_IO;
       use Maths;
-      Arg_Count     : constant Integer := Argument_Count;
-      Angles_Vector : Float_Vector;
+      use Float_Vector_Package;
+      Arg_Count        : constant Integer := Argument_Count;
+      Parsed_Settings  : Float_Vector;
+      Settings         : Float_Vector;
    begin
       if Arg_Count < 1 then
          Put_Line ("Usage: ");
@@ -131,24 +133,18 @@ package body Utilities is
       else
          New_Line;
          if Arg_Count = 1 then
-            Angles_Vector := Linear_Space (0.0, 2.0 * Pi, 33);
+            Settings := Linear_Space (0.0, 2.0 * Pi, 33);
          else
-            --  parse angles from second argument
-            declare
-               use Float_Vector_Package;
-               Parsed_Floats : constant Float_Vector :=
-                 Parse_Floats (Argument (2));
-            begin
-               for I in Parsed_Floats.First_Index ..
-                 Parsed_Floats.Last_Index loop
-                  Angles_Vector.Append
-                    (To_Radians (Parsed_Floats.Element (I)));
-               end loop;
-            end;
+            Parsed_Settings := Parse_Floats (Argument (2));
+            for I in Parsed_Settings.First_Index ..
+              Parsed_Settings.Last_Index loop
+               Settings.Append
+                 (To_Radians (Parsed_Settings.Element (I)));
+            end loop;
          end if;
       end if;
 
-      return Angles_Vector;
+      return Settings;
 
    end Process_Command_Line;
 
