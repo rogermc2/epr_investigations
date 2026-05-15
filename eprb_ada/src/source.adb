@@ -21,12 +21,12 @@ package body Source is
                    Right_Particles : in out Particle_Vector);
 
    procedure Build_Source (Num_Particles : Positive; Duration_Val : Duration;
+                           Spin          : Float;
                            Left_File     : String; Right_File : String) is
       --  Set stack size:  ulimit -s 64000 to prevent stack overflow
 
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
-      Spin            : Float := 1.0;
       Angles          : Float_Array  (1 .. 33);
       Ps              : Float_Array  (1 .. 1000);
       Time_Spent      : Duration := 60.0;

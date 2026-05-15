@@ -119,7 +119,8 @@ package body Utilities is
    end Parse_Floats;
 
    procedure  Process_Command_Line (Duration_Val : out Duration;
-                                    Settings     : out Float_Vector) is
+                                    Settings     : out Float_Vector;
+                                    Spin         : out Float) is
       use Ada.Numerics;
       use Ada.Text_IO;
       use Maths;
@@ -144,6 +145,12 @@ package body Utilities is
                Settings.Append
                  (To_Radians (Parsed_Settings.Element (I)));
             end loop;
+         end if;
+
+         if Arg_Count > 2 then
+            Spin := Float'Value (Argument (1));
+         else
+            Spin := 1.0;
          end if;
       end if;
 
