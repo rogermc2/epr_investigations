@@ -17,16 +17,16 @@ package body Maths is
    --     when others => return 0.0 / 0.0;
    --  end NaN;
 
-   function Random_Choice (Angles : Float_Array) return Float is
+   function Random_Choice (Settings : Float_Array) return Float is
       Index : Integer :=
-        Integer (Float (Angles'Length) * Float_Random.Random (Gen)) + 1;
+        Integer (Float (Settings'Length) * Float_Random.Random (Gen)) + 1;
    begin
-      if Index > Angles'Length then
-         Index := Angles'Length;
+      if Index > Settings'Length then
+         Index := Settings'Length;
       elsif Index < 1 then
          Index := 1;
       end if;
-      return Angles (Index);
+      return Settings (Index);
 
    end Random_Choice;
 
