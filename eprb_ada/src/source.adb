@@ -28,7 +28,9 @@ package body Source is
       Right_Particles : Particle_Vector;
       Settings        : Float_Array  (1 .. 33);
       Ps              : Float_Array  (1 .. 1000);
-      Gen             : Generator;
+      Start_Time   : Time;
+      Count        : Natural := 0;
+      Elapsed      : Duration := 0.0;
       --  Print procedure for progress
       --  procedure Print_Progress (ETA : Duration; Count : Natural) is
       --  begin
@@ -56,38 +58,35 @@ package body Source is
          end;
       end loop;
 
-      declare
-         Start_Time   : constant Time := Clock;
-         Count        : Natural := 0;
-         Elapsed      : Duration := 0.0;
-      begin
-         Put_Line ("Generating particle pairs with spin" &
-                     Float'Image (Spin));
-         while Elapsed < Duration_Val loop
-            Elapsed := Clock - Start_Time;
-            Emit (Settings, Ps, Spin, Left_Particles, Right_Particles);
-            Count := Count + 1;
+      Put_Line ("Generating particle pairs with spin" &
+                  Float'Image (Spin));
+      Start_Time := Clock;
+      while Elapsed < Duration_Val loop
+         Elapsed := Clock - Start_Time;
+         Emit (Settings, Ps, Spin, Left_Particles, Right_Particles);
+         Count := Count + 1;
 
-            if Count mod 5000000 = 0 then
-               Put ("Time to go: ");
-               Put (Duration'Image (Duration_Val - Elapsed));
-               Put ("s [" &  Integer'Image (Count));  --  , Width => 8);
-               Put_Line (" pairs generated]");
-               Flush;
-            end if;
-         end loop;
+         if Count mod 5000000 = 0 then
+            Put ("Time to go: ");
+            Put (Duration'Image (Duration_Val - Elapsed));
+            Put ("s [" &  Integer'Image (Count));  --  , Width => 8);
+            Put_Line (" pairs generated]");
+            Flush;
+         end if;
+      end loop;
 
-         New_Line;
+      New_Line;
 
-         --  Save arrays to files
-         Save_Particles (Left_File, Left_Particles);
-         Save_Particles (Right_File, Right_Particles);
-         Put_Line (Integer'Image (Integer (Left_Particles.Length)) &
-                     " particles in " & Left_File);
-         Put_Line (Integer'Image (Integer (Right_Particles.Length)) &
-                     " particles in " &
-                     Right_File);
-      end;
+      --  Save arrays to files
+      Save_Particles (Left_File, Left_Particles);
+      Save_Particles (Right_File, Right_Particles);
+      Put_Line (Integer'Image (Integer (Left_Particles.Length)) &
+                  " particles in " & Left_File);
+      Put_Line (Integer'Image (Integer (Right_Particles.Length)) &
+                  " particles in " &
+                  Right_File);
+      Put_Line ("Source processing complete.");
+      New_Line;
 
    end Build_Source;
 
@@ -106,7 +105,6 @@ package body Source is
       I_Angle : Index_Angles;
       I_P     : Index_Ps;
    begin
-
       while Rand < 1 or else Rand > 33 loop
          Rand := Integer (Float_Random.Random (Gen) * 33.0) + 1;
       end loop;
