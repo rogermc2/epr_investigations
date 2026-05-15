@@ -19,8 +19,6 @@ package body Detection is
       C      : double;
       Result : Float;
    begin
-      --  Put_Line ("Detect_Particle Particle.N: " &
-      --              Integer'Image (Particle.N));
       C :=
         double ((-1) ** Natural (Particle.Spin_N)) *
           double (Cos (Particle.Spin_N * (Setting - Particle.E)));

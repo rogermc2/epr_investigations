@@ -7,6 +7,7 @@ package Utilities is
      (Angles_Vector : Float_Vector) return Float_Array;
    function File_Length (File_Name : String) return Natural;
    function Load_Particles (File_Name : String) return Particle_Vector;
+   function Load_Station_Data (File_Name : String) return Station_Type;
    function Parse_Floats (Str : String) return Float_Vector;
    procedure  Process_Command_Line (Duration_Val : out Duration;
                                     Settings     : out Float_Vector;

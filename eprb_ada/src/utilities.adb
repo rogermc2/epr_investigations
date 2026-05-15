@@ -59,6 +59,30 @@ package body Utilities is
 
    end Load_Particles;
 
+   function Load_Station_Data (File_Name : String) return Station_Type is
+      use Ada.Streams.Stream_IO;
+      use Result_Vector_Package;
+      File_ID   : Ada.Streams.Stream_IO.File_Type;
+      In_Stream : Stream_Access;
+      Result    : Result_Data;
+      Results   : Result_Vector;
+      Station   : Station_Type;
+   begin
+      Open (File_ID, In_File, File_Name);
+      In_Stream := Stream (File_ID);
+      while not End_Of_File (File_ID) loop
+         Float'Read (In_Stream, Result.Setting);
+         Float'Read (In_Stream, Result.Outcome);
+         Results.Append (Result);
+      end loop;
+      Close (File_ID);
+
+      Station.Results := Results;
+
+      return Station;
+
+   end Load_Station_Data;
+
    function Parse_Floats (Str : String) return Float_Vector is
       use Float_Vector_Package;
       Result    : Float_Vector;
@@ -165,11 +189,7 @@ package body Utilities is
    begin
       Create (File_ID, Out_File, File_Name);
       Out_Stream := Stream (File_ID);
-      --  for I in Station.Results'Range loop
       while Has_Element (Curs) loop
-         --  Write Setting and Outcome as Float values
-         --  Float'Write (Out_Stream, Station.Results (I).Setting);
-         --  Float'Write (Out_Stream, Station.Results (I).Outcome);
          Float'Write (Out_Stream, Element (Curs).Setting);
          Float'Write (Out_Stream, Element (Curs).Outcome);
          Next (Curs);
