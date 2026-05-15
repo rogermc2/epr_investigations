@@ -11,8 +11,6 @@ with Utilities; use Utilities;
 
 package body Detection is
 
-   type Record_Array is array (Positive range <>) of Particle_Record;
-
    function Detect_Particle
      (Particle : Particle_Data; Setting : Float) return Result_Data
    is
@@ -24,7 +22,7 @@ package body Detection is
       --  Put_Line ("Detect_Particle Particle.N: " &
       --              Integer'Image (Particle.N));
       C :=
-        double ((-1)**Natural (Particle.Spin_N)) *
+        double ((-1) ** Natural (Particle.Spin_N)) *
           double (Cos (Particle.Spin_N * (Setting - Particle.E)));
       if double (Particle.P) < abs (C) then
          Result := Float (Sign (C));
@@ -37,7 +35,9 @@ package body Detection is
    end Detect_Particle;
 
    function Get_Particles (File_Name : String) return Station_Type is
-      Name : Unbounded_String := To_Unbounded_String ("Unknown");
+      use Particle_Vector_Package;
+      Name    : Unbounded_String := To_Unbounded_String ("Unknown");
+      Station : Station_Type;
    begin
       if File_Name = "data/source_left.bin" then
          Name := To_Unbounded_String ("A");
@@ -45,14 +45,10 @@ package body Detection is
          Name := To_Unbounded_String ("B");
       end if;
 
-      declare
-         Station : Station_Type;
-      begin
-         Station.Name      := Name;
-         Station.Particles := Load_Particles (File_Name);
+      Station.Name := Name;
+      Station.Particles := Load_Particles (File_Name);
 
-         return Station;
-      end;
+      return Station;
 
    end Get_Particles;
 
@@ -60,49 +56,31 @@ package body Detection is
       use Float_Vector_Package;
       use Particle_Vector_Package;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
-      --  Infos      : Record_Array (1 .. Station.Particles'Length);
       Num_Particles  : constant Natural     := File_Length (File_Name);
       Settings_Array : constant Float_Array :=
         Angles_Vector_To_Array (Settings);
       Station        : Station_Type         := Get_Particles (File_Name);
+      Curs           : Particle_Vector_Package.Cursor :=
+        Station.Particles.First;
       Results        : Result_Vector;
       Start_Time     : Time;
       End_Time       : Time;
    begin
       if Num_Particles > 0 then
-         Put_Line ("Detecting particles for arm " & To_String (Station.Name));
-         Station := Get_Particles (File_Name);
-         Put_Line
-           ("Station.Particles length " &
-              Integer'Image (Integer (Length (Station.Particles))));
-         Put_Line ("Detecting particles for arm " & To_String (Station.Name));
+         Put_Line (Routine_Name & "Detecting particles for arm " &
+                     To_String (Station.Name));
          Start_Time := Clock;
 
-         --  Prepare infos array
-         declare
-            Infos_Array : Record_Array
-              (1 .. Integer (Station.Particles.Length));
-            Curs        : Particle_Vector_Package.Cursor :=
-              Station.Particles.First;
-            Index       : Natural := 0;
-         begin
-            while Has_Element (Curs) loop
-               Index := Index + 1;
-               Infos_Array (Index).Particle := Element (Curs);
-               Infos_Array (Index).Setting  := Random_Choice (Settings_Array);
-               Next (Curs);
-            end loop;
-
-            for I in Infos_Array'Range loop
-               Results.Append
-                 (Detect_Particle
-                    (Infos_Array (I).Particle, Infos_Array (I).Setting));
-            end loop;
-         end;
+         while Has_Element (Curs) loop
+            Results.Append
+              (Detect_Particle
+                 (Element (Curs), Random_Choice (Settings_Array)));
+            Next (Curs);
+         end loop;
 
          End_Time := Clock;
          Put_Line
-           ("Done: " & Integer'Image (Integer (Station.Particles.Length)) &
+           (Integer'Image (Integer (Station.Particles.Length)) &
               " particles detected in " &
               Float'Image (Float (End_Time - Start_Time)) & " seconds.");
 

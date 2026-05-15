@@ -47,7 +47,7 @@ package body Utilities is
       Particles : Particle_Vector;
       Item      : Particle_Data;
    begin
-      Create (File_ID, In_File, File_Name);
+      Open (File_ID, In_File, File_Name);
       In_Stream := Stream (File_ID);
       while not End_Of_File (File_ID) loop
          Particle_Data'Read (In_Stream, Item);
@@ -148,7 +148,7 @@ package body Utilities is
          end if;
 
          if Arg_Count > 2 then
-            Spin := Float'Value (Argument (1));
+            Spin := Float'Value (Argument (3));
          else
             Spin := 1.0;
          end if;
