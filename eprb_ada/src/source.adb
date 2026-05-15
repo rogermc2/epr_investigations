@@ -20,16 +20,14 @@ package body Source is
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector);
 
-   procedure Build_Source (Num_Particles : Positive; Duration_Val : Duration;
-                           Spin          : Float;
+   procedure Build_Source (Duration_Val  : Duration; Spin  : Float;
                            Left_File     : String; Right_File : String) is
       --  Set stack size:  ulimit -s 64000 to prevent stack overflow
 
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
-      Angles          : Float_Array  (1 .. 33);
+      Settings        : Float_Array  (1 .. 33);
       Ps              : Float_Array  (1 .. 1000);
-      Time_Spent      : Duration := 60.0;
       Gen             : Generator;
       --  Print procedure for progress
       --  procedure Print_Progress (ETA : Duration; Count : Natural) is
@@ -44,8 +42,8 @@ package body Source is
    begin
       Reset (Gen);  --  Initialize random generator
       --  Initialize Angles array  (linspace 0 to 2*pi, 33 points)
-      for I in Angles'Range loop
-         Angles (I) := 2.0 * Float (Pi) * Float (I - 1) / 32.0;
+      for I in Settings'Range loop
+         Settings (I) := 2.0 * Float (Pi) * Float (I - 1) / 32.0;
       end loop;
 
       --  Initialize Ps array: 0.5 * sin (linspace (0, pi/2, 1000))^2
@@ -61,24 +59,18 @@ package body Source is
       declare
          Start_Time   : constant Time := Clock;
          Count        : Natural := 0;
-         Current_Time : Time;
          Elapsed      : Duration := 0.0;
-         ETA          : Duration;
       begin
          Put_Line ("Generating particle pairs with spin" &
                      Float'Image (Spin));
-         Count := 0;
-         while Elapsed < Time_Spent loop
-            Current_Time := Clock;
-            Elapsed := Current_Time - Start_Time;
-
-            Emit (Angles, Ps, Spin, Left_Particles, Right_Particles);
+         while Elapsed < Duration_Val loop
+            Elapsed := Clock - Start_Time;
+            Emit (Settings, Ps, Spin, Left_Particles, Right_Particles);
             Count := Count + 1;
 
-            ETA := Time_Spent - Elapsed;
             if Count mod 5000000 = 0 then
                Put ("Time to go: ");
-               Put (Duration'Image (ETA));   --  , Width => 4);
+               Put (Duration'Image (Duration_Val - Elapsed));
                Put ("s [" &  Integer'Image (Count));  --  , Width => 8);
                Put_Line (" pairs generated]");
                Flush;
