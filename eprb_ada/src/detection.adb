@@ -60,10 +60,8 @@ package body Detection is
       Routine_Name  : constant String := "Detection.Run_Detection ";
       --  Infos      : Record_Array (1 .. Station.Particles'Length);
       Num_Particles : constant Natural := File_Length (File_Name);
-      Angles_Vector : constant Float_Vector := Process_Command_Line;
-      --  Vector_Length : constant Natural := Natural (Length (Angles_Vector));
       Angles_Array  : constant Float_Array :=
-        Angles_Vector_To_Array (Angles_Vector);
+        Angles_Vector_To_Array (Settings);
       --  Angles        : Float_Array (1 .. Vector_Length);
       Station       : Station_Type := Get_Particles (File_Name);
       Results       : Result_Vector;

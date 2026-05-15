@@ -118,14 +118,14 @@ package body Utilities is
 
    end Parse_Floats;
 
-   function Process_Command_Line return Float_Vector is
+   procedure  Process_Command_Line (Duration_Val : out Duration;
+                                    Settings     : out Float_Vector) is
       use Ada.Numerics;
       use Ada.Text_IO;
       use Maths;
       use Float_Vector_Package;
       Arg_Count        : constant Integer := Argument_Count;
       Parsed_Settings  : Float_Vector;
-      Settings         : Float_Vector;
    begin
       if Arg_Count < 1 then
          Put_Line ("Usage: ");
@@ -133,8 +133,11 @@ package body Utilities is
       else
          New_Line;
          if Arg_Count = 1 then
+            Duration_Val := Duration (Float'Value (Argument (1)));
             Settings := Linear_Space (0.0, 2.0 * Pi, 33);
-         else
+         end if;
+
+         if Arg_Count > 1 then
             Parsed_Settings := Parse_Floats (Argument (2));
             for I in Parsed_Settings.First_Index ..
               Parsed_Settings.Last_Index loop
@@ -143,8 +146,6 @@ package body Utilities is
             end loop;
          end if;
       end if;
-
-      return Settings;
 
    end Process_Command_Line;
 
@@ -170,23 +171,6 @@ package body Utilities is
 
    end Save;
 
-   procedure Save (Filename : String; Particles : Particle_Vector) is
-      use Ada.Streams.Stream_IO;
-      use Particle_Vector_Package;
-      File_ID    : Ada.Streams.Stream_IO.File_Type;
-      Out_Stream : Stream_Access;
-      Curs       : Cursor := Particles.First;
-   begin
-      Create (File_ID, Out_File, Filename);
-      Out_Stream := Stream (File_ID);
-      while Has_Element (Curs) loop
-         Particle_Data'Write (Out_Stream, Element (Curs));
-         Next  (Curs);
-      end loop;
-      Close (File_ID);
-
-   end Save;
-
    procedure Save_As_Text (File_Name : String; Particles : Particle_Vector) is
       use Ada.Text_IO;
       use Particle_Vector_Package;
@@ -204,5 +188,22 @@ package body Utilities is
       Close (File_ID);
 
    end Save_As_Text;
+
+   procedure Save_Particles (Filename : String; Particles : Particle_Vector) is
+      use Ada.Streams.Stream_IO;
+      use Particle_Vector_Package;
+      File_ID    : Ada.Streams.Stream_IO.File_Type;
+      Out_Stream : Stream_Access;
+      Curs       : Cursor := Particles.First;
+   begin
+      Create (File_ID, Out_File, Filename);
+      Out_Stream := Stream (File_ID);
+      while Has_Element (Curs) loop
+         Particle_Data'Write (Out_Stream, Element (Curs));
+         Next  (Curs);
+      end loop;
+      Close (File_ID);
+
+   end Save_Particles;
 
 end Utilities;
