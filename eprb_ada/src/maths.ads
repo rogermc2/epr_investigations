@@ -9,6 +9,7 @@ package Maths is
                           return Float_Vector;
    function Random_Choice (Settings : Float_Array) return Float;
    function Sign (X : Interfaces.C.double) return Integer;
+   function To_Degrees (Radians : Float) return Float;
    function To_Radians (Degrees : Float) return Float;
 
 end Maths;

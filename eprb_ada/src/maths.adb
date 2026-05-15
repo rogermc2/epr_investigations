@@ -42,7 +42,11 @@ package body Maths is
 
    end Sign;
 
-   --  Convert degrees to radians
+   function To_Degrees (Radians : Float) return Float is
+   begin
+      return Radians * 180.0 / Pi;
+   end To_Degrees;
+
    function To_Radians (Degrees : Float) return Float is
    begin
       return Degrees * Pi / 180.0;

@@ -3,7 +3,6 @@ with Interfaces.C;
 with Ada.Calendar;          use Ada.Calendar;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Numerics;          use Ada.Numerics;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
 
 with Maths;     use Maths;
@@ -50,7 +49,8 @@ package body Detection is
 
    end Get_Particles;
 
-   procedure Run_Detection (Settings : Float_Vector; File_Name : String) is
+   procedure Run_Detection (Settings : Float_Vector; File_Name : String;
+                            Out_File : out Unbounded_String) is
       use Float_Vector_Package;
       use Particle_Vector_Package;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
@@ -83,7 +83,8 @@ package body Detection is
               Float'Image (Float (End_Time - Start_Time)) & " seconds.");
 
          Station.Results := Results;
-         Save (Station, "data/" & To_String (Station.Name) & ".bin");
+         Out_File := Station.Name & To_Unbounded_String (".bin");
+         Save (Station, "data/" & To_String (Out_File));
       else
          Put_Line (Routine_Name & "empty file: " & File_Name);
       end if;

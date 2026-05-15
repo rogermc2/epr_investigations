@@ -1,6 +1,6 @@
 
 package Analysis is
 
-procedure Analyse;
+   procedure Analyse;
 
 end Analysis;

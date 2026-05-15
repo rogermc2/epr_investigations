@@ -6,6 +6,10 @@ package Types is
 
    type Float_Array is array (Positive range <>) of Float;
 
+   package Boolean_Vector_Package is new
+     Ada.Containers.Vectors (Positive, Boolean);
+   subtype Boolean_Vector is Boolean_Vector_Package.Vector;
+
    package Float_Vector_Package is new
      Ada.Containers.Vectors (Positive, Float);
    subtype Float_Vector is Float_Vector_Package.Vector;

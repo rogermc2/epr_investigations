@@ -59,14 +59,13 @@ package body Utilities is
 
    end Load_Particles;
 
-   function Load_Station_Data (File_Name : String) return Station_Type is
+   function Load_Station_Results (File_Name : String) return Result_Vector is
       use Ada.Streams.Stream_IO;
       use Result_Vector_Package;
       File_ID   : Ada.Streams.Stream_IO.File_Type;
       In_Stream : Stream_Access;
       Result    : Result_Data;
       Results   : Result_Vector;
-      Station   : Station_Type;
    begin
       Open (File_ID, In_File, File_Name);
       In_Stream := Stream (File_ID);
@@ -76,12 +75,9 @@ package body Utilities is
          Results.Append (Result);
       end loop;
       Close (File_ID);
+      return Results;
 
-      Station.Results := Results;
-
-      return Station;
-
-   end Load_Station_Data;
+   end Load_Station_Results;
 
    function Parse_Floats (Str : String) return Float_Vector is
       use Float_Vector_Package;
