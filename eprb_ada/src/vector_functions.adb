@@ -9,16 +9,19 @@ with Maths;
 
 package body Vector_Functions is
 
-   function Abs_Array (Arr : Raw_Data_Array; Col : Positive)
-                        return Float_Array is
-      Len : constant Positive := Arr'Length(1);
-      Result : Float_Array(1 .. Len);
+   function Abs_Vector (Vec : Result_Vector; Col : Positive)
+                        return Float_Vector is
+      use Result_Vector_Package;
+      Curs : Cursor := Vec.First;
+      Result : Float_Vector;
    begin
-      for I in 1 .. Len loop
-         Result(I) := Float'Magnitude(Arr(I, Col));
+      while Has_Element (Curs) loop
+         Result.Append (Float'Magnitude (Element (Curs));
+         Next (Curs);
       end loop;
       return Result;
-   end Abs_Array;
+
+   end Abs_Vector;
 
    --  Convert Angles_Vector to array for easier indexing
    function Angles_Vector_To_Array
@@ -38,8 +41,8 @@ package body Vector_Functions is
    end Angles_Vector_To_Array;
 
    -- Function to check if absolute value of product equals 1.0
-   function Coincidence (Prod : Float_Array) return Boolean_Array is
-      Len : constant Positive := Prod'Length;
+   function Coincidence (Prod : Float_Vector) return Boolean_Vector is
+      Len    : constant Positive := Prod'Length;
       Result : Boolean_Array(1 .. Len);
    begin
       for I in 1 .. Len loop
@@ -49,8 +52,8 @@ package body Vector_Functions is
    end Coincidence;
 
    -- Function to filter rows by a boolean mask
-   function Filter_Rows (Arr : Raw_Data_Array; Mask : Boolean_Array)
-                         return Raw_Data_Array is
+   function Filter_Rows (Arr : Result_Vector; Mask : Boolean_Vector)
+                         return Result_Vector is
       Count : Natural := 0;
    begin
       for I in Mask'Range loop
@@ -60,7 +63,7 @@ package body Vector_Functions is
       end loop;
 
       declare
-         Result : Raw_Data_Array(1 .. Count, 1 .. Arr'Length(2));
+         Result : Result_Vector (1 .. Count, 1 .. Arr'Length(2));
          Index  : Natural := 0;
       begin
          for I in Mask'Range loop
@@ -73,30 +76,33 @@ package body Vector_Functions is
          end loop;
          return Result;
       end;
+
    end Filter_Rows;
 
     -- Function to get a column from 2D array
-   function Get_Column (Arr : Raw_Data_Array; Col : Positive)
-                        return Float_Array is
+   function Get_Column (Arr : Result_Vector; Col : Positive)
+                        return Float_Vectoris
       Len : constant Positive := Arr'Length(1);
-      Result : Float_Array(1 .. Len);
+      Result : Float_Vector (1 .. Len);
    begin
       for I in 1 .. Len loop
          Result(I) := Arr(I, Col);
       end loop;
-      return Result;
+   return Result;
+
    end Get_Column;
 
  -- Function to compute modulo for arrays
-   function Mod_Array (Arr1, Arr2 : Float_Array) return Float_Array is
+   function Mod_Vector (Arr1, Arr2 : Float_Vector) return Float_Vector is
       Len : constant Positive := Arr1'Length;
-      Result : Float_Array(1 .. Len);
+      Result : Float_Vector (1 .. Len);
    begin
       for I in 1 .. Len loop
          Result(I) := Float'Mod(Arr1(I), Arr2(I));
       end loop;
-      return Result;
-   end Mod_Array;
+   return Result;
+
+   end Mod_Vector;
 
    function Parse_Floats (Str : String) return Float_Vector is
       use Float_Vector_Package;
@@ -157,22 +163,23 @@ package body Vector_Functions is
 
    end Parse_Floats;
 
-function Product_Column2 (Arr1, Arr2 : Raw_Data_Array) return Float_Array is
+function Product_Column2 (Arr1, Arr2 : Result_Vector) return Float_Vector is
       Len : constant Positive := Arr1'Length(1);
-      Result : Float_Array(1 .. Len);
+      Result : Float_Vector (1 .. Len);
    begin
       for I in 1 .. Len loop
          Result(I) := Arr1(I, 2) * Arr2(I, 2);
       end loop;
-      return Result;
+   return Result;
+
    end Product_Column2;
 
-    -- Function to get unique values from Float_Array simple implementation
-   function Unique (Arr : Float_Array) return Float_Array is
+    -- Function to get unique values from Float_Vector simple implementation
+   function Unique (Arr : Float_Vector) return Float_Vector is
       package Float_Set is
         new Ada.Containers.Ordered_Sets (Element_Type => Float);
       Use_Set : Float_Set.Set := Float_Set.Empty_Set;
-      Result_List : Float_Array(1 .. Arr'Length);
+      Result_List : Float_Vector (1 .. Arr'Length);
       Count : Natural := 0;
    begin
       for I in Arr'Range loop
@@ -182,17 +189,19 @@ function Product_Column2 (Arr1, Arr2 : Raw_Data_Array) return Float_Array is
             Result_List(Count) := Arr(I);
          end if;
       end loop;
-      return Result_List(1 .. Count);
+   return Result_List(1 .. Count);
+
    end Unique;
 
-   function Zeros_Like (Arr : Float_Array) return Float_Array is
+   function Zeros_Like (Arr : Float_Vector) return Float_Vector is
       Len : constant Positive := Arr'Length;
-      Result : Float_Array(1 .. Len);
+      Result : Float_Vector (1 .. Len);
    begin
       for I in 1 .. Len loop
          Result(I) := 0.0;
       end loop;
-      return Result;
+   return Result;
+
    end Zeros_Like;
 
 end Vector_Functions;

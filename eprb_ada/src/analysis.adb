@@ -4,6 +4,7 @@ with Ada.Numerics; use Ada.Numerics;
 with Maths; use Maths;
 with Types; use Types;
 with Utilities; use Utilities;
+with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
 
@@ -15,10 +16,13 @@ package body Analysis is
         Load_Station_Results (A_File_Name);
       Raw_B            : constant Result_Vector :=
         Load_Station_Results (B_File_Name);
-      Length           : constant Integer'Min (Integer (Length (Raw_A)),
-                                               Integer (Length (Raw_B)));
+      Prod_Col2        : Float_Vector :=
+        Product_Column2 (Alice_Raw, Bob_Raw);
+      Coinc            : Boolean_Vector := Coincidence (Prod_Col2);
       A                : Result_Vector := Filter_Rows (Raw_A, Coinc);
       B                : Result_Vector := Filter_Rows (Raw_B, Coinc);
+      Length           : constant Integer'Min (Integer (Length (Raw_A)),
+                                               Integer (Length (Raw_B)));
       Curs_A           : Cursor := Raw_A.First;
       Curs_B           : Cursor := Raw_A.First;
       Result_A         : Result_Data;
