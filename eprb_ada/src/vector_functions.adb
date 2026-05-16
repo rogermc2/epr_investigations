@@ -1,10 +1,6 @@
 
-with Ada.Numerics;
-with Ada.Streams;               --  For binary file writing
-with Ada.Streams.Stream_IO;
-with Ada.Text_IO;
-
-with Maths;
+with Ada.Containers.Ordered_Sets;
+--  with Ada.Text_IO;
 
 package body Vector_Functions is
 
@@ -17,7 +13,7 @@ package body Vector_Functions is
    begin
       while Has_Element (Curs) loop
          Item := Element (Curs);
-         Result.Append (Float'Magnitude (Item.Outcome));
+         Result.Append (abs (Item.Outcome));
          Next (Curs);
       end loop;
       return Result;
@@ -26,10 +22,10 @@ package body Vector_Functions is
 
    --  Convert Angles_Vector to array for easier indexing
    function Angles_Vector_To_Array
-     (Angles_Vector : Settings_Vector) return Float_Array is
-      use Float_Vector_Package;
-      Curs       : Cursor := Angles_Vector.First;
-      Temp_Array : Float_Array  (1 .. Integer (Length (Angles_Vector)));
+     (Settings : Settings_Vector) return Float_Array is
+      use Settings_Vector_Package;
+      Curs       : Cursor := Settings.First;
+      Temp_Array : Float_Array  (1 .. Integer (Length (Settings)));
       Index      : Natural := 0;
    begin
       while Has_Element (Curs) loop
@@ -41,7 +37,6 @@ package body Vector_Functions is
 
    end Angles_Vector_To_Array;
 
-   -- Function to check if absolute value of product equals 1.0
    function Coincidence (Prod : Float_Vector) return Boolean_Vector is
       use Float_Vector_Package;
       Curs   : Cursor := Prod.First;
@@ -50,77 +45,61 @@ package body Vector_Functions is
    begin
       while Has_Element (Curs) loop
          Item := Element (Curs);
-         Result.Append (Float'Magnitude (Item) = 1.0);
+         Result.Append (abs (Item) = 1.0);
          Next (Curs);
       end loop;
       return Result;
 
    end Coincidence;
 
-   -- Function to filter rows by a boolean mask
    function Filter_Rows (Vec : Result_Vector; Mask : Boolean_Vector)
                          return Result_Vector is
       use Boolean_Vector_Package;
-      use Float_Vector_Package;
-      Curs_M : Cursor := Vec.First;
-      Curs_F : Cursor := Mask.First;
-      Item   : Float;
-      Count  : Natural := 0;
+      --  use Result_Vector_Package;
       Result : Result_Vector;
    begin
-      while Has_Element (Curs_M) loop
-         if Element (Curs) then
-            Count := Count + 1;
+      for index in 1 .. Positive (Length (Mask)) loop
+         if Mask (index) then
+            Result.Append (Vec (index));
          end if;
-         Next (Curs);
       end loop;
-
-      declare
-         use Result_Matrix_Package;
-         Result_Mat : Result_Matrix (1 .. Count, 1 .. Arr'Length (2));
-         Index      : Natural := 0;
-      begin
-         while Has_Element (Curs_M) loop
-            if Element (Curs_M) then
-               Index := Index + 1;
-               for J in Arr'Range (2) loop
-                  Result (Index, J) := Arr (I, J);
-               end loop;
-            end if;
-         end loop;
-         return Result;
-      end;
-
       return Result;
 
    end Filter_Rows;
 
-   -- Function to get a column from 2D array
-   function Get_Column (Vec : Result_Vector; Col : Positive)
-                        return Float_Vector is
-      use Float_Vector_Package;
-      Curs_1 : Cursor := Vec_1.First;
-      Result : Float_Vector;
-   begin
-      for I in 1 .. Len loop
-         Result (I) := Arr (I, Col);
-      end loop;
-      return Result;
-
-   end Get_Column;
+   --  function Get_Column (Vec : Result_Vector; Col : Positive)
+   --                       return Float_Vector is
+   --     use Float_Vector_Package;
+   --     Curs_1 : Cursor := Vec_1.First;
+   --     Result : Float_Vector;
+   --  begin
+   --     for I in 1 .. Len loop
+   --        Result (I) := Arr (I, Col);
+   --     end loop;
+   --     return Result;
+   --
+   --  end Get_Column;
 
    function Mod_Vector (Vec_1, Vec_2 : Float_Vector) return Float_Vector is
       use Float_Vector_Package;
-      Curs_1 : Cursor := Vec_1.First;
-      Curs_2 : Cursor := Vec_2.First;
-      Item_1 : Float;
-      Item_1 : Float;
-      Result : Float_Vector;
+      Curs_1  : Cursor := Vec_1.First;
+      Curs_2  : Cursor := Vec_2.First;
+      Item_1  : Float;
+      Item_2  : Float;
+      Mod_1_2 : Float;
+      Result  : Float_Vector;
    begin
       while Has_Element (Curs_1) and then Has_Element (Curs_2) loop
          Item_1 := Element (Curs_1);
          Item_2 := Element (Curs_2);
-         --  Result.Append (Float'Mod (Item_1 * Item_2);
+
+         if Item_2 = 0.0 then
+            Mod_1_2 := Item_1;
+         else
+            Mod_1_2 := Item_1 - (Item_2 * (Item_1 / Item_2));
+         end if;
+
+         Result.Append (Mod_1_2);
          Next (Curs_1);
          Next (Curs_2);
       end loop;
@@ -187,14 +166,19 @@ package body Vector_Functions is
 
    end Parse_Floats;
 
-   function Product_Column2 (Vec_1, Vec_2 : Result_Vector) return Float_Vector is
+   function Product_Column2 (Vec_1, Vec_2 : Result_Vector)
+                             return Float_Vector is
       use Result_Vector_Package;
       Curs_1 : Cursor := Vec_1.First;
       Curs_2 : Cursor := Vec_2.First;
-      Result : Float_Vector;
+      Item_1  : Result_Data;
+      Item_2  : Result_Data;
+      Result  : Float_Vector;
    begin
       while Has_Element (Curs_1) and then Has_Element (Curs_2) loop
-         Result.Append (Element (Curs_1) * Element (Curs_2) );
+         Item_1 := Element (Curs_1);
+         Item_2 := Element (Curs_2);
+         Result.Append (Item_1.Outcome * Item_2.Outcome);
          Next (Curs_1);
          Next (Curs_2);
       end loop;
@@ -209,7 +193,8 @@ package body Vector_Functions is
    --     Index  : Positive;
    --  begin
    --     for I in 1 .. Size loop
-   --        Index := Integer (Float_Random.Random(Generator) * Float (Len)) + 1;
+   --        Index :=
+   --  Integer (Float_Random.Random (Generator) * Float (Len)) + 1;
    --        Result.Append (Angles.Element(Index));
    --     end loop;
    --     return Result;
@@ -229,7 +214,6 @@ package body Vector_Functions is
 
    end  Sample_Mean;
 
-   -- Function to get unique values from Float_Vector simple implementation
    function Unique (Arr : Float_Vector) return Float_Vector is
       package Float_Set is
         new Ada.Containers.Ordered_Sets (Element_Type => Float);
@@ -248,12 +232,11 @@ package body Vector_Functions is
 
    end Unique;
 
-   function Zeros_Like (Arr : Float_Vector) return Float_Vector is
-      Len    : constant Positive := Arr'Length;
-      Result : Float_Vector (1 .. Len);
+   function Zeros_Like (Vec : Float_Vector) return Float_Vector is
+      Result : Float_Vector;
    begin
-      for I in 1 .. Len loop
-         Result (I) := 0.0;
+      for I in 1 .. Positive (Length (Vec)) loop
+         Result.Append (0.0);
       end loop;
       return Result;
 

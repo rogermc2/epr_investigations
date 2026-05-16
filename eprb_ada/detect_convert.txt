@@ -1,0 +1,77 @@
+with Ada.Containers.Vectors;
+with Ada.Numerics.Float_Random;
+with System; -- For access types if needed
+with Ada.Task_Identification; -- For parallelism (if using Ada tasking)
+
+procedure Particle_Detection is
+
+   type Particle_Type is ...; -- Define according to your particle structure
+   type Angle_Type is ...;    -- Define according to your angle type
+
+   package Particle_Vector is new Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Particle_Type);
+   package Angle_Vector is new Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Angle_Type);
+
+   Particles : Particle_Vector.Vector;
+   Angles    : Angle_Vector.Vector;
+
+   type Particle_Angle_Pair is record
+      Particle : Particle_Type;
+      Angle    : Angle_Type;
+   end record;
+
+   package Pair_Vector is new Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Particle_Angle_Pair);
+
+   Infos : Pair_Vector.Vector;
+
+   -- Random number generator setup
+   package Float_Random is new Ada.Numerics.Float_Random;
+   Generator : Float_Random.Generator;
+
+   function Random_Choice (Angles : Angle_Vector.Vector; Size : Positive) return Angle_Vector.Vector is
+      Result : Angle_Vector.Vector;
+      Len    : constant Positive := Angles.Length;
+      Index  : Positive;
+   begin
+      for I in 1 .. Size loop
+         Index := Integer(Float_Random.Random(Generator) * Float(Len)) + 1;
+         Result.Append(Angles.Element(Index));
+      end loop;
+      return Result;
+   end Random_Choice;
+
+   -- Dummy detect_particle function, replace with actual implementation
+   function Detect_Particle (Info : Particle_Angle_Pair) return ... is
+   begin
+      -- Implementation here
+      null;
+   end Detect_Particle;
+
+   -- Parallel processing setup (simplified example using Ada tasks)
+   task type Worker_Task (Id : Positive; Infos : access Pair_Vector.Vector; Results : access ... ) is
+   end Worker_Task;
+
+   task body Worker_Task is
+   begin
+      -- Process assigned Infos and store results
+      null;
+   end Worker_Task;
+
+begin
+   -- Initialize Generator
+   Float_Random.Reset(Generator);
+
+   -- Assume Particles and Angles are initialized
+
+   -- Create Infos by pairing particles with random angles
+   declare
+      Random_Angles : Angle_Vector.Vector := Random_Choice(Angles, Particles.Length);
+   begin
+      for I in 1 .. Particles.Length loop
+         Infos.Append((Particle => Particles.Element(I), Angle => Random_Angles.Element(I)));
+      end loop;
+   end;
+
+   -- Parallel processing would be implemented here using Ada tasks or a task pool
+   -- This is a complex topic and depends on the Ada runtime and libraries available
+
+end Particle_Detection;
