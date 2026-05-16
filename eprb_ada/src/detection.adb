@@ -7,6 +7,7 @@ with Ada.Text_IO;           use Ada.Text_IO;
 
 with Maths;     use Maths;
 with Utilities; use Utilities;
+with Vector_Functions;
 
 package body Detection is
 
@@ -53,6 +54,7 @@ package body Detection is
                             Out_File : out Unbounded_String) is
       use Float_Vector_Package;
       use Particle_Vector_Package;
+      use Vector_Functions;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
       Num_Particles  : constant Natural     := File_Length (File_Name);
       Settings_Array : constant Float_Array :=
@@ -84,7 +86,7 @@ package body Detection is
 
          Station.Results := Results;
          Out_File := Station.Name & To_Unbounded_String (".bin");
-         Save (Station, "data/" & To_String (Out_File));
+         Save ("data/" & To_String (Out_File), Station);
       else
          Put_Line (Routine_Name & "empty file: " & File_Name);
       end if;

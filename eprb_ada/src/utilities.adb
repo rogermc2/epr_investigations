@@ -6,6 +6,7 @@ with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
 
 with Maths;
+with Vector_Functions;
 
 package body Utilities is
 
@@ -62,12 +63,13 @@ package body Utilities is
 
    end Load_Station_Results;
 
-   procedure  Process_Command_Line (Duration_Val : out Duration;
+   procedure Process_Command_Line (Duration_Val : out Duration;
                                     Settings     : out Float_Vector;
                                     Spin         : out Float) is
       use Ada.Numerics;
       use Ada.Text_IO;
       use Maths;
+      use Vector_Functions;
       use Float_Vector_Package;
       Arg_Count        : constant Integer := Argument_Count;
       Parsed_Settings  : Float_Vector;
@@ -100,7 +102,7 @@ package body Utilities is
 
    end Process_Command_Line;
 
-   procedure Save (Station : Station_Type; File_Name : String) is
+   procedure Save (File_Name : String; Station : Station_Type) is
       use Ada.Streams.Stream_IO;
       use Result_Vector_Package;
       File_ID    : Ada.Streams.Stream_IO.File_Type;
