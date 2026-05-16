@@ -27,16 +27,11 @@ package Types is
 
    type Particle_Record is record
       Particle : Particle_Data;
-      Setting  : Float;
-   end record;
-
-   type Settings_Pair is record
-      Particle : Particle_Data;
-      Angle    : Settings_Type;
+      Setting  : Settings_Type;
    end record;
 
    package Pairs_Vector_Package is new
-     Ada.Containers.Vectors (Positive, Settings_Pair);
+     Ada.Containers.Vectors (Positive, Particle_Record);
    subtype Pairs_Vector is Pairs_Vector_Package.Vector;
 
    type Result_Data is record
@@ -52,6 +47,11 @@ package Types is
    package Result_Matrix_Package is new
      Ada.Containers.Vectors (Positive, Result_Vector);
    subtype Result_Matrix is Result_Matrix_Package.Vector;
+
+
+   package Settings_Vector_Package is new
+     Ada.Containers.Vectors (Positive, Settings_Type);
+   subtype Settings_Vector is Settings_Vector_Package.Vector;
 
    type Station_Type is record
       Name      : Unbounded_String := To_Unbounded_String ("Unspecified");

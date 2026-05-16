@@ -50,9 +50,8 @@ package body Detection is
 
    end Get_Particles;
 
-   procedure Run_Detection (Settings : Float_Vector; File_Name : String;
+   procedure Run_Detection (Settings : Settings_Vector; File_Name : String;
                             Out_File : out Unbounded_String) is
-      use Float_Vector_Package;
       use Particle_Vector_Package;
       use Vector_Functions;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
@@ -62,8 +61,9 @@ package body Detection is
       Station        : Station_Type         := Get_Particles (File_Name);
       Curs           : Particle_Vector_Package.Cursor :=
         Station.Particles.First;
-      Infos          : Pair_Vector.Vector;
+      Infos          : Pairs_Vector;
       Results        : Result_Vector;
+      Particles      : Particle_Vector;
       Start_Time     : Time;
       End_Time       : Time;
    begin
@@ -80,11 +80,13 @@ package body Detection is
          end loop;
 
          declare
-            Random_Settings : Settings_Vector :=
-              Random_Choice (Settings, Particles.Length);
+            Random_Settings : constant Settings_Vector :=
+              Random_Choice (Settings);
+            Item            : Particle_Data;
          begin
-            for I in 1 .. Particles.Length loop
-               Infos.Append ((Particles.Element (I), Random_Settings.Element (I)));
+            for I in 1 .. Positive (Results.Length) loop
+               Item := Particles.Element (I);
+               Infos.Append ((Item, Random_Settings.Element (I)));
             end loop;
          end;
 

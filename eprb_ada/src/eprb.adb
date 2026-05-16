@@ -14,7 +14,7 @@ procedure EPRB is
    Detection_A_File  : Unbounded_String;
    Detection_B_File  : Unbounded_String;
    Duration_Val      : Duration;
-   Settings          : Float_Vector;
+   Settings          : Settings_Vector;
    Spin              : Float := 1.0;
 begin
    Put_Line ("Set stack size: ulimit -s 64000");

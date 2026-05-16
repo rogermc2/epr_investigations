@@ -64,15 +64,17 @@ package body Utilities is
    end Load_Station_Results;
 
    procedure Process_Command_Line (Duration_Val : out Duration;
-                                    Settings     : out Float_Vector;
-                                    Spin         : out Float) is
+                                   Settings     : out Settings_Vector;
+                                   Spin         : out Float) is
       use Ada.Numerics;
       use Ada.Text_IO;
       use Maths;
       use Vector_Functions;
       use Float_Vector_Package;
+      use Settings_Vector_Package;
       Arg_Count        : constant Integer := Argument_Count;
-      Parsed_Settings  : Float_Vector;
+      L_Space          : Float_Vector;
+      Parsed_Settings  : Settings_Vector;
    begin
       if Arg_Count < 1 then
          Put_Line ("Usage: ");
@@ -81,11 +83,28 @@ package body Utilities is
          New_Line;
          if Arg_Count = 1 then
             Duration_Val := Duration (Float'Value (Argument (1)));
-            Settings := Linear_Space (0.0, 2.0 * Pi, 33);
+            L_Space := Linear_Space (0.0, 2.0 * Pi, 33);
+            declare
+               Curs : Float_Vector_Package.Cursor := L_Space.First;
+            begin
+               while Has_Element (Curs) loop
+                  Settings.Append (Element (Curs));
+                  Next (Curs);
+               end loop;
+            end;
          end if;
 
          if Arg_Count > 1 then
-            Parsed_Settings := Parse_Floats (Argument (2));
+            L_Space := Parse_Floats (Argument (2));
+            declare
+               Curs : Float_Vector_Package.Cursor := L_Space.First;
+            begin
+               while Has_Element (Curs) loop
+                  Parsed_Settings.Append (Element (Curs));
+                  Next (Curs);
+               end loop;
+            end;
+
             for I in Parsed_Settings.First_Index ..
               Parsed_Settings.Last_Index loop
                Settings.Append

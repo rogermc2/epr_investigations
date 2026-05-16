@@ -30,6 +30,23 @@ package body Maths is
 
    end Random_Choice;
 
+   function Random_Choice (Settings : Settings_Vector)
+                           return Settings_Vector is
+      use Settings_Vector_Package;
+      Size   : constant Float := Float (Length (Settings));
+      Curs   : Cursor := Settings.First;
+      Index  : Positive;
+      Result : Settings_Vector;
+   begin
+      while Has_Element (Curs) loop
+         Index := Integer (Float_Random.Random (Gen) * Size) + 1;
+         Result.Append (Element (To_Cursor (Settings, Index)));
+         Next (Curs);
+      end loop;
+      return Result;
+
+   end Random_Choice;
+
    function Sign (X : Interfaces.C.double) return Integer is
    begin
       if X > 0.0 then
