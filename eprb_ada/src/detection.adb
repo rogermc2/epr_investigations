@@ -62,6 +62,7 @@ package body Detection is
       Station        : Station_Type         := Get_Particles (File_Name);
       Curs           : Particle_Vector_Package.Cursor :=
         Station.Particles.First;
+      Infos          : Pair_Vector.Vector;
       Results        : Result_Vector;
       Start_Time     : Time;
       End_Time       : Time;
@@ -77,6 +78,15 @@ package body Detection is
                  (Element (Curs), Random_Choice (Settings_Array)));
             Next (Curs);
          end loop;
+
+         declare
+            Random_Settings : Settings_Vector :=
+              Random_Choice (Settings, Particles.Length);
+         begin
+            for I in 1 .. Particles.Length loop
+               Infos.Append ((Particles.Element (I), Random_Settings.Element (I)));
+            end loop;
+         end;
 
          End_Time := Clock;
          Put_Line

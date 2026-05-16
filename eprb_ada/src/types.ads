@@ -4,6 +4,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Types is
 
+   subtype Settings_Type is Float;
    type Float_Array is array (Positive range <>) of Float;
 
    package Boolean_Vector_Package is new
@@ -28,6 +29,15 @@ package Types is
       Particle : Particle_Data;
       Setting  : Float;
    end record;
+
+   type Settings_Pair is record
+      Particle : Particle_Data;
+      Angle    : Settings_Type;
+   end record;
+
+   package Pairs_Vector_Package is new
+     Ada.Containers.Vectors (Positive, Settings_Pair);
+   subtype Pairs_Vector is Pairs_Vector_Package.Vector;
 
    type Result_Data is record
       Setting : Float := 0.0;
