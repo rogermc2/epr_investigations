@@ -4,8 +4,7 @@ with Ada.Containers.Ordered_Sets;
 
 package body Vector_Functions is
 
-   function Abs_Vector (Vec : Result_Vector; Col : Positive)
-                        return Float_Vector is
+   function Abs_Vector (Vec : Result_Vector) return Float_Vector is
       use Result_Vector_Package;
       Curs   : Cursor := Vec.First;
       Item   : Result_Data;
@@ -214,29 +213,35 @@ package body Vector_Functions is
 
    end  Sample_Mean;
 
-   function Unique (Arr : Float_Vector) return Float_Vector is
-      package Float_Set is
-        new Ada.Containers.Ordered_Sets (Element_Type => Float);
-      Use_Set : Float_Set.Set := Float_Set.Empty_Set;
-      Result_List : Float_Vector (1 .. Arr'Length);
-      Count : Natural := 0;
+   function Unique (Vec : Float_Vector) return Float_Vector is
+      package Float_Set is new Ada.Containers.Ordered_Sets (Float);
+      use Float_Set;
+      use Float_Vector_Package;
+      Use_Set     : Float_Set.Set := Float_Set.Empty_Set;
+      Curs        : Float_Vector_Package.Cursor := Vec.First;
+      Item        : Float;
+      Result_List : Float_Vector;
    begin
-      for I in Arr'Range loop
-         if not Float_Set.Contains (Use_Set, Arr (I)) then
-            Use_Set := Float_Set.Insert (Use_Set, Arr (I));
-            Count := Count + 1;
-            Result_List (Count) := Arr (I);
+      while Has_Element (Curs) loop
+         Item := Element (Curs);
+         if not Float_Set.Contains (Use_Set, Item) then
+            Insert (Use_Set, Item);
+            Result_List.Append (Item);
          end if;
+         Next  (Curs);
       end loop;
-      return Result_List (1 .. Count);
+      return Result_List;
 
    end Unique;
 
    function Zeros_Like (Vec : Float_Vector) return Float_Vector is
+      use Float_Vector_Package;
+      Curs   : Float_Vector_Package.Cursor := Vec.First;
       Result : Float_Vector;
    begin
-      for I in 1 .. Positive (Length (Vec)) loop
+      while Has_Element (Curs) loop
          Result.Append (0.0);
+         Next  (Curs);
       end loop;
       return Result;
 
