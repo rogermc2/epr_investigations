@@ -12,6 +12,7 @@ package Vector_Functions is
                         return Float_Vector;
    function Mod_Array (Arr1, Arr2 : Float_Vector) return Float_Vector;
    function Parse_Floats (Str : String) return Float_Vector;
+   function Sample_Mean (Vec : Float_Vector) return Float;
    function Unique (Arr : Float_Vector) return Float_Vector;
    function Zeros_Like (Arr : Float_Vector) return Float_Vector;
 

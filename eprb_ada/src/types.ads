@@ -37,6 +37,11 @@ package Types is
    package Result_Vector_Package is new
      Ada.Containers.Vectors (Positive, Result_Data);
    subtype Result_Vector is Result_Vector_Package.Vector;
+   use Result_Vector_Package;
+
+   package Result_Matrix_Package is new
+     Ada.Containers.Vectors (Positive, Result_Vector);
+   subtype Result_Matrix is Result_Matrix_Package.Vector;
 
    type Station_Type is record
       Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
