@@ -7,7 +7,6 @@ with Ada.Text_IO;           use Ada.Text_IO;
 
 with Maths;     use Maths;
 with Utilities; use Utilities;
-with Vector_Functions;
 
 package body Detection is
 
@@ -58,11 +57,11 @@ package body Detection is
 
    end Get_Particles;
 
-   function Load_Infos (Particles : Particle_Vector;
-                        Settings  : Settings_Vector) return Result_Vector is
+   function Load_Results
+     (Particles : Particle_Vector; Settings  : Settings_Vector)
+      return Result_Vector is
       --  infos = zip(particles,
-      --  numpy.random.choice(angles, size=len(particles)))
-      use Boolean_Vector_Package;
+      --  numpy.random.choice(angles, size=len(particles))
       use Particle_Data_Package;
       use Settings_Vector_Package;
       Random_Settings : constant Settings_Vector :=
@@ -88,33 +87,31 @@ package body Detection is
 
       declare
          use Pairs_Vector_Package;
-         use Result_Vector_Package;
-         Curs_2 : Pairs_Vector_Package.Cursor := Infos.First;
-         Item   : Result_Data;
+         Curs_2   : Pairs_Vector_Package.Cursor := Infos.First;
+         Item     : Particle_Record;
+         Result   : Result_Data;
       begin
          while Has_Element (Curs_2) loop
-            Item := Detect_Particle (Element (Curs_2), Settings);
-            Result_Vector_Package.Append (Results, Item);
+            Item := Element (Curs_2);
+            Result := Detect_Particle (Item.Particle, Item.Setting);
+            Result_Vector_Package.Append (Results, Result);
             Next (Curs_2);
          end loop;
       end;
 
-      return Infos;
+      return Results;
 
-   end Load_Infos;
+   end Load_Results;
 
    procedure Run_Detection (File_Name : String; Settings : Settings_Vector;
                             Out_File  : out Unbounded_String) is
       use Particle_Data_Package;
-      use Vector_Functions;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
       Num_Particles  : constant Natural     := File_Length (File_Name);
-      Settings_Array : constant Float_Array :=
-        Angles_Vector_To_Array (Settings);
+      --  Settings_Array : constant Float_Array :=
+      --    Angles_Vector_To_Array (Settings);
       Station        : Station_Type         := Get_Particles (File_Name);
-      Infos          : Pairs_Vector;
       Results        : Result_Vector;
-      Particles      : Particle_Vector;
       Start_Time     : Time;
       End_Time       : Time;
    begin
@@ -124,9 +121,9 @@ package body Detection is
          Start_Time := Clock;
 
          Put_Line (Routine_Name & "Particles loaded");
-         Results := Load_Infos (Station.Particles, Settings);
+         Results := Load_Results (Station.Particles, Settings);
 
-         -- Results now contains the detection results
+         --  Results now contains the detection results
 
          End_Time := Clock;
 
