@@ -16,19 +16,26 @@ package body Detection is
    is
       use Interfaces.C;
       use Ada.Numerics.Elementary_Functions;
-      C      : double;
-      Result : Float;
+      C       : double;
+      Outcome : Float;
    begin
       C :=
         double ((-1) ** Natural (Particle.Spin_N)) *
           double (Cos (Particle.Spin_N * (Setting - Particle.E)));
+
       if double (Particle.P) < abs (C) then
-         Result := Float (Sign (C));
+         if C > 0.0 then
+            Outcome := 1.0;
+         elsif C < 0.0 then
+            Outcome := 1.0;
+         else
+            Outcome := 0.0;
+         end if;
       else
-         Result := 999.9;
+         Outcome := 999.9;
       end if;
 
-      return (Setting, Result);
+      return (Setting, Outcome);
 
    end Detect_Particle;
 
@@ -52,37 +59,52 @@ package body Detection is
    end Get_Particles;
 
    function Load_Infos (Particles : Particle_Vector;
-                       Settings : Settings_Vector) return Pairs_Vector is
+                        Settings  : Settings_Vector) return Result_Vector is
       --  infos = zip(particles,
       --  numpy.random.choice(angles, size=len(particles)))
+      use Boolean_Vector_Package;
       use Particle_Data_Package;
       use Settings_Vector_Package;
       Random_Settings : constant Settings_Vector :=
         Random_Choice (Settings);
-      Curs            : Particle_Data_Package.Cursor := Particles.First;
+      Curs_1          : Particle_Data_Package.Cursor := Particles.First;
       Item            : Particle_Data;
       Infos           : Pairs_Vector;
+      Results         : Result_Vector;
    begin
-      while Has_Element (Curs) loop
-         Item := Particles.Element (To_Index (Curs));
-         if Integer (To_Index (Curs)) <=
+      while Has_Element (Curs_1) loop
+         Item := Particles.Element (To_Index (Curs_1));
+         if Integer (To_Index (Curs_1)) <=
            Integer (Length (Random_Settings))
          then
             Infos.Append
-              ((Item, Random_Settings.Element (To_Index (Curs))));
+              ((Item, Random_Settings.Element (To_Index (Curs_1))));
          else
             Infos.Append
               ((Item, Random_Settings.Last_Element));
          end if;
-         Next (Curs);
+         Next (Curs_1);
       end loop;
+
+      declare
+         use Pairs_Vector_Package;
+         use Result_Vector_Package;
+         Curs_2 : Pairs_Vector_Package.Cursor := Infos.First;
+         Item   : Result_Data;
+      begin
+         while Has_Element (Curs_2) loop
+            Item := Detect_Particle (Element (Curs_2), Settings);
+            Result_Vector_Package.Append (Results, Item);
+            Next (Curs_2);
+         end loop;
+      end;
 
       return Infos;
 
    end Load_Infos;
 
    procedure Run_Detection (File_Name : String; Settings : Settings_Vector;
-                            Out_File : out Unbounded_String) is
+                            Out_File  : out Unbounded_String) is
       use Particle_Data_Package;
       use Vector_Functions;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
@@ -90,8 +112,6 @@ package body Detection is
       Settings_Array : constant Float_Array :=
         Angles_Vector_To_Array (Settings);
       Station        : Station_Type         := Get_Particles (File_Name);
-      --  Curs           : Particle_Data_Package.Cursor :=
-      --    Station.Particles.First;
       Infos          : Pairs_Vector;
       Results        : Result_Vector;
       Particles      : Particle_Vector;
@@ -103,14 +123,11 @@ package body Detection is
                      To_String (Station.Name));
          Start_Time := Clock;
 
-         --  while Has_Element (Curs) loop
-         --     Particles.Append
-         --       (Detect_Particle
-         --          (Element (Curs), Random_Choice (Settings_Array)));
-         --     Next (Curs);
-         --  end loop;
          Put_Line (Routine_Name & "Particles loaded");
-         Infos := Load_Infos (Station.Particles, Settings);
+         Results := Load_Infos (Station.Particles, Settings);
+
+         -- Results now contains the detection results
+
          End_Time := Clock;
 
          Put_Line

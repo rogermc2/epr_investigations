@@ -1,0 +1,60 @@
+with Ada.Numerics.Elementary_Functions;
+with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Numerics;
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Detect_Particle is
+
+   type Particle_Type is array (1 .. 3) of Float;
+   type Info_Type is array (1 .. 2) of Float; -- setting and particle packed as needed
+
+   function Detect_Particle_Func(Info : in array of Float) return array of Float is
+      -- Info(1) = particle(1), Info(2) = particle(2), Info(3) = particle(3), Info(4) = setting
+      -- But since original Python uses tuple (particle, setting), we will pass a record instead
+      -- We'll define a record type for clarity
+
+      type Particle is record
+         E : Float;
+         P : Float;
+         N : Integer;
+      end record;
+
+      type Info_Record is record
+         Particle : Particle;
+         Setting  : Float;
+      end record;
+
+      -- We need to convert the input array to this record type
+      -- But Ada does not support dynamic typing like Python, so we will rewrite the function signature
+
+      -- So let's rewrite the function as a separate function with proper types
+
+      null;
+   end Detect_Particle_Func;
+
+   function Detect_Particle(Particle : in Particle; Setting : in Float) return array (1 .. 2) of Float is
+      C : Float;
+      Out : Float;
+      Result : array (1 .. 2) of Float;
+   begin
+      C := Float((-1) ** Particle.N) * Ada.Numerics.Elementary_Functions.Cos(Float(Particle.N) * (Setting - Particle.E));
+
+      if Particle.P < abs(C) then
+         if C > 0.0 then
+            Out := 1.0;
+         elsif C < 0.0 then
+            Out := -1.0;
+         else
+            Out := 0.0;
+         end if;
+      else
+         Out := Float'Quiet_NaN;
+      end if;
+      Result(1) := Setting;
+      Result(2) := Out;
+      return Result;
+   end Detect_Particle;
+
+begin
+   null;
+end Detect_Particle;
