@@ -43,7 +43,7 @@ package body Source is
 
    begin
       Reset (Gen);  --  Initialize random generator
-      --  Initialize Angles array  (linspace 0 to 2*pi, 33 points)
+      --  Initialize Settings array  (linspace 0 to 2*pi, 33 points)
       for I in Settings'Range loop
          Settings (I) := 2.0 * Float (Pi) * Float (I - 1) / 32.0;
       end loop;

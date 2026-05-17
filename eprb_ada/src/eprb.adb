@@ -21,7 +21,7 @@ begin
    Process_Command_Line (Duration_Val, Settings, Spin);
    Build_Source (Duration_Val, Spin,
                  Source_A_File, Source_B_File);
-   Run_Detection (Settings, Source_A_File, Detection_A_File);
-   Run_Detection (Settings, Source_B_File, Detection_B_File);
+   Run_Detection (Source_A_File, Settings, Detection_A_File);
+   Run_Detection (Source_B_File, Settings, Detection_B_File);
 
 end EPRB;

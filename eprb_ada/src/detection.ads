@@ -5,7 +5,7 @@ with Types; use Types;
 
 package Detection is
 
-   procedure Run_Detection (Settings : Settings_Vector; File_Name : String;
+   procedure Run_Detection (File_Name : String; Settings : Settings_Vector;
                             Out_File : out Unbounded_String);
 
 end Detection;

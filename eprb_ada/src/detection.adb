@@ -28,19 +28,20 @@ package body Detection is
          Result := 999.9;
       end if;
 
-      return (Setting => Setting, Outcome => Result);
+      return (Setting, Result);
 
    end Detect_Particle;
 
    function Get_Particles (File_Name : String) return Station_Type is
-      use Particle_Vector_Package;
       Name    : Unbounded_String := To_Unbounded_String ("Unknown");
       Station : Station_Type;
    begin
-      if File_Name = "data/source_left.bin" then
+      if File_Name = "data/source_A.bin" then
          Name := To_Unbounded_String ("A");
-      elsif File_Name = "data/source_right.bin" then
+      elsif File_Name = "data/source_B.bin" then
          Name := To_Unbounded_String ("B");
+      else
+         Put_Line ("Get_Particles unknown file name: '" & File_Name & "'");
       end if;
 
       Station.Name := Name;
@@ -50,17 +51,47 @@ package body Detection is
 
    end Get_Particles;
 
-   procedure Run_Detection (Settings : Settings_Vector; File_Name : String;
+   function Load_Infos (Particles : Particle_Vector;
+                       Settings : Settings_Vector) return Pairs_Vector is
+      --  infos = zip(particles,
+      --  numpy.random.choice(angles, size=len(particles)))
+      use Particle_Data_Package;
+      use Settings_Vector_Package;
+      Random_Settings : constant Settings_Vector :=
+        Random_Choice (Settings);
+      Curs            : Particle_Data_Package.Cursor := Particles.First;
+      Item            : Particle_Data;
+      Infos           : Pairs_Vector;
+   begin
+      while Has_Element (Curs) loop
+         Item := Particles.Element (To_Index (Curs));
+         if Integer (To_Index (Curs)) <=
+           Integer (Length (Random_Settings))
+         then
+            Infos.Append
+              ((Item, Random_Settings.Element (To_Index (Curs))));
+         else
+            Infos.Append
+              ((Item, Random_Settings.Last_Element));
+         end if;
+         Next (Curs);
+      end loop;
+
+      return Infos;
+
+   end Load_Infos;
+
+   procedure Run_Detection (File_Name : String; Settings : Settings_Vector;
                             Out_File : out Unbounded_String) is
-      use Particle_Vector_Package;
+      use Particle_Data_Package;
       use Vector_Functions;
       Routine_Name   : constant String      := "Detection.Run_Detection ";
       Num_Particles  : constant Natural     := File_Length (File_Name);
       Settings_Array : constant Float_Array :=
         Angles_Vector_To_Array (Settings);
       Station        : Station_Type         := Get_Particles (File_Name);
-      Curs           : Particle_Vector_Package.Cursor :=
-        Station.Particles.First;
+      --  Curs           : Particle_Data_Package.Cursor :=
+      --    Station.Particles.First;
       Infos          : Pairs_Vector;
       Results        : Result_Vector;
       Particles      : Particle_Vector;
@@ -72,25 +103,16 @@ package body Detection is
                      To_String (Station.Name));
          Start_Time := Clock;
 
-         while Has_Element (Curs) loop
-            Results.Append
-              (Detect_Particle
-                 (Element (Curs), Random_Choice (Settings_Array)));
-            Next (Curs);
-         end loop;
-
-         declare
-            Random_Settings : constant Settings_Vector :=
-              Random_Choice (Settings);
-            Item            : Particle_Data;
-         begin
-            for I in 1 .. Positive (Results.Length) loop
-               Item := Particles.Element (I);
-               Infos.Append ((Item, Random_Settings.Element (I)));
-            end loop;
-         end;
-
+         --  while Has_Element (Curs) loop
+         --     Particles.Append
+         --       (Detect_Particle
+         --          (Element (Curs), Random_Choice (Settings_Array)));
+         --     Next (Curs);
+         --  end loop;
+         Put_Line (Routine_Name & "Particles loaded");
+         Infos := Load_Infos (Station.Particles, Settings);
          End_Time := Clock;
+
          Put_Line
            (Integer'Image (Integer (Station.Particles.Length)) &
               " particles detected in " &

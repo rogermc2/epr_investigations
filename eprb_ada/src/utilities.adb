@@ -25,7 +25,7 @@ package body Utilities is
 
    function Load_Particles (File_Name : String) return Particle_Vector is
       use Ada.Streams.Stream_IO;
-      use Particle_Vector_Package;
+      use Particle_Data_Package;
       File_ID   : Ada.Streams.Stream_IO.File_Type;
       In_Stream : Stream_Access;
       Particles : Particle_Vector;
@@ -141,7 +141,7 @@ package body Utilities is
 
    procedure Save_As_Text (File_Name : String; Particles : Particle_Vector) is
       use Ada.Text_IO;
-      use Particle_Vector_Package;
+      use Particle_Data_Package;
       File_ID : File_Type;
       Curs    : Cursor := Particles.First;
       Item    : Particle_Data;
@@ -159,7 +159,7 @@ package body Utilities is
 
    procedure Save_Particles (Filename : String; Particles : Particle_Vector) is
       use Ada.Streams.Stream_IO;
-      use Particle_Vector_Package;
+      use Particle_Data_Package;
       File_ID    : Ada.Streams.Stream_IO.File_Type;
       Out_Stream : Stream_Access;
       Curs       : Cursor := Particles.First;

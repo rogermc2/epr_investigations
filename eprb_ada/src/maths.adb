@@ -1,6 +1,7 @@
 
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Float_Random;
+with Ada.Text_IO;           use Ada.Text_IO;
 
 package body Maths is
 
@@ -21,6 +22,7 @@ package body Maths is
       Index : Integer :=
         Integer (Float (Settings'Length) * Float_Random.Random (Gen)) + 1;
    begin
+      --  Put_Line ("Maths Float_Array Random_Choice" );
       if Index > Settings'Length then
          Index := Settings'Length;
       elsif Index < 1 then
@@ -34,15 +36,29 @@ package body Maths is
                            return Settings_Vector is
       use Settings_Vector_Package;
       Size   : constant Float := Float (Length (Settings));
-      Curs   : Cursor := Settings.First;
       Index  : Positive;
       Result : Settings_Vector;
    begin
-      while Has_Element (Curs) loop
-         Index := Integer (Float_Random.Random (Gen) * Size) + 1;
-         Result.Append (Element (To_Cursor (Settings, Index)));
-         Next (Curs);
-      end loop;
+      if Integer (Length (Settings)) > 0 then
+         declare
+            Curs   : Cursor := Settings.First;
+         begin
+            while Has_Element (Curs) loop
+               Index := Integer (Float_Random.Random (Gen) * Size) + 1;
+               --  Put_Line ("Index: " & Integer'Image (Index));
+               if Index <= Integer (Length (Settings)) then
+                  Result.Append (Element (To_Cursor (Settings, Index)));
+               else
+                  Result.Append (Element (To_Cursor (Settings, Integer (Length (Settings)))));
+               end if;
+               Next (Curs);
+            end loop;
+         end;
+      else
+         Put ("Maths Settings_Vector Random_Choice ");
+         Put_Line ("called with empty settings vector.");
+      end if;
+
       return Result;
 
    end Random_Choice;

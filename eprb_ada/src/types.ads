@@ -4,7 +4,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Types is
 
-   subtype Settings_Type is Float;
+   --  subtype Settings_Type is Float;
    type Float_Array is array (Positive range <>) of Float;
 
    package Boolean_Vector_Package is new
@@ -21,13 +21,13 @@ package Types is
       Spin_N : Float;
    end record;
 
-   package Particle_Vector_Package is new
+   package Particle_Data_Package is new
      Ada.Containers.Vectors (Positive, Particle_Data);
-   subtype Particle_Vector is Particle_Vector_Package.Vector;
+   subtype Particle_Vector is Particle_Data_Package.Vector;
 
    type Particle_Record is record
       Particle : Particle_Data;
-      Setting  : Settings_Type;
+      Setting  : Float;
    end record;
 
    package Pairs_Vector_Package is new
@@ -48,9 +48,8 @@ package Types is
      Ada.Containers.Vectors (Positive, Result_Vector);
    subtype Result_Matrix is Result_Matrix_Package.Vector;
 
-
    package Settings_Vector_Package is new
-     Ada.Containers.Vectors (Positive, Settings_Type);
+     Ada.Containers.Vectors (Positive, Float);
    subtype Settings_Vector is Settings_Vector_Package.Vector;
 
    type Station_Type is record
