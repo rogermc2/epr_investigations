@@ -16,9 +16,6 @@ package body Analysis is
         Load_Station_Results (A_File_Name);
       Raw_B            : constant Result_Vector :=
         Load_Station_Results (B_File_Name);
-      Prod_Col2        : Float_Vector :=
-        Product_Column2 (Alice_Raw, Bob_Raw);
-      Coinc            : Boolean_Vector := Coincidence (Prod_Col2);
       A                : Result_Vector := Filter_Rows (Raw_A, Coinc);
       B                : Result_Vector := Filter_Rows (Raw_B, Coinc);
       Length           : constant Integer'Min (Integer (Length (Raw_A)),
@@ -28,19 +25,22 @@ package body Analysis is
       Result_A         : Result_Data;
       Result_B         : Result_Data;
       Coincidences     : Boolean_Vector;
-      AB               : Float_Vector;
+      Settings_Diff    : Float_Vector;    --  AB
+      Unique_Diff      : Float_Vector;
    begin
       for index in 1 .. Length loop
          Result_A := Element (Curs_A);
          Result_B := Element (Curs_B);
          Coincidences.Append (Result_B.Outcome * Result_A.Outcome = 1.0);
-         AB.Append
+         Settings_Diff.Append
            (Float'Remainder (Result_B.Setting - Result_A.Setting), 2.0 * Pi);
          Next (Curs_A);
          Next (Curs_B);
       end loop;
 
-
+      A := Filter_Rows (Raw_A, Coinc);
+      B := Filter_Rows (Raw_B, Coinc);
+      Unique_Diff := Unique (Settings_Diff);
 
    end Analyse;
 
