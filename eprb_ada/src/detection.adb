@@ -119,12 +119,8 @@ package body Detection is
          Put_Line (Routine_Name & "Detecting particles for arm " &
                      To_String (Station.Name));
          Start_Time := Clock;
-
-         Put_Line (Routine_Name & "Particles loaded");
          Results := Load_Results (Station.Particles, Settings);
-
-         --  Results now contains the detection results
-
+         --  Results ncontains the detection results
          End_Time := Clock;
 
          Put_Line
@@ -135,6 +131,7 @@ package body Detection is
          Station.Results := Results;
          Out_File := Station.Name & To_Unbounded_String (".bin");
          Save ("data/" & To_String (Out_File), Station);
+         Put_Line ("Data saved to: " & To_String (Out_File));
       else
          Put_Line (Routine_Name & "empty file: " & File_Name);
       end if;
