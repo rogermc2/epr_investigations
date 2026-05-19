@@ -2,6 +2,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+with Analysis; use Analysis;
 with Source; use Source;
 with Detection; use Detection;
 with Types; use Types;
@@ -23,5 +25,6 @@ begin
                  Source_A_File, Source_B_File);
    Run_Detection (Source_A_File, Settings, Detection_A_File);
    Run_Detection (Source_B_File, Settings, Detection_B_File);
+   Analyse (Detection_A_File, Detection_B_File);
 
 end EPRB;

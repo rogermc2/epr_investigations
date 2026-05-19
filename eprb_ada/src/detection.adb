@@ -106,11 +106,11 @@ package body Detection is
    procedure Run_Detection (File_Name : String; Settings : Settings_Vector;
                             Out_File  : out Unbounded_String) is
       use Particle_Data_Package;
-      Routine_Name   : constant String      := "Detection.Run_Detection ";
-      Num_Particles  : constant Natural     := File_Length (File_Name);
+      Routine_Name   : constant String  := "Detection.Run_Detection ";
+      Num_Particles  : constant Natural := File_Length (File_Name);
       --  Settings_Array : constant Float_Array :=
       --    Angles_Vector_To_Array (Settings);
-      Station        : Station_Type         := Get_Particles (File_Name);
+      Station        : Station_Type      := Get_Particles (File_Name);
       Results        : Result_Vector;
       Start_Time     : Time;
       End_Time       : Time;
@@ -129,12 +129,15 @@ package body Detection is
               Float'Image (Float (End_Time - Start_Time)) & " seconds.");
 
          Station.Results := Results;
-         Out_File := Station.Name & To_Unbounded_String (".bin");
-         Save ("data/" & To_String (Out_File), Station);
+         Out_File := To_Unbounded_String ("data/") & Station.Name &
+           To_Unbounded_String (".bin");
+         Save (To_String (Out_File), Station);
          Put_Line ("Data saved to: " & To_String (Out_File));
       else
          Put_Line (Routine_Name & "empty file: " & File_Name);
       end if;
+
+      Put_Line ("Detection processing complete.");
 
    end Run_Detection;
 
