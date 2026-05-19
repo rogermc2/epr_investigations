@@ -8,7 +8,10 @@ with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
 
-   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector);
+   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
+                          Eab  : out Float_Vector);
+   procedure Expectation (A, B : Result_Vector; Unique_Diff : Float_Vector;
+                          Eab   : in out Float_Vector);
 
    procedure Analyse (A_File_Name, B_File_Name : Unbounded_String) is
       use Result_Vector_Package;
@@ -48,11 +51,8 @@ package body Analysis is
 
    procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
                           Eab  : out Float_Vector) is
-      use Natural_Vector_Package;
       use Float_Vector_Package;
       Size        : constant Positive := Integer (Length (Unique_Diff));
-      A2          : Float_Vector;
-      B2          : Float_Vector;
       Ax          : Float;
       Bx          : Float;
       A_Deg       : Float;
@@ -60,11 +60,9 @@ package body Analysis is
       Result_A    : Result_Data;
       Result_B    : Result_Data;
       Sel         : Boolean_Vector;
-      Curs_1      : Cursor := Unique_Diff.First;
-      Curs_2      : Cursor := Unique_Diff.First;
-      Item        : Float;
+      Curs_1      : Float_Vector_Package.Cursor := Unique_Diff.First;
+      Curs_2      : Float_Vector_Package.Cursor := Unique_Diff.First;
       Corr_Matrix : Float_Matrix (1 .. Size, 1 .. Size);
-      Nab         : Natural_Vector;
    begin
       while Has_Element (Curs_1) loop
          Ax := Element  (Curs_1);
@@ -98,24 +96,38 @@ package body Analysis is
          Next (Curs_1);
       end loop;
 
-      Sel := Boolean_Vector_Package.Empty_Vector;
-      for index in 1 .. Size loop
-         Ax := Unique_Diff (index);
-         Sel := Boolean_Vector_Package.Empty_Vector;
-         for k in 1 .. Size loop
-            Sel.Append (Unique_Diff (k) = Ax or else
-                        Unique_Diff (k) = 360.0 - Ax);
+      Expectation (A, B, Unique_Diff, Eab);
+
+   end Correlation;
+
+   procedure Expectation (A, B : Result_Vector; Unique_Diff : Float_Vector;
+                          Eab  : in out Float_Vector) is
+      use Boolean_Vector_Package;
+      use Float_Vector_Package;
+      Curs_1 : Float_Vector_Package.Cursor := Unique_Diff.First;
+      Curs_2 : Float_Vector_Package.Cursor := Unique_Diff.First;
+      Ax     : Float;
+      Nab    : Natural_Vector;
+      Sel    : Boolean_Vector;
+   begin
+      while Has_Element (Curs_1) loop
+         Ax := Element (Curs_1);
+         Curs_2 := Unique_Diff.First;
+         while Has_Element (Curs_2) loop
+            Sel.Append (Element (Curs_2) = Ax or else
+                        Element (Curs_2) = 360.0 - Ax);
+            Next (Curs_2);
          end loop;
 
          Nab.Append (Sum_Boolean (Sel));
          if Nab.Last_Element > 0 then
-            Eab.Append (Mean_Product (Sel));
+            Float_Vector_Package.Append (Eab, Mean_Product (Sel, A, B));
          else
-            Eab.Append (0.0);
+            Float_Vector_Package.Append (Eab, 0.0);
          end if;
-
+         Next (Curs_1);
       end loop;
 
-   end Correlation;
+   end Expectation;
 
 end Analysis;
