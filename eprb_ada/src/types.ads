@@ -4,8 +4,11 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Types is
 
-   --  subtype Settings_Type is Float;
    type Float_Array is array (Positive range <>) of Float;
+   type Float_Matrix is array (Positive range <>, Positive range <>)
+                                    of Float;
+   type Boolean_Matrix is array (Positive range <>, Positive range <>)
+                                    of Boolean;
 
    package Boolean_Vector_Package is new
      Ada.Containers.Vectors (Positive, Boolean);
@@ -42,11 +45,6 @@ package Types is
    package Result_Vector_Package is new
      Ada.Containers.Vectors (Positive, Result_Data);
    subtype Result_Vector is Result_Vector_Package.Vector;
-   --  use Result_Vector_Package;
-   --
-   --  package Result_Matrix_Package is new
-   --    Ada.Containers.Vectors (Positive, Result_Vector);
-   --  subtype Result_Matrix is Result_Matrix_Package.Vector;
 
    package Settings_Vector_Package is new
      Ada.Containers.Vectors (Positive, Float);

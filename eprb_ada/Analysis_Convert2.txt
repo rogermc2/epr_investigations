@@ -1,0 +1,153 @@
+with Ada.Numerics.Elementary_Functions;
+with Ada.Containers.Vectors;
+with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Convert is
+
+   -- Assuming floating point type for angles and correlations
+   type Float_Array is array (Positive range <>) of Float;
+
+   -- Helper function to find unique elements in an array
+   function Unique (Arr : Float_Array) return Float_Array is
+      package Float_Vectors is new Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Float);
+      V : Float_Vectors.Vector := Float_Vectors.Empty_Vector;
+      Found : Boolean;
+   begin
+      for I in Arr'Range loop
+         Found := False;
+         for J in V.First .. V.Last loop
+            if V.Element(J) = Arr(I) then
+               Found := True;
+               exit;
+            end if;
+         end loop;
+         if not Found then
+            V.Append(Arr(I));
+         end if;
+      end loop;
+
+      declare
+         Result : Float_Array(1 .. V.Length);
+      begin
+         for K in 1 .. V.Length loop
+            Result(K) := V.Element(V.First + K - 1);
+         end loop;
+         return Result;
+      end;
+   end Unique;
+
+   -- Example input arrays (adef, bdeg, alice, bob, abdeg, angles, Nab, Eab)
+   -- These should be initialized with actual data before use.
+   -- For demonstration, we declare sizes and dummy data.
+
+   N : constant Positive := 10;  -- example size
+
+   adeg : Float_Array(1 .. N) := (others => 0.0);
+   bdeg : Float_Array(1 .. N) := (others => 0.0);
+
+   type Matrix_2D is array (Positive range <>, Positive range <>) of Float;
+
+   -- alice and bob are 2D arrays with at least 2 columns, second column used here
+   type Alice_Bob_Array is array (Positive range <>) of Float_Array(1 .. 2);
+   alice : Alice_Bob_Array(1 .. N) := (others => (others => 0.0));
+   bob   : Alice_Bob_Array(1 .. N) := (others => (others => 0.0));
+
+   abdeg  : Float_Array(1 .. N) := (others => 0.0);
+   angles : Float_Array(1 .. N) := (others => 0.0);
+
+   Nab : array (1 .. N) of Integer := (others => 0);
+   Eab : Float_Array(1 .. N) := (others => 0.0);
+
+   -- Variables
+   o_angles : Float_Array;
+   Corr     : Matrix_2D;
+
+   -- Helper function to count how many elements satisfy a boolean condition
+   function Sum_Boolean (Arr : array of Boolean) return Integer is
+      Count : Integer := 0;
+   begin
+      for I in Arr'Range loop
+         if Arr(I) then
+            Count := Count + 1;
+         end if;
+      end loop;
+      return Count;
+   end Sum_Boolean;
+
+   -- Helper function to compute mean of product of alice and bob second columns for selected indices
+   function Mean_Product (Sel : array of Boolean) return Float is
+      Sum_Prod : Float := 0.0;
+      Count    : Integer := 0;
+   begin
+      for I in Sel'Range loop
+         if Sel(I) then
+            Sum_Prod := Sum_Prod + alice(I)(2) * bob(I)(2);
+            Count := Count + 1;
+         end if;
+      end loop;
+      if Count > 0 then
+         return Sum_Prod / Float(Count);
+      else
+         return 0.0;
+      end if;
+   end Mean_Product;
+
+begin
+   -- Get unique angles
+   o_angles := Unique(adeg);
+
+   -- Initialize Corr matrix
+   declare
+      Len : constant Positive := o_angles'Length;
+   begin
+      Corr := (1 .. Len, 1 .. Len => 0.0);
+
+      for I in 1 .. Len loop
+         for J in I .. Len loop
+            declare
+               Ax : Float := o_angles(I);
+               Bx : Float := o_angles(J);
+               Sel : array (1 .. N) of Boolean;
+            begin
+               for K in 1 .. N loop
+                  Sel(K) :=
+                     ((adeg(K) = Ax) and (bdeg(K) = Bx)) or
+                     ((bdeg(K) = Ax) and (adeg(K) = Bx)) or
+                     ((360.0 - adeg(K) = Ax) and (360.0 - bdeg(K) = Bx)) or
+                     ((360.0 - bdeg(K) = Ax) and (360.0 - adeg(K) = Bx));
+               end loop;
+
+               if Sum_Boolean(Sel) > 0 then
+                  Corr(I, J) := Mean_Product(Sel);
+               else
+                  Corr(I, J) := 0.0;
+               end if;
+
+               Corr(J, I) := Corr(I, J);
+            end;
+         end loop;
+      end loop;
+
+      -- Second loop
+      for I in 1 .. angles'Length loop
+         declare
+            A : Float := angles(I);
+            Sel : array (1 .. N) of Boolean;
+         begin
+            for K in 1 .. N loop
+               Sel(K) := (abdeg(K) = A) or (abdeg(K) = 360.0 - A);
+            end loop;
+
+            Nab(I) := Sum_Boolean(Sel);
+
+            if Nab(I) > 0 then
+               Eab(I) := Mean_Product(Sel);
+            else
+               Eab(I) := 0.0;
+            end if;
+         end;
+      end loop;
+   end;
+
+end Convert;

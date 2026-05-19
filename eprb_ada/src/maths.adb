@@ -18,6 +18,31 @@ package body Maths is
    --     when others => return 0.0 / 0.0;
    --  end NaN;
 
+   function Mean_Product
+     (Selector : Boolean_Vector; A, B : Result_Vector) return Float is
+      use Boolean_Vector_Package;
+      Curs    : Cursor := Selector.First;
+      Sum_Val : Float := 0.0;
+      Index   : Natural := 0;
+      Count   : Natural := 0;
+   begin
+      while Has_Element (Curs) loop
+         Index := Index + 1;
+         if Element (Curs) then
+            Sum_Val := Sum_Val + A (Index).Outcome * B (Index).Outcome;
+            Count := Count + 1;
+         end if;
+         Next (Curs);
+      end loop;
+
+      if Count > 0 then
+         return Sum_Val / Float (Count);
+      else
+         return 0.0;
+      end if;
+
+   end Mean_Product;
+
    function Random_Choice (Settings : Float_Array) return Float is
       Index : Integer :=
         Integer (Float (Settings'Length) * Float_Random.Random (Gen)) + 1;
@@ -74,6 +99,22 @@ package body Maths is
       end if;
 
    end Sign;
+
+   --  Python Vec.sum ()
+   function Sum_Boolean (Vec : Boolean_Vector) return Natural is
+      use Boolean_Vector_Package;
+      Curs   : Cursor := Vec.First;
+      Result : Natural := 0;
+   begin
+      while Has_Element (Curs) loop
+         if Element (Curs) then
+            Result := Result + 1;
+         end if;
+         Next (Curs);
+      end loop;
+
+      return Result;
+   end Sum_Boolean;
 
    function To_Degrees (Radians : Float) return Float is
    begin

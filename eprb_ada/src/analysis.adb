@@ -1,11 +1,14 @@
 
 with Ada.Numerics; use Ada.Numerics;
 
+with Maths; use Maths;
 with Types; use Types;
 with Utilities; use Utilities;
 with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
+
+   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector);
 
    procedure Analyse (A_File_Name, B_File_Name : Unbounded_String) is
       use Result_Vector_Package;
@@ -20,7 +23,7 @@ package body Analysis is
       Raw_Length       : constant Integer :=
         Integer'Min (Integer (Length (Raw_A)), Integer (Length (Raw_B)));
       Curs_A           : Cursor := Raw_A.First;
-      Curs_B           : Cursor := Raw_A.First;
+      Curs_B           : Cursor := Raw_B.First;
       Result_A         : Result_Data;
       Result_B         : Result_Data;
       Coincidences     : Boolean_Vector;
@@ -42,5 +45,56 @@ package body Analysis is
       Unique_Diff := Unique (Settings_Diff);
 
    end Analyse;
+
+   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector) is
+      use Float_Vector_Package;
+      Size        : constant Positive := Integer (Length (Unique_Diff));
+      A2          : Float_Vector;
+      B2          : Float_Vector;
+      Ax          : Float;
+      Bx          : Float;
+      A_Deg       : Float;
+      B_Deg       : Float;
+      Result_A    : Result_Data;
+      Result_B    : Result_Data;
+      Sel         : Boolean_Vector;
+      Curs_1      : Cursor := Unique_Diff.First;
+      Curs_2      : Cursor := Unique_Diff.First;
+      Item        : Float;
+      Corr_Matrix : Float_Matrix (1 .. Size, 1 .. Size);
+   begin
+      while Has_Element (Curs_1) loop
+         Ax := Element  (Curs_1);
+         Sel := Boolean_Vector_Package.Empty_Vector;
+         while Has_Element (Curs_2) loop
+            Bx := Element  (Curs_2);           --  Abdeg
+            for k in 1 .. Size loop
+               Result_A := A (k);
+               Result_B := B (k);
+               A_Deg := Result_A.Setting;
+               B_Deg := Result_B.Setting;
+               Sel.Append ((A_Deg = Ax and then B_Deg = Bx) or else
+                             (B_Deg = Ax and then A_Deg = Bx) or else
+                             (360.0 - A_Deg = Ax and then 360.0 - B_Deg = Bx)
+                           or else
+                             (360.0 - B_Deg = Ax and then 360.0 - A_Deg = Bx));
+            end loop;
+
+            if Sum_Boolean (Sel) > 0 then
+               Corr_Matrix (Positive (To_Index (Curs_1)),
+                            Positive (To_Index (Curs_2))) :=
+                 Mean_Product (Sel, A, B);
+            else
+               Corr_Matrix (Positive (To_Index (Curs_2)),
+                            Positive (To_Index (Curs_1))) :=
+                 Corr_Matrix (Positive (To_Index (Curs_1)),
+                              Positive (To_Index (Curs_2)));
+            end if;
+            Next (Curs_2);
+         end loop;
+         Next (Curs_1);
+      end loop;
+
+   end Correlation;
 
 end Analysis;
