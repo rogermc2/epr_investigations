@@ -16,6 +16,7 @@ package Vector_Functions is
    --  function Random_Choice (Settings : Settings_Vector; Size : Positive)
    --                          return Settings_Vector;
    function Sample_Mean (Vec : Float_Vector) return Float;
+   procedure Setting_Pairs (Setting_A, Setting_B : Float_Vector);
    function Unique (Vec : Float_Vector) return Float_Vector;
    function Zeros_Like (Vec : Float_Vector) return Float_Vector;
 

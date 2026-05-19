@@ -168,8 +168,8 @@ package body Vector_Functions is
    function Product_Column2 (Vec_1, Vec_2 : Result_Vector)
                              return Float_Vector is
       use Result_Vector_Package;
-      Curs_1 : Cursor := Vec_1.First;
-      Curs_2 : Cursor := Vec_2.First;
+      Curs_1  : Cursor := Vec_1.First;
+      Curs_2  : Cursor := Vec_2.First;
       Item_1  : Result_Data;
       Item_2  : Result_Data;
       Result  : Float_Vector;
@@ -212,6 +212,26 @@ package body Vector_Functions is
       return Sum / Float (Length (Vec));
 
    end  Sample_Mean;
+
+   procedure Setting_Pairs (Setting_A, Setting_B : Float_Vector) is
+      use Pairs_Vector_Package;
+      Setting_Pairs : Pairs_Vector;
+
+      --  Compute Cartesian product of unique elements of adeg and bdeg
+      Unique_A : constant Float_Vector := Unique (Setting_A);
+      Unique_B : constant Float_Vector := Unique (Setting_B);
+      Curs_A   : Cursor := Unique_A.First;
+      Curs_B   : Cursor := Unique_B.First;
+   begin
+      while Has_Element (Curs_A) loop
+         while Has_Element (Curs_B) loop
+            Setting_Pairs.Append ((Element (Curs_A), Element (Curs_B)));
+            Next (Curs_B);
+         end loop;
+         Next (Curs_A);
+      end loop;
+
+   end Setting_Pairs;
 
    function Unique (Vec : Float_Vector) return Float_Vector is
       package Float_Set is new Ada.Containers.Ordered_Sets (Float);

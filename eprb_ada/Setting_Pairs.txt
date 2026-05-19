@@ -1,0 +1,94 @@
+with Ada.Containers.Vectors;
+with Ada.Numerics.Elementary_Functions;
+with Ada.Text_IO; -- if needed for debugging or output
+with Ada.Strings.Fixed; -- if needed for string operations
+
+procedure Convert is
+
+   -- Assuming adeg and bdeg are arrays of some numeric type, e.g. Float
+   type Float_Array is array (Positive range <>) of Float;
+
+   -- Example input arrays (replace with actual data)
+   adeg : Float_Array := (1.0, 2.0, 2.0, 3.0);
+   bdeg : Float_Array := (4.0, 5.0, 5.0);
+
+   -- Function to get unique elements from a Float_Array
+   function Unique(Arr : Float_Array) return Float_Array is
+      use Ada.Containers;
+      package Float_Vector is new Vectors (Index_Type => Positive, Element_Type => Float);
+      V : Float_Vector.Vector := Float_Vector.Empty_Vector;
+      Result : Float_Vector.Vector := Float_Vector.Empty_Vector;
+      Sorted : Float_Vector.Vector := Float_Vector.Empty_Vector;
+      Last_Val : Float := 0.0;
+      First : Boolean := True;
+   begin
+      -- Insert all elements into vector
+      for I in Arr'Range loop
+         V.Append(Arr(I));
+      end loop;
+
+      -- Sort the vector
+      -- Ada.Containers.Vectors does not provide sort, so implement simple sort here
+      -- For simplicity, use a bubble sort (not efficient but straightforward)
+      declare
+         Temp : Float;
+         Swapped : Boolean;
+      begin
+         loop
+            Swapped := False;
+            for J in 1 .. V.Length - 1 loop
+               if V.Element(J) > V.Element(J + 1) then
+                  Temp := V.Element(J);
+                  V.Replace_Element(J, V.Element(J + 1));
+                  V.Replace_Element(J + 1, Temp);
+                  Swapped := True;
+               end if;
+            end loop;
+            exit when not Swapped;
+         end loop;
+      end;
+
+      -- Extract unique elements
+      for K in 1 .. V.Length loop
+         if First or else V.Element(K) /= Last_Val then
+            Result.Append(V.Element(K));
+            Last_Val := V.Element(K);
+            First := False;
+         end if;
+      end loop;
+
+      -- Convert Result vector to array
+      declare
+         Unique_Array : Float_Array(1 .. Result.Length);
+      begin
+         for I in 1 .. Result.Length loop
+            Unique_Array(I) := Result.Element(I);
+         end loop;
+         return Unique_Array;
+      end;
+   end Unique;
+
+   -- Define a pair type to hold the product elements
+   type Pair is record
+      First  : Float;
+      Second : Float;
+   end record;
+
+   -- Vector of pairs
+   package Pair_Vector is new Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Pair);
+   Setting_Pairs : Pair_Vector.Vector := Pair_Vector.Empty_Vector;
+
+   -- Compute Cartesian product of unique elements of adeg and bdeg
+   Unique_Adeg : Float_Array := Unique(adeg);
+   Unique_Bdeg : Float_Array := Unique(bdeg);
+
+begin
+   for I in Unique_Adeg'Range loop
+      for J in Unique_Bdeg'Range loop
+         Setting_Pairs.Append((First => Unique_Adeg(I), Second => Unique_Bdeg(J)));
+      end loop;
+   end loop;
+
+   -- Now Setting_Pairs contains the Cartesian product similar to itertools.product
+
+end Convert;
