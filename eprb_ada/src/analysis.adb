@@ -46,7 +46,9 @@ package body Analysis is
 
    end Analyse;
 
-   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector) is
+   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
+                          Eab  : out Float_Vector) is
+      use Natural_Vector_Package;
       use Float_Vector_Package;
       Size        : constant Positive := Integer (Length (Unique_Diff));
       A2          : Float_Vector;
@@ -62,6 +64,7 @@ package body Analysis is
       Curs_2      : Cursor := Unique_Diff.First;
       Item        : Float;
       Corr_Matrix : Float_Matrix (1 .. Size, 1 .. Size);
+      Nab         : Natural_Vector;
    begin
       while Has_Element (Curs_1) loop
          Ax := Element  (Curs_1);
@@ -93,6 +96,24 @@ package body Analysis is
             Next (Curs_2);
          end loop;
          Next (Curs_1);
+      end loop;
+
+      Sel := Boolean_Vector_Package.Empty_Vector;
+      for index in 1 .. Size loop
+         Ax := Unique_Diff (index);
+         Sel := Boolean_Vector_Package.Empty_Vector;
+         for k in 1 .. Size loop
+            Sel.Append (Unique_Diff (k) = Ax or else
+                        Unique_Diff (k) = 360.0 - Ax);
+         end loop;
+
+         Nab.Append (Sum_Boolean (Sel));
+         if Nab.Last_Element > 0 then
+            Eab.Append (Mean_Product (Sel));
+         else
+            Eab.Append (0.0);
+         end if;
+
       end loop;
 
    end Correlation;
