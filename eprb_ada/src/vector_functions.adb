@@ -213,7 +213,8 @@ package body Vector_Functions is
 
    end  Sample_Mean;
 
-   procedure Setting_Pairs (Setting_A, Setting_B : Float_Vector) is
+   function Setting_Pairs (Setting_A, Setting_B : Float_Vector)
+                           return Setting_Pairs_Vector is
       use Float_Vector_Package;
       Setting_Pairs : Setting_Pairs_Vector;
 

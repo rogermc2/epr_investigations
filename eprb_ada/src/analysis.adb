@@ -2,6 +2,7 @@
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Display; use Display;
 with Maths; use Maths;
 with Types; use Types;
 with Utilities; use Utilities;
@@ -53,6 +54,9 @@ package body Analysis is
       Expectation (A, B, Unique_Diff, Eab);
 
       Put_Line ("Analysis complete.");
+
+      Display_Results (A, B);
+
    end Analyse;
 
    procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;

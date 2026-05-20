@@ -1,0 +1,264 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Statistical significance test between 2 groups of binary data
+\end_layout
+
+\begin_layout Standard
+There are two approaches to reach this equation,
+ from the mean of repeated Bernoulli trials (each trial is one observation x) or from a Gaussian approximation of a Binomial distribution (the number of successes is our only observation).
+\end_layout
+
+\begin_layout Section
+Mean of repeated Bernoulli trials
+\end_layout
+
+\begin_layout Standard
+The 𝑧-score of the mean is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+𝑧 & = & \frac{𝑥¯−𝜇}{\sqrt{𝜎^{2}/𝑛}}
+\end{eqnarray*}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The Bernoulli distribution has 
+\begin_inset Formula $𝜇=𝑝$
+\end_inset
+
+ and 
+\begin_inset Formula $𝜎^{2}=𝑝(1−𝑝)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The mean,
+ 
+\begin_inset Formula $\bar{𝑥}=\frac{1}{n}∑_{i}𝑛=1𝑥_{𝑖}$
+\end_inset
+
+ is just the estimated probability 
+\begin_inset Formula $\hat{p}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With 
+\begin_inset Formula $𝑝=𝑝_{0}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+𝑧 & = & \frac{\hat{p}−𝑝_{0}}{\sqrt{\frac{p_{0}(1−p_{0})}{n}}}
+\end{eqnarray*}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As 𝑛 is large,
+ use the Central Limit Theorem stating that as 
+\begin_inset Formula $\bar{𝑥}$
+\end_inset
+
+ approaches a Gaussian distribution the corresponding 𝑝-value for the 𝑧-score can be found in a table for the Gaussian distribution.
+\end_layout
+
+\begin_layout Section
+Gaussian approximation of Binomial distribution
+\end_layout
+
+\begin_layout Standard
+The 𝑧-score for an observation is defined as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+𝑧 & = & \frac{𝑥−𝜇_{𝑋}}{𝜎_{𝑋}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $𝜇_{𝑋}$
+\end_inset
+
+ is the expected value and 
+\begin_inset Formula $𝜎_{𝑋}$
+\end_inset
+
+ is the standard deviation of the random variable 𝑋.
+\end_layout
+
+\begin_layout Standard
+In this case,
+ 𝑥 is the sum of the outcomes of the 𝑛 trials or,
+ to be more specific,
+ the count of "event"s .
+ 
+\end_layout
+
+\begin_layout Standard
+This is how the binomial distribution is defined with 
+\begin_inset Formula $𝜇_{𝑋}=𝑛𝑝$
+\end_inset
+
+ and 
+\begin_inset Formula $𝜎_{𝑋}=\sqrt{𝑛𝑝(1−𝑝_{0})}$
+\end_inset
+
+.
+ Substituting that into the definition of the 𝑧-score with 
+\begin_inset Formula $𝑝=𝑝_{0}$
+\end_inset
+
+ gives:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+𝑧 & = & \frac{𝑥−𝑛𝑝_{0}}{\sqrt{𝑛𝑝_{0}(1−𝑝_{0})}}\\
+ & = & \frac{𝑥/𝑛−𝑝_{0}}{𝑝_{0}(1−𝑝_{0})𝑛}\\
+ & = & \frac{\hat{p}−𝑝_{0}}{𝑝_{0}(1−𝑝_{0})𝑛}
+\end{eqnarray*}
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\hat{p}$
+\end_inset
+
+ is just the estimated probability;
+ the count of "event"s divided by the number of trials.
+\end_layout
+
+\begin_layout Standard
+For large 𝑛,
+ the binomial distribution can be approximated by a Gaussian and the 𝑧-score can be directly looked up in a 𝑝-value table for the Gaussian distribution.
+\end_layout
+
+\end_body
+\end_document
