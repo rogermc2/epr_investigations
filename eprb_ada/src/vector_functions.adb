@@ -213,14 +213,37 @@ package body Vector_Functions is
 
    end  Sample_Mean;
 
-   function Setting_Pairs (Setting_A, Setting_B : Float_Vector)
-                           return Setting_Pairs_Vector is
-      use Float_Vector_Package;
+   --  function Setting_Pairs (Setting_A, Setting_B : Float_Vector)
+   --                          return Setting_Pairs_Vector is
+   --     use Float_Vector_Package;
+   --     Setting_Pairs : Setting_Pairs_Vector;
+   --
+   --     --  Compute Cartesian product of unique elements of adeg and bdeg
+   --     Unique_A : constant Float_Vector := Unique (Setting_A);
+   --     Unique_B : constant Float_Vector := Unique (Setting_B);
+   --     Curs_A   : Cursor := Unique_A.First;
+   --     Curs_B   : Cursor := Unique_B.First;
+   --  begin
+   --     while Has_Element (Curs_A) loop
+   --        while Has_Element (Curs_B) loop
+   --           Setting_Pairs.Append ((Element (Curs_A), Element (Curs_B)));
+   --           Next (Curs_B);
+   --        end loop;
+   --        Next (Curs_A);
+   --     end loop;
+   --
+   --     return Setting_Pairs;
+
+   --  end Setting_Pairs;
+
+   function Setting_Pairs (A, B : Result_Vector)
+                            return Setting_Pairs_Vector is
+      use Result_Vector_Package;
       Setting_Pairs : Setting_Pairs_Vector;
 
       --  Compute Cartesian product of unique elements of adeg and bdeg
-      Unique_A : constant Float_Vector := Unique (Setting_A);
-      Unique_B : constant Float_Vector := Unique (Setting_B);
+      Unique_A : constant Float_Vector := Unique (A);
+      Unique_B : constant Float_Vector := Unique (B);
       Curs_A   : Cursor := Unique_A.First;
       Curs_B   : Cursor := Unique_B.First;
    begin
@@ -231,6 +254,8 @@ package body Vector_Functions is
          end loop;
          Next (Curs_A);
       end loop;
+
+      return Setting_Pairs;
 
    end Setting_Pairs;
 
