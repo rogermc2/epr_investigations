@@ -1,5 +1,6 @@
 
 with Ada.Numerics; use Ada.Numerics;
+with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths; use Maths;
 with Types; use Types;
@@ -32,6 +33,7 @@ package body Analysis is
       Coincidences     : Boolean_Vector;
       Settings_Diff    : Float_Vector;    --  AB
       Unique_Diff      : Float_Vector;
+      Eab              : Float_Vector;
    begin
       for index in 1 .. Raw_Length loop
          Result_A := Element (Curs_A);
@@ -47,6 +49,10 @@ package body Analysis is
       B := Filter_Rows (Raw_B, Coincidences);
       Unique_Diff := Unique (Settings_Diff);
 
+      Correlation (A, B, Unique_Diff, Eab);
+      Expectation (A, B, Unique_Diff, Eab);
+
+      Put_Line ("Analysis complete.");
    end Analyse;
 
    procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
@@ -62,12 +68,17 @@ package body Analysis is
       Sel         : Boolean_Vector;
       Curs_1      : Float_Vector_Package.Cursor := Unique_Diff.First;
       Curs_2      : Float_Vector_Package.Cursor := Unique_Diff.First;
-      Corr_Matrix : Float_Matrix (1 .. Size, 1 .. Size);
+      Corr_Matrix : Float_Matrix (1 .. Size, 1 .. Size) :=
+        (others => (others => 0.0));
+      Index_X     : Natural := 0;
+      Index_Y     : Natural := 0;
    begin
       while Has_Element (Curs_1) loop
+         Index_X := Index_X + 1;
          Ax := Element  (Curs_1);
          Sel := Boolean_Vector_Package.Empty_Vector;
          while Has_Element (Curs_2) loop
+            Index_Y := Index_Y + 1;
             Bx := Element  (Curs_2);           --  Abdeg
             for k in 1 .. Size loop
                Result_A := A (k);
@@ -82,21 +93,15 @@ package body Analysis is
             end loop;
 
             if Sum_Boolean (Sel) > 0 then
-               Corr_Matrix (Positive (To_Index (Curs_1)),
-                            Positive (To_Index (Curs_2))) :=
-                 Mean_Product (Sel, A, B);
+               Corr_Matrix (Index_X, Index_Y) := Mean_Product (Sel, A, B);
             else
-               Corr_Matrix (Positive (To_Index (Curs_2)),
-                            Positive (To_Index (Curs_1))) :=
-                 Corr_Matrix (Positive (To_Index (Curs_1)),
-                              Positive (To_Index (Curs_2)));
+               Corr_Matrix (Index_Y, Index_X) :=
+                 Corr_Matrix (Index_X, Index_Y);
             end if;
             Next (Curs_2);
          end loop;
          Next (Curs_1);
       end loop;
-
-      Expectation (A, B, Unique_Diff, Eab);
 
    end Correlation;
 

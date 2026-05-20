@@ -214,8 +214,8 @@ package body Vector_Functions is
    end  Sample_Mean;
 
    procedure Setting_Pairs (Setting_A, Setting_B : Float_Vector) is
-      use Pairs_Vector_Package;
-      Setting_Pairs : Pairs_Vector;
+      use Float_Vector_Package;
+      Setting_Pairs : Setting_Pairs_Vector;
 
       --  Compute Cartesian product of unique elements of adeg and bdeg
       Unique_A : constant Float_Vector := Unique (Setting_A);

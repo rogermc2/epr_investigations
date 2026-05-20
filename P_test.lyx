@@ -1,0 +1,225 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+To find the statistical p-value for binary data,
+ first determine your groups using the Social Science Statistics Calculator or Python's scipy.stats module.
+\end_layout
+
+\begin_layout Standard
+Choose your test based on your sample size and variables:
+\end_layout
+
+\begin_layout Section
+Two Independent Groups (e.g.,
+ A/B testing):
+\end_layout
+
+\begin_layout Standard
+Use a Chi-Squared Test if your sample is large (typically >5 expected counts per category).
+ 
+\end_layout
+
+\begin_layout Standard
+If your sample size is small or groups are highly uneven,
+ use Fisher's Exact Test.One Group with 2 Outcomes:
+ Use a Binomial Test to see if an outcome deviates significantly from an expected probability (e.g.,
+ a coin flip).
+\end_layout
+
+\begin_layout Section
+Paired/Matched Data:
+\end_layout
+
+\begin_layout Standard
+Use McNemar's Test to see if changes are significant (e.g.,
+ before/after patient outcomes).How to calculate it in practiceFormat your data:
+ Create a contingency (frequency) table counting the successes and failures for each group.
+\end_layout
+
+\begin_layout Standard
+Apply the test:
+\end_layout
+
+\begin_layout Standard
+Chi-Squared Test:
+ Calculates a 
+\backslash
+(
+\backslash
+chi ^{2}
+\backslash
+) test statistic,
+ which is compared to a Chi-Squared distribution to find the p-value.
+\end_layout
+
+\begin_layout Standard
+Fisher's Exact Test:
+ Directly calculates the exact probability of observing your specific table (or a more extreme one) using combinatorics.Interpret the p-value:
+ 
+\end_layout
+
+\begin_layout Standard
+Compare your p-value to your chosen significance level (usually 
+\backslash
+(0.05
+\backslash
+)).
+\end_layout
+
+\begin_layout Standard
+If 
+\backslash
+(p < 0.05
+\backslash
+),
+ the difference between your groups is statistically significant.
+\end_layout
+
+\begin_layout Standard
+Software & Calculators
+\end_layout
+
+\begin_layout Standard
+Instead of calculating this by hand,
+ use built-in software routines to automatically calculate your exact p-value:
+\end_layout
+
+\begin_layout Standard
+Python:
+ scipy.stats.fisher_exact(table) or scipy.stats.chi2_contingency(table)R:
+ fisher.test(table) or chisq.test(table)
+\end_layout
+
+\begin_layout Standard
+Online:
+ Use the GraphPad QuickCalcs for quick proportional analyses.Finding the p value for binary data - 
+\end_layout
+
+\begin_layout Standard
+Stats StackExchange30 June 2020 —
+
+\end_layout
+
+\begin_layout Standard
+Regarding sample size calculation,
+ you'd need to specify the effect size you're looking for - finding a difference of 20% vs.
+ 50% ...
+\end_layout
+
+\begin_layout Standard
+Stack Exchangep-value of binary results - statistics - Data Science Stack Exchange10 Jan 2019 —
+ 1
+\end_layout
+
+\begin_layout Standard
+Answer.
+ ...
+ P-values are used to provide insight into the solidity or likeliness of your results within the framework of a pre-d...
+\end_layout
+
+\begin_layout Standard
+Data Science Stack Exchange
+\end_layout
+
+\begin_layout Standard
+Approaches to analyzing binary data for large-scale A/B testingFor example,
+ in an experiment with a binary outcome the chi-squared test is often used to compare two independent proportions when...
+\end_layout
+
+\end_body
+\end_document
