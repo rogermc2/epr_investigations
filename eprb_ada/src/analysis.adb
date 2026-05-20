@@ -55,7 +55,7 @@ package body Analysis is
 
       Put_Line ("Analysis complete.");
 
-      Display_Results (A, B);
+      Display_Results (Result_A.Setting, Result_B.Setting);
 
    end Analyse;
 

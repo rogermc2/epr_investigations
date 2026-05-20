@@ -236,7 +236,7 @@ package body Vector_Functions is
 
    --  end Setting_Pairs;
 
-   function Setting_Pairs (A, B : Result_Vector)
+   function Setting_Pairs (A, B : Settings_Vector)
                             return Setting_Pairs_Vector is
       use Result_Vector_Package;
       Setting_Pairs : Setting_Pairs_Vector;

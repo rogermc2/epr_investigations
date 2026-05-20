@@ -18,7 +18,7 @@ package Vector_Functions is
    function Sample_Mean (Vec : Float_Vector) return Float;
    --  function Setting_Pairs (Setting_A, Setting_B : Float_Vector)
    --                          return Setting_Pairs_Vector;
-   function Setting_Pairs (A, B : Result_Vector) return Setting_Pairs_Vector;
+   function Setting_Pairs (A, B : Settings_Vector) return Setting_Pairs_Vector;
    function Unique (Vec : Float_Vector) return Float_Vector;
    function Zeros_Like (Vec : Float_Vector) return Float_Vector;
 
