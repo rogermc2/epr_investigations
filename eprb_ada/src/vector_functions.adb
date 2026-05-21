@@ -51,8 +51,76 @@ package body Vector_Functions is
 
    end Coincidence;
 
+   function Filter_Matrix (A, B : Result_Vector; Pairs : Setting_Pairs_Vector)
+                           return Float_Matrix is
+      use Settings_Vector_Package;
+      Size_A : constant Positive := Integer (Length (A));
+      Size_B : constant Positive := Integer (Length (B));
+      Curs   : Cursor := Pairs.First
+      Item   : Pair_Data;
+      Item_A : Result_Data;
+      Item_B : Result_Data;
+      As     : Boolean_Vector;
+      Bs     : Boolean_Vector;
+      Ts     : Boolean_Vector;
+      Count  : Natural := 0;
+      Row    : Natural := 0;
+      Index_I : Natural := 0;
+      Index_J : Natural := 0;
+      Index_T : Natural := 0;
+      Row     : Natural := 0;
+      Result  : Float_Matrix (1 .. Size_A, 1 .. Size_B) :=
+        (others => (others => 0.0));
+
+   begin
+      while Has_Element (Curs) loop
+         Item := Element (Curs);
+
+      for Index_I in 1 .. Size_A loop
+         Item_A := A (Index_I);
+         As.Append (Item_A.Setting = Index_I);
+      end loop;
+
+      for Index_J in 1 .. Size_B loop
+         Item_B := B (Index_J);
+         Bs.Append (Item_B.Setting = Index_J);
+      end loop;
+
+         for Index_I in 1 .. Size_A loop
+            if Index_I <= Size_B then
+               Ts.Append (As (Index_I) and Bs (Index_I));
+            end if;
+      end loop;
+
+      while Has_Element (Curs_A) loop
+         Row := Row + 1;
+         if Ts (Row) then
+            -- Store or print the value at Alice(Row, 1)
+            Count := Count + 1;
+            Item_A := Element (Curs_A);
+            Put_Line ("A match found: " & Float'Image (Item_A.Setting));
+            Next  (Curs_A);
+         end if;
+      end loop;
+
+      Row := 0;
+      while Has_Element (Curs_B) loop
+         Row := Row + 1;
+         if Ts (Row) then
+            Count := Count + 1;
+            Item_B := Element (Curs_B);
+            Put_Line ("Bi match found: " & Float'Image (Item_B.Setting));
+            Next  (Curs_B);
+         end if;
+      end loop;
+      end loop;
+
+      return Result;
+
+   end Filter_Matrix;
+
    function Filter_Rows (Vec : Result_Vector; Mask : Boolean_Vector)
-                         return Result_Vector is
+                          return Result_Vector is
       use Boolean_Vector_Package;
       --  use Result_Vector_Package;
       Result : Result_Vector;
@@ -65,19 +133,6 @@ package body Vector_Functions is
       return Result;
 
    end Filter_Rows;
-
-   --  function Get_Column (Vec : Result_Vector; Col : Positive)
-   --                       return Float_Vector is
-   --     use Float_Vector_Package;
-   --     Curs_1 : Cursor := Vec_1.First;
-   --     Result : Float_Vector;
-   --  begin
-   --     for I in 1 .. Len loop
-   --        Result (I) := Arr (I, Col);
-   --     end loop;
-   --     return Result;
-   --
-   --  end Get_Column;
 
    function Get_Settings (Res : Result_Vector) return Settings_Vector is
       use Result_Vector_Package;
@@ -198,21 +253,6 @@ package body Vector_Functions is
       return Result;
 
    end Product_Column2;
-
-   --  function Random_Choice (Settings : Settings_Vector; Size : Positive)
-   --                          return Settings_Vector is
-   --     Result : Settings_Vector;
-   --     Len    : constant Positive := Settings.Length;
-   --     Index  : Positive;
-   --  begin
-   --     for I in 1 .. Size loop
-   --        Index :=
-   --  Integer (Float_Random.Random (Generator) * Float (Len)) + 1;
-   --        Result.Append (Angles.Element(Index));
-   --     end loop;
-   --     return Result;
-   --
-   --  end Random_Choice;
 
    function Sample_Mean (Vec : Float_Vector) return Float is
       use Float_Vector_Package;

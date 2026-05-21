@@ -55,13 +55,13 @@ package Types is
      Ada.Containers.Vectors (Positive, Float);
    subtype Settings_Vector is Settings_Vector_Package.Vector;
 
-   type Pair is record
+   type Pair_Data is record
       First  : Float;
       Second : Float;
    end record;
 
    package Setting_Pairs_Vector_Package is new
-     Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Pair);
+     Ada.Containers.Vectors (Positive, Pair_Data);
    subtype Setting_Pairs_Vector is Setting_Pairs_Vector_Package.Vector;
 
 
