@@ -36,6 +36,7 @@ package body Analysis is
       Unique_Diff      : Float_Vector;
       Eab              : Float_Vector;
    begin
+      Put_Line ("Analysiss.");
       for index in 1 .. Raw_Length loop
          Result_A := Element (Curs_A);
          Result_B := Element (Curs_B);
@@ -55,7 +56,7 @@ package body Analysis is
 
       Put_Line ("Analysis complete.");
 
-      Display_Results (Result_A.Setting, Result_B.Setting);
+      Display_Results (A, B);
 
    end Analyse;
 
