@@ -55,34 +55,44 @@ package body Vector_Functions is
 
    function Get_Ts (A, B : Result_Vector; I, J : Float)
                     return Boolean_Vector is
+      use Ada.Numerics;
       use Result_Vector_Package;
       use Boolean_Vector_Package;
-      Routine_Name      : constant String := "Vector_Functions.Get_Ts ";
-      Size_A  : constant Positive := Integer (Length (A));
-      Size_B  : constant Positive := Integer (Length (B));
-      Item_A  : Result_Data;
-      Item_B  : Result_Data;
-      A_Deg   : Float;
-      B_Deg   : Float;
+      Routine_Name     : constant String := "Vector_Functions.Get_Ts ";
+
+      function To_Degrees (Angle : Float) return Float is
+         Angle_Resolution : constant Float := 3.75;
+      begin
+         return Float'Rounding (2.0 * Pi * Angle / Angle_Resolution) *
+           Angle_Resolution;
+
+      end To_Degrees;
+
+      Size_A           : constant Positive := Integer (Length (A));
+      Size_B           : constant Positive := Integer (Length (B));
+      Item_A           : Result_Data;
+      Item_B           : Result_Data;
+      A_Deg            : Float;
+      B_Deg            : Float;
       --  AB_Deg  : Float;
-      As      : Boolean_Vector;
-      Bs      : Boolean_Vector;
-      Ts      : Boolean_Vector;
-      As_Sum  : Natural := 0;
-      Bs_Sum  : Natural := 0;
+      As               : Boolean_Vector;
+      Bs               : Boolean_Vector;
+      Ts               : Boolean_Vector;
+      As_Sum           : Natural := 0;
+      Bs_Sum           : Natural := 0;
    begin
       --  Create boolean mask As where Setting_I equals i
       for Index_I in 1 .. Size_A loop
          Item_A := A (Index_I);
-         A_Deg := Item_A.Setting;
-         As.Append (Integer (A_Deg) = Integer (I));
+         A_Deg := To_Degrees (Item_A.Setting);
+         As.Append (Integer (A_Deg) = Integer (To_Degrees (I)));
       end loop;
 
       --  Create boolean mask Bs where Setting_B equals Index_J
       for Index_J in 1 .. Size_B loop
          Item_B := B (Index_J);
-         B_Deg := Item_B.Setting;
-         Bs.Append (Integer (B_Deg) = Integer (J));
+         B_Deg := To_Degrees (Item_B.Setting);
+         Bs.Append (Integer (B_Deg) = Integer (To_Degrees (J)));
       end loop;
 
       --  Create combined mask Ts where both As and Bs are true
@@ -93,19 +103,19 @@ package body Vector_Functions is
          end if;
       end loop;
 
-         for index in 1 .. Integer (Length (As)) loop
-            if As (index) then
-               As_Sum := As_Sum + 1;
-            end if;
-         end loop;
+      for index in 1 .. Integer (Length (As)) loop
+         if As (index) then
+            As_Sum := As_Sum + 1;
+         end if;
+      end loop;
       Put_Line (Routine_Name & "As_Sum: " & Integer'Image (As_Sum));
 
-         for index in 1 .. Integer (Length (Bs)) loop
-            if Bs (index) then
-               Bs_Sum := Bs_Sum + 1;
-            end if;
-         end loop;
-         Put_Line (Routine_Name & "Bs_Sum: " & Integer'Image (Bs_Sum));
+      for index in 1 .. Integer (Length (Bs)) loop
+         if Bs (index) then
+            Bs_Sum := Bs_Sum + 1;
+         end if;
+      end loop;
+      Put_Line (Routine_Name & "Bs_Sum: " & Integer'Image (Bs_Sum));
       return Ts;
 
    end Get_Ts;
@@ -119,7 +129,8 @@ package body Vector_Functions is
       use Result_Vector_Package;
       use Setting_Pairs_Vector_Package;
       Routine_Name : constant String := "Vector_Functions.Filter_Matrix ";
-      --  Angle_Resolution : constant Float := 3.75;
+      --  setting_pairs = list(itertools.product
+      --  (numpy.unique (adeg), numpy.unique (bdeg)))
       Pairs_Curs   : Setting_Pairs_Vector_Package.Cursor := Pairs.First;
       Curs_A       : Result_Vector_Package.Cursor := A.First;
       Curs_B       : Result_Vector_Package.Cursor := B.First;
