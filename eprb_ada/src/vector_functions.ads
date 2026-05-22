@@ -7,8 +7,6 @@ package Vector_Functions is
    function Angles_Vector_To_Array
      (Settings : Settings_Vector) return Float_Array;
    function Coincidence (Prod : Float_Vector) return Boolean_Vector;
-   procedure Filter_Matrix
-     (A, B : Result_Vector; Pairs : Setting_Pairs_Vector);
    function Filter_Rows (Vec : Result_Vector; Mask : Boolean_Vector)
                          return Result_Vector;
    function Get_Settings (Res : Result_Vector) return Settings_Vector;

@@ -33,7 +33,7 @@ package body Display is
       Put_Line ("Expectation values:");
       Put_Line ("Settings  N_ab  Sim<AB>  QM<AB> Sim Std Err");
 
-      Filter_Matrix (A, B, Pairs);
+      --  Filter_Matrix (A, B, Pairs);
 
    end Display_Results;
 
