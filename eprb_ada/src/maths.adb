@@ -1,5 +1,6 @@
 
 with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics.Elementary_Functions;
 with Ada.Numerics.Float_Random;
 with Ada.Text_IO;           use Ada.Text_IO;
 
@@ -17,6 +18,27 @@ package body Maths is
    --  exception
    --     when others => return 0.0 / 0.0;
    --  end NaN;
+
+   function Mean_Product (A, B : Float_Vector) return Float is
+      use Float_Vector_Package;
+      Curs_A  : Cursor := A.First;
+      Curs_B  : Cursor := B.First;
+      Sum_Val : Float := 0.0;
+   begin
+      while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
+         Sum_Val := Sum_Val + Element (Curs_A) * Element (Curs_B);
+         Next (Curs_A);
+         Next (Curs_B);
+      end loop;
+
+      if Sum_Val > 0.00009 then
+         return Sum_Val /
+           Float (Integer'Min (Integer (Length (A)), Integer (Length (B))));
+      else
+         return 0.0;
+      end if;
+
+   end Mean_Product;
 
    function Mean_Product
      (Selector : Boolean_Vector; A, B : Result_Vector) return Float is
@@ -43,6 +65,20 @@ package body Maths is
 
    end Mean_Product;
 
+   function QM_Func (A, Spin : Float) return Float is
+      use Ada.Numerics.Elementary_Functions;
+      Result : Float;
+   begin
+      if 0.4999 < Spin and then Spin < 0.50001 then
+         Result := -Cos (A);
+      else
+         Result := Cos (2.0 * A);
+      end if;
+
+      return Result;
+
+   end QM_Func;
+
    function Random_Choice (Settings : Float_Array) return Float is
       Index : Integer :=
         Integer (Float (Settings'Length) * Float_Random.Random (Gen)) + 1;
@@ -58,7 +94,7 @@ package body Maths is
    end Random_Choice;
 
    function Random_Choice (Settings : Settings_Vector)
-                           return Settings_Vector is
+                              return Settings_Vector is
       use Settings_Vector_Package;
       Size   : constant Float := Float (Length (Settings));
       Index  : Positive;
@@ -74,7 +110,9 @@ package body Maths is
                if Index <= Integer (Length (Settings)) then
                   Result.Append (Element (To_Cursor (Settings, Index)));
                else
-                  Result.Append (Element (To_Cursor (Settings, Integer (Length (Settings)))));
+                  Result.Append
+                    (Element (To_Cursor (Settings,
+                     Integer (Length (Settings)))));
                end if;
                Next (Curs);
             end loop;
@@ -127,7 +165,7 @@ package body Maths is
    end To_Radians;
 
    function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
-                          return Float_Vector is
+                             return Float_Vector is
       Step   : constant Float :=  (End_Val - Start_Val) / Float (Num - 1);
       Result : Float_Vector;
    begin

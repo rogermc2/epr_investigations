@@ -2,6 +2,8 @@
 with Ada.Containers.Ordered_Sets;
 with Ada.Text_IO;
 
+with Maths;
+
 package body Vector_Functions is
 
    function Abs_Vector (Vec : Result_Vector) return Float_Vector is
@@ -53,6 +55,7 @@ package body Vector_Functions is
    function Filter_Matrix (A, B : Result_Vector; Pairs : Setting_Pairs_Vector)
                            return Float_Matrix is
       use Ada.Text_IO;
+      use Maths;
       use Boolean_Vector_Package;
       use Result_Vector_Package;
       use Setting_Pairs_Vector_Package;
@@ -64,6 +67,7 @@ package body Vector_Functions is
       Curs_B           : Result_Vector_Package.Cursor := B.First;
       Ai               : Float_Vector;
       Bj               : Float_Vector;
+      ABij             : Float_Vector;
       Item             : Pair_Data;
       Item_A           : Result_Data;
       Item_B           : Result_Data;
@@ -72,6 +76,8 @@ package body Vector_Functions is
       Ts               : Boolean_Vector;
       Setting_A        : Float;
       Setting_B        : Float;
+      Cab_Sim          : Float;
+      Cab_QM           : Float;
       Count            : Natural := 0;
       Row              : Natural := 0;
       Result           : Float_Matrix (1 .. Size_A, 1 .. Size_B) :=
@@ -129,7 +135,11 @@ package body Vector_Functions is
             Item_B := B (index);
             Ai.Append (Item_A.Setting);
             Bj.Append (Item_B.Setting);
+            ABij.Append (Item_A.Setting * Item_B.Setting);
+            Cab_Sim := Mean_Product (Ai, Bj);
+            Cab_QM := QM_Func (Item_B.Setting - Item_A.Setting, 0.5);
          end if;
+
          Next (Curs_A);
       end loop;
 
@@ -140,7 +150,6 @@ package body Vector_Functions is
    function Filter_Rows (Vec : Result_Vector; Mask : Boolean_Vector)
                          return Result_Vector is
       use Boolean_Vector_Package;
-      --  use Result_Vector_Package;
       Result : Result_Vector;
    begin
       for index in 1 .. Positive (Length (Mask)) loop
