@@ -1,6 +1,7 @@
 
 with Ada.Containers.Ordered_Sets;
-with Ada.Text_IO;
+with Ada.Numerics.Elementary_Functions;
+with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;
 
@@ -52,98 +53,166 @@ package body Vector_Functions is
 
    end Coincidence;
 
-   function Filter_Matrix (A, B : Result_Vector; Pairs : Setting_Pairs_Vector)
-                           return Float_Matrix is
-      use Ada.Text_IO;
+   function Get_Ts (A, B : Result_Vector; I, J : Float)
+                    return Boolean_Vector is
+      use Result_Vector_Package;
+      use Boolean_Vector_Package;
+      Routine_Name      : constant String := "Vector_Functions.Get_Ts ";
+      Size_A  : constant Positive := Integer (Length (A));
+      Size_B  : constant Positive := Integer (Length (B));
+      Item_A  : Result_Data;
+      Item_B  : Result_Data;
+      A_Deg   : Float;
+      B_Deg   : Float;
+      --  AB_Deg  : Float;
+      As      : Boolean_Vector;
+      Bs      : Boolean_Vector;
+      Ts      : Boolean_Vector;
+      As_Sum  : Natural := 0;
+      Bs_Sum  : Natural := 0;
+   begin
+      --  Create boolean mask As where Setting_I equals i
+      for Index_I in 1 .. Size_A loop
+         Item_A := A (Index_I);
+         A_Deg := Item_A.Setting;
+         As.Append (Integer (A_Deg) = Integer (I));
+      end loop;
+
+      --  Create boolean mask Bs where Setting_B equals Index_J
+      for Index_J in 1 .. Size_B loop
+         Item_B := B (Index_J);
+         B_Deg := Item_B.Setting;
+         Bs.Append (Integer (B_Deg) = Integer (J));
+      end loop;
+
+      --  Create combined mask Ts where both As and Bs are true
+      for Index_I in 1 .. Size_A loop
+         if Index_I <= Size_B then
+            Boolean_Vector_Package.Append
+              (Ts, As (Index_I) and then Bs (Index_I));
+         end if;
+      end loop;
+
+         for index in 1 .. Integer (Length (As)) loop
+            if As (index) then
+               As_Sum := As_Sum + 1;
+            end if;
+         end loop;
+      Put_Line (Routine_Name & "As_Sum: " & Integer'Image (As_Sum));
+
+         for index in 1 .. Integer (Length (Bs)) loop
+            if Bs (index) then
+               Bs_Sum := Bs_Sum + 1;
+            end if;
+         end loop;
+         Put_Line (Routine_Name & "Bs_Sum: " & Integer'Image (Bs_Sum));
+      return Ts;
+
+   end Get_Ts;
+
+   procedure Filter_Matrix
+     (A, B : Result_Vector; Pairs : Setting_Pairs_Vector) is
+      --  return Float_Matrix is
+      use Ada.Numerics.Elementary_Functions;
       use Maths;
       use Boolean_Vector_Package;
       use Result_Vector_Package;
       use Setting_Pairs_Vector_Package;
-      Size_A           : constant Positive := Integer (Length (A));
-      Size_B           : constant Positive := Integer (Length (B));
-      --  Angle_Resolution : constant Floa := 3.75;
-      Curs             : Setting_Pairs_Vector_Package.Cursor := Pairs.First;
-      Curs_A           : Result_Vector_Package.Cursor := A.First;
-      Curs_B           : Result_Vector_Package.Cursor := B.First;
-      Ai               : Float_Vector;
-      Bj               : Float_Vector;
-      ABij             : Float_Vector;
-      Item             : Pair_Data;
-      Item_A           : Result_Data;
-      Item_B           : Result_Data;
-      As               : Boolean_Vector;
-      Bs               : Boolean_Vector;
-      Ts               : Boolean_Vector;
-      Setting_A        : Float;
-      Setting_B        : Float;
-      Cab_Sim          : Float;
-      Cab_QM           : Float;
-      Count            : Natural := 0;
-      Row              : Natural := 0;
-      Result           : Float_Matrix (1 .. Size_A, 1 .. Size_B) :=
-        (others => (others => 0.0));
+      Routine_Name : constant String := "Vector_Functions.Filter_Matrix ";
+      --  Angle_Resolution : constant Float := 3.75;
+      Pairs_Curs   : Setting_Pairs_Vector_Package.Cursor := Pairs.First;
+      Curs_A       : Result_Vector_Package.Cursor := A.First;
+      Curs_B       : Result_Vector_Package.Cursor := B.First;
+      I            : Float;
+      J            : Float;
+      Ai           : Float_Vector;
+      Bj           : Float_Vector;
+      ABij         : Float_Vector;
+      Item         : Pair_Data;
+      Item_A       : Result_Data;
+      Item_B       : Result_Data;
+      Ts           : Boolean_Vector;
+      Cab_Sim      : Float;
+      Cab_QM       : Float;
+      Row          : Natural := 0;
+      Ts_Sum       : Natural := 0;
+      --  Result            : Float_Matrix (1 .. Size_A, 1 .. Size_B) :=
+      --    (others => (others => 0.0));
 
    begin
-      while Has_Element (Curs) loop
-         Item := Element (Curs);
-         Setting_A := Item.First;
-         Setting_B := Item.Second;
-         for Index_I in 1 .. Size_A loop
-            Boolean_Vector_Package.Append
-              (As, Integer (Setting_A) = Index_I);
-         end loop;
+      --  Put_Line (Routine_Name & "entered");
+      --  for k,(i,j) in enumerate (setting_pairs)
+      while Has_Element (Pairs_Curs) loop
+         Item := Element (Pairs_Curs);
+         I := Item.First;   -- setting_pairs (k).i
+         J := Item.Second;  -- setting_pairs (k).j
+         Ts := Get_Ts (A, B, I, J);
+         Put_Line (Routine_Name & "Ts length: " &
+                     Integer'Image (Integer (Length (Ts))));
 
-         for Index_J in 1 .. Size_B loop
-            Boolean_Vector_Package.Append
-              (Bs, Integer (Setting_B) = Index_J);
-         end loop;
-
-         for Index_I in 1 .. Size_A loop
-            if Index_I <= Size_B then
-               Boolean_Vector_Package.Append
-                 (Ts, As (Index_I) and then Bs (Index_I));
-            end if;
-         end loop;
-
-         while Has_Element (Curs_A) loop
+         --  Filter A using mask Ts at A.Setting and store in Ai
+         while Has_Element (Curs_A) and then Row < Integer (Length (Ts)) loop
             Row := Row + 1;
+            --  Put_Line (Routine_Name & "Row: " &
+            --           Integer'Image (Row));
             if Ts (Row) then
-               Count := Count + 1;
                Item_A := Element (Curs_A);
                Put_Line ("A match found: " & Float'Image (Item_A.Setting));
+               Ai.Append (Item_A.Setting);
                Next  (Curs_A);
             end if;
          end loop;
+         Put_Line (Routine_Name & "Filter A done, Row: " &
+                     Integer'Image (Row));
 
+         --  Filter B using mask Ts at B.Setting and store in Bi
          Row := 0;
-         while Has_Element (Curs_B) loop
+         while Has_Element (Curs_B) and then Row < Integer (Length (Ts)) loop
             Row := Row + 1;
             if Ts (Row) then
-               Count := Count + 1;
                Item_B := Element (Curs_B);
+               Bj.Append (Item_B.Setting);
                Put_Line ("Bi match found: " & Float'Image (Item_B.Setting));
                Next  (Curs_B);
             end if;
          end loop;
+         Put_Line (Routine_Name & "Filter B done, Row: " &
+                     Integer'Image (Row));
 
-         Next (Curs);
+         for index in 1 .. Integer (Length (Ts)) loop
+            if Ts (index) then
+               Ts_Sum := Ts_Sum + 1;
+            end if;
+         end loop;
+         Put_Line (Routine_Name & "Ts_Sum: " & Integer'Image (Ts_Sum));
+
+         Next (Pairs_Curs);
       end loop;
 
-      for index in 1 .. Integer (Length (Ts)) loop
-         if Ts (index) then
-            Item_A := A (index);
-            Item_B := B (index);
+      --  Calculate simulated and theoretical correlation values
+      for k in 1 .. Integer (Length (Ts)) loop
+         if Ts (k) then
+            Item_A := A (k);
+            Item_B := B (k);
             Ai.Append (Item_A.Setting);
             Bj.Append (Item_B.Setting);
+            --  Multiply elements of Ai and Bj then calculate the average
+            --  then store in Cab_sim.
             ABij.Append (Item_A.Setting * Item_B.Setting);
             Cab_Sim := Mean_Product (Ai, Bj);
+            --  Calculate quantum value using QMFunc with radians and 0.5
+            --  then store in Cab_qm
             Cab_QM := QM_Func (Item_B.Setting - Item_A.Setting, 0.5);
+            Put_Line ("(" & Float'Image (I) & "," & Float'Image (I) &
+                        ") " & Integer'Image (Ts_Sum) &
+                        Float'Image (Cab_Sim) & "  " & Float'Image (Cab_QM) &
+                        "  " & Float'Image (Cab_Sim / Sqrt (Float (Ts_Sum))));
          end if;
 
          Next (Curs_A);
       end loop;
 
-      return Result;
+      --  return Result;
 
    end Filter_Matrix;
 

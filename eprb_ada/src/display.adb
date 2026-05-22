@@ -31,27 +31,9 @@ package body Display is
       end if;
 
       Put_Line ("Expectation values:");
-      Put_Line ("Settings  N_ab  Sim <AB>  QM <AB> Sim Std Err");
+      Put_Line ("Settings  N_ab  Sim<AB>  QM<AB> Sim Std Err");
 
-      --  while Has_Element (Curs) loop
-      --     Pair := Element (Curs);
-      --     K := K + 1;
-      --     Result_A := A (K);
-      --     Result_B := B (K);
-      --     A_Deg := Result_A.Setting;
-      --     B_Deg := Result_B.Setting;
-      --     declare
-      --        P_1 : Integer := Pair.First;
-      --        P_2 : Integer := Pair.Second;
-      --     begin
-      --        As := A_Deg = P_1;
-      --        Bs := B_Deg = P_2;
-      --        Ts := As and Bs;
-      --        Ai := alice [Ts, 1] ;
-      --        Bj := bob [Ts, 1];
-      --     end;
-      --     Next (Curs);
-      --  end loop;
+      Filter_Matrix (A, B, Pairs);
 
    end Display_Results;
 
