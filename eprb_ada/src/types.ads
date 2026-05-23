@@ -64,7 +64,6 @@ package Types is
      Ada.Containers.Vectors (Positive, Pair_Data);
    subtype Setting_Pairs_Vector is Setting_Pairs_Vector_Package.Vector;
 
-
    type Station_Type is record
       Name      : Unbounded_String := To_Unbounded_String ("Unspecified");
       Particles : Particle_Vector;

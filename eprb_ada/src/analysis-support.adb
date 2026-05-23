@@ -27,7 +27,8 @@ package body Analysis.Support is
       A_Index           : Positive;
       B_Index           : Positive;
       Settings_Map      : MilliRad_Map;
-      Settings_Vec      : Outcomes_Vector;
+      Outcomes_A        : Outcomes_Vector;  --  Package of float vectors
+      Outcomes_B        : Outcomes_Vector;
       Settings_Index    : Natural := 0;
       Converted_Results : Converted_Outcomes_Vector;
    begin
@@ -36,7 +37,8 @@ package body Analysis.Support is
          Settings_Index := Settings_Index + 1;
          Settings_Map.Include
            (MilliRad (Element (Settings_Curs) * 1000.0), Settings_Index);
-         Settings_Vec.Append (Float_Vector_Package.Empty_Vector);
+         Outcomes_A.Append (Outcomes_Vector_Package.Empty_Vector);
+         Outcomes_B.Append (Outcomes_Vector_Package.Empty_Vector);
          Next (Settings_Curs);
       end loop;
 
@@ -45,8 +47,8 @@ package body Analysis.Support is
          Item_B := Element (Curs_B);
          A_Index := Settings_Map (MilliRad (Item_A.Setting * 1000.0));
          B_Index := Settings_Map (MilliRad (Item_A.Setting * 1000.0));
-         Vec_A.Append (Item_A.Outcome);
-         Vec_B.Append (Item_B.Outcome);
+         Outcomes_A (A_Index) := Item_A.Outcome;
+         Outcomes_B (B_Index) := Item_B.Outcome;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
