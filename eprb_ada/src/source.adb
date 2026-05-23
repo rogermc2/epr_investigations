@@ -28,19 +28,9 @@ package body Source is
       Right_Particles : Particle_Vector;
       Settings        : Float_Array  (1 .. 33);
       Ps              : Float_Array  (1 .. 1000);
-      Start_Time   : Time;
-      Count        : Natural := 0;
-      Elapsed      : Duration := 0.0;
-      --  Print procedure for progress
-      --  procedure Print_Progress (ETA : Duration; Count : Natural) is
-      --  begin
-      --     New_Line;
-      --     Put ("Time to go: " & Duration'Image (ETA));
-      --     --  Put (Integer (ETA), Width => 4);
-      --     --  Put (Integer (Count), Width => 8);
-      --     Put_Line ("s [" & Integer'Image (Count) & " pairs generated]");
-      --  end Print_Progress;
-
+      Start_Time      : Time;
+      Count           : Natural := 0;
+      Elapsed         : Duration := 0.0;
    begin
       Reset (Gen);  --  Initialize random generator
       --  Initialize Settings array  (linspace 0 to 2*pi, 33 points)

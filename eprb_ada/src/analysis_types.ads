@@ -12,9 +12,8 @@ Package Analysis_Types is
    subtype Outcomes_Vector is Outcomes_Vector_Package.Vector;
 
    type Outcomes_Record is record
-      Outcome_A : Integer;
-      Outcome_B : Integer;
-      Outcomes  : Outcomes_Vector;
+      Setting  : Integer;
+      Outcomes : Outcomes_Vector;
    end record;
 
    package Converted_Outcomes_Vector_Package is new
