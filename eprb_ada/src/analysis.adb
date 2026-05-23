@@ -2,6 +2,8 @@
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Analysis.Support; use Analysis.Support;
+with Analysis_Types; use Analysis_Types;
 with Display; use Display;
 with Maths; use Maths;
 with Types; use Types;
@@ -12,13 +14,15 @@ package body Analysis is
 
    procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
                           Eab  : out Float_Vector);
-   procedure Expectation (A, B : Result_Vector; Unique_Diff : Float_Vector;
+   procedure Expectation (A, B  : Result_Vector; Unique_Diff : Float_Vector;
                           Eab   : in out Float_Vector);
 
    procedure Analyse (A_File_Name, B_File_Name : Unbounded_String) is
       use Result_Vector_Package;
       Angle_Resolution : constant Float := 3.75;
       Particle_Spin    : constant Float := 1.0;
+      Results          : constant Converted_Outcomes_Vector :=
+        Convert (To_String (A_File_Name), To_String (B_File_Name));
       Raw_A            : constant Result_Vector :=
         Load_Station_Results (To_String (A_File_Name));
       Raw_B            : constant Result_Vector :=
@@ -37,6 +41,7 @@ package body Analysis is
       Eab              : Float_Vector;
    begin
       Put_Line ("Starting analysis.");
+
       for index in 1 .. Raw_Length loop
          Result_A := Element (Curs_A);
          Result_B := Element (Curs_B);
