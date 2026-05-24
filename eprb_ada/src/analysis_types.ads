@@ -20,25 +20,24 @@ package Analysis_Types is
      Ada.Containers.Ordered_Maps (Setting_Map_Record, Positive);
    subtype MilliRad_Map is MilliRad_Map_Package.Map;
 
-   use Float_Vector_Package;
-   package Outcomes_Vector_Package is new
-     Ada.Containers.Vectors (Positive, Float_Vector);
-   subtype Outcomes_Vector is Outcomes_Vector_Package.Vector;
-
    type Outcomes_Record is record
-      Setting  : Integer;
-      Outcomes : Outcomes_Vector;
+      Outcome_A : Float;
+      Outcome_B : Float;
    end record;
 
-   package Converted_Outcomes_Vector_Package is new
+   package Outcome_Vector_Package is new
      Ada.Containers.Vectors (Positive, Outcomes_Record);
-   subtype Converted_Outcomes_Vector is
-     Converted_Outcomes_Vector_Package.Vector;
+   subtype Outcome_Vector is Outcome_Vector_Package.Vector;
 
-   type Data_Record_Package is record
+   use Outcome_Vector_Package;
+   type Data_Record is record
       Setting_A : MilliRad;
       Setting_B : MilliRad;
-      Outcomes  : Outcomes_Vector;
+      Outcomes  : Outcome_Vector;
    end record;
+
+   package Outcomes_Matrix_Package is new
+     Ada.Containers.Vectors (Positive, Data_Record);
+   subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
 
 end Analysis_Types;

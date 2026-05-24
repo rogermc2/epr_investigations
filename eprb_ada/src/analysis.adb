@@ -20,7 +20,7 @@ package body Analysis is
       use Result_Vector_Package;
       Angle_Resolution : constant Float := 3.75;
       Particle_Spin    : constant Float := 1.0;
-      Results          : constant Converted_Outcomes_Vector :=
+      Results          : constant Outcomes_Matrix :=
         Convert (To_String (A_File_Name), To_String (B_File_Name), Settings);
       A                : Result_Vector;
       B                : Result_Vector;

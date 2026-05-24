@@ -7,7 +7,7 @@ with Utilities;
 package body Analysis.Support is
 
    function Convert (File_A, File_B : String; Settings : Settings_Vector)
-                     return Converted_Outcomes_Vector is
+                     return Outcomes_Matrix is
       use Utilities;
       use MilliRad_Map_Package;
       use Result_Vector_Package;
@@ -25,19 +25,14 @@ package body Analysis.Support is
       Curs_S_Inner      : Settings_Vector_Package.Cursor := Settings.First;
       Item_A            : Result_Data;
       Item_B            : Result_Data;
-      Vec_A             : Float_Vector;
-      Vec_B             : Float_Vector;
       A_Index           : MilliRad;
       B_Index           : MilliRad;
       Key               : Setting_Map_Record;
       Settings_Map      : MilliRad_Map;
-      Outcomes_A        : Outcomes_Vector;  --  Package of float vectors
-      Outcomes_B        : Outcomes_Vector;
-      --  Outcome_Vector_A  : Float_Vector;
-      --  Outcome_Vector_B  : Float_Vector;
+      Outcome_Vectors   : Outcomes_Matrix;  --  Package of float vectors
+      Data              : Data_Record;
       Settings_Index    : Natural := 0;
       Outcomes_Index    : Positive;
-      Converted_Results : Converted_Outcomes_Vector;
    begin
       Put_Line (Routine_Name);
       while Has_Element (Curs_S_Outer) loop
@@ -47,8 +42,8 @@ package body Analysis.Support is
             Settings_Index := Settings_Index + 1;
             Key.B := MilliRad (Element (Curs_S_Inner) * 1000.0);
             Settings_Map.Include (Key, Settings_Index);
-            Outcomes_A.Append (Outcomes_Vector_Package.Empty_Vector);
-            Outcomes_B.Append (Outcomes_Vector_Package.Empty_Vector);
+            Data := (Key.A, Key.B, Outcome_Vector_Package.Empty_Vector);
+            Outcome_Vectors.Append (Data);
             Next (Curs_S_Inner);
          end loop;
          Next (Curs_S_Outer);
@@ -56,8 +51,6 @@ package body Analysis.Support is
 
       Put_Line (Routine_Name & "Settings_Index: " &
                   Integer'Image (Integer (Settings_Index)));
-      Put_Line (Routine_Name & "Outcomes_A.Length: " &
-                  Integer'Image (Integer (Outcomes_A.Length)));
 
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Item_A := Element (Curs_A);
@@ -66,18 +59,17 @@ package body Analysis.Support is
          B_Index := MilliRad (Item_A.Setting * 1000.0);
          Key := (A_Index, B_Index);
          Outcomes_Index := Settings_Map (Key);
-         Put_Line (Routine_Name & "Outcomes_Index: " &
-                     Integer'Image (Integer (Outcomes_Index)));
-         Outcomes_A (Outcomes_Index).Append (Item_A.Outcome);
-         --  Outcome_Vector_A (Outcomes_Index) := Item_A.Outcome;
-         --  Outcome_Vector_B (Outcomes_Index) := Item_B.Outcome;
+         Data := Outcome_Vectors (Outcomes_Index);
+         Data.Outcomes.Append ((Item_A.Outcome, Item_A.Outcome));
+         Outcome_Vectors (Outcomes_Index) := Data;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
 
-      Put_Line (Routine_Name & Integer'Image (Integer (Outcomes_A.Length)));
+      Put_Line (Routine_Name & "Outcome_Vectors Length" &
+                  Integer'Image (Integer (Outcome_Vectors.Length)));
 
-      return Converted_Results;
+      return Outcome_Vectors;
 
    exception
       when Error : others =>
