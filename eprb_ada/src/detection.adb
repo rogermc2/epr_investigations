@@ -1,9 +1,9 @@
 with Interfaces.C;
 
-with Ada.Calendar;          use Ada.Calendar;
+with Ada.Calendar; use Ada.Calendar;
 with Ada.Numerics.Elementary_Functions;
-with Ada.Numerics;          use Ada.Numerics;
-with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Numerics; use Ada.Numerics;
+with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;     use Maths;
 with Utilities; use Utilities;

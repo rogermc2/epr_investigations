@@ -1,4 +1,5 @@
 
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Utilities;
@@ -38,6 +39,7 @@ package body Analysis.Support is
       Outcomes_Index    : Positive;
       Converted_Results : Converted_Outcomes_Vector;
    begin
+      Put_Line (Routine_Name);
       while Has_Element (Curs_S_Outer) loop
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
          Curs_S_Inner := Settings.First;
@@ -52,6 +54,9 @@ package body Analysis.Support is
          Next (Curs_S_Outer);
       end loop;
 
+      Put_Line (Routine_Name & "Outcomes_A.Length: " &
+                  Integer'Image (Integer (Outcomes_A.Length)));
+
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Item_A := Element (Curs_A);
          Item_B := Element (Curs_B);
@@ -59,10 +64,8 @@ package body Analysis.Support is
          B_Index := MilliRad (Item_A.Setting * 1000.0);
          Key := (A_Index, B_Index);
          Outcomes_Index := Settings_Map (Key);
-         Outcome_Vector_A := Outcomes_A (Outcomes_Index);
-         Outcome_Vector_B := Outcomes_A (Outcomes_Index);
-         Outcome_Vector_A.Append (Item_A.Outcome);
-         Outcome_Vector_B.Append (Item_B.Outcome);
+         Outcome_Vector_A (Outcomes_Index) := Item_A.Outcome;
+         Outcome_Vector_B (Outcomes_Index) := Item_B.Outcome;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
@@ -70,6 +73,11 @@ package body Analysis.Support is
       Put_Line (Routine_Name & Integer'Image (Integer (Outcomes_A.Length)));
 
       return Converted_Results;
+
+   exception
+      when others =>
+         Put_Line (Routine_Name & "exception");
+         raise;
 
    end Convert;
 
