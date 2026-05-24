@@ -8,8 +8,13 @@ Package Analysis_Types is
 
    subtype MilliRad is Integer range -6300 .. 6300;
 
+   type Setting_Map_Record is record
+      A  : MilliRad;
+      B : MilliRad;
+   end record;
+
    package MilliRad_Map_Package is new
-     Ada.Containers.Indefinite_Ordered_Maps (MilliRad, Positive);
+     Ada.Containers.Indefinite_Ordered_Maps (Setting_Map_Record, Positive);
    subtype MilliRad_Map is MilliRad_Map_Package.Map;
 
    package Outcomes_Vector_Package is new
