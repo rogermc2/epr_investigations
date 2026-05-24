@@ -60,8 +60,6 @@ package body Detection is
    function Load_Results
      (Particles : Particle_Vector; Settings  : Settings_Vector)
       return Result_Vector is
-      --  infos = zip(particles,
-      --  numpy.random.choice(angles, size=len(particles))
       use Particle_Data_Package;
       use Settings_Vector_Package;
       Random_Settings : constant Settings_Vector :=
@@ -108,8 +106,6 @@ package body Detection is
       use Particle_Data_Package;
       Routine_Name   : constant String  := "Detection.Run_Detection ";
       Num_Particles  : constant Natural := File_Length (File_Name);
-      --  Settings_Array : constant Float_Array :=
-      --    Angles_Vector_To_Array (Settings);
       Station        : Station_Type      := Get_Particles (File_Name);
       Results        : Result_Vector;
       Start_Time     : Time;

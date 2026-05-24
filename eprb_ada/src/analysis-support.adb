@@ -1,4 +1,6 @@
 
+with Ada.Text_IO; use Ada.Text_IO;
+
 with Utilities;
 
 package body Analysis.Support is
@@ -9,6 +11,7 @@ package body Analysis.Support is
       use MilliRad_Map_Package;
       use Result_Vector_Package;
       use Settings_Vector_Package;
+      Routine_Name      : constant String := "Analysis.Support.Convert ";
       Raw_A             : constant Result_Vector :=
         Load_Station_Results (File_A);
       Raw_B             : constant Result_Vector :=
@@ -63,6 +66,8 @@ package body Analysis.Support is
          Next (Curs_A);
          Next (Curs_B);
       end loop;
+
+      Put_Line (Routine_Name & Integer'Image (Integer (Outcomes_A.Length)));
 
       return Converted_Results;
 

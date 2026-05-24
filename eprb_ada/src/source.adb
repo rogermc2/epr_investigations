@@ -10,7 +10,8 @@ with Utilities; use Utilities;
 
 package body Source is
 
-   subtype Index_Angles is Integer range 1 .. 33;
+   Num_Settings : Positive := 4;
+   subtype Index_Angles is Integer range 1 .. Num_Settings;
    subtype Index_Ps is Integer range 1 .. 1000;
 
    Gen : Generator;
@@ -26,7 +27,7 @@ package body Source is
 
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
-      Settings        : Float_Array  (1 .. 33);
+      Settings        : Float_Array  (1 .. Num_Settings);
       Ps              : Float_Array  (1 .. 1000);
       Start_Time      : Time;
       Count           : Natural := 0;
@@ -95,8 +96,9 @@ package body Source is
       I_Angle : Index_Angles;
       I_P     : Index_Ps;
    begin
-      while Rand < 1 or else Rand > 33 loop
-         Rand := Integer (Float_Random.Random (Gen) * 33.0) + 1;
+      while Rand < 1 or else Rand > Num_Settings loop
+         Rand :=
+           Integer (Float_Random.Random (Gen) * Float (Num_Settings)) + 1;
       end loop;
       I_Angle := Rand;
 

@@ -33,20 +33,6 @@ package body Analysis is
    begin
       Put_Line ("Starting analysis.");
 
-      --  for index in 1 .. Raw_Length loop
-      --     Result_A := Element (Curs_A);
-      --     Result_B := Element (Curs_B);
-      --     Coincidences.Append (Result_B.Outcome * Result_A.Outcome = 1.0);
-      --     Settings_Diff.Append
-      --       (Float'Remainder
-      --      ((Result_B.Setting - Result_A.Setting), 2.0 * Pi));
-      --     Next (Curs_A);
-      --     Next (Curs_B);
-      --  end loop;
-      --
-      --  A := Filter_Rows (Raw_A, Coincidences);
-      --  B := Filter_Rows (Raw_B, Coincidences);
-      --  Unique_Diff := Unique (Settings_Diff);
       --
       --  Correlation (A, B, Unique_Diff, Eab);
       --  Expectation (A, B, Unique_Diff, Eab);
