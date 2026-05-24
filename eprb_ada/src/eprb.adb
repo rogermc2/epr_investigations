@@ -1,6 +1,7 @@
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 
 with Analysis; use Analysis;
 with Source; use Source;
@@ -10,6 +11,7 @@ with Utilities; use Utilities;
 
 procedure EPRB is
    --  Set stack size:  ulimit -s 64000 to prevent stack overflow
+   Routine_Name      : constant String := "EPRB ";
    Source_A_File     : constant String := "data/source_A.bin";
    Source_B_File     : constant String := "data/source_B.bin";
    Detection_A_File  : Unbounded_String;
@@ -26,5 +28,10 @@ begin
    Run_Detection (Source_A_File, Settings, Detection_A_File);
    Run_Detection (Source_B_File, Settings, Detection_B_File);
    Analyse (Detection_A_File, Detection_B_File, Settings);
+
+exception
+   when Error : others =>
+      Put_Line (Routine_Name & "Exception information:  " &
+                  Exception_Information (Error));
 
 end EPRB;

@@ -33,8 +33,8 @@ package body Analysis.Support is
       Settings_Map      : MilliRad_Map;
       Outcomes_A        : Outcomes_Vector;  --  Package of float vectors
       Outcomes_B        : Outcomes_Vector;
-      Outcome_Vector_A  : Float_Vector;
-      Outcome_Vector_B  : Float_Vector;
+      --  Outcome_Vector_A  : Float_Vector;
+      --  Outcome_Vector_B  : Float_Vector;
       Settings_Index    : Natural := 0;
       Outcomes_Index    : Positive;
       Converted_Results : Converted_Outcomes_Vector;
@@ -54,6 +54,8 @@ package body Analysis.Support is
          Next (Curs_S_Outer);
       end loop;
 
+      Put_Line (Routine_Name & "Settings_Index: " &
+                  Integer'Image (Integer (Settings_Index)));
       Put_Line (Routine_Name & "Outcomes_A.Length: " &
                   Integer'Image (Integer (Outcomes_A.Length)));
 
@@ -64,8 +66,11 @@ package body Analysis.Support is
          B_Index := MilliRad (Item_A.Setting * 1000.0);
          Key := (A_Index, B_Index);
          Outcomes_Index := Settings_Map (Key);
-         Outcome_Vector_A (Outcomes_Index) := Item_A.Outcome;
-         Outcome_Vector_B (Outcomes_Index) := Item_B.Outcome;
+         Put_Line (Routine_Name & "Outcomes_Index: " &
+                     Integer'Image (Integer (Outcomes_Index)));
+         Outcomes_A (Outcomes_Index).Append (Item_A.Outcome);
+         --  Outcome_Vector_A (Outcomes_Index) := Item_A.Outcome;
+         --  Outcome_Vector_B (Outcomes_Index) := Item_B.Outcome;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
@@ -75,8 +80,9 @@ package body Analysis.Support is
       return Converted_Results;
 
    exception
-      when others =>
-         Put_Line (Routine_Name & "exception");
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
          raise;
 
    end Convert;
