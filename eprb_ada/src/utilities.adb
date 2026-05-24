@@ -64,6 +64,7 @@ package body Utilities is
    end Load_Station_Results;
 
    procedure Process_Command_Line (Duration_Val : out Duration;
+                                   Num_Settings : out Positive;
                                    Settings     : out Settings_Vector;
                                    Spin         : out Float) is
       use Ada.Numerics;
@@ -72,10 +73,11 @@ package body Utilities is
       use Vector_Functions;
       use Float_Vector_Package;
       use Settings_Vector_Package;
-      Arg_Count        : constant Integer := Argument_Count;
-      L_Space          : Float_Vector;
-      Parsed_Settings  : Settings_Vector;
+      Arg_Count       : constant Integer := Argument_Count;
+      L_Space         : Float_Vector;
+      Parsed_Settings : Settings_Vector;
    begin
+      Num_Settings := 4;
       if Arg_Count < 1 then
          Put_Line ("Usage: ");
          Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
@@ -83,7 +85,7 @@ package body Utilities is
          New_Line;
          if Arg_Count = 1 then
             Duration_Val := Duration (Float'Value (Argument (1)));
-            L_Space := Linear_Space (0.0, 2.0 * Pi, 33);
+            L_Space := Linear_Space (0.0, 2.0 * Pi, Num_Settings);
             declare
                Curs : Float_Vector_Package.Cursor := L_Space.First;
             begin
@@ -110,6 +112,7 @@ package body Utilities is
                Settings.Append
                  (To_Radians (Parsed_Settings.Element (I)));
             end loop;
+            Num_Settings := Positive (Length (Settings));
          end if;
 
          if Arg_Count > 2 then

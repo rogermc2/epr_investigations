@@ -10,21 +10,21 @@ with Utilities; use Utilities;
 
 package body Source is
 
-   Num_Settings : Positive := 4;
-   subtype Index_Angles is Integer range 1 .. Num_Settings;
    subtype Index_Ps is Integer range 1 .. 1000;
 
    Gen : Generator;
 
-   procedure Emit (Settings        : Float_Array; Ps : Float_Array;
+   procedure Emit (Settings        : Float_Array;
+                   Ps              : Float_Array;
                    Spin            : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector);
 
-   procedure Build_Source (Duration_Val  : Duration; Spin  : Float;
-                           Left_File     : String; Right_File : String) is
-      --  Set stack size:  ulimit -s 64000 to prevent stack overflow
+   procedure Build_Source (Duration_Val : Duration;
+                           Num_Settings : Positive; Spin      : Float;
+                           Left_File    : String; Right_File : String) is
 
+      --  Set stack size:  ulimit -s 64000 to prevent stack overflow
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
       Settings        : Float_Array  (1 .. Num_Settings);
@@ -54,7 +54,8 @@ package body Source is
       Start_Time := Clock;
       while Elapsed < Duration_Val loop
          Elapsed := Clock - Start_Time;
-         Emit (Settings, Ps, Spin, Left_Particles, Right_Particles);
+         Emit (Settings, Ps, Spin,
+               Left_Particles, Right_Particles);
          Count := Count + 1;
 
          if Count mod 5000000 = 0 then
@@ -83,10 +84,12 @@ package body Source is
 
    --  Emit procedure: chooses random angle and p, appends particles to
    --  left and right arrays
-   procedure Emit (Settings        : Float_Array; Ps : Float_Array;
-                   Spin            : Float;
+   procedure Emit (Settings        : Float_Array;
+                   Ps              : Float_Array; Spin : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector) is
+      Num_Settings : constant Positive := Settings'Length;
+      subtype Index_Angles is Integer range 1 .. Num_Settings;
       --  Routine_Name : constant String := "Source.Emit ";
       N       : constant Float := 2.0 * Spin;
       Phase   : constant Float := N * Float (Pi);

@@ -6,6 +6,7 @@ package Utilities is
    function Load_Particles (File_Name : String) return Particle_Vector;
    function Load_Station_Results (File_Name : String) return Result_Vector;
    procedure Process_Command_Line (Duration_Val : out Duration;
+                                   Num_Settings : out Positive;
                                    Settings     : out Settings_Vector;
                                    Spin         : out Float);
    procedure Save (File_Name : String; Station : Station_Type);

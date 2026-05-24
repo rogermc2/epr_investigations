@@ -17,13 +17,14 @@ procedure EPRB is
    Detection_A_File  : Unbounded_String;
    Detection_B_File  : Unbounded_String;
    Duration_Val      : Duration := 1.0;
+   Num_Settings      : Positive;
    Settings          : Settings_Vector;
    Spin              : Float := 1.0;
 begin
    Put_Line ("Set stack size: ulimit -s 64000");
-   Process_Command_Line (Duration_Val, Settings, Spin);
+   Process_Command_Line (Duration_Val, Num_Settings, Settings, Spin);
    Put_Line ("Duration_Val: " & Duration'Image (Duration_Val));
-   Build_Source (Duration_Val, Spin,
+   Build_Source (Duration_Val, Num_Settings, Spin,
                  Source_A_File, Source_B_File);
    Run_Detection (Source_A_File, Settings, Detection_A_File);
    Run_Detection (Source_B_File, Settings, Detection_B_File);

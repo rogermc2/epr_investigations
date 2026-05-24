@@ -19,6 +19,7 @@ package body Analysis.Support is
         Load_Station_Results (File_B);
       --  Raw_Length        : constant Integer :=
       --    Integer'Min (Integer (Length (Raw_A)), Integer (Length (Raw_B)));
+      Num_Settings      : constant Positive := Positive (Length (Settings));
       Curs_A            : Result_Vector_Package.Cursor := Raw_A.First;
       Curs_B            : Result_Vector_Package.Cursor := Raw_B.First;
       Curs_S_Outer      : Settings_Vector_Package.Cursor := Settings.First;
@@ -35,15 +36,24 @@ package body Analysis.Support is
       Outcomes_Index    : Positive;
    begin
       Put_Line (Routine_Name);
+
+      Put_Line (Routine_Name & "Settings Length" &
+                  Integer'Image (Integer (Settings.Length)));
+
       while Has_Element (Curs_S_Outer) loop
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
          Curs_S_Inner := Settings.First;
          while Has_Element (Curs_S_Inner) loop
-            Settings_Index := Settings_Index + 1;
             Key.B := MilliRad (Element (Curs_S_Inner) * 1000.0);
-            Settings_Map.Include (Key, Settings_Index);
-            Data := (Key.A, Key.B, Outcome_Vector_Package.Empty_Vector);
-            Outcome_Vectors.Append (Data);
+            if not Settings_Map.Contains (Key) then
+               Put_Line (Routine_Name & "Key: "
+                         & Integer'Image (Integer (Key.A)) &
+                           Integer'Image (Integer (Key.B)));
+               Settings_Index := Settings_Index + 1;
+               Settings_Map.Include (Key, Settings_Index);
+               Data := (Key.A, Key.B, Outcome_Vector_Package.Empty_Vector);
+               Outcome_Vectors.Append (Data);
+            end if;
             Next (Curs_S_Inner);
          end loop;
          Next (Curs_S_Outer);
