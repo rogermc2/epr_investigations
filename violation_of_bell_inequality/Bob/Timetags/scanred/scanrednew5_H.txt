@@ -1,0 +1,8 @@
+Scanrot, 3 sec Messung, ca 100000 Punkte,
+Pumleistung 400 mWCountA: 34205
+CountB: 33076
+Arm Time:   0.00008436000
+Bias: -75.00
+
+03.06.98
+15:16:41

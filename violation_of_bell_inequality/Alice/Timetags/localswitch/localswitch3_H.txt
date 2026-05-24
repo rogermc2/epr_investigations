@@ -1,0 +1,6 @@
+Lokaler schnell geschaltener Bell-Test, durch Abgleich auf Koinzidenzen und Drehen einr HWP um 11.25° RNG Frequenzen ca. 2.5 MHZ 
+100000 Counts pro Seite HWP so gedreht, dass C(i,j) optimalCountA: 50389
+CountB: 49611
+Arm Time:   0.00015742000
+11.01.98
+17:39:39

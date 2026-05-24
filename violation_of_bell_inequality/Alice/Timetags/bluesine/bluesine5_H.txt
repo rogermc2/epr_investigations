@@ -1,0 +1,6 @@
+Static Correlation Pump 260 mW 50000 Counts Total 
+red 0° blue 37.5°CountA: 24957
+CountB: 25043
+Arm Time:   0.00009712000
+30.11.97
+14:08:22

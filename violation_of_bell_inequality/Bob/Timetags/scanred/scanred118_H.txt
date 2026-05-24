@@ -1,0 +1,12 @@
+Scan Seite rot.
+Pump 400 mW
+5s Zaehlzeit
+BiasB=-100:5:100
+41 Punkte
+CountA: 65200
+CountB: 62775
+Arm Time:   0.00001844000
+Bias: -10.00
+
+31.05.98
+19:11:07

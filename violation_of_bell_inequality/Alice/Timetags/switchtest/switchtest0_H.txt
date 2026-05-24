@@ -1,0 +1,7 @@
+Timing - Koinzidenztest 
+Quelle abgeglichen zur Verletzung einer Bellungleichung
+stat: -0.62 0.58 0.53 0.66 = 2,2CountA: 24040
+CountB: 25960
+Arm Time:   0.00011974000
+03.01.98
+15:53:02

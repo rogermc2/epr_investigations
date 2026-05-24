@@ -1,0 +1,9 @@
+30 s Messung
+Pump 380mW
+Auf Offset Off On abgegelichen!
+Offset On Off
+CountA: 632425
+CountB: 650837
+Arm Time:   0.00000980000
+16.04.98
+23:12:32

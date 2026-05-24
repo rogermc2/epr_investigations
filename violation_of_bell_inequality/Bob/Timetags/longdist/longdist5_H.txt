@@ -1,0 +1,7 @@
+Pump 380mW l.r.
+15s Messzeit 
+Offset 1 1CountA: 228459
+CountB: 245535
+Arm Time:   0.00015998000
+15.04.98
+21:02:52

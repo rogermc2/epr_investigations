@@ -1,0 +1,6 @@
+Pump 380mW l.r.
+10s Messzeit CountA: 233751
+CountB: 237267
+Arm Time:   0.00005086000
+15.04.98
+20:28:13

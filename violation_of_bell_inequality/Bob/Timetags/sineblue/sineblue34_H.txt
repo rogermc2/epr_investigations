@@ -1,0 +1,6 @@
+rot moduliert, jeweils mit alternierenden offset auf rot,gate =3 sec,
+-100:10:100 VCountA: 78749
+CountB: 78107
+Arm Time:   0.00009868000
+01.04.98
+14:50:28

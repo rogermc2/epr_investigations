@@ -1,0 +1,6 @@
+Perfekte Korrelationen  On On
+CountA: 577255
+CountB: 551700
+Arm Time:   0.00013190000
+30.03.98
+13:42:04

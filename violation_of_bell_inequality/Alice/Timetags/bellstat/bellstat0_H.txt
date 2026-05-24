@@ -1,0 +1,6 @@
+Static Bell Test Pump 260 mW 100000 Counts Total 
+red 0° blue 0°CountA: 49476
+CountB: 50524
+Arm Time:   0.00007262000
+30.11.97
+12:57:07

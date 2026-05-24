@@ -1,0 +1,6 @@
+Perfekte Korellationen OffsA Off OffsB Off
+10s ZaehlzeitCountA: 223367
+CountB: 204185
+Arm Time:   0.00007150000
+26.03.98
+22:15:44

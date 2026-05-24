@@ -1,0 +1,7 @@
+CountA: 142139
+CountB: 135247
+Arm Time:   0.00003150000
+Bias:  0.00 °, FW-Voltage 197.00 V, Actual Voltage -0.06 V
+
+23.12.98
+20:19:19

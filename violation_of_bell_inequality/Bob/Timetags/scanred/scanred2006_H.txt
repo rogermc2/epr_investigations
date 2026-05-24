@@ -1,0 +1,7 @@
+scan rot, visibilities ca. 0.9 mit viel optimismusCountA: 1224
+CountB: 1068
+Arm Time:   0.00011040000
+Bias: -40.00
+
+02.06.98
+19:45:37

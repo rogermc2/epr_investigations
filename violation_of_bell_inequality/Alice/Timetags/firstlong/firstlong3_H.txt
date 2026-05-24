@@ -1,0 +1,10 @@
+Erste long-distance Messung. Polarisation nur 1:50 abgeglichen
+Modulator B schlechter Kontrast (stat 1:100)
+Kompensatoren ungef. eingestellt auf HV-VH
+Offset Off On
+400mW Pump
+10 s ZaehlzeitCountA: 229256
+CountB: 214026
+Arm Time:   0.00016134000
+12.04.98
+18:20:04

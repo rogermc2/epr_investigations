@@ -1,0 +1,11 @@
+pumpleistung 50 mW, 5 Minuten Zaehlzeit ca,
+A 1.8 Mcounts, B 1.6 Mcount (am Limit!)
+Darks: 550 - 1200, 1600 - 650
+Offset: A On, B Off
+CountA: 847487
+CountB: 974225
+Arm Time:   0.00003784000
+Bias:  0.00
+
+03.06.98
+13:58:04
