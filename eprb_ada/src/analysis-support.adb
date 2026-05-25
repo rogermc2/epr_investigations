@@ -38,9 +38,8 @@ package body Analysis.Support is
       Outcomes_Index    : Positive;
       Count             : Natural := 0;
    begin
-      Put_Line (Routine_Name);
-      Put_Line (Routine_Name & "Settings Length" &
-                  Integer'Image (Integer (Settings.Length)));
+      --  Put_Line (Routine_Name & "Settings Length" &
+      --              Integer'Image (Integer (Settings.Length)));
 
       while Has_Element (Curs_S_Outer) loop
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
@@ -48,9 +47,9 @@ package body Analysis.Support is
          while Has_Element (Curs_S_Inner) loop
             Key.B := MilliRad (Element (Curs_S_Inner) * 1000.0);
             if not Settings_Map.Contains (Key) then
-               Put_Line (Routine_Name & "Key: "
-                         & Integer'Image (Integer (Key.A)) &
-                           Integer'Image (Integer (Key.B)));
+               --  Put_Line (Routine_Name & "Key: "
+               --            & Integer'Image (Integer (Key.A)) &
+               --              Integer'Image (Integer (Key.B)));
                Settings_Index := Settings_Index + 1;
                Settings_Map.Include (Key, Settings_Index);
                Data := (Key.A, Key.B, Outcome_Vector_Package.Empty_Vector);
@@ -61,23 +60,25 @@ package body Analysis.Support is
          Next (Curs_S_Outer);
       end loop;
 
-      Put_Line (Routine_Name & "Settings_Index: " &
-                  Integer'Image (Integer (Settings_Index)));
+      --  Put_Line (Routine_Name & "Settings_Index: " &
+      --              Integer'Image (Integer (Settings_Index)));
 
-      Print_Result_Vector ("Raw_A", Raw_A, 1, 5);
-      Print_Result_Vector ("Raw_B", Raw_B, 1, 5);
-      Put_Line ("Outcome_Vectors Length" &
-                  Integer'Image (Integer (Outcome_Vectors.Length)));
+      --  Print_Result_Vector ("Raw_A", Raw_A, 1, 5);
+      --  Print_Result_Vector ("Raw_B", Raw_B, 1, 5);
+      --  Put_Line ("Outcome_Vectors Length" &
+      --              Integer'Image (Integer (Outcome_Vectors.Length)));
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Count := Count + 1;
          Item_A := Element (Curs_A);
          Item_B := Element (Curs_B);
          A_Index := MilliRad (Item_A.Setting * 1000.0);
          B_Index := MilliRad (Item_B.Setting * 1000.0);
-         if Count < 5 then
-            Put_Line (Routine_Name & "A_Index: " & Integer'Image (A_Index));
-            Put_Line (Routine_Name & "B_Index: " & Integer'Image (B_Index));
-         end if;
+         --  if Count < 5 then
+         --     Put_Line (Routine_Name & "A_Index: " &
+         --  Integer'Image (A_Index));
+         --     Put_Line (Routine_Name & "B_Index: " &
+         --  Integer'Image (B_Index));
+         --  end if;
          Key := (A_Index, B_Index);
          Outcomes_Index := Settings_Map (Key);
          if Count < 5 then
@@ -91,22 +92,33 @@ package body Analysis.Support is
          --     Setting_B : MilliRad;
          --     Outcomes  : Outcome_Vector;
          --  end record;
-
+         if Outcomes_Index > 9 then
+            Put_Line ("Invalid Outcome_Vectors Index" &
+                        Integer'Image (Outcomes_Index));
+         end if;
          Data := Outcome_Vectors (Outcomes_Index);
          if Count < 5 then
             Print_Data_Record ("Data in", Data);
          end if;
          Outcome_Pair := (Item_A.Outcome, Item_B.Outcome);
          Data.Outcomes.Append (Outcome_Pair);
-         if Count < 5 then
+         if Count < 10 then
             Print_Data_Record ("Data out", Data);
+            Put_Line ("Outcome_Vectors Index: " &
+                        Integer'Image (Outcomes_Index));
          end if;
-         --  Outcome_Vectors is problem
          --  Outcome_Vectors : Outcomes_Matrix;
          --  package Outcomes_Matrix_Package is new
          --    Ada.Containers.Vectors (Positive, Data_Record);
          --  subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
-         --  Outcome_Vectors.Replace_Element (Outcomes_Index, Data);
+         Outcome_Vectors.Replace_Element (Outcomes_Index, Data);
+         if Count < 10 then
+            Put_Line ("Outcome_Vectors Index" &
+                        Integer'Image (Outcomes_Index) & " updated");
+            Put_Line ("Outcome_Vectors Length" &
+                        Integer'Image (Integer (Outcome_Vectors.Length)));
+            New_Line;
+         end if;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
