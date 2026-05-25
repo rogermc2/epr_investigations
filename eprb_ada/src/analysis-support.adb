@@ -33,6 +33,7 @@ package body Analysis.Support is
       Settings_Map      : MilliRad_Map;
       Outcome_Vectors   : Outcomes_Matrix;  --  Package of float vectors
       Data              : Data_Record;
+      Outcome_Pair      : Outcomes_Record;
       Settings_Index    : Natural := 0;
       Outcomes_Index    : Positive;
       Count             : Natural := 0;
@@ -82,12 +83,30 @@ package body Analysis.Support is
          if Count < 5 then
             Put_Line ("Outcomes_Index: " &
                         Integer'Image (Integer (Outcomes_Index)));
-            Print_Data_Record ("Data", Data);
             New_Line;
          end if;
+         --  Data : Data_Record;
+         --  type Data_Record is record
+         --     Setting_A : MilliRad;
+         --     Setting_B : MilliRad;
+         --     Outcomes  : Outcome_Vector;
+         --  end record;
+
          Data := Outcome_Vectors (Outcomes_Index);
-         --  Data.Outcomes.Append ((Item_A.Outcome, Item_B.Outcome));
-         Outcome_Vectors (Outcomes_Index) := Data;
+         if Count < 5 then
+            Print_Data_Record ("Data in", Data);
+         end if;
+         Outcome_Pair := (Item_A.Outcome, Item_B.Outcome);
+         Data.Outcomes.Append (Outcome_Pair);
+         if Count < 5 then
+            Print_Data_Record ("Data out", Data);
+         end if;
+         --  Outcome_Vectors is problem
+         --  Outcome_Vectors : Outcomes_Matrix;
+         --  package Outcomes_Matrix_Package is new
+         --    Ada.Containers.Vectors (Positive, Data_Record);
+         --  subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
+         --  Outcome_Vectors.Replace_Element (Outcomes_Index, Data);
          Next (Curs_A);
          Next (Curs_B);
       end loop;

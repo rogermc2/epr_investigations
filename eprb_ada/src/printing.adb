@@ -41,13 +41,13 @@ package body Printing is
    --  ------------------------------------------------------------------
 
    procedure Print_Data_Record (Name : String; Data : Data_Record) is
-      use Outcomes_Matrix_Package;
+      use Outcome_Vector_Package;
    begin
       Put_Line (Name);
       Put_Line ("Setting_A: " & Integer'Image (Data.Setting_A) &
-                  "  Setting_B: " & Integer'Image (Data.Setting_B)); --  &
-                  --  "  Data.Outcomes length: " &
-                  --  Integer'Image (Integer (Length (Data.Outcomes))));
+                  "  Setting_B: " & Integer'Image (Data.Setting_B)  &
+                  "  Data.Outcomes length: " &
+                  Integer'Image (Integer (Length (Data.Outcomes))));
       New_Line;
 
    end Print_Data_Record;
