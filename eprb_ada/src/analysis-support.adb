@@ -2,6 +2,7 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Printing; use Printing;
 with Utilities;
 
 package body Analysis.Support is
@@ -36,7 +37,6 @@ package body Analysis.Support is
       Outcomes_Index    : Positive;
    begin
       Put_Line (Routine_Name);
-
       Put_Line (Routine_Name & "Settings Length" &
                   Integer'Image (Integer (Settings.Length)));
 
@@ -62,15 +62,21 @@ package body Analysis.Support is
       Put_Line (Routine_Name & "Settings_Index: " &
                   Integer'Image (Integer (Settings_Index)));
 
+      Print_Result_Vector ("Raw_A", Raw_A, 1, 5);
+      --  Print_Result_Vector ("Raw_B", Raw_B, 1, 5);
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Item_A := Element (Curs_A);
          Item_B := Element (Curs_B);
          A_Index := MilliRad (Item_A.Setting * 1000.0);
-         B_Index := MilliRad (Item_A.Setting * 1000.0);
+         B_Index := MilliRad (Item_B.Setting * 1000.0);
+         --  Put_Line (Routine_Name & "A_Index: " & Integer'Image (A_Index));
+         --  Put_Line (Routine_Name & "B_Index: " & Integer'Image (B_Index));
          Key := (A_Index, B_Index);
          Outcomes_Index := Settings_Map (Key);
+         --  Put_Line (Routine_Name & "Outcomes_Index: " &
+         --              Integer'Image (Integer (Outcomes_Index)));
          Data := Outcome_Vectors (Outcomes_Index);
-         Data.Outcomes.Append ((Item_A.Outcome, Item_A.Outcome));
+         Data.Outcomes.Append ((Item_A.Outcome, Item_B.Outcome));
          Outcome_Vectors (Outcomes_Index) := Data;
          Next (Curs_A);
          Next (Curs_B);
