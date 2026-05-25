@@ -35,6 +35,7 @@ package body Analysis.Support is
       Data              : Data_Record;
       Settings_Index    : Natural := 0;
       Outcomes_Index    : Positive;
+      Count             : Natural := 0;
    begin
       Put_Line (Routine_Name);
       Put_Line (Routine_Name & "Settings Length" &
@@ -63,20 +64,29 @@ package body Analysis.Support is
                   Integer'Image (Integer (Settings_Index)));
 
       Print_Result_Vector ("Raw_A", Raw_A, 1, 5);
-      --  Print_Result_Vector ("Raw_B", Raw_B, 1, 5);
+      Print_Result_Vector ("Raw_B", Raw_B, 1, 5);
+      Put_Line ("Outcome_Vectors Length" &
+                  Integer'Image (Integer (Outcome_Vectors.Length)));
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
+         Count := Count + 1;
          Item_A := Element (Curs_A);
          Item_B := Element (Curs_B);
          A_Index := MilliRad (Item_A.Setting * 1000.0);
          B_Index := MilliRad (Item_B.Setting * 1000.0);
-         --  Put_Line (Routine_Name & "A_Index: " & Integer'Image (A_Index));
-         --  Put_Line (Routine_Name & "B_Index: " & Integer'Image (B_Index));
+         if Count < 5 then
+            Put_Line (Routine_Name & "A_Index: " & Integer'Image (A_Index));
+            Put_Line (Routine_Name & "B_Index: " & Integer'Image (B_Index));
+         end if;
          Key := (A_Index, B_Index);
          Outcomes_Index := Settings_Map (Key);
-         --  Put_Line (Routine_Name & "Outcomes_Index: " &
-         --              Integer'Image (Integer (Outcomes_Index)));
+         if Count < 5 then
+            Put_Line ("Outcomes_Index: " &
+                        Integer'Image (Integer (Outcomes_Index)));
+            Print_Data_Record ("Data", Data);
+            New_Line;
+         end if;
          Data := Outcome_Vectors (Outcomes_Index);
-         Data.Outcomes.Append ((Item_A.Outcome, Item_B.Outcome));
+         --  Data.Outcomes.Append ((Item_A.Outcome, Item_B.Outcome));
          Outcome_Vectors (Outcomes_Index) := Data;
          Next (Curs_A);
          Next (Curs_B);
