@@ -1,19 +1,23 @@
 
+--  with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Analysis_Types; use Analysis_Types;
 with Printing; use Printing;
 with Utilities;
 
-package body Analysis.Support is
+package body Data_Catagorization is
 
-   function Convert (File_A, File_B : String; Settings : Settings_Vector)
-                     return Outcomes_Matrix is
+   procedure Catagorize (File_A, File_B : String;
+                         Settings : Settings_Vector) is
       use Utilities;
       use MilliRad_Map_Package;
       use Result_Vector_Package;
       use Settings_Vector_Package;
-      Routine_Name      : constant String := "Analysis.Support.Convert ";
+      --  use File_Vector_Package;
+      Routine_Name      : constant String :=
+        "Data_Catagorization.Catagorize ";
       Raw_A             : constant Result_Vector :=
         Load_Station_Results (File_A);
       Raw_B             : constant Result_Vector :=
@@ -25,13 +29,14 @@ package body Analysis.Support is
       Curs_B            : Result_Vector_Package.Cursor := Raw_B.First;
       Curs_S_Outer      : Settings_Vector_Package.Cursor := Settings.First;
       Curs_S_Inner      : Settings_Vector_Package.Cursor := Settings.First;
+      Files             : File_Vector;
       Item_A            : Result_Data;
       Item_B            : Result_Data;
       A_Index           : MilliRad;
       B_Index           : MilliRad;
       Key               : Setting_Map_Record;
       Settings_Map      : MilliRad_Map;
-      Outcome_Vectors   : Outcomes_Matrix;  --  Package of float vectors
+      --  Outcome_Vectors   : Outcomes_Matrix;  --  Package of float vectors
       Data              : Data_Record;
       Outcome_Pair      : Outcomes_Record;
       Settings_Index    : Natural := 0;
@@ -53,7 +58,7 @@ package body Analysis.Support is
                Settings_Index := Settings_Index + 1;
                Settings_Map.Include (Key, Settings_Index);
                Data := (Key.A, Key.B, Outcome_Vector_Package.Empty_Vector);
-               Outcome_Vectors.Append (Data);
+               --  Outcome_Vectors.Append (Data);
             end if;
             Next (Curs_S_Inner);
          end loop;
@@ -96,7 +101,7 @@ package body Analysis.Support is
             Put_Line ("Invalid Outcome_Vectors Index" &
                         Integer'Image (Outcomes_Index));
          end if;
-         Data := Outcome_Vectors (Outcomes_Index);
+         --  Data := Outcome_Vectors (Outcomes_Index);
          if Count < 5 then
             Print_Data_Record ("Data in", Data);
          end if;
@@ -107,29 +112,15 @@ package body Analysis.Support is
             Put_Line ("Outcome_Vectors Index: " &
                         Integer'Image (Outcomes_Index));
          end if;
-         --  Outcome_Vectors : Outcomes_Matrix;
-         --  package Outcomes_Matrix_Package is new
-         --    Ada.Containers.Vectors (Positive, Data_Record);
-         --  subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
-         Outcome_Vectors.Replace_Element (Outcomes_Index, Data);
-         if Count < 10 then
-            Put_Line ("Outcome_Vectors Index" &
-                        Integer'Image (Outcomes_Index) & " updated");
-            Put_Line ("Outcome_Vectors Length" &
-                        Integer'Image (Integer (Outcome_Vectors.Length)));
-            New_Line;
-         end if;
+         --  Outcome_Vectors.Replace_Element (Outcomes_Index, Data);
+
          if Count mod 10000 = 0 then
             Put (".");
          end if;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
-
-      Put_Line (Routine_Name & "Outcome_Vectors Length" &
-                  Integer'Image (Integer (Outcome_Vectors.Length)));
-
-      return Outcome_Vectors;
+      New_Line;
 
    exception
       when Error : others =>
@@ -137,6 +128,6 @@ package body Analysis.Support is
                      Exception_Information (Error));
          raise;
 
-   end Convert;
+   end Catagorize;
 
-end Analysis.Support;
+end Data_Catagorization;

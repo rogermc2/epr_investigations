@@ -5,6 +5,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Analysis; use Analysis;
 with Source; use Source;
+with Data_Catagorization; use Data_Catagorization;
 with Detection; use Detection;
 with Types; use Types;
 with Utilities; use Utilities;
@@ -28,7 +29,8 @@ begin
                  Source_A_File, Source_B_File);
    Run_Detection (Source_A_File, Settings, Detection_A_File);
    Run_Detection (Source_B_File, Settings, Detection_B_File);
-   Analyse (Detection_A_File, Detection_B_File, Settings);
+   Catagorize (To_String (Detection_A_File), To_String (Detection_B_File),
+               Settings);
 
 exception
    when Error : others =>
