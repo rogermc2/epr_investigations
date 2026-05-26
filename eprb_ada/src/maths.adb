@@ -79,21 +79,7 @@ package body Maths is
 
    end QM_Func;
 
-   function Random_Choice (Settings : Float_Array) return Float is
-      Index : Integer :=
-        Integer (Float (Settings'Length) * Float_Random.Random (Gen)) + 1;
-   begin
-      --  Put_Line ("Maths Float_Array Random_Choice" );
-      if Index > Settings'Length then
-         Index := Settings'Length;
-      elsif Index < 1 then
-         Index := 1;
-      end if;
-      return Settings (Index);
-
-   end Random_Choice;
-
-   function Random_Choice (Settings : Settings_Vector)
+   function Random_Settings_Choice (Settings : Settings_Vector)
                               return Settings_Vector is
       use Settings_Vector_Package;
       Size   : constant Float := Float (Length (Settings));
@@ -106,7 +92,6 @@ package body Maths is
          begin
             while Has_Element (Curs) loop
                Index := Integer (Float_Random.Random (Gen) * Size) + 1;
-               --  Put_Line ("Index: " & Integer'Image (Index));
                if Index <= Integer (Length (Settings)) then
                   Result.Append (Element (To_Cursor (Settings, Index)));
                else
@@ -118,13 +103,13 @@ package body Maths is
             end loop;
          end;
       else
-         Put ("Maths Settings_Vector Random_Choice ");
+         Put ("Maths Settings_Vector Random_Settings_Choice ");
          Put_Line ("called with empty settings vector.");
       end if;
 
       return Result;
 
-   end Random_Choice;
+   end Random_Settings_Choice;
 
    function Sign (X : Interfaces.C.double) return Integer is
    begin

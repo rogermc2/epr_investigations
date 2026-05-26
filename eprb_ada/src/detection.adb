@@ -18,7 +18,7 @@ package body Detection is
    begin
       C :=
         Float ((-1) ** Natural (Particle.Spin_2)) *
-           Cos (Particle.Spin_2 * (Setting - Particle.Pol));
+          Cos (Particle.Spin_2 * (Setting - Particle.Pol));
 
       if Particle.Prob < abs (C) then
          if C > 0.0 then
@@ -57,29 +57,25 @@ package body Detection is
       use Particle_Data_Package;
       use Settings_Vector_Package;
       Random_Settings : constant Settings_Vector :=
-        Random_Choice (Settings);
-      Curs_1          : Particle_Data_Package.Cursor := Particles.First;
+        Random_Settings_Choice (Settings);
       Item            : Particle_Data;
-      Infos           : Pairs_Vector;
+      Particle_Pair   : Particle_Record;
+      Pairs           : Pairs_Vector;
       Results         : Result_Vector;
    begin
-      while Has_Element (Curs_1) loop
-         Item := Particles.Element (To_Index (Curs_1));
-         if Integer (To_Index (Curs_1)) <=
-           Integer (Length (Random_Settings))
-         then
-            Infos.Append
-              ((Item, Random_Settings.Element (To_Index (Curs_1))));
+      for index in 1 .. Positive (Length (Particles)) loop
+         Item := Particles.Element (index);
+         if index <= Integer (Length (Random_Settings)) then
+            Particle_Pair := (Item, Random_Settings.Element (index));
          else
-            Infos.Append
-              ((Item, Random_Settings.Last_Element));
+            Particle_Pair := (Item, Random_Settings.Last_Element);
          end if;
-         Next (Curs_1);
+         Pairs.Append (Particle_Pair);
       end loop;
 
       declare
          use Pairs_Vector_Package;
-         Curs_2   : Pairs_Vector_Package.Cursor := Infos.First;
+         Curs_2   : Pairs_Vector_Package.Cursor := Pairs.First;
          Item     : Particle_Record;
          Result   : Result_Data;
       begin

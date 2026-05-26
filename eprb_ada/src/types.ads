@@ -39,7 +39,6 @@ package Types is
 
    package Pairs_Vector_Package is new
      Ada.Containers.Vectors (Positive, Particle_Record);
-     --  Ada.Containers.Vectors (Positive, Particle_Record);
    subtype Pairs_Vector is Pairs_Vector_Package.Vector;
 
    type Result_Data is record

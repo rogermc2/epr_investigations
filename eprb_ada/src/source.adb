@@ -99,12 +99,13 @@ package body Source is
       --  Routine_Name : constant String := "Source.Emit ";
       S_2     : constant Float := 2.0 * Spin;
       Phase   : constant Float := S_2 * Float (Pi);
-      Pol       : Float;
+      Pol     : Float;
       Prob    : Float;
       Rand    : Integer := 0;
       I_Angle : Index_Angles;
-      I_P     : Index_Ps;
+      I_Pol   : Index_Ps;
    begin
+      --  Get a random number in the range 1 .. Num_Settings
       while Rand < 1 or else Rand > Num_Settings loop
          Rand :=
            Integer (Float_Random.Random (Gen) * Float (Num_Settings)) + 1;
@@ -115,10 +116,10 @@ package body Source is
       while Rand < 1 or else Rand > 1000 loop
          Rand := Integer (Float_Random.Random (Gen) * 1000.0) + 1;
       end loop;
-      I_P := Rand;
+      I_Pol := Rand;
 
       Pol := Settings (I_Angle);
-      Prob := Ps (I_P);
+      Prob := Ps (I_Pol);
 
       Left_Particles.Append ((Pol, Prob, S_2));
       Right_Particles.Append ((Pol + Phase, Prob, S_2));
