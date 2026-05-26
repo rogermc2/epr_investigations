@@ -56,22 +56,32 @@ package body Detection is
       return Result_Vector is
       use Particle_Data_Package;
       use Settings_Vector_Package;
+      Routine_Name    : constant String := "Detection.Load_Results ";
+      Particles_Size  : constant Positive := Positive (Length (Particles));
       Random_Settings : constant Settings_Vector :=
         Random_Settings_Choice (Settings);
       Item            : Particle_Data;
+      Rand_Index      : Positive;
       Particle_Pair   : Particle_Record;
       Pairs           : Pairs_Vector;
       Results         : Result_Vector;
    begin
-      for index in 1 .. Positive (Length (Particles)) loop
+      for index in 1 .. Particles_Size loop
          Item := Particles.Element (index);
+         Rand_Index := Random_Index (Positive (Length (Random_Settings)));
+         Put_Line (Routine_Name & "Rand_Index: " & Integer'Image (Rand_Index));
          if index <= Integer (Length (Random_Settings)) then
-            Particle_Pair := (Item, Random_Settings.Element (index));
+            Particle_Pair := (Item, Random_Settings.Element (Rand_Index));
          else
-            Particle_Pair := (Item, Random_Settings.Last_Element);
+            Put_Line (Routine_Name &
+                        "Index greater than Particles size");
+            --  Particle_Pair := (Item, Random_Settings.Last_Element);
          end if;
+         Put_Line (Routine_Name & "Appending to Pairs");
          Pairs.Append (Particle_Pair);
+         Put_Line (Routine_Name & "Pairs updated");
       end loop;
+      Put_Line (Routine_Name & "Pairs loaded");
 
       declare
          use Pairs_Vector_Package;

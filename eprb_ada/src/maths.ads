@@ -10,7 +10,9 @@ package Maths is
    function Mean_Product (A, B : Float_Vector) return Float;
    function Mean_Product
      (Selector : Boolean_Vector; A, B : Result_Vector) return Float;
-   function Random_Settings_Choice (Settings : Settings_Vector) return Settings_Vector;
+   function Random_Index (Max : Positive) return Positive;
+   function Random_Settings_Choice (Settings : Settings_Vector)
+                                    return Settings_Vector;
    function QM_Func (A, Spin : Float) return Float;
    function Sign (X : Interfaces.C.double) return Integer;
    function Sum_Boolean (Vec : Boolean_Vector) return Natural;

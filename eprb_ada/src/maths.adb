@@ -79,6 +79,12 @@ package body Maths is
 
    end QM_Func;
 
+   function Random_Index (Max : Positive) return Positive is
+      begin
+      return Positive (Float_Random.Random (Gen) * Float (Max) + 1.0);
+
+   end Random_Index;
+
    function Random_Settings_Choice (Settings : Settings_Vector)
                               return Settings_Vector is
       use Settings_Vector_Package;
@@ -88,7 +94,7 @@ package body Maths is
    begin
       if Integer (Length (Settings)) > 0 then
          declare
-            Curs   : Cursor := Settings.First;
+            Curs : Cursor := Settings.First;
          begin
             while Has_Element (Curs) loop
                Index := Integer (Float_Random.Random (Gen) * Size) + 1;
