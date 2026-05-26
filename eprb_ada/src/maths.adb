@@ -80,13 +80,14 @@ package body Maths is
    end QM_Func;
 
    function Random_Index (Max : Positive) return Positive is
-      begin
-      return Positive (Float_Random.Random (Gen) * Float (Max) + 1.0);
+   begin
+      return Positive
+        (abs (Float_Random.Random (Gen) * (Float (Max))) + 0.5);
 
    end Random_Index;
 
    function Random_Settings_Choice (Settings : Settings_Vector)
-                              return Settings_Vector is
+                                    return Settings_Vector is
       use Settings_Vector_Package;
       Size   : constant Float := Float (Length (Settings));
       Index  : Positive;
@@ -156,7 +157,7 @@ package body Maths is
    end To_Radians;
 
    function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
-                             return Float_Vector is
+                          return Float_Vector is
       Step   : constant Float :=  (End_Val - Start_Val) / Float (Num - 1);
       Result : Float_Vector;
    begin

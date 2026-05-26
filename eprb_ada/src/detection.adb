@@ -9,6 +9,8 @@ with Utilities; use Utilities;
 
 package body Detection is
 
+   function Set_Polarizer (Settings : Settings_Vector) return Float;
+
    function Detect_Particle
      (Particle : Particle_Data; Setting : Float) return Result_Data
    is
@@ -55,33 +57,21 @@ package body Detection is
      (Particles : Particle_Vector; Settings  : Settings_Vector)
       return Result_Vector is
       use Particle_Data_Package;
-      use Settings_Vector_Package;
-      Routine_Name    : constant String := "Detection.Load_Results ";
-      Particles_Size  : constant Positive := Positive (Length (Particles));
-      Random_Settings : constant Settings_Vector :=
-        Random_Settings_Choice (Settings);
+      --  Routine_Name    : constant String := "Detection.Load_Results ";
+      Curs            : Cursor := Particles.First;
+      Setting         : Float;
       Item            : Particle_Data;
-      Rand_Index      : Positive;
       Particle_Pair   : Particle_Record;
       Pairs           : Pairs_Vector;
       Results         : Result_Vector;
    begin
-      for index in 1 .. Particles_Size loop
-         Item := Particles.Element (index);
-         Rand_Index := Random_Index (Positive (Length (Random_Settings)));
-         Put_Line (Routine_Name & "Rand_Index: " & Integer'Image (Rand_Index));
-         if index <= Integer (Length (Random_Settings)) then
-            Particle_Pair := (Item, Random_Settings.Element (Rand_Index));
-         else
-            Put_Line (Routine_Name &
-                        "Index greater than Particles size");
-            --  Particle_Pair := (Item, Random_Settings.Last_Element);
-         end if;
-         Put_Line (Routine_Name & "Appending to Pairs");
+      while Has_Element (Curs) loop
+         Setting := Set_Polarizer (Settings);
+         Item := Element (Curs);
+         Particle_Pair := (Item, Setting);
          Pairs.Append (Particle_Pair);
-         Put_Line (Routine_Name & "Pairs updated");
+         Next (Curs);
       end loop;
-      Put_Line (Routine_Name & "Pairs loaded");
 
       declare
          use Pairs_Vector_Package;
@@ -136,5 +126,12 @@ package body Detection is
       Put_Line ("Detection processing complete.");
 
    end Run_Detection;
+
+   function Set_Polarizer (Settings : Settings_Vector) return Float is
+      use Settings_Vector_Package;
+   begin
+      return Settings (Random_Index (Positive (Length (Settings))));
+
+   end Set_Polarizer;
 
 end Detection;
