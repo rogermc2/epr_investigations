@@ -20,7 +20,8 @@ package body Analysis.Support is
         Load_Station_Results (File_B);
       --  Raw_Length        : constant Integer :=
       --    Integer'Min (Integer (Length (Raw_A)), Integer (Length (Raw_B)));
-      Num_Settings      : constant Positive := Positive (Length (Settings));
+      --  Num_Settings      : constant Positive :=
+      --  Positive (Length (Settings));
       Curs_A            : Result_Vector_Package.Cursor := Raw_A.First;
       Curs_B            : Result_Vector_Package.Cursor := Raw_B.First;
       Curs_S_Outer      : Settings_Vector_Package.Cursor := Settings.First;

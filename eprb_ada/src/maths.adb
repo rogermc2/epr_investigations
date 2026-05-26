@@ -44,7 +44,7 @@ package body Maths is
      (Selector : Boolean_Vector; A, B : Result_Vector) return Float is
       use Boolean_Vector_Package;
       Curs    : Cursor := Selector.First;
-      Sum_Val : Float := 0.0;
+      Sum_Val : Integer := 0;
       Index   : Natural := 0;
       Count   : Natural := 0;
    begin
@@ -58,7 +58,7 @@ package body Maths is
       end loop;
 
       if Count > 0 then
-         return Sum_Val / Float (Count);
+         return Float (Sum_Val) / Float (Count);
       else
          return 0.0;
       end if;

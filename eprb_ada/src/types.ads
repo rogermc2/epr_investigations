@@ -23,9 +23,9 @@ package Types is
    subtype Float_Vector is Float_Vector_Package.Vector;
 
    type Particle_Data is record
-      E      : Float;
-      P      : Float;
-      Spin_N : Float;
+      Pol    : Float;
+      Prob   : Float;
+      Spin_2 : Float;
    end record;
 
    package Particle_Data_Package is new
@@ -44,7 +44,7 @@ package Types is
 
    type Result_Data is record
       Setting : Float := 0.0;
-      Outcome : Float := 999.9;  --  Use Float to represent sign
+      Outcome : Integer := 0;
    end record;
 
    package Result_Vector_Package is new

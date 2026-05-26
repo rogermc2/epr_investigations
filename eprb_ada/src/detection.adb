@@ -1,4 +1,3 @@
-with Interfaces.C;
 
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Numerics.Elementary_Functions;
@@ -13,25 +12,20 @@ package body Detection is
    function Detect_Particle
      (Particle : Particle_Data; Setting : Float) return Result_Data
    is
-      use Interfaces.C;
       use Ada.Numerics.Elementary_Functions;
-      C       : double;
-      Outcome : Float;
+      C       : Float;
+      Outcome : Integer := 0;
    begin
       C :=
-        double ((-1) ** Natural (Particle.Spin_N)) *
-          double (Cos (Particle.Spin_N * (Setting - Particle.E)));
+        Float ((-1) ** Natural (Particle.Spin_2)) *
+           Cos (Particle.Spin_2 * (Setting - Particle.Pol));
 
-      if double (Particle.P) < abs (C) then
+      if Particle.Prob < abs (C) then
          if C > 0.0 then
-            Outcome := 1.0;
+            Outcome := 1;
          elsif C < 0.0 then
-            Outcome := 1.0;
-         else
-            Outcome := 0.0;
+            Outcome := -1;
          end if;
-      else
-         Outcome := 999.9;
       end if;
 
       return (Setting, Outcome);

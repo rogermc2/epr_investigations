@@ -3,6 +3,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Analysis_Types; use Analysis_Types;
+with Printing; use Printing;
 with Utilities;
 
 package body Data_Catagorization is
@@ -56,8 +57,8 @@ package body Data_Catagorization is
          Next (Curs_S_Outer);
       end loop;
 
-      --  Print_Result_Vector ("Raw_A", Raw_A, 1, 5);
-      --  Print_Result_Vector ("Raw_B", Raw_B, 1, 5);
+      Print_Result_Vector ("Raw_A", Raw_A, 15, 20);
+      Print_Result_Vector ("Raw_B", Raw_B, 15, 20);
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Count := Count + 1;
          Item_A := Element (Curs_A);
@@ -67,8 +68,8 @@ package body Data_Catagorization is
          Key := (A_Index, B_Index);
 
          Put_Line (Files (Settings_Map (Key)),
-                   Float'Image (Item_A.Outcome) & "," &
-                     Float'Image (Item_B.Outcome));
+                   Integer'Image (Item_A.Outcome) & "," &
+                     Integer'Image (Item_B.Outcome));
          Next (Curs_A);
          Next (Curs_B);
       end loop;

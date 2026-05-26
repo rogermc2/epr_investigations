@@ -5,6 +5,7 @@ with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Printing; use Printing;
 with Types; use Types;
 with Utilities; use Utilities;
 
@@ -21,10 +22,11 @@ package body Source is
                    Right_Particles : in out Particle_Vector);
 
    procedure Build_Source (Duration_Val : Duration;
-                           Num_Settings : Positive; Spin      : Float;
+                           Num_Settings : Positive; Spin     : Float;
                            Left_File    : String; Right_File : String) is
 
       --  Set stack size:  ulimit -s 64000 to prevent stack overflow
+      Routine_Name    : constant String := "Source.Build_Source ";
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
       Settings        : Float_Array  (1 .. Num_Settings);
@@ -79,6 +81,10 @@ package body Source is
                   Right_File);
       Put_Line ("Source processing complete.");
       New_Line;
+      Print_Particles
+        (Routine_Name & "Left Particles", Left_Particles, 1, 8);
+      Print_Particles
+        (Routine_Name & "Right Particles", Right_Particles, 1, 8);
 
    end Build_Source;
 
@@ -91,10 +97,10 @@ package body Source is
       Num_Settings : constant Positive := Settings'Length;
       subtype Index_Angles is Integer range 1 .. Num_Settings;
       --  Routine_Name : constant String := "Source.Emit ";
-      N       : constant Float := 2.0 * Spin;
-      Phase   : constant Float := N * Float (Pi);
-      E       : Float;
-      P       : Float;
+      S_2     : constant Float := 2.0 * Spin;
+      Phase   : constant Float := S_2 * Float (Pi);
+      Pol       : Float;
+      Prob    : Float;
       Rand    : Integer := 0;
       I_Angle : Index_Angles;
       I_P     : Index_Ps;
@@ -111,11 +117,11 @@ package body Source is
       end loop;
       I_P := Rand;
 
-      E := Settings (I_Angle);
-      P := Ps (I_P);
+      Pol := Settings (I_Angle);
+      Prob := Ps (I_P);
 
-      Left_Particles.Append ((E, P, N));
-      Right_Particles.Append ((E + Phase, P, N));
+      Left_Particles.Append ((Pol, Prob, S_2));
+      Right_Particles.Append ((Pol + Phase, Prob, S_2));
 
    end Emit;
 

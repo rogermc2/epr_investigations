@@ -1,35 +1,38 @@
 
-with Ada.Numerics; use Ada.Numerics;
+--  with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Analysis.Support; use Analysis.Support;
-with Analysis_Types; use Analysis_Types;
+--  with Analysis.Support; use Analysis.Support;
+--  with Analysis_Types; use Analysis_Types;
 with Display; use Display;
 with Maths; use Maths;
-with Vector_Functions; use Vector_Functions;
+--  with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
 
-   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
-                          Eab  : out Float_Vector);
-   procedure Expectation (A, B  : Result_Vector; Unique_Diff : Float_Vector;
-                          Eab   : in out Float_Vector);
+   --  procedure Correlation (A, B : Result_Vector;
+   --  Unique_Diff : Float_Vector;
+   --                         Eab  : out Float_Vector);
+   --  procedure Expectation (A, B  : Result_Vector;
+   --  Unique_Diff : Float_Vector;
+   --                         Eab   : in out Float_Vector);
 
    procedure Analyse (A_File_Name, B_File_Name : Unbounded_String;
                       Settings                 : Settings_Vector) is
       use Result_Vector_Package;
-      Angle_Resolution : constant Float := 3.75;
-      Particle_Spin    : constant Float := 1.0;
-      Results          : constant Outcomes_Matrix :=
-        Convert (To_String (A_File_Name), To_String (B_File_Name), Settings);
+      --  Angle_Resolution : constant Float := 3.75;
+      --  Particle_Spin    : constant Float := 1.0;
+      --  Results          : constant Outcomes_Matrix :=
+      --    Convert (To_String (A_File_Name),
+      --  To_String (B_File_Name), Settings);
       A                : Result_Vector;
       B                : Result_Vector;
-      Result_A         : Result_Data;
-      Result_B         : Result_Data;
-      Coincidences     : Boolean_Vector;
-      Settings_Diff    : Float_Vector;    --  AB
-      Unique_Diff      : Float_Vector;
-      Eab              : Float_Vector;
+      --  Result_A         : Result_Data;
+      --  Result_B         : Result_Data;
+      --  Coincidences     : Boolean_Vector;
+      --  Settings_Diff    : Float_Vector;    --  AB
+      --  Unique_Diff      : Float_Vector;
+      --  Eab              : Float_Vector;
    begin
       Put_Line ("Starting analysis.");
 

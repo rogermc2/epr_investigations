@@ -1,23 +1,22 @@
 
 with Ada.Containers.Ordered_Sets;
-with Ada.Numerics.Elementary_Functions;
-with Ada.Text_IO; use Ada.Text_IO;
-
-with Maths;
+--  with Ada.Numerics.Elementary_Functions;
+--  with Ada.Text_IO; use Ada.Text_IO;
 
 package body Vector_Functions is
 
-   function Abs_Vector (Vec : Result_Vector) return Float_Vector is
+   function Abs_Vector (Vec : Result_Vector) return Natural_Vector is
       use Result_Vector_Package;
       Curs   : Cursor := Vec.First;
       Item   : Result_Data;
-      Result : Float_Vector;
+      Result : Natural_Vector;
    begin
       while Has_Element (Curs) loop
          Item := Element (Curs);
          Result.Append (abs (Item.Outcome));
          Next (Curs);
       end loop;
+
       return Result;
 
    end Abs_Vector;
@@ -168,13 +167,13 @@ package body Vector_Functions is
    end Parse_Floats;
 
    function Product_Column2 (Vec_1, Vec_2 : Result_Vector)
-                             return Float_Vector is
+                             return Natural_Vector is
       use Result_Vector_Package;
       Curs_1  : Cursor := Vec_1.First;
       Curs_2  : Cursor := Vec_2.First;
       Item_1  : Result_Data;
       Item_2  : Result_Data;
-      Result  : Float_Vector;
+      Result  : Natural_Vector;
    begin
       while Has_Element (Curs_1) and then Has_Element (Curs_2) loop
          Item_1 := Element (Curs_1);
@@ -187,16 +186,16 @@ package body Vector_Functions is
 
    end Product_Column2;
 
-   function Sample_Mean (Vec : Float_Vector) return Float is
-      use Float_Vector_Package;
+   function Sample_Mean (Vec : Natural_Vector) return Float is
+      use Natural_Vector_Package;
       Curs : Cursor := Vec.First;
-      Sum  : Float := 0.0;
+      Sum  : Integer := 0;
    begin
       while Has_Element (Curs) loop
          Sum := Sum + Element (Curs);
          Next (Curs);
       end loop;
-      return Sum / Float (Length (Vec));
+      return Float (Sum) / Float (Length (Vec));
 
    end  Sample_Mean;
 
@@ -267,18 +266,5 @@ package body Vector_Functions is
       return Result_List;
 
    end Unique;
-
-   function Zeros_Like (Vec : Float_Vector) return Float_Vector is
-      use Float_Vector_Package;
-      Curs   : Float_Vector_Package.Cursor := Vec.First;
-      Result : Float_Vector;
-   begin
-      while Has_Element (Curs) loop
-         Result.Append (0.0);
-         Next  (Curs);
-      end loop;
-      return Result;
-
-   end Zeros_Like;
 
 end Vector_Functions;

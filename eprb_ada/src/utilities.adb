@@ -55,7 +55,7 @@ package body Utilities is
       In_Stream := Stream (File_ID);
       while not End_Of_File (File_ID) loop
          Float'Read (In_Stream, Result.Setting);
-         Float'Read (In_Stream, Result.Outcome);
+         Integer'Read (In_Stream, Result.Outcome);
          Results.Append (Result);
       end loop;
       Close (File_ID);
@@ -135,7 +135,7 @@ package body Utilities is
       Out_Stream := Stream (File_ID);
       while Has_Element (Curs) loop
          Float'Write (Out_Stream, Element (Curs).Setting);
-         Float'Write (Out_Stream, Element (Curs).Outcome);
+         Integer'Write (Out_Stream, Element (Curs).Outcome);
          Next (Curs);
       end loop;
       Close (File_ID);
@@ -152,8 +152,9 @@ package body Utilities is
       Create (File_ID, Out_File, File_Name);
       while Has_Element (Curs) loop
          Item := Element (Curs);
-         Put_Line (File_ID, Float'Image (Item.E) & "," &
-                     Float'Image (Item.P) & "," & Float'Image (Item.Spin_N));
+         Put_Line (File_ID, Float'Image (Item.Pol) & "," &
+                     Float'Image (Item.Prob) & "," &
+                     Float'Image (Item.Spin_2));
          Next  (Curs);
       end loop;
       Close (File_ID);

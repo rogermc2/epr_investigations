@@ -54,60 +54,41 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   --  procedure Print_Integer_List
-   --    (Name  : String; Data : Integer_List;
-   --     Start : Positive := 1; Finish : Natural := 0) is
-   --     use Integer_List_Package;
-   --     Last      : Natural;
-   --     Item      : Integer;
-   --     Num_Ones  : Natural := 0;
-   --     Num_Minus : Natural := 0;
-   --     Count     : Integer := 1;
-   --  begin
-   --     if Finish > 0 then
-   --        Last := Finish;
-   --     else
-   --        Last := Natural (Length (Data));
-   --     end if;
-   --
-   --     Put_Line (Name & ": ");
-   --     if Start >= Data.First_Index and then
-   --  Finish <= Data.Last_index then
-   --        for Index in Start .. Last loop
-   --           Item := Data (Index);
-   --           if Item = 1 then
-   --              Num_Ones := Num_Ones + 1;
-   --           elsif Item = -1 then
-   --              Num_Minus := Num_Minus + 1;
-   --           else
-   --              Put_Line
-   --                ("Print_Integer_List invalid data: " &
-   --  Integer'Image (Item));
-   --           end if;
-   --           Put (Integer'Image (Item) & "  ");
-   --           Count := Count + 1;
-   --           if Count > 10 then
-   --              New_Line;
-   --              Count := 1;
-   --           end if;
-   --        end loop;
-   --     else
-   --        Put_Line
-   --          ("Print_Integer_List called with invalid start or
-   --  finish index.");
-   --     end if;
-   --     New_Line;
-   --     Put_Line ("Number of 1s, -1s: " &
-   --                 Integer'Image (Num_Ones) & ", " &
-   --  Integer'Image (Num_Minus));
-   --     New_Line;
-   --
-   --  end Print_Integer_List;
+   procedure Print_Particles
+     (Name  : String; Data : Particle_Vector;
+      Start : Positive := 1; Finish : Natural := 0) is
+      use Particle_Data_Package;
+      Last : Natural;
+      Item : Particle_Data;
+   begin
+      if Finish > 0 then
+         Last := Finish;
+      else
+         Last := Natural (Length (Data));
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start >= Data.First_Index and then
+        Finish <= Data.Last_Index
+      then
+         for Index in Start .. Last loop
+            Item := Data (Index);
+            Put_Line ("Pol, Prob, Spin_2: " & Float'Image (Item.Pol) & "  " &
+                        Float'Image (Item.Prob) & "  " &
+                        Float'Image (Item.Spin_2));
+         end loop;
+      else
+         Put_Line
+           ("Print_Particles called with invalid start or finish index.");
+      end if;
+      New_Line;
+
+   end Print_Particles;
 
    --  ------------------------------------------------------------------------
 
    procedure Print_Result_Vector
-     (Name : String; Data : Result_Vector; Start : Positive := 1;
+     (Name   : String; Data : Result_Vector; Start : Positive := 1;
       Finish : Natural := 0) is
       use Result_Vector_Package;
       Curs      : Cursor := Data.First;
@@ -127,7 +108,7 @@ package body Printing is
          if Count >= Start and then Count <= Last then
             Item := Data (Curs);
             Put_Line ("Setting: " & Float'Image (Item.Setting) &
-                        "  Outcome: " & Float'Image (Item.Outcome));
+                        "  Outcome: " & Integer'Image (Item.Outcome));
          end if;
          Next (Curs);
       end loop;
