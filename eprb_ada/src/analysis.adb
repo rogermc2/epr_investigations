@@ -3,9 +3,10 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 --  with Analysis.Support; use Analysis.Support;
---  with Analysis_Types; use Analysis_Types;
+with Analysis_Types; use Analysis_Types;
 with Display; use Display;
 with Maths; use Maths;
+with Utilities; use Utilities;
 --  with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
@@ -17,16 +18,18 @@ package body Analysis is
    --  Unique_Diff : Float_Vector;
    --                         Eab   : in out Float_Vector);
 
-   procedure Analyse (A_File_Name, B_File_Name : Unbounded_String;
+   procedure Analyse (A_File_Name, B_File_Name : String;
                       Settings                 : Settings_Vector) is
-      use Result_Vector_Package;
+      use Outcome_Pair_Vector_Package;
       --  Angle_Resolution : constant Float := 3.75;
       --  Particle_Spin    : constant Float := 1.0;
       --  Results          : constant Outcomes_Matrix :=
       --    Convert (To_String (A_File_Name),
       --  To_String (B_File_Name), Settings);
-      A                : Result_Vector;
-      B                : Result_Vector;
+      A                : constant Outcome_Pair_Vector :=
+        Load_Paired_Data (A_File_Name);
+      B                : constant Outcome_Pair_Vector :=
+        Load_Paired_Data  (B_File_Name);
       --  Result_A         : Result_Data;
       --  Result_B         : Result_Data;
       --  Coincidences     : Boolean_Vector;
@@ -41,7 +44,7 @@ package body Analysis is
 
       Put_Line ("Analysis complete.");
 
-      Display_Results (A, B);
+      --  Display_Results (A, B);
 
    end Analyse;
 

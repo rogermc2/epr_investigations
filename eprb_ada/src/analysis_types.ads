@@ -1,13 +1,13 @@
 
---  with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Vectors;
-
---  with Types; use Types;
+with Ada.Text_IO;
 
 package Analysis_Types is
 
    subtype MilliRad is Integer range -6300 .. 6300;
+   type File_Array is array (Positive range <>) of Ada.Text_IO.File_Type;
 
    type Setting_Map_Record is record
       A : MilliRad;
@@ -37,7 +37,12 @@ package Analysis_Types is
       Outcomes  : Outcome_Vector;
    end record;
 
-   package Outcomes_Matrix_Package is new
-     Ada.Containers.Vectors (Positive, Data_Record);
-   subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
+   --  package Outcomes_Matrix_Package is new
+   --    Ada.Containers.Vectors (Positive, Data_Record);
+   --  subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
+
+   package Unbounded_String_Package is new
+     Ada.Containers.Vectors (Positive, Unbounded_String);
+   subtype Unbounded_String_Vector is Unbounded_String_Package.Vector;
+
 end Analysis_Types;

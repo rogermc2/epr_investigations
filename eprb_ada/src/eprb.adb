@@ -4,6 +4,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Analysis; use Analysis;
+with Analysis_Types;
 with Source; use Source;
 with Data_Catagorization; use Data_Catagorization;
 with Detection; use Detection;
@@ -29,8 +30,14 @@ begin
                  Source_A_File, Source_B_File);
    Run_Detection (Source_A_File, Settings, Detection_A_File);
    Run_Detection (Source_B_File, Settings, Detection_B_File);
-   Catagorize (To_String (Detection_A_File), To_String (Detection_B_File),
-               Settings);
+   declare
+      use Analysis_Types;
+      Files : Unbounded_String_Vector :=
+        Catagorize (To_String (Detection_A_File),
+                    To_String (Detection_B_File), Settings);
+   begin
+      null;
+   end;
 
 exception
    when Error : others =>

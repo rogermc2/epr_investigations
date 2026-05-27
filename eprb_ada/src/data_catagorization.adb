@@ -1,41 +1,42 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Analysis_Types; use Analysis_Types;
-with Printing; use Printing;
+--  with Printing; use Printing;
 with Utilities;
 
 package body Data_Catagorization is
 
-   type File_Array is array (Positive range <>) of File_Type;
-
-   procedure Catagorize (File_A, File_B : String;
-                         Settings       : Settings_Vector) is
+   function Catagorize
+     (File_A, File_B : String; Settings : Settings_Vector)
+      return Unbounded_String_Vector is
       use Utilities;
       use MilliRad_Map_Package;
       use Result_Vector_Package;
       use Settings_Vector_Package;
-      Routine_Name      : constant String :=
+      use Unbounded_String_Package;
+      Routine_Name   : constant String :=
         "Data_Catagorization.Catagorize ";
-      Raw_A             : constant Result_Vector :=
+      Raw_A          : constant Result_Vector :=
         Load_Station_Results (File_A);
-      Raw_B             : constant Result_Vector :=
+      Raw_B          : constant Result_Vector :=
         Load_Station_Results (File_B);
-      Num_Settings      : constant Positive := Positive (Length (Settings));
-      Files             : File_Array (1 .. 2 * Num_Settings + 1);
-      Curs_A            : Result_Vector_Package.Cursor := Raw_A.First;
-      Curs_B            : Result_Vector_Package.Cursor := Raw_B.First;
-      Curs_S_Outer      : Settings_Vector_Package.Cursor := Settings.First;
-      Curs_S_Inner      : Settings_Vector_Package.Cursor := Settings.First;
-      Item_A            : Result_Data;
-      Item_B            : Result_Data;
-      A_Index           : MilliRad;
-      B_Index           : MilliRad;
-      Key               : Setting_Map_Record;
-      Settings_Map      : MilliRad_Map;
-      Settings_Index    : Natural := 0;
-      Count             : Natural := 0;
+      Num_Settings   : constant Positive := Positive (Length (Settings));
+      Files          : File_Array (1 .. 2 * Num_Settings + 1);
+      Curs_A         : Result_Vector_Package.Cursor := Raw_A.First;
+      Curs_B         : Result_Vector_Package.Cursor := Raw_B.First;
+      Curs_S_Outer   : Settings_Vector_Package.Cursor := Settings.First;
+      Curs_S_Inner   : Settings_Vector_Package.Cursor := Settings.First;
+      Item_A         : Result_Data;
+      Item_B         : Result_Data;
+      A_Index        : MilliRad;
+      B_Index        : MilliRad;
+      Key            : Setting_Map_Record;
+      Settings_Map   : MilliRad_Map;
+      Settings_Index : Natural := 0;
+      Count          : Natural := 0;
+      Out_File_Names : Unbounded_String_Vector;
    begin
       while Has_Element (Curs_S_Outer) loop
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
@@ -67,6 +68,9 @@ package body Data_Catagorization is
          Put_Line (Files (Settings_Map (Key)),
                    Integer'Image (Item_A.Outcome) & "," &
                      Integer'Image (Item_B.Outcome));
+         Out_File_Names.Append (To_Unbounded_String
+                                (Integer'Image (Item_A.Outcome) & "," &
+                                     Integer'Image (Item_B.Outcome)));
          Next (Curs_A);
          Next (Curs_B);
       end loop;
@@ -77,6 +81,8 @@ package body Data_Catagorization is
       end loop;
 
       Put_Line ("Catagorization complete.");
+
+      return Out_File_Names;
 
    exception
       when Error : others =>
