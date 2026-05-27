@@ -21,8 +21,8 @@ package Analysis_Types is
    subtype MilliRad_Map is MilliRad_Map_Package.Map;
 
    type Outcomes_Record is record
-      Outcome_A : Float;
-      Outcome_B : Float;
+      Outcome_A : Integer;
+      Outcome_B : Integer;
    end record;
 
    package Outcome_Vector_Package is new

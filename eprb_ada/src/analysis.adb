@@ -33,6 +33,7 @@ package body Analysis is
       Setting_B     : MilliRad;
       Analysis_Data : Analysis_Vector;
       Data          : Analysis_Record;
+      Outcome_Pair  : Outcomes_Record;
       --  Angle_Resolution : constant Float := 3.75;
       --  Coincidences     : Boolean_Vector;
       --  Settings_Diff    : Float_Vector;    --  AB
@@ -46,9 +47,17 @@ package body Analysis is
          Open (File_ID, In_File, To_String (Element (File_Curs)));
          Parse_File_Name (To_String (Element (File_Curs)),
                           Setting_A, Setting_B);
-         Put_Line ("Setting_A: " & MilliRad'Image (Setting_A));
-         Put_Line ("Setting_B: " & MilliRad'Image (Setting_B));
-
+         --  Put_Line ("Setting_A: " & MilliRad'Image (Setting_A));
+         --  Put_Line ("Setting_B: " & MilliRad'Image (Setting_B));
+         Data.Setting_A := Setting_A;
+         Data.Setting_B := Setting_B;
+         while not End_Of_File (File_ID) loop
+            declare
+               aLine : String := Get_Line (File_ID);
+            begin
+               Outcome_Pair := Parse_Data_Line (aLine);
+            end;
+         end loop;
          Close (File_ID);
          Next (File_Curs);
       end loop;
