@@ -3,10 +3,10 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 --  with Analysis.Support; use Analysis.Support;
-with Analysis_Types; use Analysis_Types;
-with Display; use Display;
+--  with Analysis_Types; use Analysis_Types;
+--  with Display; use Display;
 with Maths; use Maths;
-with Utilities; use Utilities;
+--  with Utilities; use Utilities;
 --  with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
@@ -18,20 +18,21 @@ package body Analysis is
    --  Unique_Diff : Float_Vector;
    --                         Eab   : in out Float_Vector);
 
-   procedure Analyse (A_File_Name, B_File_Name : String;
-                      Settings                 : Settings_Vector) is
-      use Outcome_Pair_Vector_Package;
+   procedure Analyse (File_Names : Unbounded_String_Vector;
+                      Settings   : Settings_Vector) is
+      --  use Outcome_Pair_Vector_Package;
+      use Unbounded_String_Package;
+      Num_Files : constant Positive := Positive (Length (File_Names));
+      File_Data : Unbounded_String_Vector;
       --  Angle_Resolution : constant Float := 3.75;
       --  Particle_Spin    : constant Float := 1.0;
       --  Results          : constant Outcomes_Matrix :=
       --    Convert (To_String (A_File_Name),
       --  To_String (B_File_Name), Settings);
-      A                : constant Outcome_Pair_Vector :=
-        Load_Paired_Data (A_File_Name);
-      B                : constant Outcome_Pair_Vector :=
-        Load_Paired_Data  (B_File_Name);
-      --  Result_A         : Result_Data;
-      --  Result_B         : Result_Data;
+      --  A                : constant Outcome_Pair_Vector :=
+      --    Load_Paired_Data (A_File_Name);
+      --  B                : constant Outcome_Pair_Vector :=
+      --    Load_Paired_Data  (B_File_Name);
       --  Coincidences     : Boolean_Vector;
       --  Settings_Diff    : Float_Vector;    --  AB
       --  Unique_Diff      : Float_Vector;

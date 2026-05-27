@@ -4,6 +4,7 @@ with Ada.Numerics;
 with Ada.Streams;               --  For binary file writing
 with Ada.Streams.Stream_IO;
 with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Maths;
@@ -24,27 +25,32 @@ package body Utilities is
 
    end File_Length;
 
-   function Load_Paired_Data (File_Name : String)
+   function Load_Paired_Data (File_Names : Unbounded_String_Vector)
                               return Outcome_Pair_Vector is
       use Ada.Strings.Fixed;
       use Ada.Text_IO;
       use Outcome_Pair_Vector_Package;
+      use Unbounded_String_Package;
+      Curs      : Unbounded_String_Package.Cursor := File_Names.First;
       File_ID   : File_Type;
       Pairs     : Outcome_Pair_Vector;
       Item      : Outcome_Pair_Data;
    begin
-      Open (File_ID, In_File, File_Name);
-      while not End_Of_File (File_ID) loop
-         declare
-            aline : constant String := Get_Line (File_ID);
-            Pos   : constant Natural := Index (aline, ",");
-         begin
-            Item.First := Integer'Value (aline (aline'First .. Pos - 1));
-            Item.Second := Integer'Value (aline (Pos + 1 .. aline'Last));
-            Pairs.Append (Item);
-         end;
+      while Has_Element (Curs) loop
+         Open (File_ID, In_File, To_String (Element (Curs)));
+         while not End_Of_File (File_ID) loop
+            declare
+               aline : constant String := Get_Line (File_ID);
+               Pos   : constant Natural := Index (aline, ",");
+            begin
+               Item.First := Integer'Value (aline (aline'First .. Pos - 1));
+               Item.Second := Integer'Value (aline (Pos + 1 .. aline'Last));
+               Pairs.Append (Item);
+            end;
+         end loop;
+         Close (File_ID);
+         Next (Curs);
       end loop;
-      Close (File_ID);
 
       return Pairs;
 

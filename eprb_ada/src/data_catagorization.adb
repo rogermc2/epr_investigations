@@ -36,6 +36,7 @@ package body Data_Catagorization is
       Settings_Map   : MilliRad_Map;
       Settings_Index : Natural := 0;
       Count          : Natural := 0;
+      Out_Name       : Unbounded_String;
       Out_File_Names : Unbounded_String_Vector;
    begin
       while Has_Element (Curs_S_Outer) loop
@@ -65,12 +66,11 @@ package body Data_Catagorization is
          B_Index := MilliRad (Item_B.Setting * 1000.0);
          Key := (A_Index, B_Index);
 
-         Put_Line (Files (Settings_Map (Key)),
-                   Integer'Image (Item_A.Outcome) & "," &
-                     Integer'Image (Item_B.Outcome));
-         Out_File_Names.Append (To_Unbounded_String
-                                (Integer'Image (Item_A.Outcome) & "," &
-                                     Integer'Image (Item_B.Outcome)));
+         Out_Name :=
+           To_Unbounded_String (Integer'Image (Item_A.Outcome) & "," &
+                                  Integer'Image (Item_B.Outcome));
+         Put_Line (Files (Settings_Map (Key)), To_String (Out_Name));
+         Out_File_Names.Append (Out_Name);
          Next (Curs_A);
          Next (Curs_B);
       end loop;

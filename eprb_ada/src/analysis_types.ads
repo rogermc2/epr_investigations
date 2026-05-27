@@ -1,5 +1,4 @@
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Vectors;
 with Ada.Text_IO;
@@ -41,8 +40,5 @@ package Analysis_Types is
    --    Ada.Containers.Vectors (Positive, Data_Record);
    --  subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
 
-   package Unbounded_String_Package is new
-     Ada.Containers.Vectors (Positive, Unbounded_String);
-   subtype Unbounded_String_Vector is Unbounded_String_Package.Vector;
 
 end Analysis_Types;

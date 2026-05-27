@@ -10,6 +10,10 @@ package Types is
    type Boolean_Matrix is array (Positive range <>, Positive range <>)
      of Boolean;
 
+   package Unbounded_String_Package is new
+     Ada.Containers.Vectors (Positive, Unbounded_String);
+   subtype Unbounded_String_Vector is Unbounded_String_Package.Vector;
+
    package Boolean_Vector_Package is new
      Ada.Containers.Vectors (Positive, Boolean);
    subtype Boolean_Vector is Boolean_Vector_Package.Vector;
