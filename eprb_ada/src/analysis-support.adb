@@ -118,22 +118,24 @@ package body Analysis.Support is
 
    procedure Parse_File_Name
      (File_Name : String; Setting_A, Setting_B : out MilliRad) is
-      A_String : Unbounded_String;
-      B_String : Unbounded_String;
-      Pos_1    : constant Natural := Index (File_Name, "_");
-      Pos_2    : Natural;
+      Routine_Name : constant String := "Analysis.Support.Parse_File_Name ";
+      Pos_1    : constant Natural := Index (File_Name, "/");
+      Pos_2    : constant Natural := Index (File_Name, "_");
+      A_String : constant String := File_Name (Pos_1 + 1 .. Pos_2 - 1);
+      Pos_3    : constant Natural :=
+        Index (File_Name (Pos_2 + 1 .. File_Name'Last), "_");
+      B_String : constant String := File_Name (Pos_2 + 1 .. Pos_3 - 1);
    begin
-      A_String := To_Unbounded_String
-        (File_Name (File_Name'First .. Pos_1 - 1));
-      Pos_2 :=  Index (File_Name, "_");
-      B_String := To_Unbounded_String (File_Name (Pos_1 + 1 .. Pos_2 - 1));
-      Setting_A :=  MilliRad'Value (To_String (A_String));
-      Setting_B :=  MilliRad'Value (To_String (B_String));
+      --  Put_Line (Routine_Name & "File_Name: " & File_Name);
+      --  Put_Line (Routine_Name & "A_String: " & A_String);
+      --  Put_Line (Routine_Name & "B_String: " & B_String);
+      Setting_A :=  MilliRad'Value (A_String);
+      Setting_B :=  MilliRad'Value  (B_String);
 
    exception
       when Error : others =>
          Put_Line
-           ("Analysis.Support.Parse_File_Name Exception information:  " &
+           (Routine_Name & "Exception information:  " &
               Exception_Information (Error));
          raise;
 

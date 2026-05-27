@@ -1,5 +1,8 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
+
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -11,6 +14,8 @@ package body Data_Catagorization is
    function Catagorize
      (File_A, File_B : String; Settings : Settings_Vector)
       return Unbounded_String_Vector is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
       use Utilities;
       use MilliRad_Map_Package;
       use Result_Vector_Package;
@@ -47,9 +52,12 @@ package body Data_Catagorization is
             if not Settings_Map.Contains (Key) then
                Settings_Index := Settings_Index + 1;
                Settings_Map.Include (Key, Settings_Index);
-               Create (Files (Settings_Index), Out_File, "data/" &
-                         Integer'Image (Key.A) & "_" & Integer'Image (Key.B) &
-                         "_Data.csv");
+               Out_Name := To_Unbounded_String
+                 ("data/" & Trim (Integer'Image (Key.A), Left) & "_" &
+                    Trim (Integer'Image (Key.B), Left) &
+                    "_Data.csv");
+               Out_File_Names.Append (Out_Name);
+               Create (Files (Settings_Index), Out_File, To_String (Out_Name));
             end if;
             Next (Curs_S_Inner);
          end loop;
@@ -65,12 +73,9 @@ package body Data_Catagorization is
          A_Index := MilliRad (Item_A.Setting * 1000.0);
          B_Index := MilliRad (Item_B.Setting * 1000.0);
          Key := (A_Index, B_Index);
-
-         Out_Name :=
-           To_Unbounded_String (Integer'Image (Item_A.Outcome) & "," &
-                                  Integer'Image (Item_B.Outcome));
-         Put_Line (Files (Settings_Map (Key)), To_String (Out_Name));
-         Out_File_Names.Append (Out_Name);
+         Put_Line (Files (Settings_Map (Key)),
+                   (Integer'Image (Item_A.Outcome) & "," &
+                      Integer'Image (Item_B.Outcome)));
          Next (Curs_A);
          Next (Curs_B);
       end loop;

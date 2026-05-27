@@ -21,7 +21,7 @@ package body Analysis is
 
    procedure Analyse (File_Names : Unbounded_String_Vector;
                       Settings   : Settings_Vector) is
-      use Analysis_Vector_Package;
+      --  use Analysis_Vector_Package;
       use Settings_Vector_Package;
       use Unbounded_String_Package;
       Routine_Name  : constant String := "Analysis.Analyse ";
@@ -46,6 +46,8 @@ package body Analysis is
          Open (File_ID, In_File, To_String (Element (File_Curs)));
          Parse_File_Name (To_String (Element (File_Curs)),
                           Setting_A, Setting_B);
+         Put_Line ("Setting_A: " & MilliRad'Image (Setting_A));
+         Put_Line ("Setting_B: " & MilliRad'Image (Setting_B));
 
          Close (File_ID);
          Next (File_Curs);
