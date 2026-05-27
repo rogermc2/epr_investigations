@@ -36,7 +36,6 @@ package body Analysis is
    begin
       Put_Line ("Starting analysis.");
 
-      --
       --  Correlation (A, B, Unique_Diff, Eab);
       --  Expectation (A, B, Unique_Diff, Eab);
 

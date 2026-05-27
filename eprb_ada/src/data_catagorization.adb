@@ -43,9 +43,6 @@ package body Data_Catagorization is
          while Has_Element (Curs_S_Inner) loop
             Key.B := MilliRad (Element (Curs_S_Inner) * 1000.0);
             if not Settings_Map.Contains (Key) then
-               --  Put_Line (Routine_Name & "Key: "
-               --            & Integer'Image (Integer (Key.A)) &
-               --              Integer'Image (Integer (Key.B)));
                Settings_Index := Settings_Index + 1;
                Settings_Map.Include (Key, Settings_Index);
                Create (Files (Settings_Index), Out_File, "data/" &
@@ -57,8 +54,8 @@ package body Data_Catagorization is
          Next (Curs_S_Outer);
       end loop;
 
-      Print_Result_Vector ("Raw_A", Raw_A, 15, 20);
-      Print_Result_Vector ("Raw_B", Raw_B, 15, 20);
+      --  Print_Result_Vector ("Raw_A", Raw_A, 10, 20);
+      --  Print_Result_Vector ("Raw_B", Raw_B, 10, 20);
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Count := Count + 1;
          Item_A := Element (Curs_A);
@@ -79,7 +76,7 @@ package body Data_Catagorization is
          Close (Files (index));
       end loop;
 
-      Put_Line ("Catagorization completed.");
+      Put_Line ("Catagorization complete.");
 
    exception
       when Error : others =>

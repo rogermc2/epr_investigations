@@ -6,9 +6,9 @@ package Types is
 
    type Float_Array is array (Positive range <>) of Float;
    type Float_Matrix is array (Positive range <>, Positive range <>)
-                                    of Float;
+     of Float;
    type Boolean_Matrix is array (Positive range <>, Positive range <>)
-                                    of Boolean;
+     of Boolean;
 
    package Boolean_Vector_Package is new
      Ada.Containers.Vectors (Positive, Boolean);
@@ -54,13 +54,22 @@ package Types is
      Ada.Containers.Vectors (Positive, Float);
    subtype Settings_Vector is Settings_Vector_Package.Vector;
 
-   type Pair_Data is record
+   type Outcome_Pair_Data is record
+      First  : Integer;
+      Second : Integer;
+   end record;
+
+   package Outcome_Pair_Vector_Package is new
+     Ada.Containers.Vectors (Positive, Outcome_Pair_Data);
+   subtype Outcome_Pair_Vector is Outcome_Pair_Vector_Package.Vector;
+
+   type Setting_Pair_Data is record
       First  : Float;
       Second : Float;
    end record;
 
    package Setting_Pairs_Vector_Package is new
-     Ada.Containers.Vectors (Positive, Pair_Data);
+     Ada.Containers.Vectors (Positive, Setting_Pair_Data);
    subtype Setting_Pairs_Vector is Setting_Pairs_Vector_Package.Vector;
 
    type Station_Type is record

@@ -5,7 +5,7 @@ with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Printing; use Printing;
+--  with Printing; use Printing;
 with Types; use Types;
 with Utilities; use Utilities;
 
@@ -26,7 +26,7 @@ package body Source is
                            Left_File    : String; Right_File : String) is
 
       --  Set stack size:  ulimit -s 64000 to prevent stack overflow
-      Routine_Name    : constant String := "Source.Build_Source ";
+      --  Routine_Name    : constant String := "Source.Build_Source ";
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
       Settings        : Float_Array  (1 .. Num_Settings);
@@ -81,10 +81,10 @@ package body Source is
                   Right_File);
       Put_Line ("Source processing complete.");
       New_Line;
-      Print_Particles
-        (Routine_Name & "Left Particles", Left_Particles, 1, 8);
-      Print_Particles
-        (Routine_Name & "Right Particles", Right_Particles, 1, 8);
+      --  Print_Particles
+      --    (Routine_Name & "Left Particles", Left_Particles, 1, 8);
+      --  Print_Particles
+      --    (Routine_Name & "Right Particles", Right_Particles, 1, 8);
 
    end Build_Source;
 

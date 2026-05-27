@@ -3,6 +3,8 @@ with Types; use Types;
 
 package Utilities is
    function File_Length (File_Name : String) return Natural;
+   function Load_Paired_Data (File_Name : String)
+                              return Outcome_Pair_Vector;
    function Load_Particles (File_Name : String) return Particle_Vector;
    function Load_Station_Results (File_Name : String) return Result_Vector;
    procedure Process_Command_Line (Duration_Val : out Duration;

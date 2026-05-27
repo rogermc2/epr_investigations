@@ -3,6 +3,7 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Numerics;
 with Ada.Streams;               --  For binary file writing
 with Ada.Streams.Stream_IO;
+with Ada.Strings.Fixed;
 with Ada.Text_IO;
 
 with Maths;
@@ -22,6 +23,32 @@ package body Utilities is
       return Length;
 
    end File_Length;
+
+   function Load_Paired_Data (File_Name : String)
+                              return Outcome_Pair_Vector is
+      use Ada.Strings.Fixed;
+      use Ada.Text_IO;
+      use Outcome_Pair_Vector_Package;
+      File_ID   : File_Type;
+      Pairs     : Outcome_Pair_Vector;
+      Item      : Outcome_Pair_Data;
+   begin
+      Open (File_ID, In_File, File_Name);
+      while not End_Of_File (File_ID) loop
+         declare
+            aline : constant String := Get_Line (File_ID);
+            Pos   : constant Natural := Index (aline, ",");
+         begin
+            Item.First := Integer'Value (aline (aline'First .. Pos - 1));
+            Item.Second := Integer'Value (aline (Pos + 1 .. aline'Last));
+            Pairs.Append (Item);
+         end;
+      end loop;
+      Close (File_ID);
+
+      return Pairs;
+
+   end Load_Paired_Data;
 
    function Load_Particles (File_Name : String) return Particle_Vector is
       use Ada.Streams.Stream_IO;
