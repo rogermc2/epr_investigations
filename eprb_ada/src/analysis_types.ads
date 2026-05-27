@@ -36,9 +36,19 @@ package Analysis_Types is
       Outcomes  : Outcome_Vector;
    end record;
 
-   --  package Outcomes_Matrix_Package is new
-   --    Ada.Containers.Vectors (Positive, Data_Record);
-   --  subtype Outcomes_Matrix is Outcomes_Matrix_Package.Vector;
+   type Analysis_Record is record
+      Setting_A : MilliRad;
+      Setting_B : MilliRad;
+      Npp       : Natural;
+      Npm       : Natural;
+      Nmp       : Natural;
+      Nmm       : Natural;
+      N_A       : Natural;
+      N_B       : Natural;
+   end record;
 
+   package Analysis_Vector_Package is new
+     Ada.Containers.Vectors (Positive, Analysis_Record);
+   subtype Analysis_Vector is Analysis_Vector_Package.Vector;
 
 end Analysis_Types;

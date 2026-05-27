@@ -1,9 +1,10 @@
 
 --  with Ada.Numerics; use Ada.Numerics;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Analysis.Support; use Analysis.Support;
---  with Analysis_Types; use Analysis_Types;
+with Analysis.Support; use Analysis.Support;
+with Analysis_Types; use Analysis_Types;
 --  with Display; use Display;
 with Maths; use Maths;
 --  with Utilities; use Utilities;
@@ -20,25 +21,35 @@ package body Analysis is
 
    procedure Analyse (File_Names : Unbounded_String_Vector;
                       Settings   : Settings_Vector) is
-      --  use Outcome_Pair_Vector_Package;
+      use Analysis_Vector_Package;
+      use Settings_Vector_Package;
       use Unbounded_String_Package;
-      Num_Files : constant Positive := Positive (Length (File_Names));
-      File_Data : Unbounded_String_Vector;
+      Routine_Name  : constant String := "Analysis.Analyse ";
+      Num_Files     : constant Positive := Positive (Length (File_Names));
+      File_Curs     : Unbounded_String_Package.Cursor := File_Names.First;
+      Setting_Curs  : Settings_Vector_Package.Cursor := Settings.First;
+      File_ID       : File_Type;
+      Setting_A     : MilliRad;
+      Setting_B     : MilliRad;
+      Analysis_Data : Analysis_Vector;
+      Data          : Analysis_Record;
       --  Angle_Resolution : constant Float := 3.75;
-      --  Particle_Spin    : constant Float := 1.0;
-      --  Results          : constant Outcomes_Matrix :=
-      --    Convert (To_String (A_File_Name),
-      --  To_String (B_File_Name), Settings);
-      --  A                : constant Outcome_Pair_Vector :=
-      --    Load_Paired_Data (A_File_Name);
-      --  B                : constant Outcome_Pair_Vector :=
-      --    Load_Paired_Data  (B_File_Name);
       --  Coincidences     : Boolean_Vector;
       --  Settings_Diff    : Float_Vector;    --  AB
       --  Unique_Diff      : Float_Vector;
       --  Eab              : Float_Vector;
    begin
       Put_Line ("Starting analysis.");
+      while Has_Element (File_Curs) loop
+         Put_Line (Routine_Name & "File name: " &
+                     To_String (Element (File_Curs)));
+         Open (File_ID, In_File, To_String (Element (File_Curs)));
+         Parse_File_Name (To_String (Element (File_Curs)),
+                          Setting_A, Setting_B);
+
+         Close (File_ID);
+         Next (File_Curs);
+      end loop;
 
       --  Correlation (A, B, Unique_Diff, Eab);
       --  Expectation (A, B, Unique_Diff, Eab);
