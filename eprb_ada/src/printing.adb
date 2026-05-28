@@ -52,8 +52,6 @@ package body Printing is
          Put  ("  ");
       end if;
 
-      Put (Integer'Image (Analysis_Data.Setting_A) & "    ");
-      Put (Integer'Image (Analysis_Data.Setting_B) & "    ");
       Put (Natural'Image (Analysis_Data.N_A) & "    ");
       Put (Natural'Image (Analysis_Data.N_B) & "  ");
       Put (Natural'Image (Analysis_Data.N_AB) & "  ");
