@@ -29,14 +29,21 @@ package body Printing is
    --  ------------------------------------------------------------------------
 
    procedure Print_Analysis_Item (Name          : String := "";
-                                  Analysis_Data : Analysis_Record) is
+                                  Analysis_Data : Analysis_Record;
+                                  Print_Header  : Boolean := False) is
       use Maths;
       use Ada.Float_Text_IO;
-      A   : constant Float := To_Degrees (Analysis_Data.Setting_A);
-      B   : constant Float := To_Degrees (Analysis_Data.Setting_B);
+      Header : constant String := "   A       B     Num A   Num B Num AB " &
+        "Npp  Npm  Nmp  Nmm";
+      A      : constant Float := To_Degrees (Analysis_Data.Setting_A);
+      B      : constant Float := To_Degrees (Analysis_Data.Setting_B);
    begin
       if Name /= "" then
          Put_Line (Name & ":");
+      end if;
+
+      if Print_Header then
+         Put_Line (Header);
       end if;
 
       Put (Item => A, Fore => 1, Aft => 2, Exp => 0);
@@ -54,7 +61,7 @@ package body Printing is
 
       Put (Natural'Image (Analysis_Data.N_A) & "    ");
       Put (Natural'Image (Analysis_Data.N_B) & "  ");
-      Put (Natural'Image (Analysis_Data.N_AB) & "  ");
+      Put (Natural'Image (Analysis_Data.N_AB) & "   ");
       Put (Natural'Image (Analysis_Data.Npp) & "  ");
       Put (Natural'Image (Analysis_Data.Npm) & "  ");
       Put (Natural'Image (Analysis_Data.Nmp) & "  ");

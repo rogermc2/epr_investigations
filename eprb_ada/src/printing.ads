@@ -6,7 +6,8 @@ package Printing is
 
    procedure Print_Analysis_Data (Analysis_Data : Analysis_Vector);
    procedure Print_Analysis_Item (Name          : String := "";
-                                  Analysis_Data : Analysis_Record);
+                                  Analysis_Data : Analysis_Record;
+                                  Print_Header  : Boolean := False);
    procedure Print_Data_Record (Name : String; Data : Data_Record);
    procedure Print_Outcome_Vector
      (Name   : String; Data : Outcome_Vector; Start : Positive := 1;

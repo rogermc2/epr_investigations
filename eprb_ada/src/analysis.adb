@@ -237,7 +237,7 @@ package body Analysis is
       Anal_Data.Npm := Npm;
       Anal_Data.Nmp := Nmp;
       Anal_Data.Nmm := Nmm;
-      Print_Analysis_Item ("Process_Data, Anal_Data", Anal_Data);
+      Print_Analysis_Item ("Process_Data, Anal_Data", Anal_Data, True);
 
    end Process_Data;
 
