@@ -1,6 +1,7 @@
 
 with Interfaces.C; use Interfaces.C;
 
+with Analysis_Types; use Analysis_Types;
 with Types; use Types;
 
 package Maths is
@@ -17,6 +18,7 @@ package Maths is
    function Sign (X : Interfaces.C.double) return Integer;
    function Sum_Boolean (Vec : Boolean_Vector) return Natural;
    function To_Degrees (Radians : Float) return Float;
+   function To_Degrees (Angle : MilliRad) return Float;
    function To_Radians (Degrees : Float) return Float;
 
 end Maths;

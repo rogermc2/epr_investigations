@@ -4,6 +4,9 @@ with Types; use Types;
 
 package Printing is
 
+   procedure Print_Analysis_Data (Analysis_Data : Analysis_Vector);
+   procedure Print_Analysis_Item (Name          : String := "";
+                                  Analysis_Data : Analysis_Record);
    procedure Print_Data_Record (Name : String; Data : Data_Record);
    procedure Print_Particles
      (Name  : String; Data : Particle_Vector;

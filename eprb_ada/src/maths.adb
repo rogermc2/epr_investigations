@@ -146,6 +146,11 @@ package body Maths is
       return Result;
    end Sum_Boolean;
 
+   function To_Degrees (Angle : MilliRad) return Float is
+   begin
+      return Float (Angle / 1000) * 180.0 / Pi;
+   end To_Degrees;
+
    function To_Degrees (Radians : Float) return Float is
    begin
       return Radians * 180.0 / Pi;

@@ -7,6 +7,7 @@ with Analysis.Support; use Analysis.Support;
 with Analysis_Types; use Analysis_Types;
 --  with Display; use Display;
 with Maths; use Maths;
+with Printing; use Printing;
 --  with Utilities; use Utilities;
 --  with Vector_Functions; use Vector_Functions;
 
@@ -21,6 +22,7 @@ package body Analysis is
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out  Analysis_Record);
+   pragma Inline (Process_Data);
 
    procedure Analyse (File_Names : Unbounded_String_Vector;
                       Settings   : Settings_Vector) is
@@ -42,13 +44,12 @@ package body Analysis is
       --  Angle_Resolution : constant Float := 3.75;
       --  Coincidences     : Boolean_Vector;
       --  Settings_Diff    : Float_Vector;    --  AB
-      --  Unique_Diff      : Float_Vector;
       --  Eab              : Float_Vector;
    begin
       Put_Line ("Starting analysis.");
       while Has_Element (File_Curs) loop
-         Put_Line (Routine_Name & "File name: " &
-                     To_String (Element (File_Curs)));
+         --  Put_Line (Routine_Name & "File name: " &
+         --              To_String (Element (File_Curs)));
          Open (File_ID, In_File, To_String (Element (File_Curs)));
          Parse_File_Name (To_String (Element (File_Curs)),
                           Setting_A, Setting_B);
@@ -56,6 +57,7 @@ package body Analysis is
          --  Put_Line ("Setting_B: " & MilliRad'Image (Setting_B));
          Data.Setting_A := Setting_A;
          Data.Setting_B := Setting_B;
+         Outcomes := Outcome_Vector_Package.Empty_Vector;
          while not End_Of_File (File_ID) loop
             declare
                aLine : constant String := Get_Line (File_ID);
@@ -63,8 +65,6 @@ package body Analysis is
                Outcome_Pair := Parse_Data_Line (aLine);
                Outcomes.Append (Outcome_Pair);
             end;
-            Process_Data (Outcomes, Data);
-            Analysis_Data.Append (Data);
 
             Count := Count + 1;
             if Count mod 1000 = 0 then
@@ -74,8 +74,12 @@ package body Analysis is
          New_Line;
          Close (File_ID);
 
+         Process_Data (Outcomes, Data);
+         --  Print_Analysis_Item (Routine_Name & "Processed Data", Data);
+         Analysis_Data.Append (Data);
          Next (File_Curs);
       end loop;
+      Print_Analysis_Data (Analysis_Data);
 
       --  Correlation (A, B, Unique_Diff, Eab);
       --  Expectation (A, B, Unique_Diff, Eab);
@@ -168,7 +172,7 @@ package body Analysis is
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
-      pragma In_Line;
+      pragma Inine;
       use Outcome_Vector_Package;
       Curs      : Cursor := Outcomes.First;
       anOutcome : Outcomes_Record;

@@ -1,44 +1,67 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Float_Text_IO;
 
---  with Maths;
+with Maths;
 --  with Utilities;
 
 package body Printing is
 
-   --  procedure Print_Byte_Array (Name  : String; Data : Byte_Array;
-   --                              Start : Positive := 1;
-   --  Finish : Natural := 0) is
-   --     use Interfaces;
-   --     Last  : Positive;
-   --     Count : Integer := 1;
-   --  begin
-   --     if Finish > 0 then
-   --        Last := Finish;
-   --     else
-   --        Last := Data'Length;
-   --     end if;
-   --
-   --     Put_Line (Name & ": ");
-   --     if Start >= Data'First and then Finish <= Data'Last then
-   --        for Index in Start .. Last loop
-   --           Put (Unsigned_8'Image (Data (Index)) & "  ");
-   --           Count := Count + 1;
-   --           if Count > 10 then
-   --              New_Line;
-   --              Count := 1;
-   --           end if;
-   --        end loop;
-   --     else
-   --        Put_Line
-   --          ("Print_Byte_Array called with invalid start or
-   --  finish index.");
-   --     end if;
-   --     New_Line;
-   --
-   --  end Print_Byte_Array;
-
    --  ------------------------------------------------------------------
+
+   procedure Print_Analysis_Data (Analysis_Data : Analysis_Vector) is
+      use Analysis_Vector_Package;
+      Curs   : Cursor := Analysis_Data.First;
+      Item   : Analysis_Record;
+      Header : constant String := "   A       B   Num A Num B Num AB   " &
+        "Npp Npm  Nmp  Nmm";
+   begin
+      Put_Line ("Analysis Data");
+      Put_Line (Header);
+      while Has_Element (Curs) loop
+         Item := Element (Curs);
+         Print_Analysis_Item (Analysis_Data => Item);
+         Next (Curs);
+      end loop;
+
+   end Print_Analysis_Data;
+
+   --  ------------------------------------------------------------------------
+
+   procedure Print_Analysis_Item (Name          : String := "";
+                                  Analysis_Data : Analysis_Record) is
+      use Maths;
+      use Ada.Float_Text_IO;
+      A   : constant Float := To_Degrees (Analysis_Data.Setting_A);
+      B   : constant Float := To_Degrees (Analysis_Data.Setting_B);
+   begin
+      if Name /= "" then
+         Put_Line (Name & ":");
+      end if;
+
+      Put (Item => A, Fore => 1, Aft => 2, Exp => 0);
+      if A = 0.00 then
+         Put  ("    ");
+      else
+         Put  ("  ");
+      end if;
+      Put (Item => B, Fore => 1, Aft => 2, Exp => 0);
+      if B = 0.00 then
+         Put  ("    ");
+      else
+         Put  ("  ");
+      end if;
+      Put (Natural'Image (Analysis_Data.N_A) & "    ");
+      Put (Natural'Image (Analysis_Data.N_B) & "  ");
+      Put (Natural'Image (Analysis_Data.N_AB) & "  ");
+      Put (Natural'Image (Analysis_Data.Npp) & "  ");
+      Put (Natural'Image (Analysis_Data.Npm) & "  ");
+      Put (Natural'Image (Analysis_Data.Nmp) & "  ");
+      Put_Line (Natural'Image (Analysis_Data.Nmm) & "  ");
+
+   end Print_Analysis_Item;
+
+   --  ------------------------------------------------------------------------
 
    procedure Print_Data_Record (Name : String; Data : Data_Record) is
       use Outcome_Vector_Package;
