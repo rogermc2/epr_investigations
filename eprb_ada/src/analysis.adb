@@ -20,7 +20,7 @@ package body Analysis is
    --                         Eab   : in out Float_Vector);
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
-                           Analysis_Data : in out  Analysis_Vector);
+                           Analysis_Data : in out  Analysis_Record);
 
    procedure Analyse (File_Names : Unbounded_String_Vector;
                       Settings   : Settings_Vector) is
@@ -63,7 +63,9 @@ package body Analysis is
                Outcome_Pair := Parse_Data_Line (aLine);
                Outcomes.Append (Outcome_Pair);
             end;
-            Process_Data (Outcomes, Analysis_Data);
+            Process_Data (Outcomes, Data);
+            Analysis_Data.Append (Data);
+
             Count := Count + 1;
             if Count mod 1000 = 0 then
                Put (".");
@@ -165,7 +167,7 @@ package body Analysis is
    end Expectation;
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
-                           Analysis_Data : in out  Analysis_Vector) is
+                           Analysis_Data : in out Analysis_Record) is
       pragma In_Line;
       use Outcome_Vector_Package;
       Curs      : Cursor := Outcomes.First;
