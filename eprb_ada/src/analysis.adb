@@ -53,10 +53,6 @@ package body Analysis is
          Open (File_ID, In_File, To_String (Element (File_Curs)));
          Parse_File_Name (To_String (Element (File_Curs)),
                           Setting_A, Setting_B);
-         --  Put_Line ("Setting_A: " & MilliRad'Image (Setting_A));
-         --  Put_Line ("Setting_B: " & MilliRad'Image (Setting_B));
-         Data.Setting_A := Setting_A;
-         Data.Setting_B := Setting_B;
          Outcomes := Outcome_Vector_Package.Empty_Vector;
          while not End_Of_File (File_ID) loop
             declare
@@ -74,6 +70,8 @@ package body Analysis is
          New_Line;
          Close (File_ID);
 
+         Data.Setting_A := Setting_A;
+         Data.Setting_B := Setting_B;
          Process_Data (Outcomes, Data);
          --  Print_Analysis_Item (Routine_Name & "Processed Data", Data);
          Analysis_Data.Append (Data);
@@ -172,7 +170,6 @@ package body Analysis is
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
-      pragma Inine;
       use Outcome_Vector_Package;
       Curs      : Cursor := Outcomes.First;
       anOutcome : Outcomes_Record;
@@ -194,6 +191,7 @@ package body Analysis is
       --  Nmm_Sum   : Natural := 0;
       Anal_Data : Analysis_Record;
    begin
+      Print_Outcome_Vector ("Analysis.Process_Data", Outcomes, 1, 6);
       while Has_Element (Curs) loop
          anOutcome := Element (Curs);
          A := anOutcome.Outcome_A;
@@ -228,6 +226,15 @@ package body Analysis is
          Next (Curs);
 
       end loop;
+
+      Anal_Data.N_A := N_A;
+      Anal_Data.N_A := N_B;
+      Anal_Data.N_AB := N_AB;
+      Anal_Data.Npp := Npp;
+      Anal_Data.Npm := Npm;
+      Anal_Data.Nmp := Nmp;
+      Anal_Data.Nmm := Nmm;
+      Print_Analysis_Item ("Process_Data, Anal_Data", Anal_Data);
 
    end Process_Data;
 

@@ -51,6 +51,9 @@ package body Printing is
       else
          Put  ("  ");
       end if;
+
+      Put (Integer'Image (Analysis_Data.Setting_A) & "    ");
+      Put (Integer'Image (Analysis_Data.Setting_B) & "    ");
       Put (Natural'Image (Analysis_Data.N_A) & "    ");
       Put (Natural'Image (Analysis_Data.N_B) & "  ");
       Put (Natural'Image (Analysis_Data.N_AB) & "  ");
@@ -74,6 +77,37 @@ package body Printing is
       New_Line;
 
    end Print_Data_Record;
+
+   --  ------------------------------------------------------------------------
+
+   procedure Print_Outcome_Vector
+     (Name   : String; Data : Outcome_Vector; Start : Positive := 1;
+      Finish : Natural := 0) is
+      use Outcome_Vector_Package;
+      Curs      : Cursor := Data.First;
+      Item      : Outcomes_Record;
+      Last      : Natural;
+      Count     : Natural := 0;
+   begin
+      if Finish > 0 then
+         Last := Finish;
+      else
+         Last := Natural (Data.Last_Index);
+      end if;
+
+      Put_Line (Name);
+      while Has_Element (Curs) loop
+         Count := Count + 1;
+         if Count >= Start and then Count <= Last then
+            Item := Data (Curs);
+            Put_Line ("Outcomes A and B: " & Integer'Image (Item.Outcome_A) &
+                        ", " & Integer'Image (Item.Outcome_B));
+         end if;
+         Next (Curs);
+      end loop;
+      New_Line;
+
+   end Print_Outcome_Vector;
 
    --  ------------------------------------------------------------------------
 

@@ -8,6 +8,9 @@ package Printing is
    procedure Print_Analysis_Item (Name          : String := "";
                                   Analysis_Data : Analysis_Record);
    procedure Print_Data_Record (Name : String; Data : Data_Record);
+   procedure Print_Outcome_Vector
+     (Name   : String; Data : Outcome_Vector; Start : Positive := 1;
+      Finish : Natural := 0);
    procedure Print_Particles
      (Name  : String; Data : Particle_Vector;
       Start : Positive := 1; Finish : Natural := 0);
