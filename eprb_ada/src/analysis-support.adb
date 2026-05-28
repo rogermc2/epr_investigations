@@ -10,9 +10,18 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body Analysis.Support is
 
    function Parse_Data_Line (aLine : String) return Outcomes_Record is
-      Outcomes : Outcomes_Record;
+      --  Routine_Name : constant String :=
+      --      "Analysis.Support.Parse_Data_Line ";
+      Pos          : constant Natural := Index (aLine, ",");
+      Data_1       : constant String := aLine (aLine'First .. Pos - 1);
+      Data_2       : constant String := aLine (Pos + 1 .. aLine'Last);
+      Outcomes     : Outcomes_Record;
    begin
+      Outcomes.Outcome_A := Integer'Value (Data_1);
+      Outcomes.Outcome_B := Integer'Value (Data_2);
+
       return Outcomes;
+
    end Parse_Data_Line;
 
    procedure Parse_File_Name
@@ -29,7 +38,7 @@ package body Analysis.Support is
       --  Put_Line (Routine_Name & "A_String: " & A_String);
       --  Put_Line (Routine_Name & "B_String: " & B_String);
       Setting_A :=  MilliRad'Value (A_String);
-      Setting_B :=  MilliRad'Value  (B_String);
+      Setting_B :=  MilliRad'Value (B_String);
 
    exception
       when Error : others =>

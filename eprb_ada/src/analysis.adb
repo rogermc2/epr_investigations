@@ -19,6 +19,9 @@ package body Analysis is
    --  Unique_Diff : Float_Vector;
    --                         Eab   : in out Float_Vector);
 
+   procedure Process_Pair (Outcome_Pair : Outcomes_Record;
+                           Analysis_Data : in out  Analysis_Vector);
+
    procedure Analyse (File_Names : Unbounded_String_Vector;
                       Settings   : Settings_Vector) is
       --  use Analysis_Vector_Package;
@@ -56,6 +59,7 @@ package body Analysis is
                aLine : String := Get_Line (File_ID);
             begin
                Outcome_Pair := Parse_Data_Line (aLine);
+               Process_Pair (Outcome_Pair, Analysis_Data);
             end;
          end loop;
          Close (File_ID);
@@ -150,5 +154,13 @@ package body Analysis is
       end loop;
 
    end Expectation;
+
+   procedure Process_Pair (Outcome_Pair : Outcomes_Record;
+                           Analysis_Data : in out  Analysis_Vector) is
+
+   begin
+      null;
+
+   end Process_Pair;
 
 end Analysis;
