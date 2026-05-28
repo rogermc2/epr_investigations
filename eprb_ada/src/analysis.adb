@@ -19,24 +19,26 @@ package body Analysis is
    --  Unique_Diff : Float_Vector;
    --                         Eab   : in out Float_Vector);
 
-   procedure Process_Pair (Outcome_Pair : Outcomes_Record;
+   procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out  Analysis_Vector);
 
    procedure Analyse (File_Names : Unbounded_String_Vector;
                       Settings   : Settings_Vector) is
       --  use Analysis_Vector_Package;
-      use Settings_Vector_Package;
+      --  use Settings_Vector_Package;
       use Unbounded_String_Package;
       Routine_Name  : constant String := "Analysis.Analyse ";
-      Num_Files     : constant Positive := Positive (Length (File_Names));
+      --  Num_Files     : constant Positive := Positive (Length (File_Names));
       File_Curs     : Unbounded_String_Package.Cursor := File_Names.First;
-      Setting_Curs  : Settings_Vector_Package.Cursor := Settings.First;
+      --  Setting_Curs  : Settings_Vector_Package.Cursor := Settings.First;
       File_ID       : File_Type;
       Setting_A     : MilliRad;
       Setting_B     : MilliRad;
+      Outcome_Pair  : Outcomes_Record;
+      Outcomes      : Outcome_Vector;
       Analysis_Data : Analysis_Vector;
       Data          : Analysis_Record;
-      Outcome_Pair  : Outcomes_Record;
+      Count         : Natural := 0;
       --  Angle_Resolution : constant Float := 3.75;
       --  Coincidences     : Boolean_Vector;
       --  Settings_Diff    : Float_Vector;    --  AB
@@ -56,13 +58,20 @@ package body Analysis is
          Data.Setting_B := Setting_B;
          while not End_Of_File (File_ID) loop
             declare
-               aLine : String := Get_Line (File_ID);
+               aLine : constant String := Get_Line (File_ID);
             begin
                Outcome_Pair := Parse_Data_Line (aLine);
-               Process_Pair (Outcome_Pair, Analysis_Data);
+               Outcomes.Append (Outcome_Pair);
             end;
+            Process_Data (Outcomes, Analysis_Data);
+            Count := Count + 1;
+            if Count mod 1000 = 0 then
+               Put (".");
+            end if;
          end loop;
+         New_Line;
          Close (File_ID);
+
          Next (File_Curs);
       end loop;
 
@@ -155,12 +164,65 @@ package body Analysis is
 
    end Expectation;
 
-   procedure Process_Pair (Outcome_Pair : Outcomes_Record;
+   procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out  Analysis_Vector) is
-
+      pragma In_Line;
+      use Outcome_Vector_Package;
+      Curs      : Cursor := Outcomes.First;
+      anOutcome : Outcomes_Record;
+      A         : Integer;
+      B         : Integer;
+      N_A       : Natural := 0;
+      N_B       : Natural := 0;
+      N_AB      : Natural := 0;
+      Npp       : Natural := 0;
+      Npm       : Natural := 0;
+      Nmp       : Natural := 0;
+      Nmm       : Natural := 0;
+      N_A_Sum   : Integer := 0;
+      N_B_Sum   : Integer := 0;
+      N_AB_Sum  : Integer := 0;
+      --  Npp_Sum   : Natural := 0;
+      --  Npm_Sum   : Natural := 0;
+      --  Nmp_Sum   : Natural := 0;
+      --  Nmm_Sum   : Natural := 0;
+      Anal_Data : Analysis_Record;
    begin
-      null;
+      while Has_Element (Curs) loop
+         anOutcome := Element (Curs);
+         A := anOutcome.Outcome_A;
+         B := anOutcome.Outcome_B;
+         if A /= 0 then
+            N_A := N_A + 1;
+            N_A_Sum := N_A_Sum + A;
+            if B /= 0 then
+               N_AB := N_AB + 1;
+               N_AB_Sum := N_AB_Sum + A * B;
+               if A > 0 then
+                  if B > 0 then
+                     Npp := Npp + 1;
+                  elsif B < 0 then
+                     Npm := Npm + 1;
+                  end if;
+               elsif A < 0 then
+                  if B > 0 then
+                     Nmp := Nmp + 1;
+                  elsif B < 0 then
+                     Nmm := Nmm + 1;
+                  end if;
+               end if;
+            end if;
+         end if;
 
-   end Process_Pair;
+         if B /= 0 then
+            N_B := N_B + 1;
+            N_B_Sum := N_B_Sum + B;
+         end if;
+
+         Next (Curs);
+
+      end loop;
+
+   end Process_Data;
 
 end Analysis;
