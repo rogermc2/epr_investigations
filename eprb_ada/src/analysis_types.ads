@@ -37,15 +37,18 @@ package Analysis_Types is
    end record;
 
    type Analysis_Record is record
-      Setting_A : MilliRad;
-      Setting_B : MilliRad;
       N_A       : Natural;
       N_B       : Natural;
       N_AB      : Natural;
+      N_A_Sum   : Integer;
+      N_B_Sum   : Integer;
+      N_AB_Sum  : Integer;
       Npp       : Natural;
       Npm       : Natural;
       Nmp       : Natural;
       Nmm       : Natural;
+      Setting_A : MilliRad;
+      Setting_B : MilliRad;
    end record;
 
    package Analysis_Vector_Package is new

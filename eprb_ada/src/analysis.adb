@@ -228,8 +228,11 @@ package body Analysis is
       end loop;
 
       Anal_Data.N_A := N_A;
-      Anal_Data.N_A := N_B;
+      Anal_Data.N_B := N_B;
       Anal_Data.N_AB := N_AB;
+      Anal_Data.N_A_Sum := N_A_Sum;
+      Anal_Data.N_B_Sum := N_B_Sum;
+      Anal_Data.N_AB_Sum := N_AB_Sum;
       Anal_Data.Npp := Npp;
       Anal_Data.Npm := Npm;
       Anal_Data.Nmp := Nmp;
