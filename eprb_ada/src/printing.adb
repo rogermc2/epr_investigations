@@ -14,8 +14,8 @@ package body Printing is
       Curs   : Cursor := Analysis_Data.First;
       Item   : Analysis_Record;
       Header : constant String :=
-        "A Setting B Setting  Mean A Mean B Mean AB " &
-        "Mean Stat Mean QM Npp Npm  Nmp  Nmm";
+        "A Setting B Setting  Mean A Mean B  Mean AB  " &
+        "Mean Stat  Mean QM   Npp     Npm     Nmp        Nmm";
    begin
       Put_Line ("Analysis Data");
       Put_Line (Header);
@@ -35,8 +35,8 @@ package body Printing is
       use Maths;
       use Ada.Float_Text_IO;
       Header : constant String :=
-        "A Setting B Setting Mean A  Mean B Mean AB " &
-        "Mean Stat Mean QM Npp  Npm  Nmp  Nmm";
+        "A Setting B Setting Mean A  Mean B  Mean AB  " &
+        "Mean Stat  Mean QM   Npp      Npm     Nmp        Nmm";
       A      : constant Float := To_Degrees (Analysis_Data.Setting_A);
       B      : constant Float := To_Degrees (Analysis_Data.Setting_B);
    begin
@@ -67,15 +67,15 @@ package body Printing is
       Put (Analysis_Data.B_Mean, 1, 2, 0);
       Put ("     ");
       Put (Analysis_Data.AB_Mean, 1, 2, 0);
-      Put ("    ");
-      Put (Analysis_Data.E_Stat, 1, 2, 0);
       Put ("     ");
+      Put (Analysis_Data.E_Stat, 1, 2, 0);
+      Put ("      ");
       Put (Analysis_Data.E_QM, 1, 2, 0);
-      Put ("  ");
-      Put (Natural'Image (Analysis_Data.Npp) & "  ");
-      Put (Natural'Image (Analysis_Data.Npm) & "  ");
-      Put (Natural'Image (Analysis_Data.Nmp) & "  ");
-      Put_Line (Natural'Image (Analysis_Data.Nmm) & "  ");
+      Put ("    ");
+      Put (Natural'Image (Analysis_Data.Npp) & "    ");
+      Put (Natural'Image (Analysis_Data.Npm) & "    ");
+      Put (Natural'Image (Analysis_Data.Nmp) & "        ");
+      Put_Line (Natural'Image (Analysis_Data.Nmm));
 
    end Print_Analysis_Item;
 

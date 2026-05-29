@@ -189,11 +189,6 @@ package body Analysis is
       A_Sum     : Integer := 0;
       B_Sum     : Integer := 0;
       AB_Sum    : Integer := 0;
-      --  Npp_Sum   : Natural := 0;
-      --  Npm_Sum   : Natural := 0;
-      --  Nmp_Sum   : Natural := 0;
-      --  Nmm_Sum   : Natural := 0;
-      Anal_Data : Analysis_Record;
    begin
       Print_Outcome_Vector ("Analysis.Process_Data", Outcomes, 1, 6);
       Analysis_Data.E_QM := -Cos (Set_Diff);
@@ -235,25 +230,25 @@ package body Analysis is
       end loop;
 
       if Num_A > 0 then
-         Anal_Data.A_Mean := Float (A_Sum) / Float (Num_A);
+         Analysis_Data.A_Mean := Float (A_Sum) / Float (Num_A);
       else
-         Anal_Data.A_Mean := 0.0;
+         Analysis_Data.A_Mean := 0.0;
       end if;
       if Num_B > 0 then
-         Anal_Data.B_Mean := Float (B_Sum) / Float (Num_B);
+         Analysis_Data.B_Mean := Float (B_Sum) / Float (Num_B);
       else
-         Anal_Data.B_Mean := 0.0;
+         Analysis_Data.B_Mean := 0.0;
       end if;
       if Num_AB > 0 then
-         Anal_Data.AB_Mean := Float (AB_Sum) / Float (Num_AB);
+         Analysis_Data.AB_Mean := Float (AB_Sum) / Float (Num_AB);
       else
-         Anal_Data.AB_Mean := 0.0;
+         Analysis_Data.AB_Mean := 0.0;
       end if;
-      Anal_Data.Npp := Npp;
-      Anal_Data.Npm := Npm;
-      Anal_Data.Nmp := Nmp;
-      Anal_Data.Nmm := Nmm;
-      Print_Analysis_Item ("Process_Data, Anal_Data", Anal_Data, True);
+      Analysis_Data.Npp := Npp;
+      Analysis_Data.Npm := Npm;
+      Analysis_Data.Nmp := Nmp;
+      Analysis_Data.Nmm := Nmm;
+      Print_Analysis_Item ("Process_Data, Analysis_Data", Analysis_Data, True);
 
    end Process_Data;
 
