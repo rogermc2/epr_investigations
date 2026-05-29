@@ -1,4 +1,5 @@
 
+with Ada.Float_Text_IO;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -171,10 +172,12 @@ package body Analysis is
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
+      use Ada.Float_Text_IO;
       use Ada.Numerics.Elementary_Functions;
       use Outcome_Vector_Package;
       Set_Diff  : constant Float :=
-        Float (Analysis_Data.Setting_B - Analysis_Data.Setting_A) / 1000.0;
+        Float
+          (abs (Analysis_Data.Setting_B - Analysis_Data.Setting_A)) / 1000.0;
       Curs      : Cursor := Outcomes.First;
       anOutcome : Outcomes_Record;
       A         : Integer;
@@ -192,7 +195,7 @@ package body Analysis is
    begin
       Print_Outcome_Vector ("Analysis.Process_Data", Outcomes, 1, 6);
       Analysis_Data.E_QM := -Cos (Set_Diff);
-      Analysis_Data.E_Stat := 2.0 * Set_Diff / Pi;
+      Analysis_Data.E_Stat := 2.0 * Set_Diff / Pi - 1.0;
 
       while Has_Element (Curs) loop
          anOutcome := Element (Curs);
@@ -248,6 +251,11 @@ package body Analysis is
       Analysis_Data.Npm := Npm;
       Analysis_Data.Nmp := Nmp;
       Analysis_Data.Nmm := Nmm;
+      Put ("Set_Diff: ");
+      Put (Set_Diff, 1, 2, 0);
+      Put (" rad, ");
+      Put (To_Degrees (Set_Diff), 1, 2, 0);
+      Put_Line (" degrees");
       Print_Analysis_Item ("Process_Data, Analysis_Data", Analysis_Data, True);
 
    end Process_Data;
