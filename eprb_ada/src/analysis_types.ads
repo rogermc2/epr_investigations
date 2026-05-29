@@ -37,16 +37,18 @@ package Analysis_Types is
    end record;
 
    type Analysis_Record is record
-      N_A       : Natural;
-      N_B       : Natural;
-      N_AB      : Natural;
-      N_A_Sum   : Integer;
-      N_B_Sum   : Integer;
-      N_AB_Sum  : Integer;
-      Npp       : Natural;
-      Npm       : Natural;
-      Nmp       : Natural;
-      Nmm       : Natural;
+      N_A       : Natural := 0;
+      N_B       : Natural := 0;
+      N_AB      : Natural := 0;
+      A_Mean    : Float := 0.0;
+      B_Mean    : Float := 0.0;
+      AB_Mean   : Float := 0.0;
+      Npp       : Natural := 0;
+      Npm       : Natural := 0;
+      Nmp       : Natural := 0;
+      Nmm       : Natural := 0;
+      E_QM      : Float := 0.0;
+      E_Stat    : Float := 0.0;
       Setting_A : MilliRad;
       Setting_B : MilliRad;
    end record;

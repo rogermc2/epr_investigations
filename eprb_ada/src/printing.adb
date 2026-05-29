@@ -13,8 +13,9 @@ package body Printing is
       use Analysis_Vector_Package;
       Curs   : Cursor := Analysis_Data.First;
       Item   : Analysis_Record;
-      Header : constant String := "   A       B   Num A Num B Num AB   " &
-        "Npp Npm  Nmp  Nmm";
+      Header : constant String :=
+        "A Setting B Setting  Mean A Mean B Mean AB " &
+        "Mean Stat Mean QM Npp Npm  Nmp  Nmm";
    begin
       Put_Line ("Analysis Data");
       Put_Line (Header);
@@ -33,8 +34,9 @@ package body Printing is
                                   Print_Header  : Boolean := False) is
       use Maths;
       use Ada.Float_Text_IO;
-      Header : constant String := "   A       B     Num A   Num B Num AB " &
-        "Npp  Npm  Nmp  Nmm";
+      Header : constant String :=
+        "A Setting B Setting Mean A  Mean B Mean AB " &
+        "Mean Stat Mean QM Npp  Npm  Nmp  Nmm";
       A      : constant Float := To_Degrees (Analysis_Data.Setting_A);
       B      : constant Float := To_Degrees (Analysis_Data.Setting_B);
    begin
@@ -46,22 +48,30 @@ package body Printing is
          Put_Line (Header);
       end if;
 
+      Put (" ");
       Put (Item => A, Fore => 1, Aft => 2, Exp => 0);
       if A = 0.00 then
-         Put  ("    ");
+         Put  ("      ");
       else
-         Put  ("  ");
+         Put  ("    ");
       end if;
       Put (Item => B, Fore => 1, Aft => 2, Exp => 0);
       if B = 0.00 then
-         Put  ("    ");
+         Put  ("      ");
       else
-         Put  ("  ");
+         Put  ("    ");
       end if;
 
-      Put (Natural'Image (Analysis_Data.N_A) & "    ");
-      Put (Natural'Image (Analysis_Data.N_B) & "  ");
-      Put (Natural'Image (Analysis_Data.N_AB) & "   ");
+      Put (Analysis_Data.A_Mean, 1, 2, 0);
+      Put ("   ");
+      Put (Analysis_Data.B_Mean, 1, 2, 0);
+      Put ("     ");
+      Put (Analysis_Data.AB_Mean, 1, 2, 0);
+      Put ("    ");
+      Put (Analysis_Data.E_Stat, 1, 2, 0);
+      Put ("     ");
+      Put (Analysis_Data.E_QM, 1, 2, 0);
+      Put ("  ");
       Put (Natural'Image (Analysis_Data.Npp) & "  ");
       Put (Natural'Image (Analysis_Data.Npm) & "  ");
       Put (Natural'Image (Analysis_Data.Nmp) & "  ");

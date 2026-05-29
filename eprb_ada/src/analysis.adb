@@ -1,5 +1,6 @@
 
---  with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics.Elementary_Functions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -170,21 +171,24 @@ package body Analysis is
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
+      use Ada.Numerics.Elementary_Functions;
       use Outcome_Vector_Package;
+      Set_Diff  : constant Float :=
+        Float (Analysis_Data.Setting_B - Analysis_Data.Setting_A) / 1000.0;
       Curs      : Cursor := Outcomes.First;
       anOutcome : Outcomes_Record;
       A         : Integer;
       B         : Integer;
-      N_A       : Natural := 0;
-      N_B       : Natural := 0;
-      N_AB      : Natural := 0;
+      Num_A     : Natural := 0;
+      Num_B     : Natural := 0;
+      Num_AB    : Natural := 0;
       Npp       : Natural := 0;
       Npm       : Natural := 0;
       Nmp       : Natural := 0;
       Nmm       : Natural := 0;
-      N_A_Sum   : Integer := 0;
-      N_B_Sum   : Integer := 0;
-      N_AB_Sum  : Integer := 0;
+      A_Sum     : Integer := 0;
+      B_Sum     : Integer := 0;
+      AB_Sum    : Integer := 0;
       --  Npp_Sum   : Natural := 0;
       --  Npm_Sum   : Natural := 0;
       --  Nmp_Sum   : Natural := 0;
@@ -192,16 +196,19 @@ package body Analysis is
       Anal_Data : Analysis_Record;
    begin
       Print_Outcome_Vector ("Analysis.Process_Data", Outcomes, 1, 6);
+      Analysis_Data.E_QM := -Cos (Set_Diff);
+      Analysis_Data.E_Stat := 2.0 * Set_Diff / Pi;
+
       while Has_Element (Curs) loop
          anOutcome := Element (Curs);
          A := anOutcome.Outcome_A;
          B := anOutcome.Outcome_B;
          if A /= 0 then
-            N_A := N_A + 1;
-            N_A_Sum := N_A_Sum + A;
+            Num_A := Num_A + 1;
+            A_Sum := A_Sum + A;
             if B /= 0 then
-               N_AB := N_AB + 1;
-               N_AB_Sum := N_AB_Sum + A * B;
+               Num_AB := Num_AB + 1;
+               AB_Sum := AB_Sum + A * B;
                if A > 0 then
                   if B > 0 then
                      Npp := Npp + 1;
@@ -219,20 +226,29 @@ package body Analysis is
          end if;
 
          if B /= 0 then
-            N_B := N_B + 1;
-            N_B_Sum := N_B_Sum + B;
+            Num_B := Num_B + 1;
+            B_Sum := B_Sum + B;
          end if;
 
          Next (Curs);
 
       end loop;
 
-      Anal_Data.N_A := N_A;
-      Anal_Data.N_B := N_B;
-      Anal_Data.N_AB := N_AB;
-      Anal_Data.N_A_Sum := N_A_Sum;
-      Anal_Data.N_B_Sum := N_B_Sum;
-      Anal_Data.N_AB_Sum := N_AB_Sum;
+      if Num_A > 0 then
+         Anal_Data.A_Mean := Float (A_Sum) / Float (Num_A);
+      else
+         Anal_Data.A_Mean := 0.0;
+      end if;
+      if Num_B > 0 then
+         Anal_Data.B_Mean := Float (B_Sum) / Float (Num_B);
+      else
+         Anal_Data.B_Mean := 0.0;
+      end if;
+      if Num_AB > 0 then
+         Anal_Data.AB_Mean := Float (AB_Sum) / Float (Num_AB);
+      else
+         Anal_Data.AB_Mean := 0.0;
+      end if;
       Anal_Data.Npp := Npp;
       Anal_Data.Npm := Npm;
       Anal_Data.Nmp := Nmp;
