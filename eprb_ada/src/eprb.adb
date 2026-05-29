@@ -4,7 +4,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Analysis; use Analysis;
---  with Analysis_Types; use Analysis_Types;
 with Source; use Source;
 with Data_Catagorization; use Data_Catagorization;
 with Detection; use Detection;
@@ -16,12 +15,12 @@ procedure EPRB is
    Routine_Name      : constant String := "EPRB ";
    Source_A_File     : constant String := "data/source_A.bin";
    Source_B_File     : constant String := "data/source_B.bin";
+   Spin              : Float := 0.5;
+   Duration_Val      : Duration := 1.0;
    Detection_A_File  : Unbounded_String;
    Detection_B_File  : Unbounded_String;
-   Duration_Val      : Duration := 1.0;
    Num_Settings      : Positive;
    Settings          : Settings_Vector;
-   Spin              : Float := 1.0;
    Out_Files         : Unbounded_String_Vector;
 begin
    Put_Line ("Set stack size: ulimit -s 64000");

@@ -96,10 +96,10 @@ package body Utilities is
 
    end Load_Station_Results;
 
-   procedure Process_Command_Line (Duration_Val : out Duration;
+   procedure Process_Command_Line (Duration_Val : in out Duration;
                                    Num_Settings : out Positive;
                                    Settings     : out Settings_Vector;
-                                   Spin         : out Float) is
+                                   Spin         : in out Float) is
       use Ada.Numerics;
       use Ada.Text_IO;
       use Maths;
@@ -150,8 +150,6 @@ package body Utilities is
 
          if Arg_Count > 2 then
             Spin := Float'Value (Argument (3));
-         else
-            Spin := 1.0;
          end if;
       end if;
 
