@@ -3,6 +3,8 @@ with Ada.Containers.Ordered_Sets;
 --  with Ada.Numerics.Elementary_Functions;
 --  with Ada.Text_IO; use Ada.Text_IO;
 
+with Maths;
+
 package body Vector_Functions is
 
    function Abs_Vector (Vec : Result_Vector) return Natural_Vector is
@@ -245,6 +247,17 @@ package body Vector_Functions is
       return Setting_Pairs;
 
    end Setting_Pairs;
+
+   procedure To_Radians (Settings : in out Settings_Vector) is
+      use Settings_Vector_Package;
+      Curs : Cursor := Settings.First;
+   begin
+      while Has_Element (Curs) loop
+         Settings.Replace_Element (Curs, Maths.To_Radians (Element (Curs)));
+         Next (Curs);
+         end loop;
+
+   end To_Radians;
 
    function Unique (Vec : Float_Vector) return Float_Vector is
       package Float_Set is new Ada.Containers.Ordered_Sets (Float);

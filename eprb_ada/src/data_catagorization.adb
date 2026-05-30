@@ -48,7 +48,10 @@ package body Data_Catagorization is
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
          Curs_S_Inner := Settings.First;
          while Has_Element (Curs_S_Inner) loop
+            Put_Line (Routine_Name & "Inner: " &
+                        Float'Image (Element (Curs_S_Inner)));
             Key.B := MilliRad (Element (Curs_S_Inner) * 1000.0);
+            Put_Line (Routine_Name & "Key.B set");
             if not Settings_Map.Contains (Key) then
                Settings_Index := Settings_Index + 1;
                Settings_Map.Include (Key, Settings_Index);

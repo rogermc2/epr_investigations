@@ -6,7 +6,6 @@ with Ada.Calendar; use Ada.Calendar;
 with Ada.Text_IO; use Ada.Text_IO;
 
 --  with Printing; use Printing;
-with Types; use Types;
 with Utilities; use Utilities;
 
 package body Source is
@@ -15,21 +14,20 @@ package body Source is
 
    Gen : Generator;
 
-   procedure Emit (Settings        : Float_Array;
+   procedure Emit (Settings        : Settings_Vector;
                    Ps              : Float_Array;
                    Spin            : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector);
 
-   procedure Build_Source (Duration_Val : Duration;
-                           Num_Settings : Positive; Spin     : Float;
-                           Left_File    : String; Right_File : String) is
-
+   procedure Build_Source
+     (Duration_Val : Duration; Settings : Settings_Vector; Spin : Float;
+      Left_File    : String; Right_File : String) is
       --  Set stack size:  ulimit -s 64000 to prevent stack overflow
       --  Routine_Name    : constant String := "Source.Build_Source ";
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
-      Settings        : Float_Array  (1 .. Num_Settings);
+      --  Settings        : Float_Array  (1 .. Num_Settings);
       Ps              : Float_Array  (1 .. 1000);
       Start_Time      : Time;
       Count           : Natural := 0;
@@ -37,9 +35,9 @@ package body Source is
    begin
       Reset (Gen);  --  Initialize random generator
       --  Initialize Settings array  (linspace 0 to 2*pi, 33 points)
-      for I in Settings'Range loop
-         Settings (I) := 2.0 * Float (Pi) * Float (I - 1) / 32.0;
-      end loop;
+      --  for I in Settings'Range loop
+      --     Settings (I) := 2.0 * Float (Pi) * Float (I - 1) / 32.0;
+      --  end loop;
 
       --  Initialize Ps array: 0.5 * sin (linspace (0, pi/2, 1000))^2
       for I in Ps'Range loop
@@ -90,11 +88,12 @@ package body Source is
 
    --  Emit procedure: chooses random angle and p, appends particles to
    --  left and right arrays
-   procedure Emit (Settings        : Float_Array;
+   procedure Emit (Settings        : Settings_Vector;
                    Ps              : Float_Array; Spin : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector) is
-      Num_Settings : constant Positive := Settings'Length;
+      use Settings_Vector_Package;
+      Num_Settings : constant Positive := Integer (Length (Settings));
       subtype Index_Angles is Integer range 1 .. Num_Settings;
       --  Routine_Name : constant String := "Source.Emit ";
       S_2     : constant Float := 2.0 * Spin;

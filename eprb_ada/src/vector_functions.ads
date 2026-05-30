@@ -16,6 +16,7 @@ package Vector_Functions is
                              return Natural_Vector;
    function Sample_Mean (Vec : Natural_Vector) return Float;
    function Setting_Pairs (A, B : Result_Vector) return Setting_Pairs_Vector;
+   procedure To_Radians (Settings : in out Settings_Vector);
    function Unique (Vec : Float_Vector) return Float_Vector;
 
 end Vector_Functions;
