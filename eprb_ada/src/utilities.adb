@@ -8,6 +8,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Maths;
+--  with Printing; use Printing;
 with Vector_Functions;
 
 package body Utilities is
@@ -119,6 +120,7 @@ package body Utilities is
          if Arg_Count = 1 then
             Duration_Val := Duration (Float'Value (Argument (1)));
             L_Space := Linear_Space (0.0, 2.0 * Pi, Num_Settings);
+            --  Print_Float_Vector ("Process_Command_Line.L_Space", L_Space);
             declare
                Curs : Float_Vector_Package.Cursor := L_Space.First;
             begin

@@ -95,6 +95,36 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Float_Vector
+     (Name   : String; Data : Float_Vector; Start : Positive := 1;
+      Finish : Natural := 0) is
+      use Float_Vector_Package;
+      Curs      : Cursor := Data.First;
+      Item      : Float;
+      Last      : Natural;
+      Count     : Natural := 0;
+   begin
+      if Finish > 0 then
+         Last := Finish;
+      else
+         Last := Natural (Data.Last_Index);
+      end if;
+
+      Put_Line (Name);
+      while Has_Element (Curs) loop
+         Count := Count + 1;
+         if Count >= Start and then Count <= Last then
+            Item := Data (Curs);
+            Put_Line (Float'Image (Item));
+         end if;
+         Next (Curs);
+      end loop;
+      New_Line;
+
+   end Print_Float_Vector;
+
+   --  ------------------------------------------------------------------------
+
    procedure Print_Outcome_Vector
      (Name   : String; Data : Outcome_Vector; Start : Positive := 1;
       Finish : Natural := 0) is
@@ -187,6 +217,25 @@ package body Printing is
       New_Line;
 
    end Print_Result_Vector;
+
+   --  ------------------------------------------------------------------------
+
+   procedure Print_Settings (Name : String; Data : Settings_Vector) is
+      use Ada.Float_Text_IO;
+      use Settings_Vector_Package;
+      Curs : Cursor := Data.First;
+      Item  : Float;
+   begin
+      Put_Line (Name & ":");
+      while Has_Element (Curs) loop
+            Item := Data (Curs);
+            Put (Item, 1, 2, 0);
+            Put ("  ");
+         Next (Curs);
+      end loop;
+      New_Line;
+
+   end Print_Settings;
 
    --  ------------------------------------------------------------------------
 
