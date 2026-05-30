@@ -1,23 +1,14 @@
 
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Numerics.Float_Random;
-with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Maths is
 
    --  Random number generator for angles
    Gen : Float_Random.Generator;
-
-   --  NaN representation
-   --  function NaN return Float is
-   --     use Ada.Numerics.Elementary_Functions;
-   --     X : constant Float := 0.0 / 0.0;
-   --  begin
-   --     return X;
-   --  exception
-   --     when others => return 0.0 / 0.0;
-   --  end NaN;
 
    function Mean_Product (A, B : Float_Vector) return Float is
       use Float_Vector_Package;
@@ -80,9 +71,18 @@ package body Maths is
    end QM_Func;
 
    function Random_Index (Max : Positive) return Positive is
+      Result : constant Positive :=
+        Natural (abs (Float_Random.Random (Gen) * (Float (Max - 1)))) + 1;
    begin
-      return Positive
-        (abs (Float_Random.Random (Gen) * (Float (Max))) + 0.5);
+      return Result;
+
+   exception
+      when Error : others =>
+         Put_Line ("Maths.Random_Index Exception information:  " &
+                     Exception_Information (Error));
+         Put_Line ("Max, Result : " & Integer'Image (Max) & "  "  &
+                     Integer'Image (Result));
+         raise;
 
    end Random_Index;
 

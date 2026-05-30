@@ -1,10 +1,12 @@
 
 with Ada.Calendar; use Ada.Calendar;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;     use Maths;
+with Printing; use Printing;
 with Utilities; use Utilities;
 
 package body Detection is
@@ -15,6 +17,7 @@ package body Detection is
      (Particle : Particle_Data; Setting : Float) return Result_Data
    is
       use Ada.Numerics.Elementary_Functions;
+      Routine : constant String := "Detection.Detect_Particle";
       C       : Float;
       Outcome : Integer := 0;
    begin
@@ -31,6 +34,12 @@ package body Detection is
       end if;
 
       return (Setting, Outcome);
+
+   exception
+      when Error : others =>
+         Put_Line (Routine & "Exception information:  " &
+                     Exception_Information (Error));
+         raise;
 
    end Detect_Particle;
 
@@ -125,12 +134,36 @@ package body Detection is
 
       Put_Line ("Detection processing complete.");
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
+         raise;
+
    end Run_Detection;
 
    function Set_Polarizer (Settings : Settings_Vector) return Float is
       use Settings_Vector_Package;
+      Size   : constant Natural := Natural (Length (Settings));
+      Index  : constant Positive := Random_Index (Size);
+      Result : Float := 0.0;
    begin
-      return Settings (Random_Index (Positive (Length (Settings))));
+      if Settings = Empty_Vector then
+         Put_Line
+           ("Detection.Set_Polarizer called with empty Settings vector");
+      else
+         Result := Settings (Index);
+      end if;
+
+      return Result;
+
+   exception
+      when Error : others =>
+         Put_Line ("Size, Index, Result:  " & Integer'Image (Size) & "  " &
+                    Integer'Image (Index) & "  " & Float'Image (Result));
+         Put_Line ("Detection.Set_Polarizer Exception information:  " &
+                     Exception_Information (Error));
+         raise;
 
    end Set_Polarizer;
 

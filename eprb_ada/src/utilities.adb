@@ -1,15 +1,15 @@
 
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Numerics;
+--  with Ada.Command_Line; use Ada.Command_Line;
+--  with Ada.Numerics;
 with Ada.Streams;               --  For binary file writing
 with Ada.Streams.Stream_IO;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-with Maths;
+--  with Maths;
 --  with Printing; use Printing;
-with Vector_Functions;
+--  with Vector_Functions;
 
 package body Utilities is
 
@@ -97,65 +97,66 @@ package body Utilities is
 
    end Load_Station_Results;
 
-   procedure Process_Command_Line (Duration_Val : in out Duration;
-                                   Num_Settings : out Positive;
-                                   Settings     : out Settings_Vector;
-                                   Spin         : in out Float) is
-      use Ada.Numerics;
-      use Ada.Text_IO;
-      use Maths;
-      use Vector_Functions;
-      use Float_Vector_Package;
-      use Settings_Vector_Package;
-      Arg_Count       : constant Integer := Argument_Count;
-      L_Space         : Float_Vector;
-      Parsed_Settings : Settings_Vector;
-   begin
-      Num_Settings := 4;
-      if Arg_Count < 1 then
-         Put_Line ("Usage: ");
-         Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
-      else
-         New_Line;
-         if Arg_Count = 1 then
-            Duration_Val := Duration (Float'Value (Argument (1)));
-            L_Space := Linear_Space (0.0, 2.0 * Pi, Num_Settings);
-            --  Print_Float_Vector ("Process_Command_Line.L_Space", L_Space);
-            declare
-               Curs : Float_Vector_Package.Cursor := L_Space.First;
-            begin
-               while Has_Element (Curs) loop
-                  Settings.Append (Element (Curs));
-                  Next (Curs);
-               end loop;
-            end;
-         end if;
-
-         if Arg_Count > 1 then
-            L_Space := Parse_Floats (Argument (2));
-            declare
-               Curs : Float_Vector_Package.Cursor := L_Space.First;
-            begin
-               while Has_Element (Curs) loop
-                  Parsed_Settings.Append (Element (Curs));
-                  Next (Curs);
-               end loop;
-            end;
-
-            for I in Parsed_Settings.First_Index ..
-              Parsed_Settings.Last_Index loop
-               Settings.Append
-                 (To_Radians (Parsed_Settings.Element (I)));
-            end loop;
-            Num_Settings := Positive (Length (Settings));
-         end if;
-
-         if Arg_Count > 2 then
-            Spin := Float'Value (Argument (3));
-         end if;
-      end if;
-
-   end Process_Command_Line;
+   --  procedure Process_Command_Line (Duration_Val : in out Duration;
+   --                                  Num_Settings : out Positive;
+   --                                  Settings     : out Settings_Vector;
+   --                                  Spin         : in out Float) is
+   --     use Ada.Numerics;
+   --     use Ada.Text_IO;
+   --     use Maths;
+   --     use Vector_Functions;
+   --     use Float_Vector_Package;
+   --     use Settings_Vector_Package;
+   --     Arg_Count       : constant Integer := Argument_Count;
+   --     L_Space         : Float_Vector;
+   --     Parsed_Settings : Settings_Vector;
+   --  begin
+   --     Num_Settings := 4;
+   --     if Arg_Count < 1 then
+   --        Put_Line ("Usage: ");
+   --        Put_Line (" station <ArmSrcFile> setting1,setting2,setting3,...");
+   --     else
+   --        New_Line;
+   --        if Arg_Count = 1 then
+   --           Duration_Val := Duration (Float'Value (Argument (1)));
+   --           L_Space := Linear_Space (0.0, 2.0 * Pi, Num_Settings);
+   --           Print_Float_Vector
+   --                ("Process_Command_Line.L_Space", L_Space);
+   --           declare
+   --              Curs : Float_Vector_Package.Cursor := L_Space.First;
+   --           begin
+   --              while Has_Element (Curs) loop
+   --                 Settings.Append (Element (Curs));
+   --                 Next (Curs);
+   --              end loop;
+   --           end;
+   --        end if;
+   --
+   --        if Arg_Count > 1 then
+   --           L_Space := Parse_Floats (Argument (2));
+   --           declare
+   --              Curs : Float_Vector_Package.Cursor := L_Space.First;
+   --           begin
+   --              while Has_Element (Curs) loop
+   --                 Parsed_Settings.Append (Element (Curs));
+   --                 Next (Curs);
+   --              end loop;
+   --           end;
+   --
+   --           for I in Parsed_Settings.First_Index ..
+   --             Parsed_Settings.Last_Index loop
+   --              Settings.Append
+   --                (To_Radians (Parsed_Settings.Element (I)));
+   --           end loop;
+   --           Num_Settings := Positive (Length (Settings));
+   --        end if;
+   --
+   --        if Arg_Count > 2 then
+   --           Spin := Float'Value (Argument (3));
+   --        end if;
+   --     end if;
+   --
+   --  end Process_Command_Line;
 
    procedure Save (File_Name : String; Station : Station_Type) is
       use Ada.Streams.Stream_IO;

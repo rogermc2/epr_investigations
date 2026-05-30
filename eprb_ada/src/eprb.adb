@@ -9,23 +9,27 @@ with Data_Catagorization; use Data_Catagorization;
 with Detection; use Detection;
 with Printing; use Printing;
 with Types; use Types;
-with Utilities; use Utilities;
+--  with Utilities; use Utilities;
+
+with Vector_Functions;
 
 procedure EPRB is
    --  Set stack size:  ulimit -s 64000 to prevent stack overflow
+   use Settings_Vector_Package;
    Routine_Name      : constant String := "EPRB ";
    Source_A_File     : constant String := "data/source_A.bin";
    Source_B_File     : constant String := "data/source_B.bin";
+   Settings          : constant Settings_Vector :=
+     Empty_Vector & 0.0 & 45.0 & 90.0 & 135.0;
    Spin              : Float := 0.5;
    Duration_Val      : Duration := 1.0;
    Detection_A_File  : Unbounded_String;
    Detection_B_File  : Unbounded_String;
    Num_Settings      : Positive := 4;
-   Settings          : Settings_Vector;
    Out_Files         : Unbounded_String_Vector;
 begin
    Put_Line ("Set stack size: ulimit -s 64000");
-   Process_Command_Line (Duration_Val, Num_Settings, Settings, Spin);
+   --  Process_Command_Line (Duration_Val, Num_Settings, Settings, Spin);
    Put_Line ("Duration_Val: " & Duration'Image (Duration_Val));
    Print_Settings ("Settings", Settings);
 
