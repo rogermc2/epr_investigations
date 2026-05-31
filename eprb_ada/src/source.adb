@@ -10,7 +10,7 @@ with Utilities; use Utilities;
 
 package body Source is
 
-   subtype Index_Probs is Integer range 1 .. 1000;
+   --  subtype Index_Probs is Integer range 1 .. 1000;
 
    Gen : Generator;
 

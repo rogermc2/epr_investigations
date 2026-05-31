@@ -50,8 +50,8 @@ package body Analysis is
    begin
       Put_Line ("Starting analysis.");
       while Has_Element (File_Curs) loop
-         --  Put_Line (Routine_Name & "File name: " &
-         --              To_String (Element (File_Curs)));
+         Put_Line (Routine_Name & "File name: " &
+                     To_String (Element (File_Curs)));
          Open (File_ID, In_File, To_String (Element (File_Curs)));
          Parse_File_Name (To_String (Element (File_Curs)),
                           Setting_A, Setting_B);
@@ -75,7 +75,7 @@ package body Analysis is
          Data.Setting_A := Setting_A;
          Data.Setting_B := Setting_B;
          Process_Data (Outcomes, Data);
-         --  Print_Analysis_Item (Routine_Name & "Processed Data", Data);
+         Print_Analysis_Item (Routine_Name & "Processed Data", Data);
          Analysis_Data.Append (Data);
          Next (File_Curs);
       end loop;
@@ -247,6 +247,7 @@ package body Analysis is
       else
          Analysis_Data.AB_Mean := 0.0;
       end if;
+
       Analysis_Data.Npp := Npp;
       Analysis_Data.Npm := Npm;
       Analysis_Data.Nmp := Nmp;
@@ -256,6 +257,9 @@ package body Analysis is
       Put (" rad, ");
       Put (To_Degrees (Set_Diff), 1, 2, 0);
       Put_Line (" degrees");
+      Put_Line ("Process_Data 4, Setting_A, Setting_B: " &
+                  Integer'Image (Analysis_Data.Setting_A) & "  " &
+                  Integer'Image (Analysis_Data.Setting_B));
       Print_Analysis_Item ("Process_Data, Analysis_Data", Analysis_Data, True);
 
    end Process_Data;

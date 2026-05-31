@@ -148,6 +148,9 @@ package body Maths is
 
    function To_Degrees (Angle : MilliRad) return Float is
    begin
+      Put_line ("Maths.To_Degrees MilliRad for Angle:" &
+                  MilliRad'Image (Angle) & "  " &
+                  Float'Image (Float (Angle / 1000) * 180.0 / Pi));
       return Float (Angle / 1000) * 180.0 / Pi;
    end To_Degrees;
 
