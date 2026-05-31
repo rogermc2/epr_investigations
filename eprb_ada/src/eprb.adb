@@ -19,6 +19,7 @@ procedure EPRB is
    Source_A_File     : constant String := "data/source_A.bin";
    Source_B_File     : constant String := "data/source_B.bin";
    Duration_Val      : constant Duration := 0.01;
+   --  Duration_Val      : constant Duration := 0.05;
    Spin              : constant Float := 0.5;
    Settings          : Settings_Vector :=
      Empty_Vector & 0.0 & 45.0 & 90.0 & 135.0;
@@ -29,7 +30,6 @@ begin
    Put_Line ("Set stack size: ulimit -s 64000");
    Print_Settings ("Settings (degrees)", Settings);
    To_Radians (Settings);
-   --  Process_Command_Line (Duration_Val, Num_Settings, Settings, Spin);
    Put_Line ("Duration_Val: " & Duration'Image (Duration_Val));
 
    Build_Source (Duration_Val, Settings, Spin,

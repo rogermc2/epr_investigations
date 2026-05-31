@@ -255,7 +255,7 @@ package body Vector_Functions is
       while Has_Element (Curs) loop
          Settings.Replace_Element (Curs, Maths.To_Radians (Element (Curs)));
          Next (Curs);
-         end loop;
+      end loop;
 
    end To_Radians;
 

@@ -10,12 +10,12 @@ with Utilities; use Utilities;
 
 package body Source is
 
-   subtype Index_Ps is Integer range 1 .. 1000;
+   subtype Index_Probs is Integer range 1 .. 1000;
 
    Gen : Generator;
 
    procedure Emit (Settings        : Settings_Vector;
-                   Ps              : Float_Array;
+                   Probs              : Float_Array;
                    Spin            : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector);
@@ -27,40 +27,30 @@ package body Source is
       --  Routine_Name    : constant String := "Source.Build_Source ";
       Left_Particles  : Particle_Vector;
       Right_Particles : Particle_Vector;
-      --  Settings        : Float_Array  (1 .. Num_Settings);
-      Ps              : Float_Array  (1 .. 1000);
+      Probs           : Float_Array  (1 .. 1000);
       Start_Time      : Time;
       Count           : Natural := 0;
-      Elapsed         : Duration := 0.0;
+      ElaProbsed         : Duration := 0.0;
    begin
       Reset (Gen);  --  Initialize random generator
-      --  Initialize Settings array  (linspace 0 to 2*pi, 33 points)
-      --  for I in Settings'Range loop
-      --     Settings (I) := 2.0 * Float (Pi) * Float (I - 1) / 32.0;
-      --  end loop;
-
-      --  Initialize Ps array: 0.5 * sin (linspace (0, pi/2, 1000))^2
-      for I in Ps'Range loop
-         declare
-            X : constant Float := Float (Pi) / 2.0 * Float (I - 1) / 999.0;
-            S : constant Float := Sin (X);
-         begin
-            Ps (I) := 0.5 * S ** 2;
-         end;
+      --  Initialize Probs array: 0.5 * sin (linspace (0, pi/2, 1000))^2
+      for I in Probs'Range loop
+            Probs (I) :=
+              0.5 * Sin (Pi / 2.0 * Float (I - 1) / 999.0) ** 2;
       end loop;
 
       Put_Line ("Generating particle pairs with spin" &
                   Float'Image (Spin));
       Start_Time := Clock;
-      while Elapsed < Duration_Val loop
-         Elapsed := Clock - Start_Time;
-         Emit (Settings, Ps, Spin,
+      while ElaProbsed < Duration_Val loop
+         ElaProbsed := Clock - Start_Time;
+         Emit (Settings, Probs, Spin,
                Left_Particles, Right_Particles);
          Count := Count + 1;
 
          if Count mod 5000000 = 0 then
             Put ("Time to go: ");
-            Put (Duration'Image (Duration_Val - Elapsed));
+            Put (Duration'Image (Duration_Val - ElaProbsed));
             Put ("s [" &  Integer'Image (Count));  --  , Width => 8);
             Put_Line (" pairs generated]");
             Flush;
@@ -86,10 +76,10 @@ package body Source is
 
    end Build_Source;
 
-   --  Emit procedure: chooses random angle and p, appends particles to
+   --  Emit procedure: chooses random angle and p and appends particles to
    --  left and right arrays
    procedure Emit (Settings        : Settings_Vector;
-                   Ps              : Float_Array; Spin : Float;
+                   Probs           : Float_Array; Spin : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector) is
       use Settings_Vector_Package;
@@ -102,23 +92,29 @@ package body Source is
       Prob    : Float;
       Rand    : Integer := 0;
       I_Angle : Index_Angles;
-      I_Pol   : Index_Ps;
+      --  I_Pol   : Index_Probs;
    begin
-      --  Get a random number in the range 1 .. Num_Settings
+      --  Set random settings index
       while Rand < 1 or else Rand > Num_Settings loop
          Rand :=
            Integer (Float_Random.Random (Gen) * Float (Num_Settings)) + 1;
       end loop;
       I_Angle := Rand;
 
-      Rand := 0;
-      while Rand < 1 or else Rand > 1000 loop
-         Rand := Integer (Float_Random.Random (Gen) * 1000.0) + 1;
-      end loop;
-      I_Pol := Rand;
+      --  Set random angle of polarization
+      --  Rand := 0;
+      --  while Rand < 1 or else Rand > 1000 loop
+      --     Rand := Integer (Float_Random.Random (Gen) * 1000.0) + 1;
+      --  end loop;
+      --  I_Pol := Rand;
 
-      Pol := Settings (I_Angle);
-      Prob := Ps (I_Pol);
+      --  Float_Random.Random returns a float in the range 0.0 .. 1.0
+      Pol :=  Float_Random.Random (Gen) * 2.0 * Pi;
+      --  Put_Line ("Emit Pol: " & Float'Image (Pol));
+
+      --  Pol := Settings (I_Angle);
+      --  Prob := Probs (I_Pol);
+      Prob := Probs (I_Angle);
 
       Left_Particles.Append ((Pol, Prob, S_2));
       Right_Particles.Append ((Pol + Phase, Prob, S_2));
