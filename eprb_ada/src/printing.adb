@@ -40,12 +40,6 @@ package body Printing is
       A      : constant Float := To_Degrees (Analysis_Data.Setting_A);
       B      : constant Float := To_Degrees (Analysis_Data.Setting_B);
    begin
-      Put_Line ("Print_Analysis_Item 1 A: " & Float'Image (A));
-      Put_Line ("Print_Analysis_Item 1 B: " & Float'Image (B));
-
-      Put_Line ("Print_Analysis_Item 1, Setting_A, Setting_B: " &
-                  Integer'Image (Analysis_Data.Setting_A) & "  " &
-                  Integer'Image (Analysis_Data.Setting_B));
       if Name /= "" then
          Put_Line (Name & ":");
       end if;
@@ -54,7 +48,6 @@ package body Printing is
          Put_Line (Header);
       end if;
 
-      New_Line;
       Put (" ");
       Put (Item => A, Fore => 1, Aft => 2, Exp => 0);
       if A = 0.00 then

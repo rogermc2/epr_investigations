@@ -147,11 +147,10 @@ package body Maths is
    end Sum_Boolean;
 
    function To_Degrees (Angle : MilliRad) return Float is
+      Angle_Rad : constant Float := Float (Angle) / 1000.0;
    begin
-      Put_line ("Maths.To_Degrees MilliRad for Angle:" &
-                  MilliRad'Image (Angle) & "  " &
-                  Float'Image (Float (Angle / 1000) * 180.0 / Pi));
-      return Float (Angle / 1000) * 180.0 / Pi;
+      return Angle_Rad / Pi * 180.0;
+
    end To_Degrees;
 
    function To_Degrees (Radians : Float) return Float is
@@ -165,7 +164,7 @@ package body Maths is
    end To_Radians;
 
    function Linear_Space (Start_Val, End_Val : Float; Num : Positive)
-                          return Float_Vector is
+                                       return Float_Vector is
       Step   : constant Float :=  (End_Val - Start_Val) / Float (Num - 1);
       Result : Float_Vector;
    begin

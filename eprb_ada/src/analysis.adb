@@ -1,5 +1,5 @@
 
-with Ada.Float_Text_IO;
+--  with Ada.Float_Text_IO;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -172,7 +172,7 @@ package body Analysis is
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
-      use Ada.Float_Text_IO;
+      --  use Ada.Float_Text_IO;
       use Ada.Numerics.Elementary_Functions;
       use Outcome_Vector_Package;
       Set_Diff  : constant Float :=
@@ -252,15 +252,15 @@ package body Analysis is
       Analysis_Data.Npm := Npm;
       Analysis_Data.Nmp := Nmp;
       Analysis_Data.Nmm := Nmm;
-      Put ("Set_Diff: ");
-      Put (Set_Diff, 1, 2, 0);
-      Put (" rad, ");
-      Put (To_Degrees (Set_Diff), 1, 2, 0);
-      Put_Line (" degrees");
-      Put_Line ("Process_Data 4, Setting_A, Setting_B: " &
-                  Integer'Image (Analysis_Data.Setting_A) & "  " &
-                  Integer'Image (Analysis_Data.Setting_B));
-      Print_Analysis_Item ("Process_Data, Analysis_Data", Analysis_Data, True);
+
+      --  Put ("Set_Diff: ");
+      --  Put (Set_Diff, 1, 2, 0);
+      --  Put (" rad, ");
+      --  Put (To_Degrees (Set_Diff), 1, 2, 0);
+      --  Put_Line (" degrees");
+
+      --  Print_Analysis_Item
+      --  ("Process_Data, Analysis_Data", Analysis_Data, True);
 
    end Process_Data;
 
