@@ -176,9 +176,9 @@ package body Printing is
       then
          for Index in Start .. Last loop
             Item := Data (Index);
-            Put_Line ("Pol, Prob, Spin_2: " & Float'Image (Item.Pol) & "  " &
+            Put_Line ("Pol, Prob, Spin: " & Float'Image (Item.Pol) & "  " &
                         Float'Image (Item.Prob) & "  " &
-                        Float'Image (Item.Spin_2));
+                        Float'Image (Item.Spin));
          end loop;
       else
          Put_Line

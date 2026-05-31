@@ -15,7 +15,7 @@ package body Source is
    Gen : Generator;
 
    procedure Emit (Settings        : Settings_Vector;
-                   Probs              : Float_Array;
+                   Probs           : Float_Array;
                    Spin            : Float;
                    Left_Particles  : in out Particle_Vector;
                    Right_Particles : in out Particle_Vector);
@@ -30,7 +30,7 @@ package body Source is
       Probs           : Float_Array  (1 .. 1000);
       Start_Time      : Time;
       Count           : Natural := 0;
-      ElaProbsed         : Duration := 0.0;
+      Elapsed         : Duration := 0.0;
    begin
       Reset (Gen);  --  Initialize random generator
       --  Initialize Probs array: 0.5 * sin (linspace (0, pi/2, 1000))^2
@@ -42,15 +42,14 @@ package body Source is
       Put_Line ("Generating particle pairs with spin" &
                   Float'Image (Spin));
       Start_Time := Clock;
-      while ElaProbsed < Duration_Val loop
-         ElaProbsed := Clock - Start_Time;
-         Emit (Settings, Probs, Spin,
-               Left_Particles, Right_Particles);
+      while Elapsed < Duration_Val loop
+         Elapsed := Clock - Start_Time;
+         Emit (Settings, Probs, Spin, Left_Particles, Right_Particles);
          Count := Count + 1;
 
          if Count mod 5000000 = 0 then
             Put ("Time to go: ");
-            Put (Duration'Image (Duration_Val - ElaProbsed));
+            Put (Duration'Image (Duration_Val - Elapsed));
             Put ("s [" &  Integer'Image (Count));  --  , Width => 8);
             Put_Line (" pairs generated]");
             Flush;
@@ -86,8 +85,8 @@ package body Source is
       Num_Settings : constant Positive := Integer (Length (Settings));
       subtype Index_Angles is Integer range 1 .. Num_Settings;
       --  Routine_Name : constant String := "Source.Emit ";
-      S_2     : constant Float := 2.0 * Spin;
-      Phase   : constant Float := S_2 * Float (Pi);
+      --  S_2     : constant Float := 2.0 * Spin;
+      Phase   : constant Float := 2.0 * Spin * Pi;
       Pol     : Float;
       Prob    : Float;
       Rand    : Integer := 0;
@@ -116,8 +115,8 @@ package body Source is
       --  Prob := Probs (I_Pol);
       Prob := Probs (I_Angle);
 
-      Left_Particles.Append ((Pol, Prob, S_2));
-      Right_Particles.Append ((Pol + Phase, Prob, S_2));
+      Left_Particles.Append ((Pol, Prob, Spin));
+      Right_Particles.Append ((Pol + Phase, Prob, Spin));
 
    end Emit;
 

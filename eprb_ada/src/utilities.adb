@@ -188,7 +188,7 @@ package body Utilities is
          Item := Element (Curs);
          Put_Line (File_ID, Float'Image (Item.Pol) & "," &
                      Float'Image (Item.Prob) & "," &
-                     Float'Image (Item.Spin_2));
+                     Float'Image (Item.Spin));
          Next  (Curs);
       end loop;
       Close (File_ID);

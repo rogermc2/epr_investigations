@@ -18,12 +18,13 @@ package body Detection is
    is
       use Ada.Numerics.Elementary_Functions;
       Routine : constant String := "Detection.Detect_Particle";
+      Spin_2  : constant Float := 2.0 * Particle.Spin;
       C       : Float;
       Outcome : Integer := 0;
    begin
       C :=
-        Float ((-1) ** Natural (Particle.Spin_2)) *
-          Cos (Particle.Spin_2 * (Setting - Particle.Pol));
+        Float ((-1) ** Natural (Spin_2)) *
+          Cos (Spin_2 * (Setting - Particle.Pol));
 
       if Particle.Prob < abs (C) then
          if C > 0.0 then

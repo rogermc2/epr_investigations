@@ -27,9 +27,9 @@ package Types is
    subtype Float_Vector is Float_Vector_Package.Vector;
 
    type Particle_Data is record
-      Pol    : Float;
-      Prob   : Float;
-      Spin_2 : Float;
+      Pol  : Float;
+      Prob : Float;
+      Spin : Float;
    end record;
 
    package Particle_Data_Package is new
