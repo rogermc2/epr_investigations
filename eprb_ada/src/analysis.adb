@@ -19,6 +19,8 @@ package body Analysis is
                            Analysis_Data : in out  Analysis_Record);
    pragma Inline (Process_Data);
 
+   procedure Use_Probilities (Analysis_Data : Analysis_Vector);
+
    procedure Analyse (File_Names : Unbounded_String_Vector) is
       use Unbounded_String_Package;
       Routine_Name  : constant String := "Analysis.Analyse ";
@@ -67,6 +69,8 @@ package body Analysis is
       New_Line;
       Print_Analysis_Data (Analysis_Data);
 
+      Use_Probilities (Analysis_Data);
+
       Put_Line ("Analysis complete.");
 
       --  Display_Results (A, B);
@@ -78,6 +82,7 @@ package body Analysis is
       --  use Ada.Float_Text_IO;
       use Ada.Numerics.Elementary_Functions;
       use Outcome_Vector_Package;
+
       Set_Diff  : constant Float :=
         Float
           (abs (Analysis_Data.Setting_B - Analysis_Data.Setting_A)) / 1000.0;
@@ -158,15 +163,32 @@ package body Analysis is
       Analysis_Data.Nmp := Nmp;
       Analysis_Data.Nmm := Nmm;
 
-      --  Put ("Set_Diff: ");
-      --  Put (Set_Diff, 1, 2, 0);
-      --  Put (" rad, ");
-      --  Put (To_Degrees (Set_Diff), 1, 2, 0);
-      --  Put_Line (" degrees");
-
       --  Print_Analysis_Item
       --  ("Process_Data, Analysis_Data", Analysis_Data, True);
 
    end Process_Data;
+
+   procedure Use_Probilities (Analysis_Data : Analysis_Vector) is
+      use Analysis_Vector_Package;
+      Curs : Cursor := Analysis_Data.First;
+
+      procedure Probability_Analysis (Data : Analysis_Record) is
+         Sum_N : constant Float :=
+           Float (Data.Npp + Data.Npm + Data.Nmp + Data.Nmm);
+         Ppp   : constant Float := Float (Data.Npp) / Sum_N;
+         Ppm   : constant Float := Float (Data.Npm) / Sum_N;
+         Pmp   : constant Float := Float (Data.Nmp) / Sum_N;
+         Pmm   : constant Float := Float (Data.Nmm) / Sum_N;
+      begin
+         null;
+      end Probability_Analysis;
+
+   begin
+      while Has_Element (Curs) loop
+         Probability_Analysis (Element (Curs));
+         Next (Curs);
+      end loop;
+
+   end Use_Probilities;
 
 end Analysis;
