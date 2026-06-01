@@ -39,9 +39,6 @@ package body Analysis is
       Data          : Analysis_Record;
       Count         : Natural := 0;
       --  Angle_Resolution : constant Float := 3.75;
-      --  Coincidences     : Boolean_Vector;
-      --  Settings_Diff    : Float_Vector;    --  AB
-      --  Eab              : Float_Vector;
    begin
       Put_Line ("Starting analysis.");
       while Has_Element (File_Curs) loop
