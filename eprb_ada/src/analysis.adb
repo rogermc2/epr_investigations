@@ -19,7 +19,7 @@ package body Analysis is
                            Analysis_Data : in out  Analysis_Record);
    pragma Inline (Process_Data);
 
-   procedure Use_Probilities (Analysis_Data : Analysis_Vector);
+   procedure Probability_Analysis (Analysis_Data : Analysis_Vector);
 
    procedure Analyse (File_Names : Unbounded_String_Vector) is
       use Unbounded_String_Package;
@@ -69,7 +69,7 @@ package body Analysis is
       New_Line;
       Print_Analysis_Data (Analysis_Data);
 
-      Use_Probilities (Analysis_Data);
+      Probability_Analysis (Analysis_Data);
 
       Put_Line ("Analysis complete.");
 
@@ -168,11 +168,14 @@ package body Analysis is
 
    end Process_Data;
 
-   procedure Use_Probilities (Analysis_Data : Analysis_Vector) is
+
+   --  Correlation Coefficient:
+   --  (E (a, b) = {N_{ + +} + N_{--} - N_{+-} - N_{-+} /N_{total
+   procedure Probability_Analysis (Analysis_Data : Analysis_Vector) is
       use Analysis_Vector_Package;
       Curs : Cursor := Analysis_Data.First;
 
-      procedure Probability_Analysis (Data : Analysis_Record) is
+      procedure Analyse_Data (Data : Analysis_Record) is
          Sum_N : constant Float :=
            Float (Data.Npp + Data.Npm + Data.Nmp + Data.Nmm);
          Ppp   : constant Float := Float (Data.Npp) / Sum_N;
@@ -181,14 +184,14 @@ package body Analysis is
          Pmm   : constant Float := Float (Data.Nmm) / Sum_N;
       begin
          null;
-      end Probability_Analysis;
+      end Analyse_Data;
 
    begin
       while Has_Element (Curs) loop
-         Probability_Analysis (Element (Curs));
+         Analyse_Data (Element (Curs));
          Next (Curs);
       end loop;
 
-   end Use_Probilities;
+   end Probability_Analysis;
 
 end Analysis;
