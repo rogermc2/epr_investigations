@@ -3,7 +3,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Float_Text_IO;
 
 with Maths;
---  with Utilities;
 
 package body Printing is
 
@@ -17,7 +16,7 @@ package body Printing is
         "A Setting B Setting  Mean A Mean B  Mean AB  " &
         "Mean Stat  Mean QM   Npp     Npm     Nmp        Nmm";
    begin
-      Put_Line ("Analysis Data");
+      Put_Line ("Analysis Data:");
       Put_Line (Header);
       while Has_Element (Curs) loop
          Item := Element (Curs);
@@ -100,10 +99,10 @@ package body Printing is
      (Name   : String; Data : Float_Vector; Start : Positive := 1;
       Finish : Natural := 0) is
       use Float_Vector_Package;
-      Curs      : Cursor := Data.First;
-      Item      : Float;
-      Last      : Natural;
-      Count     : Natural := 0;
+      Curs  : Cursor := Data.First;
+      Item  : Float;
+      Last  : Natural;
+      Count : Natural := 0;
    begin
       if Finish > 0 then
          Last := Finish;
@@ -130,10 +129,10 @@ package body Printing is
      (Name   : String; Data : Outcome_Vector; Start : Positive := 1;
       Finish : Natural := 0) is
       use Outcome_Vector_Package;
-      Curs      : Cursor := Data.First;
-      Item      : Outcomes_Record;
-      Last      : Natural;
-      Count     : Natural := 0;
+      Curs  : Cursor := Data.First;
+      Item  : Outcomes_Record;
+      Last  : Natural;
+      Count : Natural := 0;
    begin
       if Finish > 0 then
          Last := Finish;
@@ -194,10 +193,10 @@ package body Printing is
      (Name   : String; Data : Result_Vector; Start : Positive := 1;
       Finish : Natural := 0) is
       use Result_Vector_Package;
-      Curs      : Cursor := Data.First;
-      Item      : Result_Data;
-      Last      : Natural;
-      Count     : Natural := 0;
+      Curs  : Cursor := Data.First;
+      Item  : Result_Data;
+      Last  : Natural;
+      Count : Natural := 0;
    begin
       if Finish > 0 then
          Last := Finish;
@@ -224,8 +223,8 @@ package body Printing is
    procedure Print_Settings (Name : String; Data : Settings_Vector) is
       use Ada.Float_Text_IO;
       use Settings_Vector_Package;
-      Curs  : Cursor := Data.First;
-      Item  : Float;
+      Curs : Cursor := Data.First;
+      Item : Float;
    begin
       Put_Line (Name & ":");
       while Has_Element (Curs) loop

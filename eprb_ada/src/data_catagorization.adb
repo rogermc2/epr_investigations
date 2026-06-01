@@ -88,6 +88,7 @@ package body Data_Catagorization is
       end loop;
 
       Put_Line ("Catagorization complete.");
+      New_Line;
 
       return Out_File_Names;
 

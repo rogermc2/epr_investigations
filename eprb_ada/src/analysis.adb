@@ -8,28 +8,21 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Analysis.Support; use Analysis.Support;
 with Analysis_Types; use Analysis_Types;
 --  with Display; use Display;
-with Maths; use Maths;
+--  with Maths; use Maths;
 with Printing; use Printing;
 --  with Utilities; use Utilities;
 --  with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
 
-   --  procedure Correlation (A, B : Result_Vector;
-
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out  Analysis_Record);
    pragma Inline (Process_Data);
 
-   procedure Analyse (File_Names : Unbounded_String_Vector;
-                      Settings   : Settings_Vector) is
-      --  use Analysis_Vector_Package;
-      --  use Settings_Vector_Package;
+   procedure Analyse (File_Names : Unbounded_String_Vector) is
       use Unbounded_String_Package;
       Routine_Name  : constant String := "Analysis.Analyse ";
-      --  Num_Files     : constant Positive := Positive (Length (File_Names));
       File_Curs     : Unbounded_String_Package.Cursor := File_Names.First;
-      --  Setting_Curs  : Settings_Vector_Package.Cursor := Settings.First;
       File_ID       : File_Type;
       Setting_A     : MilliRad;
       Setting_B     : MilliRad;
@@ -38,7 +31,6 @@ package body Analysis is
       Analysis_Data : Analysis_Vector;
       Data          : Analysis_Record;
       Count         : Natural := 0;
-      --  Angle_Resolution : constant Float := 3.75;
    begin
       Put_Line ("Starting analysis.");
       while Has_Element (File_Curs) loop
@@ -67,69 +59,19 @@ package body Analysis is
          Data.Setting_A := Setting_A;
          Data.Setting_B := Setting_B;
          Process_Data (Outcomes, Data);
-         Print_Analysis_Item (Routine_Name & "Processed Data", Data);
+         --  Print_Analysis_Item (Routine_Name & "Processed Data", Data);
          Analysis_Data.Append (Data);
          Next (File_Curs);
       end loop;
-      Print_Analysis_Data (Analysis_Data);
 
-      --  Correlation (A, B, Unique_Diff, Eab);
+      New_Line;
+      Print_Analysis_Data (Analysis_Data);
 
       Put_Line ("Analysis complete.");
 
       --  Display_Results (A, B);
 
    end Analyse;
-
-   procedure Correlation (A, B : Result_Vector; Unique_Diff : Float_Vector;
-                          Eab  : out Float_Vector) is
-      use Float_Vector_Package;
-      Size        : constant Positive := Integer (Length (Unique_Diff));
-      Ax          : Float;
-      Bx          : Float;
-      A_Deg       : Float;
-      B_Deg       : Float;
-      Result_A    : Result_Data;
-      Result_B    : Result_Data;
-      Sel         : Boolean_Vector;
-      Curs_1      : Float_Vector_Package.Cursor := Unique_Diff.First;
-      Curs_2      : Float_Vector_Package.Cursor := Unique_Diff.First;
-      Corr_Matrix : Float_Matrix (1 .. Size, 1 .. Size) :=
-        (others => (others => 0.0));
-      Index_X     : Natural := 0;
-      Index_Y     : Natural := 0;
-   begin
-      while Has_Element (Curs_1) loop
-         Index_X := Index_X + 1;
-         Ax := Element  (Curs_1);
-         Sel := Boolean_Vector_Package.Empty_Vector;
-         while Has_Element (Curs_2) loop
-            Index_Y := Index_Y + 1;
-            Bx := Element  (Curs_2);           --  Abdeg
-            for k in 1 .. Size loop
-               Result_A := A (k);
-               Result_B := B (k);
-               A_Deg := Result_A.Setting;
-               B_Deg := Result_B.Setting;
-               Sel.Append ((A_Deg = Ax and then B_Deg = Bx) or else
-                             (B_Deg = Ax and then A_Deg = Bx) or else
-                             (360.0 - A_Deg = Ax and then 360.0 - B_Deg = Bx)
-                           or else
-                             (360.0 - B_Deg = Ax and then 360.0 - A_Deg = Bx));
-            end loop;
-
-            if Sum_Boolean (Sel) > 0 then
-               Corr_Matrix (Index_X, Index_Y) := Mean_Product (Sel, A, B);
-            else
-               Corr_Matrix (Index_Y, Index_X) :=
-                 Corr_Matrix (Index_X, Index_Y);
-            end if;
-            Next (Curs_2);
-         end loop;
-         Next (Curs_1);
-      end loop;
-
-   end Correlation;
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
@@ -154,7 +96,7 @@ package body Analysis is
       B_Sum     : Integer := 0;
       AB_Sum    : Integer := 0;
    begin
-      Print_Outcome_Vector ("Analysis.Process_Data", Outcomes, 1, 6);
+      --  Print_Outcome_Vector ("Analysis.Process_Data", Outcomes, 1, 6);
       Analysis_Data.E_QM := -Cos (Set_Diff);
       Analysis_Data.E_Stat := 2.0 * Set_Diff / Pi - 1.0;
 
@@ -198,11 +140,13 @@ package body Analysis is
       else
          Analysis_Data.A_Mean := 0.0;
       end if;
+
       if Num_B > 0 then
          Analysis_Data.B_Mean := Float (B_Sum) / Float (Num_B);
       else
          Analysis_Data.B_Mean := 0.0;
       end if;
+
       if Num_AB > 0 then
          Analysis_Data.AB_Mean := Float (AB_Sum) / Float (Num_AB);
       else

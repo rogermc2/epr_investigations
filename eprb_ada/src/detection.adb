@@ -6,7 +6,7 @@ with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;     use Maths;
-with Printing; use Printing;
+--  with Printing; use Printing;
 with Utilities; use Utilities;
 
 package body Detection is

@@ -39,7 +39,7 @@ begin
 
    Out_Files := Catagorize (To_String (Detection_A_File),
                             To_String (Detection_B_File), Settings);
-   Analyse (Out_Files, Settings);
+   Analyse (Out_Files);
 
 exception
    when Error : others =>
