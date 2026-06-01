@@ -16,11 +16,6 @@ with Printing; use Printing;
 package body Analysis is
 
    --  procedure Correlation (A, B : Result_Vector;
-   --  Unique_Diff : Float_Vector;
-   --                         Eab  : out Float_Vector);
-   --  procedure Expectation (A, B  : Result_Vector;
-   --  Unique_Diff : Float_Vector;
-   --                         Eab   : in out Float_Vector);
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out  Analysis_Record);
@@ -82,7 +77,6 @@ package body Analysis is
       Print_Analysis_Data (Analysis_Data);
 
       --  Correlation (A, B, Unique_Diff, Eab);
-      --  Expectation (A, B, Unique_Diff, Eab);
 
       Put_Line ("Analysis complete.");
 
@@ -139,36 +133,6 @@ package body Analysis is
       end loop;
 
    end Correlation;
-
-   procedure Expectation (A, B : Result_Vector; Unique_Diff : Float_Vector;
-                          Eab  : in out Float_Vector) is
-      use Boolean_Vector_Package;
-      use Float_Vector_Package;
-      Curs_1 : Float_Vector_Package.Cursor := Unique_Diff.First;
-      Curs_2 : Float_Vector_Package.Cursor := Unique_Diff.First;
-      Ax     : Float;
-      Nab    : Natural_Vector;
-      Sel    : Boolean_Vector;
-   begin
-      while Has_Element (Curs_1) loop
-         Ax := Element (Curs_1);
-         Curs_2 := Unique_Diff.First;
-         while Has_Element (Curs_2) loop
-            Sel.Append (Element (Curs_2) = Ax or else
-                        Element (Curs_2) = 360.0 - Ax);
-            Next (Curs_2);
-         end loop;
-
-         Nab.Append (Sum_Boolean (Sel));
-         if Nab.Last_Element > 0 then
-            Float_Vector_Package.Append (Eab, Mean_Product (Sel, A, B));
-         else
-            Float_Vector_Package.Append (Eab, 0.0);
-         end if;
-         Next (Curs_1);
-      end loop;
-
-   end Expectation;
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
                            Analysis_Data : in out Analysis_Record) is
