@@ -41,10 +41,10 @@ package body Combine_Data is
       while Row < Data'Length and then not End_Of_File (Data_ID) loop
          Row := Row + 1;
          Data (Row) := Get_Line (Data_ID);
-         if Row < 6 then
-            Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " & Integer'Image (Row)
-                                  & ",   !" & Data (Row) & "!");
-         end if;
+         --  if Row < 6 then
+         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " & Integer'Image (Row)
+         --                           & ",   !" & Data (Row) & "!");
+         --  end if;
       end loop;
 
       Close (Data_ID);
@@ -62,10 +62,10 @@ package body Combine_Data is
       Put (Out_ID, "A Arrival Time,B Arrival Time,A Setting,");
       Put_Line (Out_ID, "B Setting,A Polarization,B Polarization");
       for row in Data'Range loop
-         if Row > Data'Last - 4 then
-            Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " & Integer'Image (Row)
-                                  & ",   !" & Data (Row) & "!");
-         end if;
+         --  if Row > Data'Last - 4 then
+         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " & Integer'Image (Row)
+         --                           & ",   !" & Data (Row) & "!");
+         --  end if;
          Put_Line (Out_ID, Data (row));
       end loop;
 

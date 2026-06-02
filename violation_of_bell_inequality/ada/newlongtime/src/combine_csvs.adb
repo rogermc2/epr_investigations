@@ -91,23 +91,16 @@ package body Combine_CSVs is
 
       for row in Combined'Range loop
          aRow := Combined (row);
-         --  if row < 4 then
-         --     Put_Line (Routine_Name & " OEM_Data_A row: " & OEM_Data_A (row));
-         --     Put_Line (Routine_Name & "aRow: " & aRow);
-         --  end if;
          aRow (45 .. 46) := OEM_Data_A (row) (1 .. 2);  --  includes ,
          aRow (47 .. 48) := OEM_Data_B (row) (1 .. 2);
          aRow (49 .. 50) := OEM_Data_A (row) (3 .. 4);
          aRow (51 .. 51) := ",";
          aRow (52 .. 53) := OEM_Data_B (row) (3 .. 4);
          Combined (row) := aRow;
-         --  if row < 4 then
-         --     Put_Line (Routine_Name & "updated aRow: " & aRow);
-         --  end if;
       end loop;
 
-      Print_String53_Array (Routine_Name & "Combined", Combined,
-                            Combined'Last - 4, Combined'Last);
+      --  Print_String53_Array (Routine_Name & "Combined", Combined,
+      --                        Combined'Last - 4, Combined'Last);
       Save_Data (Combined_CSV, Combined);
       Put_Line (Routine_Name & "Combined_CSV length: " &
                   Integer'Image (Count_Text_File_Lines (Combined_CSV)) & " lines");
