@@ -9,10 +9,10 @@ with Utils; use Utils;
 procedure Longtime is
    Routine_Name : constant String := "Longtime ";
    A_Directory  : constant String :=
-     "../../newlongtime/alice_timetags/";
+     "../../newlongtime/alice_timetags/newlongtime/";
    B_Directory  : constant String :=
-     "../../newlongtime/bob_timetags/";
-   AV_Source     : constant String := A_Directory & "newlongtime1_v.dat";
+     "../../newlongtime/bob_timetags/newlongtime/";
+   AV_Source     : constant String := A_Directory & "newlongtime1_V.dat";
    BV_Source     : constant String := B_Directory & "newlongtime1_V.dat";
    AC_Source     : constant String := A_Directory & "newlongtime1_C.dat";
    BC_Source     : constant String := B_Directory & "newlongtime1_C.dat";
@@ -20,7 +20,7 @@ procedure Longtime is
    BV_Target     : constant String := "../B_Photon_Times.csv";
    AC_Target     : constant String := "../A_OEM.csv";
    BC_Target     : constant String := "../B_OEM.csv";
-   Combined_Data : constant String := "../Long_Dist.csv";
+   Combined_Data : constant String := "../combined.csv";
 begin
    Photon_Data (AV_Source, AV_Target);
    Photon_Data (BV_Source, BV_Target);

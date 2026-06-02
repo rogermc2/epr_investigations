@@ -13,7 +13,7 @@ with Types; use Types;
 --  with Utils; use Utils;
 
 procedure Statistical_Analysis is
-
+   use Sample_Data_Package;
    --  type Data_Vector is array (Positive range <>) of Float;
    --  type Quantile_Table is array (Positive range <>) of Float;
    --   package Float_Estimators is new Estimators (Float, Data_Vector);
@@ -79,6 +79,16 @@ begin
    New_Line;
    Put_Line ("- a.b,  b = a = 0: " & Float'Image (- Cos(0.0)));
    Put_Line ("- a.b,  b = a + 45 deg.: " & Float'Image (-Cos (Pi / 4.0)));
+   New_Line;
+
+   Put_Line ("Number of AB00 detections: " &
+               Integer'Image (Integer (Length (Detections_00))));
+   Put_Line ("Number of AB01 detections: " &
+               Integer'Image (Integer (Length (Detections_01))));
+   Put_Line ("Number of AB10 detections: " &
+               Integer'Image (Integer (Length (Detections_10))));
+   Put_Line ("Number of AB11 detections: " &
+               Integer'Image (Integer (Length (Detections_11))));
    New_Line;
 
    Valid_Data := False_Positives (OEM_00, False_Count);
