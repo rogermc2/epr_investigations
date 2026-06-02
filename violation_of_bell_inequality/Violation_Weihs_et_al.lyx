@@ -109,7 +109,7 @@ Using an auxiliary input of our time interval analyzers we synchronized Alice’
 
 \begin_layout Standard
 While the actual jitter between these pulses was measured in the laboratory to be less than 0.5 ns,
- the auxiliary input of the time interval analyzers had a resolution not better than 20 ns thus limiting synchronizatioaccuracy.
+ the auxiliary input of the time interval analyzers had a resolution not better than 20 ns thus limiting synchronization accuracy.
  
 \end_layout
 
@@ -123,7 +123,7 @@ It is important that this uncertainty was smaller than the dead time of our dete
 \end_layout
 
 \begin_layout Standard
-Coincidences were identified by calculating time diﬀerences between Alice’s and Bob’s time tags and comparing these with a time window (typically a few ns).
+Coincidences were identified by calculating time differences between Alice’s and Bob’s time tags and comparing these with a time window (typically a few ns).
  
 \end_layout
 

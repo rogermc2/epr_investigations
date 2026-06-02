@@ -24,6 +24,7 @@ package body Process_Data is
       Data         : Int_16;
       P_Setting    : String (1 .. 1);
       Line_Num     : Natural := 0;
+      Byte_Offset  : Integer := -2;
       Num_Invalid  : Natural := 0;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
@@ -34,12 +35,15 @@ package body Process_Data is
       while Line_Num < Source_Size - 1 and then
         not Stream_IO.End_Of_File (Source_ID) loop
          Line_Num := Line_Num + 1;
+         Byte_Offset := Byte_Offset + 2;
          Int_16'Read (Data_Stream, Data);
-         --  if Line_Num <= 8 then
-         --     Ada.Text_IO.Put_Line
-         --       (Routine_Name & "line " & Integer'Image (Line_Num) &
-         --          " Data: " & Int_16'Image (Data));
-         --  end if;
+         --  Bob newlongtime2_c.dat has corrupt values so mask valid bits
+         Data := Data and (768 or 512 or 256);
+         if Line_Num > 0 and then Line_Num < 8 then
+            Ada.Text_IO.Put_Line
+              (Routine_Name & "line, byte " & Integer'Image (Line_Num) & " " &
+                Integer'Image (Byte_Offset) & " Data: " & Int_16'Image (Data));
+         end if;
 
          --  Big-Endian (BE) stores the most significant byte first.
          --  Apparatus settings and outcomes for each photon detection is
@@ -64,7 +68,7 @@ package body Process_Data is
             Num_Invalid := Num_Invalid + 1;
             if Num_Invalid < 12 then
                Ada.Text_IO.Put_Line
-                 (Routine_Name & "line " & Integer'Image (Line_Num) &
+                 (Routine_Name & "byte offset " & Integer'Image (Byte_Offset) &
                     " Invalid Val: " & Int_16'Image (Data));
             end if;
          end if;

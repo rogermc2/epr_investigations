@@ -3,7 +3,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Combine_CSVs; use Combine_CSVs;
+--  with Combine_CSVs; use Combine_CSVs;
 with Data_Selection; use Data_Selection;
 with Process_Data; use Process_Data;
 with Types; use Types;
@@ -32,9 +32,9 @@ procedure Match_Times is
    --  I find better results with windows 40-50 ns wide.
    --  Width            : constant Float := 5.0 * ns;
 
+   --  Width            : constant Float := 5.0 * ns;
    Width            : constant Float := 5.0 * ns;
-   --  Width            : constant Float := 2.0 * ns;
-   Delta_A          : constant Float := 3.8 * ns;  --  gives ?the most detections
+   Delta_Val        : constant Float := 0.0 * ns;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -64,7 +64,7 @@ begin
         Integer'Image (Count_Text_File_Lines (Photon_Times_B)) & " lines");
 
    Match_Photon_Times (Photon_Times_A, Photon_Times_B, Pairs,
-                       Delta_A, Width, Num_Found, Selected_Pairs, Data_Length);
+                       Delta_Val, Width, Num_Found, Selected_Pairs, Data_Length);
    Select_OEM_Data (OEM_A, OEM_B, OEM_aa, OEM_ab, OEM_ba, OEM_bb,
                     A_Counts, B_Counts, Selected_Pairs);
    New_Line;
@@ -82,7 +82,7 @@ begin
    Put_Line (Routine_Name & "Number of bb matches :" &
                Integer'Image (bb_Matches));
    New_Line;
-   Find_Raw_Window_Width (Photon_Times_A, Photon_Times_B, Delta_A,
+   Find_Raw_Window_Width (Photon_Times_A, Photon_Times_B, Delta_Val,
                           Min_Width, Max_Width);
 
    Put_Line (Routine_Name & "raw data minimun and maximum widths: " &
@@ -94,5 +94,6 @@ begin
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
    --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb, To_String (Combined_Data), Data_Length);
    Put_Line (Routine_Name & "width: " & Float'Image (Width) & " ns");
+   Put_Line (Routine_Name & "delta: " & Float'Image (Delta_Val) & " ns");
 
 end Match_Times;

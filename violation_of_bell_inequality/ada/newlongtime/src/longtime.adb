@@ -12,10 +12,10 @@ procedure Longtime is
      "../../newlongtime/alice_timetags/newlongtime/";
    B_Directory  : constant String :=
      "../../newlongtime/bob_timetags/newlongtime/";
-   AV_Source     : constant String := A_Directory & "newlongtime1_V.dat";
-   BV_Source     : constant String := B_Directory & "newlongtime1_V.dat";
-   AC_Source     : constant String := A_Directory & "newlongtime1_C.dat";
-   BC_Source     : constant String := B_Directory & "newlongtime1_C.dat";
+   AV_Source     : constant String := A_Directory & "newlongtime2_V.dat";
+   BV_Source     : constant String := B_Directory & "newlongtime2_V.dat";
+   AC_Source     : constant String := A_Directory & "newlongtime2_C.dat";
+   BC_Source     : constant String := B_Directory & "newlongtime2_C.dat";
    AV_Target     : constant String := "../A_Photon_Times.csv";
    BV_Target     : constant String := "../B_Photon_Times.csv";
    AC_Target     : constant String := "../A_OEM.csv";
