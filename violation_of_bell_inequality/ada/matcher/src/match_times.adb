@@ -30,9 +30,7 @@ procedure Match_Times is
    --  From A Close Look at the EPR Data of Weihs et al:
    --  G. Weihs used detection windows of 4-6 ns to identify coincidences.
    --  I find better results with windows 40-50 ns wide.
-   --  Width            : constant Float := 5.0 * ns;
 
-   --  Width            : constant Float := 5.0 * ns;
    Width            : constant Float := 5.0 * ns;
    Delta_Val        : constant Float := 0.0 * ns;
    --  **** For normal use set Data_Length to 0
