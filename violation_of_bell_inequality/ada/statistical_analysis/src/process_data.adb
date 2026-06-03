@@ -1,4 +1,5 @@
 
+with Ada.Numerics;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps;
@@ -9,7 +10,7 @@ package body Process_Data is
    function Sample_Val (Result : String_2) return UV;
 
    function Check
-     (OEM_ID : File_Type; Eq : Boolean;
+     (OEM_ID                  : File_Type; Eq  : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
       aLine            : String_8;
       A_Result         : String_2;
@@ -50,22 +51,23 @@ package body Process_Data is
 
    end Check;
 
-   function EAB (theta : float) return float is
+   function EAB (theta : Float) return Float is
+      use Ada.Numerics;
    begin
-      return 2.0 * theta - 1.0;
+      return 2.0 * theta / Pi - 1.0;
    end EAB;
 
    function False_Positives (OEM_File : String;  False_Count : out Natural)
-                          return Sample_Data_List is
+                             return Sample_Data_List is
       use Ada.Strings;
       use Ada.Strings.Fixed;
       use Ada.Strings.Maps;
-      Routine_Name : constant String := "Process_Data.False_Positives ";
+      Routine_Name     : constant String := "Process_Data.False_Positives ";
       OEM_ID           : File_Type;
       First            : Positive;
       Last             : Natural;
       Header           : String_11;
-      True_Count      : Natural;
+      True_Count       : Natural;
       Valid_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);
@@ -99,7 +101,6 @@ package body Process_Data is
       B_Result   : String_2;
       Sample     : Sample_Data_Record;
       Detections : Sample_Data_List;
-      Count      : Natural := 0;
    begin
       Open (OEM_ID, In_File, OEM);
       Create (a_ID, Out_File, a_File);
@@ -125,7 +126,7 @@ package body Process_Data is
 
    end Get_Detections;
 
-   procedure Sample_Means (Data : Sample_Data_List;
+   procedure Sample_Means (Data                    : Sample_Data_List;
                            Mean_A, Mean_B, Mean_AB : out Float) is
       use Sample_Data_Package;
       A      : UV;
@@ -145,7 +146,7 @@ package body Process_Data is
          Sum_A := Sum_A + A;
          Sum_B := Sum_B + B;
          Sum_AB := Sum_AB + A * B;
-         Curs := Next(Curs);
+         Curs := Next (Curs);
       end loop;
 
       Mean_A := Float (Sum_A) / Float (Count);
@@ -160,7 +161,7 @@ package body Process_Data is
       if Result = "+1" then
          Val := 1;
       elsif Result = "-1" then
-       Val := -1;
+         Val := -1;
       else
          Put_Line ("Process_Data.Sample_Val, invalid data: " & Result);
       end if;

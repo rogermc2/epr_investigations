@@ -1,20 +1,15 @@
 
 with Ada.Numerics; use Ada.Numerics;  --  for Pi
 with Ada.Numerics.Elementary_Functions;
-use Ada.Numerics.Elementary_Functions;  -- Cos
+use Ada.Numerics.Elementary_Functions;  -- for Cos
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Estimators;
 with Process_Data; use Process_Data;
 with Printing; use Printing;
 with Types; use Types;
 
---  with Maths; use Maths;
---  with Utils; use Utils;
-
 procedure Statistical_Analysis is
    use Sample_Data_Package;
-   --  type Data_Vector is array (Positive range <>) of Float;
    --  type Quantile_Table is array (Positive range <>) of Float;
    --   package Float_Estimators is new Estimators (Float, Data_Vector);
    --   package Float_Samples is new
@@ -35,10 +30,10 @@ procedure Statistical_Analysis is
    a11_Data      : constant String := Single_Dir & "a11.csv";
    b11_Data      : constant String := Single_Dir & "b11.csv";
 
-   Detections_00 : constant Sample_Data_List := Get_Detections (OEM_00, a00_Data, b00_data);
-   Detections_01 : constant Sample_Data_List := Get_Detections (OEM_01, a01_Data, b01_data);
-   Detections_10 : constant Sample_Data_List := Get_Detections (OEM_10, a10_Data, b10_data);
-   Detections_11 : constant Sample_Data_List := Get_Detections (OEM_11, a11_Data, b11_data);
+   Detections_00     : constant Sample_Data_List := Get_Detections (OEM_00, a00_Data, b00_data);
+   Detections_01     : constant Sample_Data_List := Get_Detections (OEM_01, a01_Data, b01_data);
+   Detections_10     : constant Sample_Data_List := Get_Detections (OEM_10, a10_Data, b10_data);
+   Detections_11     : constant Sample_Data_List := Get_Detections (OEM_11, a11_Data, b11_data);
    Mean_A_00         : Float;
    Mean_A_01         : Float;
    Mean_A_10         : Float;
@@ -69,15 +64,17 @@ begin
                      Detections_11, Det_A, Det_B);
 
    Put_Line ("Overall A Sample_Mean: " &
-               Float'Image ((Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0));
+               Float'Image
+               ((Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0));
    Put_Line ("Overall B Sample_Mean: " &
-               Float'Image ((Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0));
+               Float'Image
+               ((Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0));
 
    New_Line;
    Put_Line ("E(AB) b = a: " & Float'Image (EAB (0.0)));
    Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (EAB (Pi / 4.0)));
    New_Line;
-   Put_Line ("- a.b,  b = a = 0: " & Float'Image (- Cos(0.0)));
+   Put_Line ("- a.b,  b = a: " & Float'Image (- Cos (0.0)));
    Put_Line ("- a.b,  b = a + 45 deg.: " & Float'Image (-Cos (Pi / 4.0)));
    New_Line;
 

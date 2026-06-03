@@ -1,5 +1,4 @@
 
---  with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
@@ -90,7 +89,8 @@ begin
    Print_xxCounts ("A counts", A_Counts);
    Print_xxCounts ("B counts", B_Counts);
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
-   --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb, To_String (Combined_Data), Data_Length);
+   --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb,
+   --   To_String (Combined_Data), Data_Length);
    Put_Line (Routine_Name & "width: " & Float'Image (Width) & " ns");
    Put_Line (Routine_Name & "delta: " & Float'Image (Delta_Val) & " ns");
 
