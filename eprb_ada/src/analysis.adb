@@ -117,9 +117,9 @@ package body Analysis is
                Num_Ap := Num_Ap + 1;
             else
                Num_Am := Num_Am + 1;
-            endif;
+            end if;
             A_Sum := A_Sum + A;
-            
+
             if B /= 0 then
                AB_Sum := AB_Sum + A * B;
                if A > 0 then
@@ -137,15 +137,19 @@ package body Analysis is
                end if;
 
                if A * B > 0 then
-               Num_ABp := Num_ABp + 1;
+                  Num_ABp := Num_ABp + 1;
                elsif A * B < 0 then
-               Num_ABm := Num_ABm + 1;
+                  Num_ABm := Num_ABm + 1;
                end if;
             end if;
          end if;
 
          if B /= 0 then
-            Num_B := Num_B + 1;
+            if B > 0 then
+               Num_Bp := Num_Bp + 1;
+            else
+               Num_Bm := Num_Bm + 1;
+            end if;
             B_Sum := B_Sum + B;
          end if;
 
@@ -153,19 +157,19 @@ package body Analysis is
 
       end loop;
 
-      if Num_A > 0 then
+      if Num_Ap + Num_Am > 0 then
          Analysis_Data.A_Mean := Float (A_Sum) / Float (Num_Ap + Num_Am);
       else
          Analysis_Data.A_Mean := 0.0;
       end if;
 
-      if Num_B > 0 then
+      if Num_Bp + Num_Bm > 0 then
          Analysis_Data.B_Mean := Float (B_Sum) / Float (Num_Bp + Num_Bm);
       else
          Analysis_Data.B_Mean := 0.0;
       end if;
 
-      if Num_AB > 0 then
+      if Num_ABp + Num_ABm > 0 then
          Analysis_Data.AB_Mean := Float (AB_Sum) / Float (Num_ABp + Num_ABm);
       else
          Analysis_Data.AB_Mean := 0.0;
@@ -181,7 +185,6 @@ package body Analysis is
 
    end Process_Data;
 
-
    --  Correlation Coefficient:
    --  (E (a, b) = {N_{ + +} + N_{--} - N_{+-} - N_{-+} /N_{total
    procedure Probability_Analysis (Analysis_Data : Analysis_Vector) is
@@ -189,7 +192,7 @@ package body Analysis is
       Curs : Cursor := Analysis_Data.First;
       Eab  : Float_Vector;
 
-      function Calculate_Eab (Data : Analysis_Record) is return Float;
+      function Calculate_Eab (Data : Analysis_Record) return Float is
          Sum_N : constant Float :=
            Float (Data.Npp + Data.Npm + Data.Nmp + Data.Nmm);
          Ppp   : constant Float := Float (Data.Npp) / Sum_N;

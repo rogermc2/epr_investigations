@@ -37,9 +37,12 @@ package Analysis_Types is
    end record;
 
    type Analysis_Record is record
-      N_A       : Natural := 0;
-      N_B       : Natural := 0;
-      N_AB      : Natural := 0;
+      Num_Ap    : Natural := 0;
+      Num_Am    : Natural := 0;
+      Num_Bp    : Natural := 0;
+      Num_Bm    : Natural := 0;
+      Num_ABp   : Natural := 0;
+      Num_ABm   : Natural := 0;
       A_Mean    : Float := 0.0;
       B_Mean    : Float := 0.0;
       AB_Mean   : Float := 0.0;
