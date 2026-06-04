@@ -27,6 +27,7 @@
 *.db*
 *.cgpr
 *.pyc
+*.bak
 *lyx~
 *.lyx#
 *.DS_Store
@@ -39,5 +40,5 @@ access token.txt
 *sublime-project
 *.code-workspace
 .Rproj.user
-
+/.spyproject/
 

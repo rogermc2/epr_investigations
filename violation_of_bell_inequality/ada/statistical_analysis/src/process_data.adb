@@ -51,11 +51,11 @@ package body Process_Data is
 
    end Check;
 
-   function EAB (theta : Float) return Float is
+   function Statistical_EAB (theta : Float) return Float is
       use Ada.Numerics;
    begin
       return 2.0 * theta / Pi - 1.0;
-   end EAB;
+   end Statistical_EAB;
 
    function False_Positives (OEM_File : String;  False_Count : out Natural)
                              return Sample_Data_List is

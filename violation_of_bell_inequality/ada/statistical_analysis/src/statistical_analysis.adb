@@ -71,8 +71,8 @@ begin
                ((Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0));
 
    New_Line;
-   Put_Line ("E(AB) b = a: " & Float'Image (EAB (0.0)));
-   Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (EAB (Pi / 4.0)));
+   Put_Line ("E(AB) b = a: " & Float'Image (Statistical_EAB (0.0)));
+   Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (Statistical_EAB (Pi / 4.0)));
    New_Line;
    Put_Line ("- a.b,  b = a: " & Float'Image (- Cos (0.0)));
    Put_Line ("- a.b,  b = a + 45 deg.: " & Float'Image (-Cos (Pi / 4.0)));

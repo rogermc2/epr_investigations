@@ -90,9 +90,12 @@ package body Analysis is
       anOutcome : Outcomes_Record;
       A         : Integer;
       B         : Integer;
-      Num_A     : Natural := 0;
-      Num_B     : Natural := 0;
-      Num_AB    : Natural := 0;
+      Num_Ap    : Natural := 0;
+      Num_Am    : Natural := 0;
+      Num_Bp    : Natural := 0;
+      Num_Bm    : Natural := 0;
+      Num_ABp   : Natural := 0;
+      Num_ABm   : Natural := 0;
       Npp       : Natural := 0;
       Npm       : Natural := 0;
       Nmp       : Natural := 0;
@@ -110,10 +113,14 @@ package body Analysis is
          A := anOutcome.Outcome_A;
          B := anOutcome.Outcome_B;
          if A /= 0 then
-            Num_A := Num_A + 1;
+            if A > 0 then
+               Num_Ap := Num_Ap + 1;
+            else
+               Num_Am := Num_Am + 1;
+            endif;
             A_Sum := A_Sum + A;
+            
             if B /= 0 then
-               Num_AB := Num_AB + 1;
                AB_Sum := AB_Sum + A * B;
                if A > 0 then
                   if B > 0 then
@@ -128,6 +135,12 @@ package body Analysis is
                      Nmm := Nmm + 1;
                   end if;
                end if;
+
+               if A * B > 0 then
+               Num_ABp := Num_ABp + 1;
+               elsif A * B < 0 then
+               Num_ABm := Num_ABm + 1;
+               end if;
             end if;
          end if;
 
@@ -141,19 +154,19 @@ package body Analysis is
       end loop;
 
       if Num_A > 0 then
-         Analysis_Data.A_Mean := Float (A_Sum) / Float (Num_A);
+         Analysis_Data.A_Mean := Float (A_Sum) / Float (Num_Ap + Num_Am);
       else
          Analysis_Data.A_Mean := 0.0;
       end if;
 
       if Num_B > 0 then
-         Analysis_Data.B_Mean := Float (B_Sum) / Float (Num_B);
+         Analysis_Data.B_Mean := Float (B_Sum) / Float (Num_Bp + Num_Bm);
       else
          Analysis_Data.B_Mean := 0.0;
       end if;
 
       if Num_AB > 0 then
-         Analysis_Data.AB_Mean := Float (AB_Sum) / Float (Num_AB);
+         Analysis_Data.AB_Mean := Float (AB_Sum) / Float (Num_ABp + Num_ABm);
       else
          Analysis_Data.AB_Mean := 0.0;
       end if;
@@ -174,8 +187,9 @@ package body Analysis is
    procedure Probability_Analysis (Analysis_Data : Analysis_Vector) is
       use Analysis_Vector_Package;
       Curs : Cursor := Analysis_Data.First;
+      Eab  : Float_Vector;
 
-      procedure Analyse_Data (Data : Analysis_Record) is
+      function Calculate_Eab (Data : Analysis_Record) is return Float;
          Sum_N : constant Float :=
            Float (Data.Npp + Data.Npm + Data.Nmp + Data.Nmm);
          Ppp   : constant Float := Float (Data.Npp) / Sum_N;
@@ -183,12 +197,24 @@ package body Analysis is
          Pmp   : constant Float := Float (Data.Nmp) / Sum_N;
          Pmm   : constant Float := Float (Data.Nmm) / Sum_N;
       begin
+         return Ppp - Ppm - Pmp + Pmm;
+      end Calculate_Eab;
+
+      procedure Single_Sided_Probabilities (Data : Analysis_Record) is
+         Sum_A : constant Float := Float (Data.Num_Ap + Data.Num_Am);
+         Sum_B : constant Float := Float (Data.Num_Bp + Data.Num_Bm);
+         PAp   : constant Float := Float (Data.Num_Ap) / Sum_A;
+         PAm   : constant Float := Float (Data.Num_Am) / Sum_A;
+         PBp   : constant Float := Float (Data.Num_Bp) / Sum_B;
+         PBm   : constant Float := Float (Data.Num_Bm) / Sum_B;
+      begin
          null;
-      end Analyse_Data;
+      end Single_Sided_Probabilities;
 
    begin
       while Has_Element (Curs) loop
-         Analyse_Data (Element (Curs));
+         Eab.Append (Calculate_Eab (Element (Curs)));
+         Put_Line ("Eab:" & Float'Image (Eab.Last_Element));
          Next (Curs);
       end loop;
 

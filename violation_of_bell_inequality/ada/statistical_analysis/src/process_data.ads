@@ -3,7 +3,7 @@ with Types; use Types;
 
 package Process_Data is
 
-   function EAB (theta : float) return float;
+   function Statistical_EAB (theta : float) return Float;
    function False_Positives (OEM_File : String; False_Count : out Natural)
                              return Sample_Data_List;
    function Get_Detections (OEM, a_File, b_File : String) return Sample_Data_List;
