@@ -8,4 +8,4 @@ licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = []
 
-executables = ["eprb"]
+executables = ["eprb_sim"]

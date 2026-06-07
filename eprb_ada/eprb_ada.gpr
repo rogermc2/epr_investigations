@@ -5,7 +5,7 @@ project Eprb_Ada is
    for Object_Dir use "obj/" & Eprb_Ada_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use ".";
-   for Main use ("eprb.adb");
+   for Main use ("eprb_sim.adb");
 
    package Compiler is
       for Default_Switches ("Ada") use Eprb_Ada_Config.Ada_Compiler_Switches;

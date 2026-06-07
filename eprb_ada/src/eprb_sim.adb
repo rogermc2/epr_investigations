@@ -12,7 +12,7 @@ with Types; use Types;
 
 with Vector_Functions; use Vector_Functions;
 
-procedure EPRB is
+procedure EPRB_Sim is
    --  Set stack size:  ulimit -s 64000 to prevent stack overflow
    use Settings_Vector_Package;
    Routine_Name      : constant String := "EPRB ";
@@ -27,6 +27,7 @@ procedure EPRB is
    Detection_B_File  : Unbounded_String;
    Out_Files         : Unbounded_String_Vector;
 begin
+   Put_Line ("EPRB SIMULATION");
    Put_Line ("Set stack size: ulimit -s 64000");
    Print_Settings ("Settings (degrees)", Settings);
    To_Radians (Settings);
@@ -41,9 +42,11 @@ begin
                             To_String (Detection_B_File), Settings);
    Analyse (Out_Files);
 
+   Put_Line ("EPRB SIMULATION COMPLETE");
+
 exception
    when Error : others =>
       Put_Line (Routine_Name & "Exception information:  " &
                   Exception_Information (Error));
 
-end EPRB;
+end EPRB_Sim;
