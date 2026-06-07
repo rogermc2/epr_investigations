@@ -62,11 +62,11 @@ package body Printing is
          Put  ("    ");
       end if;
 
-      Put (Analysis_Data.A_Mean, 1, 2, 0);
+      Put (Analysis_Data.A_Mean, 1, 3, 0);
       Put ("   ");
-      Put (Analysis_Data.B_Mean, 1, 2, 0);
+      Put (Analysis_Data.B_Mean, 1, 3, 0);
       Put ("     ");
-      Put (Analysis_Data.AB_Mean, 1, 2, 0);
+      Put (Analysis_Data.AB_Mean, 1, 3, 0);
       Put ("     ");
       Put (Analysis_Data.E_Stat, 1, 2, 0);
       Put ("      ");
