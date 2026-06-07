@@ -8,7 +8,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Analysis.Support; use Analysis.Support;
 with Analysis_Types; use Analysis_Types;
 --  with Display; use Display;
---  with Maths; use Maths;
+with Maths;
 with Printing; use Printing;
 --  with Utilities; use Utilities;
 --  with Vector_Functions; use Vector_Functions;
@@ -68,9 +68,7 @@ package body Analysis is
 
       New_Line;
       Print_Analysis_Data (Analysis_Data);
-
       Probability_Analysis (Analysis_Data);
-
       Put_Line ("Analysis complete.");
 
       --  Display_Results (A, B);
@@ -188,9 +186,11 @@ package body Analysis is
    --  Correlation Coefficient:
    --  (E (a, b) = {N_{ + +} + N_{--} - N_{+-} - N_{-+} /N_{total
    procedure Probability_Analysis (Analysis_Data : Analysis_Vector) is
+      use Maths;
       use Analysis_Vector_Package;
-      Curs : Cursor := Analysis_Data.First;
-      Eab  : Float_Vector;
+      Curs    : Cursor := Analysis_Data.First;
+      aRecord : Analysis_Record;
+      Eab     : Float_Vector;
 
       function Calculate_Eab (Data : Analysis_Record) return Float is
          Sum_N : constant Float :=
@@ -216,8 +216,11 @@ package body Analysis is
 
    begin
       while Has_Element (Curs) loop
-         Eab.Append (Calculate_Eab (Element (Curs)));
-         Put_Line ("Eab:" & Float'Image (Eab.Last_Element));
+         aRecord := Element (Curs);
+         Eab.Append (Calculate_Eab (aRecord));
+         Put_Line (Float'Image (To_Degrees (aRecord.Setting_A)) & ",  " &
+             Float'Image (To_Degrees (aRecord.Setting_B)) &
+             ",  Eab:" & Float'Image (Eab.Last_Element));
          Next (Curs);
       end loop;
 

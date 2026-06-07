@@ -1,0 +1,971 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+To calculate the standard error for a dataset containing 
+\begin_inset Formula $\{-1,+1\}$
+\end_inset
+
+ values the formula changes slightly from the standard 
+\begin_inset Formula $\{0,1\}$
+\end_inset
+
+ binary format because the variance of the data is 
+\begin_inset Formula $1-\bar{x}^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For your specific subset of size 
+\begin_inset Formula $n=1270$
+\end_inset
+
+ with a sample mean of 
+\begin_inset Formula $\bar{x}=-0.8$
+\end_inset
+
+,
+ the standard error (SE) is 
+\begin_inset Formula $0.0168$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Step-by-Step Calculation
+\end_layout
+
+\begin_layout Standard
+1.
+ Calculate the Sample Variance:
+ 
+\end_layout
+
+\begin_layout Standard
+For any dataset containing only 
+\begin_inset Formula $-1$
+\end_inset
+
+ and 
+\begin_inset Formula $+1$
+\end_inset
+
+,
+ the variance simplifies perfectly to 
+\begin_inset Formula $1-\bar{x}^{2}$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{Variance} & = & 1-(-0.8)^{2}=1-0.64=0.36
+\end{eqnarray*}
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+2.
+ Divide by Sample Size (
+\begin_inset Formula $n$
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+Divide this variance by your total number of observations.
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{0.36}{1270} & \approx & 0.00028346
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+3.
+ Take the Square Root:
+ 
+\end_layout
+
+\begin_layout Standard
+The square root of this value gives you the Standard Error.
+\begin_inset Formula 
+\begin{eqnarray*}
+SE & = & \sqrt{0.00028346}\approx\mathbf{0.0168}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Key Statistical Insight & Anomaly
+\end_layout
+
+\begin_layout Standard
+There is a major statistical anomaly between your sample mean and your expected value:
+\end_layout
+
+\begin_layout Itemize
+The Proportion:
+\begin_inset Newline newline
+\end_inset
+
+ A mean of 
+\begin_inset Formula $-0.8$
+\end_inset
+
+ implies that 
+\begin_inset Formula $10\%$
+\end_inset
+
+ of your data points are 
+\begin_inset Formula $+1$
+\end_inset
+
+ and 
+\begin_inset Formula $90\%$
+\end_inset
+
+ are 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The Expectation:
+\begin_inset Newline newline
+\end_inset
+
+ If the true theoretical expectation value is exactly 
+\begin_inset Formula $-1$
+\end_inset
+
+ it means 
+\begin_inset Formula $100\%$
+\end_inset
+
+ of the population must be 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+ If the population expectation is 
+\begin_inset Formula $-1$
+\end_inset
+
+,
+ the true variance is 
+\begin_inset Formula $0$
+\end_inset
+
+ meaning it is mathematically impossible to sample a 
+\begin_inset Formula $+1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The Z-Score:
+ 
+\begin_inset Newline newline
+\end_inset
+
+Testing how far your sample mean (
+\begin_inset Formula $-0.8$
+\end_inset
+
+) is from the expectation (
+\begin_inset Formula $-1$
+\end_inset
+
+) yields an enormous Z-score:
+\begin_inset Formula 
+\begin{eqnarray*}
+Z & = & \frac{-0.8-(-1)}{0.0168}\approx11.9
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A Z-score of nearly 
+\begin_inset Formula $12$
+\end_inset
+
+ means that your sample mean is 12 standard errors away from the expected value.
+ 
+\end_layout
+
+\begin_layout Standard
+This indicates that either your sample is a structural departure from the expected model or that the theoretical expectation of 
+\begin_inset Formula $-1$
+\end_inset
+
+ does not apply to this system.
+\end_layout
+
+\begin_layout Standard
+How to proceed
+\end_layout
+
+\begin_layout Standard
+If you want to evaluate the other three subsets,
+ let me know:
+\end_layout
+
+\begin_layout Standard
+* What are their sample sizes (
+\begin_inset Formula $n$
+\end_inset
+
+)?
+\end_layout
+
+\begin_layout Standard
+* What are their sample means (
+\begin_inset Formula $\bar{x}$
+\end_inset
+
+)?
+\end_layout
+
+\begin_layout Standard
+* Are these datasets part of a physics/spin model experiment (like an Ising model)?
+\end_layout
+
+\begin_layout Standard
+I can calculate the standard errors for the remaining sets and help you interpret the variance!
+\end_layout
+
+\begin_layout LyX-Code
+n = 1270,
+ mean = -0.8
+\end_layout
+
+\begin_layout LyX-Code
+Variance for +1/-1 data:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula 
+\begin{eqnarray*}
+Var(X) & = & E[X^{2}]-(E[X])^{2}\\
+ & = & 1-mean^{2}variance\\
+ & = & 1-(mean**2)se\\
+ & = & \sqrt{variance/n}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+print(f"Variance:
+ {variance}")
+\end_layout
+
+\begin_layout LyX-Code
+print(f"SE:
+ {se}")
+\end_layout
+
+\begin_layout Section
+Hypothesis Test
+\end_layout
+
+\begin_layout Standard
+To run an hypothesis test on this dataset it is best to shift from the 
+\begin_inset Formula $\{-1,+1\}$
+\end_inset
+
+ scale to a proportion scale treating the 
+\begin_inset Formula $+1$
+\end_inset
+
+ values as "errors" or "invalid data".
+\end_layout
+
+\begin_layout Standard
+As the sample mean is 
+\begin_inset Formula $-0.8$
+\end_inset
+
+ your sample proportion of invalid data (
+\begin_inset Formula $\hat{p}$
+\end_inset
+
+) is exactly 
+\begin_inset Formula $10\%$
+\end_inset
+
+ (or 
+\begin_inset Formula $0.10$
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+Your sample size (
+\begin_inset Formula $n$
+\end_inset
+
+) is 1270.
+\end_layout
+
+\begin_layout Standard
+Here is how to set up and execute the hypothesis test depending on what you want to prove.
+\end_layout
+
+\begin_layout Subsection
+Scenario A:
+\end_layout
+
+\begin_layout Standard
+Testing against the perfect theoretical model (0% errors):
+\end_layout
+
+\begin_layout Standard
+To test whether or not that data perfectly matches the expectation value of 
+\begin_inset Formula $-1$
+\end_inset
+
+ (meaning a 
+\begin_inset Formula $0\%$
+\end_inset
+
+ error rate) a standard Z-test fails because a population with zero variance yields a division-by-zero error.
+ 
+\end_layout
+
+\begin_layout Standard
+Instead use an Exact Binomial Test.
+\end_layout
+
+\begin_layout Itemize
+Null Hypothesis (
+\begin_inset Formula $H_{0}$
+\end_inset
+
+):
+ 
+\begin_inset Newline newline
+\end_inset
+
+The true error rate is 
+\begin_inset Formula $0\%$
+\end_inset
+
+ (
+\begin_inset Formula $p=0$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Alternative Hypothesis (
+\begin_inset Formula $H_{a}$
+\end_inset
+
+):
+ 
+\begin_inset Newline newline
+\end_inset
+
+The true error rate is greater than 
+\begin_inset Formula $0\%$
+\end_inset
+
+ (
+\begin_inset Formula $p>0$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+The Math:
+\begin_inset Newline newline
+\end_inset
+
+ Under 
+\begin_inset Formula $H_{0}$
+\end_inset
+
+,
+ the probability of observing even a single 
+\begin_inset Formula $+1$
+\end_inset
+
+ is exactly zero.
+\end_layout
+
+\begin_layout Itemize
+Conclusion:
+ 
+\begin_inset Newline newline
+\end_inset
+
+Because 127 invalid data points (
+\begin_inset Formula $10\%$
+\end_inset
+
+ of 1270) were observed the 
+\begin_inset Formula $p$
+\end_inset
+
+-value is strictly 0.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Therefore the null hypothesis must be rejected with absolute certainty as the process is generating a statistically significant number of errors.
+\end_layout
+
+\begin_layout Subsection
+Scenario B:
+ 
+\end_layout
+
+\begin_layout Standard
+Test against an acceptable error threshold.
+\end_layout
+
+\begin_layout Standard
+In real-world systems a 
+\begin_inset Formula $0\%$
+\end_inset
+
+ error rate is often impossible.
+\end_layout
+
+\begin_layout Standard
+Instead,
+ test whether the 
+\begin_inset Formula $10\%$
+\end_inset
+
+ error rate is significantly worse than an "acceptable" baseline or equipment tolerance (for example,
+ a maximum allowable error rate of 
+\begin_inset Formula $5\%$
+\end_inset
+
+ or 
+\begin_inset Formula $p_{0}=0.05$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+To perform a One-Sample Z-Test for Proportions using a $5
+\backslash
+%$ baseline:
+\end_layout
+
+\begin_layout Subsubsection
+State the Hypotheses
+\end_layout
+
+\begin_layout Itemize
+Null Hypothesis (
+\begin_inset Formula $H_{0}$
+\end_inset
+
+):
+ 
+\begin_inset Formula $p=0.05$
+\end_inset
+
+ (The error rate is within the acceptable 
+\begin_inset Formula $5\%$
+\end_inset
+
+ limit).
+\end_layout
+
+\begin_layout Itemize
+Alternative Hypothesis (
+\begin_inset Formula $H_{a}$
+\end_inset
+
+):
+ 
+\begin_inset Formula $p>0.05$
+\end_inset
+
+ (The error rate significantly exceeds the 
+\begin_inset Formula $5\%$
+\end_inset
+
+ limit).
+\end_layout
+
+\begin_layout Subsubsection
+Calculate the Standard Error under the Null Hypothesis
+\end_layout
+
+\begin_layout Standard
+Use the baseline value (
+\begin_inset Formula $p_{0}=0.05$
+\end_inset
+
+) to calculate the expected standard error:
+\begin_inset Formula 
+\begin{eqnarray*}
+SE_{0} & = & \sqrt{\frac{p_{0}(1-p_{0})}{n}}=\sqrt{\frac{0.05\times0.95}{1270}}=\sqrt{\frac{0.0475}{1270}}\approx0.00612
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Calculate the Test Statistic (Z-score)
+\end_layout
+
+\begin_layout Standard
+Determine how many standard errors the sample proportion (
+\begin_inset Formula $\hat{p}=0.10$
+\end_inset
+
+) sits away from the baseline (
+\begin_inset Formula $p_{0}=0.05$
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{eqnarray*}
+Z & = & \frac{\hat{p}-p_{0}}{SE_{0}}=\frac{0.10-0.05}{0.00612}\approx\mathbf{8.17}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Determine the 
+\begin_inset Formula $p$
+\end_inset
+
+-value and Conclude
+\end_layout
+
+\begin_layout Standard
+A Z-score of 
+\begin_inset Formula $8.17$
+\end_inset
+
+ is exceptionally high.
+ 
+\end_layout
+
+\begin_layout Standard
+For context,
+ any Z-score above 
+\begin_inset Formula $1.96$
+\end_inset
+
+ is statistically significant at the 
+\begin_inset Formula $95\%$
+\end_inset
+
+ confidence level.
+ 
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Formula $p$
+\end_inset
+
+-value here is practically zero (
+\begin_inset Formula $p<0.00001$
+\end_inset
+
+),
+ meaning that the null hypothesis should be rejected.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Formula $10\%$
+\end_inset
+
+ error rate is overwhelmingly higher than the 
+\begin_inset Formula $5\%$
+\end_inset
+
+ threshold,
+ ruling out random chance.
+\end_layout
+
+\begin_layout Subsubsection
+How to proceed
+\end_layout
+
+\begin_layout Standard
+To tailor this test precisely to your research let me know:
+\end_layout
+
+\begin_layout Standard
+* Do you have a specific acceptable error threshold (like 
+\begin_inset Formula $1\%$
+\end_inset
+
+,
+ 
+\begin_inset Formula $5\%$
+\end_inset
+
+,
+ etc.) in mind for your system?
+\end_layout
+
+\begin_layout Standard
+* Would you like to see how to calculate a Confidence Interval to find the upper and lower bounds of your true error rate?
+\end_layout
+
+\begin_layout Standard
+* Do you want to compare two of your subsets to see if one has a significantly higher error rate than the other?
+\end_layout
+
+\begin_layout Section
+Comment
+\end_layout
+
+\begin_layout Standard
+It is incredibly common in physics and data science to find that real-world experimental data is messy compared to pure theoretical models.
+ 
+\end_layout
+
+\begin_layout Standard
+When the expectation value is 
+\begin_inset Formula $-1$
+\end_inset
+
+ even a tiny amount of experimental noise,
+ instrument misalignment or thermal fluctuations will flip some 
+\begin_inset Formula $-1$
+\end_inset
+
+ values to 
+\begin_inset Formula $+1$
+\end_inset
+
+ creating that 
+\begin_inset Formula $10\%$
+\end_inset
+
+ "noise" floor.
+\end_layout
+
+\begin_layout Standard
+Because a standard hypothesis test cannot be used against a perfect 
+\begin_inset Formula $-1$
+\end_inset
+
+ expectation (as it assumes zero noise) a Confidence Interval (CI) or a Chi-Square Goodness-of-Fit Test can be used to rigorously benchmark this experimental data against theory.
+\end_layout
+
+\begin_layout Subsection
+Method 1:
+ Quantify the Noise with a Confidence Interval
+\end_layout
+
+\begin_layout Standard
+Instead of trying to prove the data perfectly matches 
+\begin_inset Formula $-1$
+\end_inset
+
+ you can use your data to state exactly how noisy the experiment is with 95% confidence.
+\end_layout
+
+\begin_layout Standard
+1.
+ Calculate the Error Margin:
+\end_layout
+
+\begin_layout Standard
+Using your previously calculated standard error (
+\begin_inset Formula $SE=0.0168$
+\end_inset
+
+) and a standard 95% confidence Z-score (
+\begin_inset Formula $1.96$
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{Margin of Error} & = & 1.96\times0.0168\approx0.033
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+2.
+ Establish the Bounds:
+ 
+\end_layout
+
+\begin_layout Standard
+Apply this to your sample mean of 
+\begin_inset Formula $-0.8$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{95\% Confidence Interval} & = & [-0.833,-0.767]
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This means that it can be confidently stated in your paper that this specific experimental setup yields an expectation value between 
+\begin_inset Formula $-0.833$
+\end_inset
+
+ and 
+\begin_inset Formula $-0.767$
+\end_inset
+
+.
+ This formally establishes that the real-world dataset operates with a 
+\begin_inset Formula $10\%\pm1.6\%$
+\end_inset
+
+ systemic noise/error rate relative to the theoretical ideal.
+\end_layout
+
+\begin_layout Subsection
+Method 2:
+ Chi-Square Test with an "Acceptable Noise" Model
+\end_layout
+
+\begin_layout Standard
+If you know from literature that this specific experimental equipment typically has a certain baseline noise floor (e.g.,
+ a 
+\begin_inset Formula $5\%$
+\end_inset
+
+ or 
+\begin_inset Formula $8\%$
+\end_inset
+
+ rate of random bit-flips/falses),
+ you can test if this dataset fits that noisy theoretical expectation.
+\end_layout
+
+\begin_layout Standard
+For example,
+ if your theory predicts a baseline but you modify it to account for an expected 
+\begin_inset Formula $8\%$
+\end_inset
+
+ experimental noise floor:
+\end_layout
+
+\begin_layout Itemize
+Your Theoretical Expected Counts:
+ 
+\begin_inset Newline newline
+\end_inset
+
+1,168 counts of 
+\begin_inset Formula $-1$
+\end_inset
+
+ and 102 counts of 
+\begin_inset Formula $+1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The Actual Observed Counts:
+\begin_inset Newline newline
+\end_inset
+
+ 1,143 counts of 
+\begin_inset Formula $-1$
+\end_inset
+
+ and 127 counts of 
+\begin_inset Formula $+1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Then run a quick Chi-Square calculation:
+\begin_inset Formula 
+\begin{eqnarray*}
+\chi^{2} & = & \sum\frac{(\text{Observed}-\text{Expected})^{2}}{\text{Expected}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the resulting 
+\begin_inset Formula $p$
+\end_inset
+
+-value is greater than 
+\begin_inset Formula $0.05$
+\end_inset
+
+ then you can formally state that the data does match your theoretical model once the known experimental noise floor is factored in.
+\end_layout
+
+\begin_layout Standard
+How to proceed
+\end_layout
+
+\begin_layout Standard
+To help you best integrate this into your theoretical research,
+ let me know:
+\end_layout
+
+\begin_layout Standard
+* Is there an accepted,
+ published noise floor percentage or thermal fluctuation rate for this specific experimental setup in literature?
+\end_layout
+
+\begin_layout Standard
+* Would you like me to calculate the 95% Confidence Intervals for your other three subsets to see if the noise level remains stable across different sample sizes?
+\end_layout
+
+\begin_layout Standard
+* Do you want to check if the noise rate differs significantly between the four subsets using a Two-Sample Proportions test?
+\end_layout
+
+\end_body
+\end_document
