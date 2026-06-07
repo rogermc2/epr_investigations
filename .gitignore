@@ -41,4 +41,5 @@ access token.txt
 *.code-workspace
 .Rproj.user
 /.spyproject/
+eprb_sim
 
