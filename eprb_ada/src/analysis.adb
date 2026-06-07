@@ -1,5 +1,5 @@
 
---  with Ada.Float_Text_IO;
+with Ada.Float_Text_IO;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Elementary_Functions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -186,6 +186,7 @@ package body Analysis is
    --  Correlation Coefficient:
    --  (E (a, b) = {N_{ + +} + N_{--} - N_{+-} - N_{-+} /N_{total
    procedure Probability_Analysis (Analysis_Data : Analysis_Vector) is
+      use Ada.Float_Text_IO;
       use Maths;
       use Analysis_Vector_Package;
       Curs    : Cursor := Analysis_Data.First;
@@ -218,9 +219,12 @@ package body Analysis is
       while Has_Element (Curs) loop
          aRecord := Element (Curs);
          Eab.Append (Calculate_Eab (aRecord));
-         Put_Line (Float'Image (To_Degrees (aRecord.Setting_A)) & ",  " &
-             Float'Image (To_Degrees (aRecord.Setting_B)) &
-             ",  Eab:" & Float'Image (Eab.Last_Element));
+         Put (To_Degrees (aRecord.Setting_A), 1, 2, 0);
+         Put (",  ");
+         Put (To_Degrees (aRecord.Setting_B), 1, 2, 0);
+         Put (",  Eab:");
+         Put (Eab.Last_Element, 1, 3, 0);
+         New_Line;
          Next (Curs);
       end loop;
 
