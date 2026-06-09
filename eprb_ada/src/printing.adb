@@ -13,7 +13,7 @@ package body Printing is
       Curs   : Cursor := Analysis_Data.First;
       Item   : Analysis_Record;
       Header : constant String :=
-        "A Setting B Setting  Mean A Mean B  Mean AB  " &
+        "A Setting B Setting  Mean A Mean B      Mean AB    " &
         "Mean Stat  Mean QM   Npp     Npm     Nmp        Nmm";
    begin
       Put_Line ("Analysis Data:");
@@ -34,10 +34,11 @@ package body Printing is
       use Maths;
       use Ada.Float_Text_IO;
       Header : constant String :=
-        "A Setting B Setting Mean A  Mean B  Mean AB  " &
-        "Mean Stat  Mean QM   Npp      Npm     Nmp        Nmm";
+        "A Setting B Setting Mean A  Mean B      Mean AB    " &
+        "Mean Statn  Mean QM   Npp      Npm     Nmp        Nmm";
       A      : constant Float := To_Degrees (Analysis_Data.Setting_A);
       B      : constant Float := To_Degrees (Analysis_Data.Setting_B);
+      Val    : Float;
    begin
       if Name /= "" then
          Put_Line (Name & ":");
@@ -62,14 +63,34 @@ package body Printing is
          Put  ("    ");
       end if;
 
-      Put (Analysis_Data.A_Mean, 1, 3, 0);
+      Val := Analysis_Data.A_Mean;
+      if Val >= 0.0 then
+         Put (" ");
+      end if;
+      Put (Val, 1, 3, 0);
       Put ("   ");
-      Put (Analysis_Data.B_Mean, 1, 3, 0);
+      Val := Analysis_Data.B_Mean;
+      if Val >= 0.0 then
+         Put (" ");
+      end if;
+      Put (Val, 1, 3, 0);
       Put ("     ");
-      Put (Analysis_Data.AB_Mean, 1, 3, 0);
+      Val := Analysis_Data.AB_Mean;
+      if Val >= 0.0 then
+         Put (" ");
+      end if;
+      Put (Val, 1, 3, 0);
       Put ("     ");
-      Put (Analysis_Data.E_Stat, 1, 2, 0);
+      Val := Analysis_Data.E_Stat;
+      if Val >= 0.0 then
+         Put (" ");
+      end if;
+      Put (Val, 1, 2, 0);
       Put ("      ");
+      Val := Analysis_Data.E_QM;
+      if Val >= 0.0 then
+         Put (" ");
+      end if;
       Put (Analysis_Data.E_QM, 1, 2, 0);
       Put ("    ");
       Put (Natural'Image (Analysis_Data.Npp) & "    ");
