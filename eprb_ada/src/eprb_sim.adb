@@ -22,7 +22,7 @@ procedure EPRB_Sim is
    --  Duration_Val      : constant Duration := 0.05;
    Spin              : constant Float := 0.5;
    Settings          : Settings_Vector :=
-     Empty_Vector & 0.0 & 45.0 & 90.0 & 135.0;
+     Empty_Vector & 0.0 & 22.5 & 45.0 & 67.5 & 90.0 & 112.5 & 135.0;
    Detection_A_File  : Unbounded_String;
    Detection_B_File  : Unbounded_String;
    Out_Files         : Unbounded_String_Vector;

@@ -6,7 +6,7 @@ with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Printing; use Printing;
+with Printing; use Printing;
 with Utilities;
 
 package body Data_Catagorization is
@@ -44,6 +44,9 @@ package body Data_Catagorization is
       Out_Name       : Unbounded_String;
       Out_File_Names : Unbounded_String_Vector;
    begin
+      Put_Line (Routine_Name & "Num_Settings: " &
+       Integer'Image (Num_Settings));
+      Print_Settings (Routine_Name & "Settings", Settings);
       while Has_Element (Curs_S_Outer) loop
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
          Curs_S_Inner := Settings.First;
@@ -59,6 +62,8 @@ package body Data_Catagorization is
                     Trim (Integer'Image (Key.B), Left) &
                     "_Data.csv");
                Out_File_Names.Append (Out_Name);
+               Put_Line (Routine_Name & "Settings_Index: " &
+               Integer'Image (Settings_Index));
                Create (Files (Settings_Index), Out_File, To_String (Out_Name));
             end if;
             Next (Curs_S_Inner);
