@@ -6,7 +6,7 @@ with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Printing; use Printing;
+--  with Printing; use Printing;
 with Utilities;
 
 package body Data_Catagorization is
@@ -28,7 +28,6 @@ package body Data_Catagorization is
       Raw_B          : constant Result_Vector :=
         Load_Station_Results (File_B);
       Num_Settings   : constant Positive := Positive (Length (Settings));
-      Files          : File_Array (1 .. 2 * Num_Settings + 1);
       Curs_A         : Result_Vector_Package.Cursor := Raw_A.First;
       Curs_B         : Result_Vector_Package.Cursor := Raw_B.First;
       Curs_S_Outer   : Settings_Vector_Package.Cursor := Settings.First;
@@ -42,17 +41,16 @@ package body Data_Catagorization is
       Settings_Index : Natural := 0;
       Count          : Natural := 0;
       Out_Name       : Unbounded_String;
+      File_ID        : File_Type;
       Out_File_Names : Unbounded_String_Vector;
    begin
       Put_Line (Routine_Name & "Num_Settings: " &
        Integer'Image (Num_Settings));
-      Print_Settings (Routine_Name & "Settings", Settings);
+      --  Print_Settings (Routine_Name & "Settings", Settings);
       while Has_Element (Curs_S_Outer) loop
          Key.A := MilliRad (Element (Curs_S_Outer) * 1000.0);
          Curs_S_Inner := Settings.First;
          while Has_Element (Curs_S_Inner) loop
-            --  Put_Line (Routine_Name & "Inner: " &
-            --              Float'Image (Element (Curs_S_Inner)));
             Key.B := MilliRad (Element (Curs_S_Inner) * 1000.0);
             if not Settings_Map.Contains (Key) then
                Settings_Index := Settings_Index + 1;
@@ -62,14 +60,14 @@ package body Data_Catagorization is
                     Trim (Integer'Image (Key.B), Left) &
                     "_Data.csv");
                Out_File_Names.Append (Out_Name);
-               Put_Line (Routine_Name & "Settings_Index: " &
-               Integer'Image (Settings_Index));
-               Create (Files (Settings_Index), Out_File, To_String (Out_Name));
+               Create (File_ID, Out_File, To_String (Out_Name));
+               Close (File_ID);
             end if;
             Next (Curs_S_Inner);
          end loop;
          Next (Curs_S_Outer);
       end loop;
+      Put_Line (Routine_Name & Integer'Image (Num_Settings) & " files loaded");
 
       --  Print_Result_Vector ("Raw_A", Raw_A, 10, 20);
       --  Print_Result_Vector ("Raw_B", Raw_B, 10, 20);
@@ -80,17 +78,19 @@ package body Data_Catagorization is
          A_Index := MilliRad (Item_A.Setting * 1000.0);
          B_Index := MilliRad (Item_B.Setting * 1000.0);
          Key := (A_Index, B_Index);
-         Put_Line (Files (Settings_Map (Key)),
-                   (Integer'Image (Item_A.Outcome) & "," &
-                      Integer'Image (Item_B.Outcome)));
+         Out_Name := Out_File_Names (Settings_Map (Key));
+         Open (File_ID, Out_File, To_String (Out_Name));
+         Put_Line (File_ID, Integer'Image (Item_A.Outcome) & "," &
+                  Integer'Image (Item_B.Outcome));
+         Close (File_ID);
+         if Count mod 10000 = 0 then
+            Put (".");
+            Count := 0;
+         end if;
          Next (Curs_A);
          Next (Curs_B);
       end loop;
       New_Line;
-
-      for index in Files'Range loop
-         Close (Files (index));
-      end loop;
 
       Put_Line ("Catagorization complete.");
       New_Line;

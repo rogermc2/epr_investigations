@@ -1,12 +1,10 @@
 
 with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Vectors;
-with Ada.Text_IO;
 
 package Analysis_Types is
 
    subtype MilliRad is Integer range -6300 .. 6300;
-   type File_Array is array (Positive range <>) of Ada.Text_IO.File_Type;
 
    type Setting_Map_Record is record
       A : MilliRad;
