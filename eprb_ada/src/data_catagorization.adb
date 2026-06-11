@@ -79,7 +79,7 @@ package body Data_Catagorization is
          B_Index := MilliRad (Item_B.Setting * 1000.0);
          Key := (A_Index, B_Index);
          Out_Name := Out_File_Names (Settings_Map (Key));
-         Open (File_ID, Out_File, To_String (Out_Name));
+         Open (File_ID, Append_File, To_String (Out_Name));
          Put_Line (File_ID, Integer'Image (Item_A.Outcome) & "," &
                   Integer'Image (Item_B.Outcome));
          Close (File_ID);

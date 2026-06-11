@@ -1,4 +1,5 @@
 
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Float_Text_IO;
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Elementary_Functions;
@@ -7,11 +8,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Analysis.Support; use Analysis.Support;
 with Analysis_Types; use Analysis_Types;
---  with Display; use Display;
 with Maths;
 with Printing; use Printing;
---  with Utilities; use Utilities;
---  with Vector_Functions; use Vector_Functions;
 
 package body Analysis is
 
@@ -36,21 +34,22 @@ package body Analysis is
    begin
       Put_Line ("Starting analysis.");
       while Has_Element (File_Curs) loop
-         Put_Line (Routine_Name & "File name: " &
-                     To_String (Element (File_Curs)));
          Open (File_ID, In_File, To_String (Element (File_Curs)));
          Parse_File_Name (To_String (Element (File_Curs)),
                           Setting_A, Setting_B);
          Outcomes := Outcome_Vector_Package.Empty_Vector;
+         Count := 0;
          while not End_Of_File (File_ID) loop
-            declare
-               aLine : constant String := Get_Line (File_ID);
-            begin
-               Outcome_Pair := Parse_Data_Line (aLine);
-               Outcomes.Append (Outcome_Pair);
-            end;
-
             Count := Count + 1;
+               declare
+                  aLine : constant String := Get_Line (File_ID);
+               begin
+                  if not (aline = "") then
+                     Outcome_Pair := Parse_Data_Line (aLine);
+                     Outcomes.Append (Outcome_Pair);
+                  end if;
+               end;
+
             if Count mod 1000 = 0 then
                Put (".");
             end if;
@@ -73,6 +72,10 @@ package body Analysis is
 
       --  Display_Results (A, B);
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
    end Analyse;
 
    procedure Process_Data (Outcomes      : Outcome_Vector;
