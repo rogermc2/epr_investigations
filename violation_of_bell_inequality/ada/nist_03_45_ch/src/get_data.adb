@@ -12,12 +12,12 @@ procedure Get_Data is
      "../../../nist_data/";
    B_Directory  : constant String := A_Directory;
    A_Source     : constant String := A_Directory & "03_45_CH_pockel_100kHz_RandomPumpWP0or8_alice.dat";
-   B_Source     : constant String := B_Directory & "03_45_CH_pockel_100kHz_RandomPumpWP0or8_bob.dat ";
+   B_Source     : constant String := B_Directory & "03_45_CH_pockel_100kHz_RandomPumpWP0or8_bob.dat";
    A_Target     : constant String := "../A_OEM.csv";
    B_Target     : constant String := "../B_OEM.csv";
    Combined_Data : constant String := "../combined.csv";
 begin
-   NIST_Data (A_Source, A_Target);
+   --  NIST_Data (A_Source, A_Target);
    NIST_Data (B_Source, B_Target);
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
    Combine (A_Target, B_Target, A_Target, B_Target, Combined_Data, 30000);
