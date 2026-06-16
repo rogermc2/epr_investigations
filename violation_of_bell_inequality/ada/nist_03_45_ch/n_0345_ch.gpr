@@ -1,0 +1,20 @@
+
+project N_0345_CH is
+
+   for Languages use ("Ada");
+   for Source_Dirs use ("src", "../common");
+   for Object_Dir use "obj";
+   for Exec_Dir use ".";
+   for Main use ("get_data.adb");
+
+   package Naming is
+      for Spec_Suffix ("Ada") use ".ads";
+      for Body_Suffix ("Ada") use ".adb";
+   end Naming;
+
+   package Compiler is
+      for Switches ("ada") use ("-gnatw.ufkpru", "-gnatybcdefux");
+   end Compiler;
+
+end N_0345_CH;
+
