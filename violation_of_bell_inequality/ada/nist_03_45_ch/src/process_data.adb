@@ -31,20 +31,17 @@
 --  5) Convert hdf5 file to text formats for further processing into hypothesis
 --  testing.
 
+--  with Interfaces; use Interfaces;
 --  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Types; use Types;
+--  with Types;
 with Utils; use Utils;
 
 package body Process_Data is
---  The 8-byte unsigned integer that describes the channel has been
---  compressed to a 1-byte unsigned integer.
---  The 8-byte integer describing the computer transfer number has been
---  compressed to a 2-byte unsigned integer.
    type Unsigned_Byte is mod 2**8;
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
@@ -95,7 +92,7 @@ package body Process_Data is
             Put_Line (Routine_Name & "Raw Data Time_Tag: " &
                      Unsigned_8_Byte'Image (Raw_Data.Time_Tag) &
                       ", Transfer_ID " &
-                    Unsigned_2_Byte'Image (Raw_Data.Transfer_ID));
+                     Unsigned_2_Byte'Image (Raw_Data.Transfer_ID));
             Print_Raw_Data (Raw_Data);
          end if;
 
