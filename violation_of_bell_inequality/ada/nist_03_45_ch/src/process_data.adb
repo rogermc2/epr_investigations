@@ -35,32 +35,39 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
-with Ada.Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
---  with Types; use Types;
+with Types; use Types;
 with Utils; use Utils;
 
 package body Process_Data is
-
+--  The 8-byte unsigned integer that describes the channel has been
+--  compressed to a 1-byte unsigned integer.
+--  The 8-byte integer describing the computer transfer number has been
+--  compressed to a 2-byte unsigned integer.
+   type Unsigned_Byte is mod 2**8;
+   type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
    type Channel_Type is (Detector_Click, Rng_Output_0, Rng_Output_1,
                          GPS_Pps, Sync);
 
    type Raw_Data_Record is record
-      Channel     : Unsigned_8_Byte;
+      Channel     : Unsigned_Byte;
       Time_Tag    : Unsigned_8_Byte;
-      Transfer_ID : Unsigned_8_Byte;
+      Transfer_ID : Unsigned_2_Byte;
    end record;
 
    type Data_Record is record
       Channel     : Channel_Type;
-      Time_Tag    : Long_Integer;
+      Time_Tag    : Unsigned_8_Byte;
       Transfer_ID : Integer;
    end record;
 
+   procedure Print_Processed_Data (Data : Data_Record);
+   procedure Print_Raw_Data (Raw_Data : Raw_Data_Record);
+
    procedure NIST_Data (Source_File, NIST_File : String) is
       use Ada.Streams;
-      use Ada.Text_IO;
       Routine_Name : constant String  := "Process_Data.NIST_Data ";
       --  Source_Size  : constant Natural := Natural (Size (Source_File));
       Data_Stream  : Stream_IO.Stream_Access;
@@ -69,7 +76,7 @@ package body Process_Data is
       Raw_Data     : Raw_Data_Record;
       Data         : Data_Record;
       --   P_Setting    : String (1 .. 1);
-      --  Line_Num     : Natural := 0;
+      Line_Num     : Natural := 0;
       --  Byte_Offset  : Integer := -2;
       Num_Invalid  : Natural := 0;
    begin
@@ -80,10 +87,18 @@ package body Process_Data is
 
       --  while Line_Num < Source_Size - 1 and then
         while not Stream_IO.End_Of_File (Source_ID) loop
-        --  Line_Num := Line_Num + 1;
+        Line_Num := Line_Num + 1;
        --  Byte_Offset := Byte_Offset + 2;
 
          Raw_Data_Record'Read (Data_Stream, Raw_Data);
+         if Line_Num < 8 then
+            Put_Line (Routine_Name & "Raw Data Time_Tag: " &
+                     Unsigned_8_Byte'Image (Raw_Data.Time_Tag) &
+                      ", Transfer_ID " &
+                    Unsigned_2_Byte'Image (Raw_Data.Transfer_ID));
+            Print_Raw_Data (Raw_Data);
+         end if;
+
          case Raw_Data.Channel is
             when 0 => Data.Channel := Detector_Click;
             when 2 => Data.Channel := Rng_Output_0;
@@ -92,17 +107,16 @@ package body Process_Data is
             when 6 => Data.Channel := Sync;
             when others => Num_Invalid := Num_Invalid + 1;
          end case;
-         Data.Time_Tag := Long_Integer (Raw_Data.Time_Tag);
+         Data.Time_Tag := Raw_Data.Time_Tag;
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
-         Put_Line (Routine_Name & "Raw Data Time_Tag: " &
-                   Unsigned_8_Byte'Image (Raw_Data.Time_Tag) &
-                  ", Transfer_ID " &
-                   Unsigned_8_Byte'Image (Raw_Data.Transfer_ID));
 
-          Ada.Text_IO.Put (NIST_ID, Channel_Type'Image (Data.Channel) & "," &
-                            Long_Integer'Image (Data.Time_Tag) & "," &
+         if Line_Num < 8 then
+            Print_Processed_Data (Data);
+         end if;
+         Ada.Text_IO.Put (NIST_ID, Channel_Type'Image (Data.Channel) & "," &
+                            Unsigned_8_Byte'Image (Data.Time_Tag) & "," &
                             Integer'Image (Data.Transfer_ID));
-          Ada.Text_IO.New_Line (NIST_ID);
+         Ada.Text_IO.New_Line (NIST_ID);
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
 
          --  if Line_Num > 0 and then Line_Num < 8 then
@@ -120,8 +134,6 @@ package body Process_Data is
       Ada.Text_IO.Put_Line
         (Routine_Name & "Number of invalid items: " &
            Integer'Image (Num_Invalid));
-      --  Ada.Text_IO.Put_Line
-      --  (Routine_Name & "NIST file written to " & NIST_ID);
       Ada.Text_IO.Put_Line
         (Routine_Name & "NIST file length: " &
            Natural'Image (Count_Text_File_Lines (NIST_File)) & " lines");
@@ -134,7 +146,23 @@ package body Process_Data is
          raise;
    end NIST_Data;
 
-   --  -----------------------------------------------------------------------
+   procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
+   begin
+      Put_Line ("Raw Data:");
+      Put_Line ("Channel: " & Unsigned_Byte'Image (Raw_Data.Channel));
+      Put_Line ("Time_Tag: " & Unsigned_8_Byte'Image (Raw_Data.Time_Tag));
+      Put_Line ("Transfer_ID: " & Unsigned_2_Byte'Image (Raw_Data.Transfer_ID));
+      New_Line;
+   end Print_Raw_Data;
+
+   procedure Print_Processed_Data (Data : Data_Record) is
+   begin
+      Put_Line ("Processed Data:");
+      Put_Line ("Channel: " & Channel_Type'Image (Data.Channel));
+      Put_Line ("Time_Tag: " & Unsigned_8_Byte'Image (Data.Time_Tag));
+      Put_Line ("Transfer_ID: " & Integer'Image (Data.Transfer_ID));
+      New_Line;
+   end Print_Processed_Data;
 
    --  Photon arrival times where the "arm" time has already been subtracted.
    --  IEEE-8bit double precision numbers in "Big Endian"-form naturally

@@ -17,7 +17,7 @@ procedure Get_Data is
    B_Target     : constant String := "../B_OEM.csv";
    Combined_Data : constant String := "../combined.csv";
 begin
-   --  NIST_Data (A_Source, A_Target);
+   NIST_Data (A_Source, A_Target);
    NIST_Data (B_Source, B_Target);
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
    Combine (A_Target, B_Target, A_Target, B_Target, Combined_Data, 30000);
