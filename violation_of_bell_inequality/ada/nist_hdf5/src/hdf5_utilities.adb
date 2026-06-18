@@ -26,12 +26,8 @@ package body HDF5_Utilities is
       pragma Import (C, H5D_Open2, "H5Dopen2");
 
       function H5D_Read
-      (Dset_Id    : hid_t;
-         Mem_Type   : hid_t;
-         Mem_Space  : hid_t;
-         File_Space : hid_t;
-         Xfer_Plist : hid_t;
-         Buf        : System.Address) return herr_t;
+       (Dset_Id, Mem_Type, Mem_Space, File_Space, Xfer_Plist : hid_t;
+        Buf : System.Address) return herr_t;
       pragma Import (C, H5D_Read, "H5Dread");
 
       function H5D_Close (Dset_Id : hid_t) return herr_t;
@@ -47,12 +43,15 @@ package body HDF5_Utilities is
       Dset : hid_t;
       Err  : herr_t;
    begin
-      File := H5F_Open (To_C ("03_12_CH_pockel_100kHz.hdf5"), H5F_ACC_RDONLY, H5P_DEFAULT);
+      Put_Line ("Opening file 03_12_CH_pockel_100kHz.hdf5");
+      File := H5F_Open (To_C ("03_12_CH_pockel_100kHz.hdf5"),
+                            H5F_ACC_RDONLY, H5P_DEFAULT);
+      Put_Line ("Opening file /data");
       Dset := H5D_Open2 (File, To_C ("/data"), H5P_DEFAULT);
 
-      Err := H5D_Read
-      (Dset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL,
-         H5P_DEFAULT, Data (Data'First)'Address);
+      Put_Line ("Reading file 03_12_CH_pockel_100kHz.hdf5");
+      Err := H5D_Read (Dset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL,
+                       H5P_DEFAULT, Data (Data'First)'Address);
 
       for I in Data'Range loop
          Put_Line (I'Image & "  " & double'Image (Data (I)));

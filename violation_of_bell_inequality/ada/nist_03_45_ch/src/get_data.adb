@@ -13,14 +13,17 @@ procedure Get_Data is
    B_Directory  : constant String := A_Directory;
    A_Source     : constant String := A_Directory & "03_45_CH_pockel_100kHz_RandomPumpWP0or8_alice.dat";
    B_Source     : constant String := B_Directory & "03_45_CH_pockel_100kHz_RandomPumpWP0or8_bob.dat";
-   A_Target     : constant String := "../A_OEM.csv";
-   B_Target     : constant String := "../B_OEM.csv";
+   A_Target     : constant String := "../A.csv";
+   B_Target     : constant String := "../B.csv";
    Combined_Data : constant String := "../combined.csv";
 begin
    NIST_Data (A_Source, A_Target);
+   Put_Line ("NIST_Data A done");
    NIST_Data (B_Source, B_Target);
+   Put_Line ("NIST_Data B done");
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
-   Combine (A_Target, B_Target, A_Target, B_Target, Combined_Data, 30000);
+   Combine_Nist (A_Target, B_Target, Combined_Data, 30000);
+   Put_Line ("Combine_Nist done");
 
    Put_Line ("Number of A detections: " &
                Integer'Image (Count_Text_File_Lines (A_Target)));

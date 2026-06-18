@@ -20,7 +20,6 @@ package Types is
    subtype String_3 is String (1 .. 3);
    subtype String_4 is String (1 .. 4);
    subtype String_5 is String (1 .. 5);
-   --  subtype OEM_String is String (1 .. 4);
    subtype String_8  is String (1 .. 8);
    subtype String_9  is String (1 .. 9);
    subtype String_11 is String (1 .. 11);
@@ -31,7 +30,6 @@ package Types is
    subtype String_21 is String (1 .. 21);
    subtype String_23 is String (1 .. 23);
    subtype String_33 is String (1 .. 33);
-   --  subtype String_47 is String (1 .. 47);
    subtype String_53 is String (1 .. 53);
 
    type String1_Array is array (Integer range <>) of String_1;
@@ -39,6 +37,7 @@ package Types is
    type String4_Array is array (Integer range <>) of String_4;
    type String5_Array is array (Integer range <>) of String_5;
    type String8_Array is array (Integer range <>) of String_8;
+   type String19_Array is array (Integer range <>) of String_19;
    type String20_Array is array (Integer range <>) of String_20;
    type String21_Array is array (Integer range <>) of String_21;
    type String23_Array is array (Integer range <>) of String_23;

@@ -1,4 +1,5 @@
 
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Utils is
@@ -7,6 +8,7 @@ package body Utils is
       File       : File_Type;
       Line_Count : Natural := 0;
    begin
+      Put_Line ("Utils.Count_Text_File_Lines opening " & File_Name);
       Open (File, In_File, File_Name);
 
       while not End_Of_File (File) loop
@@ -15,6 +17,12 @@ package body Utils is
       end loop;
 
       Close (File);
+      return Line_Count;
+
+   exception
+      when Error : others =>
+         Put_Line ("Utils.Count_Text_File_Lines Exception information:  " &
+                     Exception_Information (Error));
       return Line_Count;
 
    end Count_Text_File_Lines;

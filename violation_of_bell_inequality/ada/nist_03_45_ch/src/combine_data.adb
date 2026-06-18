@@ -28,9 +28,40 @@ package body Combine_Data is
          Ada.Text_IO.Put_Line (Routine_Name & "Row: " & Integer'Image (Row));
 
    end Load_Photon_Data;
+   
+   procedure Load_NIST_Data (Data_File : String;
+                               Data    : out String19_Array) is
+      Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
+      Data_ID      : File_Type;
+      Row          : Natural := 0;
+   begin
+      Put_Line (Routine_Name & "Source File: " & Data_File);
+      Open (Data_ID, In_File, Data_File);
+      --    while Row < Integer (Data'Length) and then
+      while not End_Of_File (Data_ID) loop
+         Row := Row + 1;
+         declare
+            aline : String := Get_Line (Data_ID);
+         begin
+            if Row < 4 then
+               Ada.Text_IO.Put_Line (Routine_Name & "aline: " & aline);
+            end if;
+            Data (Row) := aline;
+         end;
 
-   procedure Load_OEM_Data (Data_File : String;
-                            Data      : out String4_Array) is
+      end loop;
+
+      Close (Data_ID);
+      Ada.Text_IO.Put_Line (Routine_Name & "Number of rows: " &
+                              Integer'Image (Row - 1));
+
+   exception
+      when Error : others =>
+         Ada.Text_IO.Put_Line (Routine_Name & Exception_Information (Error));
+
+   end Load_NIST_Data;
+
+   procedure Load_OEM_Data (Data_File : String; Data : out String4_Array) is
       Routine_Name : constant String := "Combine_Data.Load_OEM_Data ";
       Data_ID      : File_Type;
       Row          : Natural := 0;
@@ -49,8 +80,13 @@ package body Combine_Data is
 
       Close (Data_ID);
 
-   end Load_OEM_Data;
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
 
+   end Load_OEM_Data;
+   
    procedure Save_Data (Data_File : String; Data : String53_Array) is
       Routine_Name : constant String := "Combine_Data.Save_Data ";
       Out_ID       : File_Type;
@@ -71,6 +107,10 @@ package body Combine_Data is
 
       Close (Out_ID);
       Put_Line (Routine_Name & "Data written to " & Data_File);
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
 
    end Save_Data;
 
