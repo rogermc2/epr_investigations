@@ -114,33 +114,35 @@ package body Combine_CSVs is
 
     procedure Combine_Nist (A_CSV, B_CSV, Combined_CSV : String;
       Num_Rows : Positive := 30) is
-      Routine_Name : constant String := "Combine_Nist.Combine ";
+      Routine_Name : constant String := "Combine_CSVs.Combine_Nist ";
       A_Length     : constant Positive := Positive (Size (A_CSV));
       B_Length     : constant Positive := Positive (Size (B_CSV));
       Data_A       : String19_Array (1 .. Num_Rows);
       Data_B       : String19_Array (1 .. Num_Rows);
-      aRow         : String_19 := (others => '#');
-      Combined     : String19_Array (1 .. Num_Rows) :=
-        (others => (others => '#'));
+      aRow         : String_40 := (others => '#');
+      Combined     : String40_Array (1 .. Num_Rows) :=
+     (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
       Put_Line (Routine_Name & "A length:" & Integer'Image (A_Length));
       Put_Line (Routine_Name & "B length:" & Integer'Image (B_Length));
 
       Load_NIST_Data (A_CSV, Data_A);
+      --  Put_Line (Routine_Name & "A_CSV size after Loading: " &
+      --           Integer'Image (Count_Text_File_Lines (A_CSV)));
       Load_NIST_Data (B_CSV, Data_B);
+      --  Put_Line (Routine_Name & "B_CSV size after Loading: " &
+      --           Integer'Image (Count_Text_File_Lines (B_CSV)));
 
-      --  for row in Combined'Range loop
-      --     aRow := Combined (row);
-      --     aRow (45 .. 46) := Data_A (row) (1 .. 2);  --  includes ,
-      --     aRow (47 .. 48) := Data_B (row) (1 .. 2);
-      --     aRow (49 .. 50) := Data_A (row) (3 .. 4);
-      --     aRow (51 .. 51) := ",";
-      --     aRow (52 .. 53) := Data_B (row) (3 .. 4);
-      --     Combined (row) := aRow;
-      --  end loop;
+      for row in Combined'Range loop
+           aRow := Combined (row);
+           aRow (1 .. 19) := Data_A (row);  --  includes ,
+           aRow (20 .. 21) := ", ";
+           aRow (22 .. 40) := Data_B (row);
+           Combined (row) := aRow;
+      end loop;
 
-      --  Print_String19_Array (Routine_Name & "Combined", Combined,
+      --  Print_String40_Array (Routine_Name & "Combined", Combined,
       --                        Combined'Last - 4, Combined'Last);
       Save_NIST_Data (Combined_CSV, Combined);
       Put_Line (Routine_Name & "Combined_CSV length: " &

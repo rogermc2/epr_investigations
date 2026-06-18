@@ -18,12 +18,11 @@ procedure Get_Data is
    Combined_Data : constant String := "../combined.csv";
 begin
    NIST_Data (A_Source, A_Target);
-   Put_Line ("NIST_Data A done");
    NIST_Data (B_Source, B_Target);
-   Put_Line ("NIST_Data B done");
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
    Combine_Nist (A_Target, B_Target, Combined_Data, 30000);
-   Put_Line ("Combine_Nist done");
+   --  Put_Line (Routine_Name
+   --   & "Combine_Nist done, calling Count_Text_File_Lines (A_Target)");
 
    Put_Line ("Number of A detections: " &
                Integer'Image (Count_Text_File_Lines (A_Target)));

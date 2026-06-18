@@ -30,6 +30,7 @@ package Types is
    subtype String_21 is String (1 .. 21);
    subtype String_23 is String (1 .. 23);
    subtype String_33 is String (1 .. 33);
+   subtype String_40 is String (1 .. 40);
    subtype String_53 is String (1 .. 53);
 
    type String1_Array is array (Integer range <>) of String_1;
@@ -42,6 +43,7 @@ package Types is
    type String21_Array is array (Integer range <>) of String_21;
    type String23_Array is array (Integer range <>) of String_23;
    type String33_Array is array (Integer range <>) of String_33;
+   type String40_Array is array (Integer range <>) of String_40;
    type String53_Array is array (Integer range <>) of String_53;
 
    package String21_Package is new

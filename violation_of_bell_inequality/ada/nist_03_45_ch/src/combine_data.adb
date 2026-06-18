@@ -1,5 +1,8 @@
 
+--  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
+--  with Ada.Strings;
+--  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Combine_Data is
@@ -11,16 +14,17 @@ package body Combine_Data is
       Row          : Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
-      Open (Data_ID, In_File, Data_File);
+      Ada.Text_IO.Open (Data_ID, In_File, Data_File);
         while Row < Integer (Data'Length) and then
         not End_Of_File (Data_ID) loop
          Row := Row + 1;
          Data (Row) := Get_Line (Data_ID);
       end loop;
 
-      Close (Data_ID);
+      Ada.Text_IO.Close (Data_ID);
+      --  Put_Line (Routine_Name & Data_File & " closed");
       Ada.Text_IO.Put_Line (Routine_Name & "Number of rows: " &
-                              Integer'Image (Row - 1));
+                              Integer'Image (Row));
 
    exception
       when Error : others =>
@@ -29,38 +33,45 @@ package body Combine_Data is
 
    end Load_Photon_Data;
 
-   procedure Load_NIST_Data (Data_File : String;
-                               Data    : out String19_Array) is
+   procedure Load_NIST_Data (Data_File   : String;
+                              Data_Array : in out String19_Array) is
+      --  use Ada.Strings;
+      --  use Ada.Strings.Fixed;
       Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
+      --  Data_File_Length : constant Positive := Positive (Size (Data_File));
       Data_ID      : File_Type;
       Row          : Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
+      --  Put_Line (Routine_Name & "Source File Length : " &
+      --                          Integer'Image (Data_File_Length));
+      --  Put_Line (Routine_Name & "Data_Array Length : " &
+      --                          Integer'Image (Data_Array'Length));
       Open (Data_ID, In_File, Data_File);
-      --    while Row < Integer (Data'Length) and then
-      while not End_Of_File (Data_ID) loop
+      while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
          Row := Row + 1;
          declare
             aline : constant String := Get_Line (Data_ID);
          begin
             if Row < 4 then
-               Ada.Text_IO.Put_Line (Routine_Name & "aline: " & aline);
+               Put_Line (Routine_Name & "Row, aline: " & Integer'Image (Row) &
+               ", " & aline);
             end if;
-            Data (Row) := aline;
+            Data_Array (Row) := aline (1 .. 19);
          end;
 
       end loop;
 
       Close (Data_ID);
-      Ada.Text_IO.Put_Line (Routine_Name & "Number of rows: " &
+      --  Put_Line (Routine_Name &  Data_File & " closed");
+      Put_Line (Routine_Name & "Number of rows: " &
                               Integer'Image (Row - 1));
 
    exception
-      when Constraint_Error =>
-         Ada.Text_IO.Put_Line (Routine_Name & "Row number: " &
-         Integer'Image (Row));
       when Error : others =>
-         Ada.Text_IO.Put_Line (Routine_Name & Exception_Information (Error));
+         Close (Data_ID);
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
 
    end Load_NIST_Data;
 
@@ -117,7 +128,7 @@ package body Combine_Data is
 
    end Save_Data;
 
-procedure Save_NIST_Data (Data_File : String; Data : String19_Array) is
+procedure Save_NIST_Data (Data_File : String; Data : String40_Array) is
       Routine_Name : constant String := "Combine_Data.Save_NIST_Data ";
       Out_ID       : File_Type;
    begin
@@ -129,7 +140,8 @@ procedure Save_NIST_Data (Data_File : String; Data : String19_Array) is
       --  Put_Line (Out_ID, "B Setting,A Polarization,B Polarization");
       for row in Data'Range loop
          --  if Row > Data'Last - 4 then
-         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " & Integer'Image (Row)
+         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " &
+         --   Integer'Image (Row)
          --                           & ",   !" & Data (Row) & "!");
          --  end if;
          Put_Line (Out_ID, Data (row));

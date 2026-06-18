@@ -112,15 +112,12 @@ package body Process_Data is
         (Routine_Name & "number of invalid items: " &
            Integer'Image (Num_Invalid));
       Ada.Text_IO.Put_Line
-        (Routine_Name & "Calling Count_Text_File_Lines");
-      Ada.Text_IO.Put_Line
         (Routine_Name & "NIST file length: " &
            Natural'Image (Count_Text_File_Lines (NIST_File)) & " lines");
       Ada.Text_IO.New_Line;
 
    exception
       when Error : others =>
-        --  Put_Line (Routine_Name & "Line_Num" & Integer'Image (Line_Num));
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end NIST_Data;
