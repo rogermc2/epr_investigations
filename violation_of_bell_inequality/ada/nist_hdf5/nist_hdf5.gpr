@@ -4,16 +4,22 @@ project Nist_Hdf5 is
    for Source_Dirs use ("src/", "config/");
    for Object_Dir use "obj/" & Nist_Hdf5_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
-   for Exec_Dir use "bin";
+   for Exec_Dir use ".";
    for Main use ("main.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use Nist_Hdf5_Config.Ada_Compiler_Switches;
+      for Default_Switches ("Ada") use ("-I/opt/homebrew/include") &
+       Nist_Hdf5_Config.Ada_Compiler_Switches;
    end Compiler;
 
    package Binder is
       for Switches ("Ada") use ("-Es"); --  Symbolic traceback
    end Binder;
+
+   package Linker is
+      for Switches ("Ada") use
+        ("-L/opt/homebrew/lib", "-lhdf5");
+   end Linker;
 
    package Install is
       for Artifacts (".") use ("share");
