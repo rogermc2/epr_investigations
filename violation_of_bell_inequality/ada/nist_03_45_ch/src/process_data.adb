@@ -14,7 +14,7 @@ package body Process_Data is
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
    type Channel_Type is (Detector_Click, Rng_Output_0, Rng_Output_1,
-                         GPS_Pps, Sync);
+                         GPS_Pps, Sync, Ch_Error);
 
    type Raw_Data_Record is record
       Channel     : Unsigned_Byte;
@@ -38,6 +38,7 @@ package body Process_Data is
       Data_Stream  : Stream_IO.Stream_Access;
       Source_ID    : Stream_IO.File_Type;
       NIST_ID      : Ada.Text_IO.File_Type;
+      Log_ID       : Ada.Text_IO.File_Type;
       Raw_Data     : Raw_Data_Record;
       Data         : Data_Record;
       Rng_Output   : Natural;
@@ -50,6 +51,8 @@ package body Process_Data is
       Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
       Data_Stream := Stream_IO.Stream (Source_ID);
       Ada.Text_IO.Create (NIST_ID, Out_File, NIST_File);
+      Ada.Text_IO.Create (Log_ID, Out_File, "parsing_errors.log");
+      Ada.Text_IO.Put_Line (Log_ID, "   Parsing Errors");
 
       while not Stream_IO.End_Of_File (Source_ID) loop
         Line_Num := Line_Num + 1;
@@ -70,7 +73,12 @@ package body Process_Data is
             when 4 => Data.Channel := Rng_Output_1;
             when 5 => Data.Channel := GPS_Pps;
             when 6 => Data.Channel := Sync;
-            when others => Num_Invalid := Num_Invalid + 1;
+            when others =>
+             Data.Channel := Ch_Error;
+             Num_Invalid := Num_Invalid + 1;
+             Ada.Text_IO.Put_Line (Log_ID, "Line: " & Natural'Image (Line_Num) &
+               "," & "Invalid Channel value:" &
+               Unsigned_Byte'Image (Raw_Data.Channel));
          end case;
          Data.Time_Tag := Raw_Data.Time_Tag;
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
@@ -96,12 +104,15 @@ package body Process_Data is
       end loop;
       New_Line;
 
+      Ada.Text_IO.Close (Log_ID);
       Ada.Text_IO.Close (NIST_ID);
       Stream_IO.Close (Source_ID);
 
       Ada.Text_IO.Put_Line
         (Routine_Name & "number of invalid items: " &
            Integer'Image (Num_Invalid));
+      Ada.Text_IO.Put_Line
+        (Routine_Name & "Calling Count_Text_File_Lines");
       Ada.Text_IO.Put_Line
         (Routine_Name & "NIST file length: " &
            Natural'Image (Count_Text_File_Lines (NIST_File)) & " lines");

@@ -119,8 +119,8 @@ package body Combine_CSVs is
       B_Length     : constant Positive := Positive (Size (B_CSV));
       Data_A       : String19_Array (1 .. Num_Rows);
       Data_B       : String19_Array (1 .. Num_Rows);
-      aRow         : String_53 := (others => '#');
-      Combined     : String53_Array (1 .. Num_Rows) :=
+      aRow         : String_19 := (others => '#');
+      Combined     : String19_Array (1 .. Num_Rows) :=
         (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
@@ -130,19 +130,19 @@ package body Combine_CSVs is
       Load_NIST_Data (A_CSV, Data_A);
       Load_NIST_Data (B_CSV, Data_B);
 
-      for row in Combined'Range loop
-         aRow := Combined (row);
-         aRow (45 .. 46) := Data_A (row) (1 .. 2);  --  includes ,
-         aRow (47 .. 48) := Data_B (row) (1 .. 2);
-         aRow (49 .. 50) := Data_A (row) (3 .. 4);
-         aRow (51 .. 51) := ",";
-         aRow (52 .. 53) := Data_B (row) (3 .. 4);
-         Combined (row) := aRow;
-      end loop;
+      --  for row in Combined'Range loop
+      --     aRow := Combined (row);
+      --     aRow (45 .. 46) := Data_A (row) (1 .. 2);  --  includes ,
+      --     aRow (47 .. 48) := Data_B (row) (1 .. 2);
+      --     aRow (49 .. 50) := Data_A (row) (3 .. 4);
+      --     aRow (51 .. 51) := ",";
+      --     aRow (52 .. 53) := Data_B (row) (3 .. 4);
+      --     Combined (row) := aRow;
+      --  end loop;
 
-      --  Print_String53_Array (Routine_Name & "Combined", Combined,
+      --  Print_String19_Array (Routine_Name & "Combined", Combined,
       --                        Combined'Last - 4, Combined'Last);
-      Save_Data (Combined_CSV, Combined);
+      Save_NIST_Data (Combined_CSV, Combined);
       Put_Line (Routine_Name & "Combined_CSV length: " &
                   Integer'Image (Count_Text_File_Lines (Combined_CSV)) &
                    " lines");
