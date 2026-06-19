@@ -13,7 +13,7 @@ package body Process_Data is
    type Unsigned_Byte is mod 2**8;
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
-   type Channel_Type is (Detector_Click, Rng_Output_0, Rng_Output_1,
+   type Channel_Type is (Detector_Click, Polarizer_0, Polarizer_45,
                          GPS_Pps, Sync, Ch_Error);
 
    type Raw_Data_Record is record
@@ -41,8 +41,8 @@ package body Process_Data is
       Log_ID       : Ada.Text_IO.File_Type;
       Raw_Data     : Raw_Data_Record;
       Data         : Data_Record;
-      Rng_Output   : Natural;
-      --   P_Setting    : String (1 .. 1);
+      P_Setting    : String (1 .. 1);
+      Click        : String (1 .. 1);
       Line_Num     : Natural := 0;
       --  Byte_Offset  : Integer := -2;
       Num_Invalid  : Natural := 0;
@@ -69,8 +69,8 @@ package body Process_Data is
 
          case Raw_Data.Channel is
             when 0 => Data.Channel := Detector_Click;
-            when 2 => Data.Channel := Rng_Output_0;
-            when 4 => Data.Channel := Rng_Output_1;
+            when 2 => Data.Channel := Polarizer_0;
+            when 4 => Data.Channel := Polarizer_45;
             when 5 => Data.Channel := GPS_Pps;
             when 6 => Data.Channel := Sync;
             when others =>
@@ -86,14 +86,25 @@ package body Process_Data is
          if Line_Num < 3 then
             Print_Processed_Data (Data);
          end if;
-         if Data.Channel = Rng_Output_0 or else Data.Channel = Rng_Output_1
-          then
-            if Data.Channel = Rng_Output_0 then
-               Rng_Output := 0;
-            else
-               Rng_Output := 1;
-            end if;
-            Ada.Text_IO.Put (NIST_ID, Natural'Image (Rng_Output) & "," &
+         Click :=  "0";
+         case Data.Channel is
+            when Detector_Click => Click :=  "1";
+            when Polarizer_0 => P_Setting := "0";
+            when Polarizer_45 => P_Setting := "1";
+            when GPS_Pps => null;
+            when Sync => null;
+            when Ch_Error => null;
+         end case;
+
+         --  if Data.Channel = Polarizer_0 or else Data.Channel = Polarizer_45
+         --   then
+         --     if Data.Channel = Polarizer_0 then
+         --        P_Setting := "0";
+         --     else
+         --         P_Setting := "1";
+         --     end if;
+         if Data.Channel /= Ch_Error then
+            Ada.Text_IO.Put (NIST_ID,  P_Setting & "," &
                              Unsigned_8_Byte'Image (Data.Time_Tag));
             Ada.Text_IO.New_Line (NIST_ID);
          end if;

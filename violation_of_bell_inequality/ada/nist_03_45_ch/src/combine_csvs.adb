@@ -5,7 +5,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Combine_Data; use Combine_Data;
 --  with Printing; use Printing;
-with Types; use Types;
 
 with Utils; use Utils;
 
@@ -113,19 +112,19 @@ package body Combine_CSVs is
    end Combine;
 
     procedure Combine_Nist (A_CSV, B_CSV, Combined_CSV : String;
-      Num_Rows : Positive := 30) is
+      Num_Rows : Double_Integer := 30) is
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist ";
-      A_Length     : constant Positive := Positive (Size (A_CSV));
-      B_Length     : constant Positive := Positive (Size (B_CSV));
-      Data_A       : String19_Array (1 .. Num_Rows);
-      Data_B       : String19_Array (1 .. Num_Rows);
+      A_Length     : constant Double_Integer := Double_Integer (Size (A_CSV));
+      B_Length     : constant Double_Integer := Double_Integer (Size (B_CSV));
+      Data_A       : StringD19_Array (1 .. Num_Rows);
+      Data_B       : StringD19_Array (1 .. Num_Rows);
       aRow         : String_40 := (others => '#');
-      Combined     : String40_Array (1 .. Num_Rows) :=
+      Combined     : StringD40_Array (1 .. Num_Rows) :=
      (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
-      Put_Line (Routine_Name & "A length:" & Integer'Image (A_Length));
-      Put_Line (Routine_Name & "B length:" & Integer'Image (B_Length));
+      Put_Line (Routine_Name & "A length:" & Double_Integer'Image (A_Length));
+      Put_Line (Routine_Name & "B length:" & Double_Integer'Image (B_Length));
 
       Load_NIST_Data (A_CSV, Data_A);
       --  Put_Line (Routine_Name & "A_CSV size after Loading: " &

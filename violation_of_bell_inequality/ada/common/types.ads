@@ -6,7 +6,8 @@ with Ada.Containers.Vectors;
 package Types is
    pragma Preelaborate;
 
-   type Double is digits 15;
+   type Double is digits 15;  --  Float type
+   type Double_Integer is range 0 .. (2**63 - 1);
 
    subtype Byte is Interfaces.Unsigned_8;
    subtype Int_16 is Interfaces.Unsigned_16;
@@ -39,11 +40,13 @@ package Types is
    type String5_Array is array (Integer range <>) of String_5;
    type String8_Array is array (Integer range <>) of String_8;
    type String19_Array is array (Integer range <>) of String_19;
+   type StringD19_Array is array (Double_Integer range <>) of String_19;
    type String20_Array is array (Integer range <>) of String_20;
    type String21_Array is array (Integer range <>) of String_21;
    type String23_Array is array (Integer range <>) of String_23;
    type String33_Array is array (Integer range <>) of String_33;
    type String40_Array is array (Integer range <>) of String_40;
+   type StringD40_Array is array (Double_Integer range <>) of String_40;
    type String53_Array is array (Integer range <>) of String_53;
 
    package String21_Package is new

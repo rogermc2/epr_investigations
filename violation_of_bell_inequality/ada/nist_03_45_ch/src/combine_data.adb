@@ -1,8 +1,8 @@
 
 --  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
---  with Ada.Strings;
---  with Ada.Strings.Fixed;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Combine_Data is
@@ -15,7 +15,7 @@ package body Combine_Data is
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
       Ada.Text_IO.Open (Data_ID, In_File, Data_File);
-        while Row < Integer (Data'Length) and then
+        while Row < Natural (Data'Length) and then
         not End_Of_File (Data_ID) loop
          Row := Row + 1;
          Data (Row) := Get_Line (Data_ID);
@@ -34,13 +34,13 @@ package body Combine_Data is
    end Load_Photon_Data;
 
    procedure Load_NIST_Data (Data_File   : String;
-                              Data_Array : in out String19_Array) is
-      --  use Ada.Strings;
-      --  use Ada.Strings.Fixed;
+                              Data_Array : in out StringD19_Array) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
       Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
       --  Data_File_Length : constant Positive := Positive (Size (Data_File));
       Data_ID      : File_Type;
-      Row          : Natural := 0;
+      Row          : Double_Integer := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
       --  Put_Line (Routine_Name & "Source File Length : " &
@@ -51,13 +51,16 @@ package body Combine_Data is
       while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
          Row := Row + 1;
          declare
-            aline : constant String := Get_Line (Data_ID);
+            aLine   : constant String := Get_Line (Data_ID);
+            Line_19 : String (1 .. 19);
          begin
+            Move (Source  => aLine, Target => Line_19,
+                  Justify => Left, Pad => Space);
             if Row < 4 then
-               Put_Line (Routine_Name & "Row, aline: " & Integer'Image (Row) &
-               ", " & aline);
+               Put_Line (Routine_Name & "Row, Line: " &
+                Double_Integer'Image (Row) & ", " & Line_19);
             end if;
-            Data_Array (Row) := aline (1 .. 19);
+            Data_Array (Row) := Line_19;
          end;
 
       end loop;
@@ -65,7 +68,7 @@ package body Combine_Data is
       Close (Data_ID);
       --  Put_Line (Routine_Name &  Data_File & " closed");
       Put_Line (Routine_Name & "Number of rows: " &
-                              Integer'Image (Row - 1));
+                              Double_Integer'Image (Row - 1));
 
    exception
       when Error : others =>
@@ -128,7 +131,7 @@ package body Combine_Data is
 
    end Save_Data;
 
-procedure Save_NIST_Data (Data_File : String; Data : String40_Array) is
+procedure Save_NIST_Data (Data_File : String; Data : StringD40_Array) is
       Routine_Name : constant String := "Combine_Data.Save_NIST_Data ";
       Out_ID       : File_Type;
    begin

@@ -16,6 +16,10 @@ package body Utils is
          Line_Count := Line_Count + 1;
       end loop;
 
+      if Line_Count mod 4000000 = 0 then
+         Ada.Text_IO.Put (".");
+      end if;
+
       Close (File);
       return Line_Count;
 
