@@ -8,6 +8,6 @@ package Combine_CSVs is
       OEM_Data_B_CSV, Combined_CSV : String;  Num_Rows : Positive := 30);
 
     procedure Combine_Nist (A_CSV, B_CSV, Combined_CSV : String;
-      Num_Rows : Double_Integer := 30);
+      Num_Rows : Double_Natural := 30);
 
 end Combine_CSVs;

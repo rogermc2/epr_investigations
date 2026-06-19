@@ -38,15 +38,16 @@ package body Combine_Data is
       use Ada.Strings;
       use Ada.Strings.Fixed;
       Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
-      --  Data_File_Length : constant Positive := Positive (Size (Data_File));
+      --  Data_File_Length : constant Double_Natural :=
+      --   Double_Natural (Size (Data_File));
       Data_ID      : File_Type;
-      Row          : Double_Integer := 0;
+      Row          : Double_Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
       --  Put_Line (Routine_Name & "Source File Length : " &
-      --                          Integer'Image (Data_File_Length));
+      --                          Double_Natural'Image (Data_File_Length));
       --  Put_Line (Routine_Name & "Data_Array Length : " &
-      --                          Integer'Image (Data_Array'Length));
+      --                          Double_Natural'Image (Data_Array'Length));
       Open (Data_ID, In_File, Data_File);
       while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
          Row := Row + 1;
@@ -58,7 +59,7 @@ package body Combine_Data is
                   Justify => Left, Pad => Space);
             if Row < 4 then
                Put_Line (Routine_Name & "Row, Line: " &
-                Double_Integer'Image (Row) & ", " & Line_19);
+                Double_Natural'Image (Row) & ", " & Line_19);
             end if;
             Data_Array (Row) := Line_19;
          end;
@@ -68,7 +69,7 @@ package body Combine_Data is
       Close (Data_ID);
       --  Put_Line (Routine_Name &  Data_File & " closed");
       Put_Line (Routine_Name & "Number of rows: " &
-                              Double_Integer'Image (Row - 1));
+                              Double_Natural'Image (Row - 1));
 
    exception
       when Error : others =>

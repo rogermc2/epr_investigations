@@ -112,10 +112,10 @@ package body Combine_CSVs is
    end Combine;
 
     procedure Combine_Nist (A_CSV, B_CSV, Combined_CSV : String;
-      Num_Rows : Double_Integer := 30) is
+      Num_Rows : Double_Natural := 30) is
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist ";
-      A_Length     : constant Double_Integer := Double_Integer (Size (A_CSV));
-      B_Length     : constant Double_Integer := Double_Integer (Size (B_CSV));
+      A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
+      B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
       Data_A       : StringD19_Array (1 .. Num_Rows);
       Data_B       : StringD19_Array (1 .. Num_Rows);
       aRow         : String_40 := (others => '#');
@@ -123,8 +123,8 @@ package body Combine_CSVs is
      (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000
-      Put_Line (Routine_Name & "A length:" & Double_Integer'Image (A_Length));
-      Put_Line (Routine_Name & "B length:" & Double_Integer'Image (B_Length));
+      Put_Line (Routine_Name & "A length:" & Double_Natural'Image (A_Length));
+      Put_Line (Routine_Name & "B length:" & Double_Natural'Image (B_Length));
 
       Load_NIST_Data (A_CSV, Data_A);
       --  Put_Line (Routine_Name & "A_CSV size after Loading: " &
