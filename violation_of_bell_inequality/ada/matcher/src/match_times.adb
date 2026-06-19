@@ -82,7 +82,7 @@ begin
    Find_Raw_Window_Width (Photon_Times_A, Photon_Times_B, Delta_Val,
                           Min_Width, Max_Width);
 
-   Put_Line (Routine_Name & "raw data minimun and maximum widths: " &
+   Put_Line (Routine_Name & "raw data minimum and maximum widths: " &
                Float'Image (Min_Width) & ", " & Float'Image (Max_Width));
    Put_Line (Routine_Name & "coincidence test width :" &
                Float'Image (Width) & " ns");

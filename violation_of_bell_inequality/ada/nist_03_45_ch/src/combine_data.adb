@@ -140,8 +140,7 @@ procedure Save_NIST_Data (Data_File : String; Data : StringD40_Array) is
       Create (Out_ID, Out_File, Data_File);
 
       --  Table Header
-      --  Put (Out_ID, "A Arrival Time,B Arrival Time,A Setting,");
-      --  Put_Line (Out_ID, "B Setting,A Polarization,B Polarization");
+      Put_Line (Out_ID, "A Setting,A Time,B Setting,B_Time");
       for row in Data'Range loop
          --  if Row > Data'Last - 4 then
          --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " &
