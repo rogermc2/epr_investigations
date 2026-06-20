@@ -9,7 +9,7 @@ with Utils; use Utils;
 
 procedure Match_Times is
    Routine_Name     : constant String := "Match_Times ";
-   Pairs_Directory : constant String := "../nist_03_45_ch";
+   Pairs_Directory : constant String := "../nist_03_45_ch/";
    Pairs_CSV        : constant String := Pairs_Directory & "combined.csv";
    Ns_5            : constant String := "../ns_5.csv";
    Other           : constant String := "../other.csv";
@@ -40,8 +40,8 @@ begin
      (Routine_Name & "Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Pairs_CSV)) & " lines");
 
-   Match_Photon_Times (Pairs_CSV, Delta_Val, Width, Num_Found,
-                      Selected_Pairs, Data_Length);
+   Match_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
+    Data_Length);
    New_Line;
 
    --  aa_Matches := Number_Of_Matches (OEM_aa);

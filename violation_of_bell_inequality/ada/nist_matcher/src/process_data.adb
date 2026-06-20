@@ -1,22 +1,25 @@
 
+--  with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
+--  with Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Process_Data is
 
-   procedure Load_Data (CSV_Data : String; Data : out String21_List);
+   procedure Load_Data (CSV_Data : String;
+                Data_A, Data_B : in out String19_List);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Find_Raw_Window_Width
      (CSV_Times_A, CSV_Times_B : String; Delta_A : Float;
       Min_Width, Max_Width     : out Float) is
-      use String21_Package;
+      use String19_Package;
       --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
-      A_Data       : String21_List;
-      B_Data       : String21_List;
+      A_Data       : String19_List;
+      B_Data       : String19_List;
       B_Index      : Integer := 1;
 
-      procedure Find_Width (A_Curs : String21_Package.Cursor) is
+      procedure Find_Width (A_Curs : String19_Package.Cursor) is
          A_Value   : constant Double :=
            Double'Value (Element (A_Curs)) + Double (Delta_A);
          Width     : Float;
@@ -38,8 +41,7 @@ package body Process_Data is
       end Find_Width;
 
    begin
-      Load_Data (CSV_Times_A, A_Data);
-      Load_Data (CSV_Times_B, B_Data);
+      Load_Data (CSV_Times_A, A_Data, B_Data);
       Min_Width := 1.0;
       Max_Width := 0.0;
 
@@ -47,36 +49,49 @@ package body Process_Data is
 
    end  Find_Raw_Window_Width;
 
-   procedure Load_Data (CSV_Data : String; Data : out String21_List) is
-      use String21_Package;
+   procedure Load_Data (CSV_Data : String; Data_A, Data_B: in out String19_List) is
+      --  use Ada.Directories;
+      --  use Ada.Strings.Unbounded;
+      use String19_Package;
       File_ID : File_Type;
-      aLine   : String_21;
+      Header  : String_33;
+      aLine   : String_40;
    begin
       Open (File_ID, In_File, CSV_Data);
+      Header := Get_Line (File_ID);        -- Skip header
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         Data.Append (aLine);
+         Put_Line ("aline: " & aline);
+         Put_Line ("aline (1 .. 19): " & aline (1 .. 19));
+         Put_Line ("aline (22 .. 40): " & aline (22 .. 40));
+         Put_Line ("aline length: " & Integer'Image (Integer (aline'Length)));
+         --  Data_A.Append (aLine (aLine'First .. aLine'First + 20));
+         --  Data_B.Append (aLine (aLine'First + 21 .. aLine'Last));
+         Data_A.Append (aLine (1 .. 19));
+         Data_B.Append (aLine (22 .. 40));
       end loop;
 
       Close (File_ID);
 
    end Load_Data;
 
-   procedure Match_Photon_Times
-     (Pairs_CSV : String; Delta_A, Width : Float;
+   procedure Match_Times
+     (Pairs_CSV, Match_CSV : String; Delta_A, Width : Float;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Num_Rows  : Natural := 0) is
-      use String21_Package;
-      Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
+      use Match_Package;
+      use String19_Package;
+      Routine_Name : constant String := "Process_Data.Match_Times ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
       --  Half_Width   : constant Double := Double (Width) * 0.5;
       D_Width      : constant Double := Double (Width);
-      A_Data       : String21_List;
-      B_Data       : String21_List;
-      B_Curs       : Cursor;
+      A_Data       : String19_List;
+      B_Data       : String19_List;
+      B_Curs       : String19_Package.Cursor := B_Data.First;
+      Item         : Index_Record;
       Count        : Natural := 0;
 
-      procedure Find_All_Matches (A_Curs : String21_Package.Cursor) is
+      procedure Find_All_Matches (A_Curs : String19_Package.Cursor) is
          A_Value   : constant Double :=
            Double'Value (Element (A_Curs)) + Double (Delta_A);
          B_Val_Min : constant Double := A_Value - D_Width;
@@ -101,8 +116,8 @@ package body Process_Data is
 
                if Match then
                   --  Matched times found within window
-                  Selected_Pairs.Append
-                    ((To_Index (A_Curs), To_Index (B_Curs)));
+                  Item := (To_Index (A_Curs), To_Index (B_Curs));
+                  Selected_Pairs.Append (Item);
                   Num_Found := Num_Found + 1;
                   if Num_Found < 6 then
                      Put_Line (Routine_Name & "Match, A, B index:" &
@@ -117,15 +132,14 @@ package body Process_Data is
 
    begin
       Num_Found := 0;
-      Load_Data (CSV_A, A_Data);
-      Load_Data (CSV_B, B_Data);
+      Load_Data (Pairs_CSV, A_Data, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 
       A_Data.Iterate (Find_All_Matches'Access);
       New_Line;
 
-      Save_Match_List (Match, Selected_Pairs);
+      Save_Match_List (Match_CSV, Selected_Pairs);
       Put_Line (Routine_Name & "Selected_Pairs length:" &
                   Integer'Image (Integer (Selected_Pairs.Length)));
       New_Line;
@@ -135,7 +149,7 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 
-   end Match_Photon_Times;
+   end Match_Times;
 
    function Number_Of_Matches (File_Name : String) return Natural is
       Routine_Name : constant String := "Process_Data.Number_Of_Matches ";

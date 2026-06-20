@@ -13,7 +13,7 @@ project Match_NIST_Times is
    end Naming;
 
    package Compiler is
-      for Switches ("ada") use ("-gnatw.ufkpru", "-gnatybcdefux");
+      for Switches ("ada") use ("-gnatw.ufkpru", "-gnatybcdefux", "-gnat2022");
    end Compiler;
 
 end Match_NIST_Times;

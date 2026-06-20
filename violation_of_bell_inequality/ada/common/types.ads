@@ -29,6 +29,7 @@ package Types is
    subtype String_19 is String (1 .. 19);
    subtype String_20 is String (1 .. 20);
    subtype String_21 is String (1 .. 21);
+   subtype String_22 is String (1 .. 22);
    subtype String_23 is String (1 .. 23);
    subtype String_33 is String (1 .. 33);
    subtype String_40 is String (1 .. 40);
@@ -43,11 +44,16 @@ package Types is
    type StringD19_Array is array (Double_Natural range <>) of String_19;
    type String20_Array is array (Integer range <>) of String_20;
    type String21_Array is array (Integer range <>) of String_21;
+   type String22_Array is array (Integer range <>) of String_22;
    type String23_Array is array (Integer range <>) of String_23;
    type String33_Array is array (Integer range <>) of String_33;
    type String40_Array is array (Integer range <>) of String_40;
    type StringD40_Array is array (Double_Natural range <>) of String_40;
    type String53_Array is array (Integer range <>) of String_53;
+
+   package String19_Package is new
+     Ada.Containers.Vectors (Positive, String_19);
+   subtype String19_List is String19_Package.Vector;
 
    package String21_Package is new
      Ada.Containers.Vectors (Positive, String_21);
