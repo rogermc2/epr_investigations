@@ -3,6 +3,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 --  with Data_Selection; use Data_Selection;
+with Printing; use Printing;
 with Process_Data; use Process_Data;
 with Types; use Types;
 with Utils; use Utils;
@@ -43,6 +44,13 @@ begin
    Match_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
     Data_Length);
    New_Line;
+
+   if Num_Found > 0 then
+   Put_Line (Routine_Name & "Pairs found:" & Integer'Image (Num_Found));
+      Print_Match_List ("Selected_Pairs", Selected_Pairs, 1, 10);
+   else
+      Put_Line (Routine_Name & "No matched pairs found!");
+   end if;
 
    --  aa_Matches := Number_Of_Matches (OEM_aa);
    --  ab_Matches := Number_Of_Matches (OEM_ab);

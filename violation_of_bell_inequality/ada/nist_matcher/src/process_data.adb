@@ -61,14 +61,14 @@ package body Process_Data is
       Header := Get_Line (File_ID);        -- Skip header
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         Put_Line ("aline: " & aline);
-         Put_Line ("aline (1 .. 19): " & aline (1 .. 19));
-         Put_Line ("aline (22 .. 40): " & aline (22 .. 40));
-         Put_Line ("aline length: " & Integer'Image (Integer (aline'Length)));
-         --  Data_A.Append (aLine (aLine'First .. aLine'First + 20));
-         --  Data_B.Append (aLine (aLine'First + 21 .. aLine'Last));
-         Data_A.Append (aLine (1 .. 19));
-         Data_B.Append (aLine (22 .. 40));
+         --  Put_Line ("aline: " & aline);
+         --  Put_Line ("aline (1 .. 19): " & aline (1 .. 19));
+         --  Put_Line ("aline (22 .. 40): " & aline (22 .. 40));
+         --  Put_Line ("aline length: " & Integer'Image (Integer (aline'Length)));
+         Data_A.Append (aLine (aLine'First .. aLine'First + 18));
+         Data_B.Append (aLine (aLine'First + 21 .. aLine'Last));
+         --  Data_A.Append (aLine (1 .. 19));
+         --  Data_B.Append (aLine (22 .. 40));
       end loop;
 
       Close (File_ID);
@@ -92,9 +92,11 @@ package body Process_Data is
       Count        : Natural := 0;
 
       procedure Find_All_Matches (A_Curs : String19_Package.Cursor) is
+         A_Item    : constant String_19 := Element (A_Curs);
          A_Value   : constant Double :=
-           Double'Value (Element (A_Curs)) + Double (Delta_A);
+           Double'Value (A_Item (3 .. 19)) + Double (Delta_A);
          B_Val_Min : constant Double := A_Value - D_Width;
+         B_Item    : String_19;
          B_Value   : Double;
          Match     : Boolean := False;
       begin
@@ -102,16 +104,19 @@ package body Process_Data is
          if Use_Num_Rows and Count > Num_Rows then
             null;
          elsif Has_Element (B_Curs) then
-            B_Value := Double'Value (Element (B_Curs));
+            B_Item := Element (B_Curs);
+            B_Value := Double'Value (B_Item (3 .. 19));
             --  Move B_Index forward until B_Value is >= (A_Value - Width)
             while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
-               B_Value := Double'Value (Element (B_Curs));
+               B_Item := Element (B_Curs);
+               B_Value := Double'Value (B_Item (3 .. 19));
                Next (B_Curs);
             end loop;
 
             --  Element (B_Curs) is = or > B_Val_Min
             if Has_Element (B_Curs) then
-               B_Value := Double'Value (Element (B_Curs));
+               B_Item := Element (B_Curs);
+               B_Value := Double'Value (B_Item (3 .. 19));
                Match := Abs (B_Value - A_Value) <= D_Width;
 
                if Match then
@@ -136,7 +141,9 @@ package body Process_Data is
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 
+      Put_Line (Routine_Name & "Data loaded");
       A_Data.Iterate (Find_All_Matches'Access);
+      Put_Line (Routine_Name & "All matches found");
       New_Line;
 
       Save_Match_List (Match_CSV, Selected_Pairs);

@@ -21,7 +21,7 @@ package body Printing is
       end if;
 
       Put_Line (Name & ": ");
-      if Start >= Data'First and then Finish <= Data'Last then
+      if Start >= Data'First and then Last <= Data'Last then
          for Index in Start .. Last loop
             Put (Unsigned_8'Image (Data (Index)) & "  ");
             Count := Count + 1;
@@ -32,7 +32,7 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_Byte_Array called with invalid start or finish index.");
+           ("Print_Byte_Array called with invalid start or finish index:");
       end if;
       New_Line;
 
@@ -116,6 +116,44 @@ package body Printing is
       New_Line;
 
    end Print_Integer_List;
+
+   --  ------------------------------------------------------------------------
+
+    procedure Print_Match_List (Name  : String; Data : Match_List;
+                              Start : Positive := 1; Finish : Natural := 0) is
+      use Match_Package;
+      Last      : Natural;
+      Item      : Index_Record;
+      Count     : Integer := 1;
+   begin
+      if Finish > 0 then
+         Last := Finish;
+      else
+         Last := Natural (Data.Last_index);
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start >= Data.First_Index and then Last <= Data.Last_index then
+         for Index in Start .. Last loop
+            Item := Data (Index);
+            Put (Integer'Image (Item.A_Index) & "  " & Integer'Image (Item.B_Index));
+            Count := Count + 1;
+            if Count > 10 then
+               New_Line;
+               Count := 1;
+            end if;
+         end loop;
+      else
+         Put_Line
+           ("Print_Match_List called with invalid start or finish index.");
+         Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
+                   Integer'Image (Finish));
+         Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
+                   ",  Data.Last_index: " & Integer'Image (Data.Last_index));
+      end if;
+      New_Line;
+
+   end Print_Match_List;
 
    --  ------------------------------------------------------------------------
 
