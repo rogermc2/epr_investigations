@@ -16,8 +16,8 @@ procedure Match_Times is
    Other           : constant String := "../other.csv";
    Data            : Unbounded_String;
 
-   Width            : constant Float := 5.0 * ns;
-   Delta_Val        : constant Float := 0.0 * ns;
+   Width            : constant Natural := 50000;
+   Delta_Val        : constant Natural := 0;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -31,18 +31,17 @@ procedure Match_Times is
    --  bb_Matches       : Natural;
    Selected_Pairs   : Match_List;
 begin
-   if Width = 5.0 * ns then
+   if Width = 50000 then
       Data := To_Unbounded_String (Ns_5);
    else
       Data := To_Unbounded_String (Other);
    end if;
 
-   Put_Line
-     (Routine_Name & "Pairs file size:" &
+   Put_Line (Routine_Name & "Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Pairs_CSV)) & " lines");
 
-   Match_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
-    Data_Length);
+   Match_Data_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
+                Data_Length);
    New_Line;
 
    if Num_Found > 0 then
@@ -69,15 +68,15 @@ begin
    --                         Min_Width, Max_Width);
 
    --  Put_Line (Routine_Name & "raw data minimum and maximum widths: " &
-   --              Float'Image (Min_Width) & ", " & Float'Image (Max_Width));
+   --              Natural'Image (Min_Width) & ", " & Natural'Image (Max_Width));
    --  Put_Line (Routine_Name & "coincidence test width :" &
-   --              Float'Image (Width) & " ns");
+   --              Natural'Image (Width) & " ns");
    --  Print_xxCounts ("A counts", A_Counts);
    --  Print_xxCounts ("B counts", B_Counts);
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
    --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb,
    --   To_String (Combined_Data), Data_Length);
-   Put_Line (Routine_Name & "width: " & Float'Image (Width) & " ns");
-   Put_Line (Routine_Name & "delta: " & Float'Image (Delta_Val) & " ns");
+   Put_Line (Routine_Name & "width: " & Natural'Image (Width));
+   Put_Line (Routine_Name & "delta: " & Natural'Image (Delta_Val));
 
 end Match_Times;

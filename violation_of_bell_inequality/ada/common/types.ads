@@ -6,6 +6,7 @@ with Ada.Containers.Vectors;
 package Types is
    pragma Preelaborate;
 
+   ns : constant Float := 10.0 ** (-9);
    type Double is digits 15;  --  Float type
    type Double_Natural is range 0 .. (2**63 - 1);
 
@@ -77,6 +78,15 @@ package Types is
      Ada.Containers.Vectors (Natural, W_Record);
    subtype W_List is W_Package.Vector;
 
+   type Setting_Time_Record is record
+      Setting : Natural;
+      Time    : Double_Natural;
+   end record;
+
+   package Setting_Time_Package is new
+     Ada.Containers.Vectors (Positive, Setting_Time_Record);
+   subtype Setting_Time_Vector is Setting_Time_Package.Vector;
+
    type Index_Record is record
       A_Index    : Natural;
       B_Index    : Natural;
@@ -99,7 +109,5 @@ package Types is
    package Integer_List_Package is new
      Ada.Containers.Vectors (Positive, Integer);
    subtype Integer_List is Integer_List_Package.Vector;
-
-   ns : constant Float := 10.0 ** (-9);
 
 end Types;

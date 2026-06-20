@@ -7,34 +7,47 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body Process_Data is
 
    procedure Load_Data (CSV_Data : String;
-                Data_A, Data_B : in out String19_List);
+                Data_A, Data_B : in out Setting_Time_Vector);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
-   procedure Find_Raw_Window_Width
-     (CSV_Times_A, CSV_Times_B : String; Delta_A : Float;
-      Min_Width, Max_Width     : out Float) is
-      use String19_Package;
+   procedure Align_Data (A_Data, B_Data : in out Setting_Time_Vector) is
+      use Setting_Time_Package;
+      A_Curs       : Cursor := A_Data.First;
+      B_Curs       : Cursor := B_Data.First;
+      A_Item       : Setting_Time_Record;
+      B_Item       : Setting_Time_Record;
+      begin
+         while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
+            Next (A_Curs);
+            Next (B_Curs);
+         end loop;
+      end Align_Data;
+
+procedure Find_Raw_Window_Width
+     (CSV_Times_A, CSV_Times_B : String; Delta_A : Natural;
+      Min_Width, Max_Width     : out Natural) is
+      use Setting_Time_Package;
       --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
-      A_Data       : String19_List;
-      B_Data       : String19_List;
+      A_Data       : Setting_Time_Vector;
+      B_Data       : Setting_Time_Vector;
       B_Index      : Integer := 1;
 
-      procedure Find_Width (A_Curs : String19_Package.Cursor) is
-         A_Value   : constant Double :=
-           Double'Value (Element (A_Curs)) + Double (Delta_A);
-         Width     : Float;
+      procedure Find_Width (A_Curs : Setting_Time_Package.Cursor) is
+         A_Value   : constant Double_Natural :=
+           Element (A_Curs).Time + Double_Natural (Delta_A);
+         Width     : Natural;
       begin
          while B_Index < Integer (B_Data.Length) and then
-           Double'Value (B_Data.Element (B_Index)) < A_Value
+           B_Data.Element (B_Index).Time < A_Value
          loop
             B_Index := B_Index + 1;
          end loop;
 
-         Width := Float (Double'Value (B_Data.Element (B_Index)) - A_Value);
+         Width := Natural (B_Data.Element (B_Index).Time - A_Value);
          if Width > Max_Width then
             Max_Width := Width;
-         elsif Width < Min_Width and then Width > 0.0 then
-            --   Width can be < 0.0 at end of files.
+         elsif Width < Min_Width and then Width > 0 then
+            --   Width can be < 0 at end of files.
             Min_Width := Width;
          end if;
 
@@ -42,62 +55,62 @@ package body Process_Data is
 
    begin
       Load_Data (CSV_Times_A, A_Data, B_Data);
-      Min_Width := 1.0;
-      Max_Width := 0.0;
+      Min_Width := 1;
+      Max_Width := 0;
 
       A_Data.Iterate (Find_Width'Access);
 
    end  Find_Raw_Window_Width;
 
-   procedure Load_Data (CSV_Data : String; Data_A, Data_B: in out String19_List) is
-      --  use Ada.Directories;
-      --  use Ada.Strings.Unbounded;
-      use String19_Package;
+procedure Load_Data (CSV_Data : String;
+                  Data_A, Data_B : in out Setting_Time_Vector) is
+      use Types.Setting_Time_Package;
       File_ID : File_Type;
       Header  : String_33;
+      A_String : String_19;
+      B_String : String_19;
       aLine   : String_40;
+      Item    : Setting_Time_Record;
    begin
       Open (File_ID, In_File, CSV_Data);
       Header := Get_Line (File_ID);        -- Skip header
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         --  Put_Line ("aline: " & aline);
-         --  Put_Line ("aline (1 .. 19): " & aline (1 .. 19));
-         --  Put_Line ("aline (22 .. 40): " & aline (22 .. 40));
-         --  Put_Line ("aline length: " & Integer'Image (Integer (aline'Length)));
-         Data_A.Append (aLine (aLine'First .. aLine'First + 18));
-         Data_B.Append (aLine (aLine'First + 21 .. aLine'Last));
-         --  Data_A.Append (aLine (1 .. 19));
-         --  Data_B.Append (aLine (22 .. 40));
+         A_String := aLine (aLine'First .. aLine'First + 18);
+         B_String := aLine (aLine'First + 21 .. aLine'Last);
+         Item.Setting := Natural'Value (A_String (1 .. 1));
+         Item.Time := Double_Natural'Value (A_String (4 .. 19));
+         Data_A.Append (Item);
+         Item.Setting := Natural'Value (B_String (1 .. 1));
+         Item.Time := Double_Natural'Value (B_String (4 .. 19));
+         Data_B.Append (Item);
       end loop;
 
       Close (File_ID);
 
    end Load_Data;
 
-   procedure Match_Times
-     (Pairs_CSV, Match_CSV : String; Delta_A, Width : Float;
+   procedure Match_Data_Times
+     (Pairs_CSV, Match_CSV : String; Delta_A, Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Num_Rows  : Natural := 0) is
       use Match_Package;
-      use String19_Package;
-      Routine_Name : constant String := "Process_Data.Match_Times ";
+      use Setting_Time_Package;
+      Routine_Name : constant String := "Process_Data.Match_Data_Times ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
-      --  Half_Width   : constant Double := Double (Width) * 0.5;
-      D_Width      : constant Double := Double (Width);
-      A_Data       : String19_List;
-      B_Data       : String19_List;
-      B_Curs       : String19_Package.Cursor := B_Data.First;
-      Item         : Index_Record;
-      Count        : Natural := 0;
+      A_Data       : Setting_Time_Vector;
+      B_Data       : Setting_Time_Vector;
+      B_Curs       : Setting_Time_Package.Cursor := B_Data.First;
 
-      procedure Find_All_Matches (A_Curs : String19_Package.Cursor) is
-         A_Item    : constant String_19 := Element (A_Curs);
-         A_Value   : constant Double :=
-           Double'Value (A_Item (3 .. 19)) + Double (Delta_A);
-         B_Val_Min : constant Double := A_Value - D_Width;
-         B_Item    : String_19;
-         B_Value   : Double;
+         procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
+         D_Width   : constant Double_Natural := Double_Natural (Width);
+         A_Item    : constant Setting_Time_Record := Element (A_Curs);
+         A_Time    : constant Double_Natural := A_Item.Time;
+         B_Val_Min : constant Double_Natural := A_Time - D_Width;
+         Item      : Index_Record;
+         B_Item    : Setting_Time_Record;
+         B_Time   : Double_Natural;
+         Count     : Natural := 0;
          Match     : Boolean := False;
       begin
          Count := Count + 1;
@@ -105,19 +118,19 @@ package body Process_Data is
             null;
          elsif Has_Element (B_Curs) then
             B_Item := Element (B_Curs);
-            B_Value := Double'Value (B_Item (3 .. 19));
+            B_Time := B_Item.Time;
             --  Move B_Index forward until B_Value is >= (A_Value - Width)
-            while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
+            while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
                B_Item := Element (B_Curs);
-               B_Value := Double'Value (B_Item (3 .. 19));
+               B_Time := B_Item.Time;
                Next (B_Curs);
             end loop;
 
             --  Element (B_Curs) is = or > B_Val_Min
             if Has_Element (B_Curs) then
                B_Item := Element (B_Curs);
-               B_Value := Double'Value (B_Item (3 .. 19));
-               Match := Abs (B_Value - A_Value) <= D_Width;
+               B_Time := B_Item.Time;
+               Match := Abs (B_Time - A_Time) <= D_Width;
 
                if Match then
                   --  Matched times found within window
@@ -138,6 +151,7 @@ package body Process_Data is
    begin
       Num_Found := 0;
       Load_Data (Pairs_CSV, A_Data, B_Data);
+      Align_Data (A_Data, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 
@@ -156,7 +170,7 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 
-   end Match_Times;
+   end Match_Data_Times;
 
    function Number_Of_Matches (File_Name : String) return Natural is
       Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
