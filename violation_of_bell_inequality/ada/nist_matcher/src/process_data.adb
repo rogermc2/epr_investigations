@@ -14,10 +14,24 @@ package body Process_Data is
       use Setting_Time_Package;
       A_Curs       : Cursor := A_Data.First;
       B_Curs       : Cursor := B_Data.First;
-      A_Item       : Setting_Time_Record;
-      B_Item       : Setting_Time_Record;
+      A_Item       : Setting_Time_Record := Element (A_Curs);
+      B_Item       : Setting_Time_Record := Element (B_Curs);
+      Delta_Time   : constant Double_Natural :=
+                         abs (A_Item.Time - B_Item.Time);
+      A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
       begin
+         A_Curs := A_Data.First;
+         B_Curs := B_Data.First;
          while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
+            A_Item := Element (A_Curs);
+            B_Item := Element (B_Curs);
+            if A_Gt_B then
+               A_Item.Time := A_Item.Time - Delta_Time;
+               A_Data.Replace_Element (A_Curs, A_Item);
+            else
+               B_Item.Time := B_Item.Time- Delta_Time;
+               B_Data.Replace_Element (B_Curs, B_Item);
+            end if;
             Next (A_Curs);
             Next (B_Curs);
          end loop;
