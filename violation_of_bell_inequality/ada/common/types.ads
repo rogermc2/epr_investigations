@@ -93,7 +93,7 @@ package Types is
    end record;
 
    package Match_Package is new
-     Ada.Containers.Vectors (Natural, Index_Record);
+     Ada.Containers.Vectors (Positive, Index_Record);
    subtype Match_List is Match_Package.Vector;
 
    type Sample_Data_Record is record

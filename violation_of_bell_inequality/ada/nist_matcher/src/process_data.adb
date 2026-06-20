@@ -119,11 +119,11 @@ procedure Load_Data (CSV_Data : String;
          procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
          D_Width   : constant Double_Natural := Double_Natural (Width);
          A_Item    : constant Setting_Time_Record := Element (A_Curs);
-         A_Time    : constant Double_Natural := A_Item.Time;
+         A_Time    : constant Double_Natural := A_Item.Time + Double_Natural (Delta_A);
          B_Val_Min : constant Double_Natural := A_Time - D_Width;
          Item      : Index_Record;
          B_Item    : Setting_Time_Record;
-         B_Time   : Double_Natural;
+         B_Time    : Double_Natural;
          Count     : Natural := 0;
          Match     : Boolean := False;
       begin
@@ -151,11 +151,11 @@ procedure Load_Data (CSV_Data : String;
                   Item := (To_Index (A_Curs), To_Index (B_Curs));
                   Selected_Pairs.Append (Item);
                   Num_Found := Num_Found + 1;
-                  if Num_Found < 6 then
-                     Put_Line (Routine_Name & "Match, A, B index:" &
-                                 Integer'Image (To_Index (A_Curs)) & ",  " &
-                                 Integer'Image (To_Index (B_Curs)));
-                  end if;
+                  --  if Num_Found < 6 then
+                  --     Put_Line (Routine_Name & "Match, A, B index:" &
+                  --                 Integer'Image (To_Index (A_Curs)) & ",  " &
+                  --                 Integer'Image (To_Index (B_Curs)));
+                  --  end if;
                end if;
             end if;
          end if;

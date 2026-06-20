@@ -16,8 +16,8 @@ procedure Match_Times is
    Other           : constant String := "../other.csv";
    Data            : Unbounded_String;
 
-   Width            : constant Natural := 50000;
-   Delta_Val        : constant Natural := 0;
+   Width            : constant Natural := 10000;
+   Delta_Val        :  Natural := 10000000;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -40,16 +40,22 @@ begin
    Put_Line (Routine_Name & "Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Pairs_CSV)) & " lines");
 
-   Match_Data_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
-                Data_Length);
-   New_Line;
+   --  for del in 0 .. Delta_Val loop
+   --     if del mod 100000 = 0 then
+   --        Put_Line ("del: " & Integer'Image (del));
+         Match_Data_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
+                     Data_Length);
+         Put_Line ("Num_Found: " & Integer'Image (Num_Found));
+   --        New_Line;
+   --     end if;
+   --  end loop;
 
-   if Num_Found > 0 then
-   Put_Line (Routine_Name & "Pairs found:" & Integer'Image (Num_Found));
-      Print_Match_List ("Selected_Pairs", Selected_Pairs, 1, 10);
-   else
-      Put_Line (Routine_Name & "No matched pairs found!");
-   end if;
+   --  if Num_Found > 0 then
+   --  Put_Line (Routine_Name & "Pairs found:" & Integer'Image (Num_Found));
+   --     Print_Match_List ("Selected_Pairs", Selected_Pairs, 1, 10);
+   --  else
+   --     Put_Line (Routine_Name & "No matched pairs found!");
+   --  end if;
 
    --  aa_Matches := Number_Of_Matches (OEM_aa);
    --  ab_Matches := Number_Of_Matches (OEM_ab);
