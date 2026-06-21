@@ -8,6 +8,7 @@ package Types is
 
    ns : constant Float := 10.0 ** (-9);
    type Double is digits 15;  --  Float type
+   type Double_Integer is range -2**63 .. (2**63 - 1);
    type Double_Natural is range 0 .. (2**63 - 1);
 
    subtype Byte is Interfaces.Unsigned_8;
@@ -109,5 +110,9 @@ package Types is
    package Integer_List_Package is new
      Ada.Containers.Vectors (Positive, Integer);
    subtype Integer_List is Integer_List_Package.Vector;
+
+   package Long_Integer_Package is new
+     Ada.Containers.Vectors (Positive, Long_Integer);
+   subtype Long_Integer_Vector is Long_Integer_Package.Vector;
 
 end Types;

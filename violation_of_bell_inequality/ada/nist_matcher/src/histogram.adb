@@ -2,34 +2,41 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.IO_Exceptions;
 
-package body Large_File_Histogram is
+with Types; use Types;
 
-procedure Make_Histogram is
+package body Histogram is
 
+procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
+   use setting_time_vector_package;
+   use long_integer_package;
    -- Define histogram structure constants
    Bin_Size : constant Integer := 10;
    Num_Bins : constant Integer := 5;
-   
    type Bin_Array is array (1 .. Num_Bins) of Integer;
+   Curs_A : Cursor := A_Data.First;
+   Curs_B : Cursor := B_Data.First;
+   Delta_Data : long_integer_vector;
+    -- Store time differences safely
    Bins : Bin_Array := (others => 0);
-   
-   -- File variables
-   File_Name : constant String := "large_data.txt";
-   Input_File : File_Type;
-   
+   --  File_Name : constant String := "large_data.txt";
+   --  Input_File : File_Type;
    Current_Value : Integer;
    Bin_Index     : Integer;
    Total_Records : Long_Integer := 0; -- Track size safely
-
 begin
    -- 1. Open the file for sequential reading
-      Open (File => Input_File, Mode => In_File, Name => File_Name);
-   
+   --  Open (File => Input_File, Mode => In_File, Name => File_Name);
+   while Has_Element (Curs_A) and Has_Element (Curs_B) loop
+      Delta_Data.Append (Element (Curs_A).Time - Element (Curs_B).Time);
+      Next (Curs_A);
+      Next (Curs_B);
+   end loop;
+
    -- 2. Stream data line-by-line to save memory
    while not End_Of_File (Input_File) loop
       begin
          -- Read one integer from the current line
-         Get (Input_File, Current_Value);
+         --  Get (Input_File, Current_Value);
          Total_Records := Total_Records + 1;
          
          -- Calculate bin assignment
@@ -54,7 +61,8 @@ begin
 
    Close (Input_File);
 
-   Put_Line ("Processed total records: " & Long_Integer'Image (Total_Records));
+   Put_Line ("Processed total records: " &
+          Long_Integer'Image (Total_Records));
    Put_Line ("--- Data Distribution Histogram ---");
    Put_Line ("Bin Range  | Frequency  | Bar Chart");
    Put_Line ("------------------------------------");
@@ -95,10 +103,10 @@ begin
    end loop;
 
    exception
-      when Name_Error =>
-         Put_Line ("Error: The file '" & File_Name & "' was not found.");
+      when others =>
+         Put_Line ("Draw_Histogram error");
          return;
 
-end Make_Histogram;
+end Draw_Histogram;
 
-end Large_File_Histogram;
+end Histogram;
