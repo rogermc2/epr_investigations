@@ -34,18 +34,17 @@ begin
    --  Index_A := Double_Natural (A_Data.First_Index) + H_Width;
    --  Curs_B := B_Data.First;
    --  while Has_Element (Curs_A) loop
-   for I in Double_Natural (A_Data.First_Index) + H_Width ..
+   for index in Double_Natural (A_Data.First_Index) + H_Width ..
                 Double_Natural (A_Data.Last_Index) - H_Width loop
-      null;
-      --  Delta_Data.Append
-      --     (Long_Integer (Element (Curs_A).Time - Element (Curs_B).Time));
+      Delta_Data.Append
+         (Double_Integer (A_Data.Element (index).Time - B_Data.Element (index).Time));
       --  Next (Curs_A);
       --  Next (Curs_B);
    end loop;
 
    --  while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
    --     Delta_Data.Append
-   --        (Long_Integer (Element (Curs_A).Time - Element (Curs_B).Time));
+   --        (Double_Integer (Element (Curs_A).Time - Element (Curs_B).Time));
    --     Next (Curs_A);
    --     Next (Curs_B);
    --  end loop;

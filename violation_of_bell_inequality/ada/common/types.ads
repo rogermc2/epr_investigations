@@ -85,12 +85,12 @@ package Types is
    end record;
 
    package Setting_Time_Package is new
-     Ada.Containers.Vectors (Positive, Setting_Time_Record);
+     Ada.Containers.Vectors (Double_Natural, Setting_Time_Record);
    subtype Setting_Time_Vector is Setting_Time_Package.Vector;
 
    type Index_Record is record
-      A_Index    : Natural;
-      B_Index    : Natural;
+      A_Index    : Double_Natural;
+      B_Index    : Double_Natural;
    end record;
 
    package Match_Package is new
