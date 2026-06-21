@@ -1,13 +1,15 @@
-with Ada.Text_IO; use Ada.Text_IO;
---  with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
---  with Ada.IO_Exceptions;
+with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Printing; use Printing;
 
 package body Histogram is
 
 procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
    use Long_Integer_Package;
+   Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
    Bin_Size   : constant Long_Integer := 10000000;
    Num_Bins   : constant Long_Integer := 100;
@@ -15,30 +17,31 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
 
    Curs_A     : Setting_Time_Package.Cursor := A_Data.First;
    Curs_B     : Setting_Time_Package.Cursor := B_Data.First;
-   Delta_Data : long_integer_vector;
+   Delta_Data : Long_Integer_Vector;
    Curs_Delta : Long_Integer_Package.Cursor := Delta_Data.First;
     --  Store time differences safely
    Bins : Bin_Array := (others => 0);
-   --  File_Name : constant String := "large_data.txt";
-   --  Input_File : File_Type;
    Current_Value : Long_Integer;
    Bin_Index     : Long_Integer;
    Total_Records : Long_Integer := 0; -- Track size safely
 begin
-   --  1. Open the file for sequential reading
-   --  Open (File => Input_File, Mode => In_File, Name => File_Name);
-   while Has_Element (Curs_A) and Has_Element (Curs_B) loop
-      Delta_Data.Append (Long_Integer (Element (Curs_A).Time - Element (Curs_B).Time));
+   --  Put_Line (Routine_Name);
+   --  Put_Line ( "First A and B: " & Double_Natural'Image (Element (Curs_A).Time) &
+   --           ",  " & Double_Natural'Image (Element (Curs_B).Time));
+   Curs_A := A_Data.First;
+   Curs_B := B_Data.First;
+   while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
+      Delta_Data.Append
+         (Long_Integer (Element (Curs_A).Time - Element (Curs_B).Time));
       Next (Curs_A);
       Next (Curs_B);
    end loop;
 
-   --  2. Stream data line-by-line to save memory
-   --  while not End_Of_File (Input_File) loop
+   Print_Long_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
+
    while Has_Element (Curs_Delta) loop
       begin
          --  Read one integer from the current line
-         --  Get (Input_File, Current_Value);
          Current_Value := Element  (Curs_Delta);
          Total_Records := Total_Records + 1;
 
@@ -52,18 +55,10 @@ begin
             Bin_Index := Num_Bins;
          end if;
 
-         --  Increment the bin counter directly
          Bins (Bin_Index) := Bins (Bin_Index) + 1;
          Next  (Curs_Delta) ;
-
-      --  exception
-         --  Skip lines with malformed data or blank spaces safely
-         --  when Data_Error | End_Error =>
-         --     Skip_Line (Input_File);
       end;
    end loop;
-
-   --  Close (Input_File);
 
    Put_Line ("Processed total records: " &
           Long_Integer'Image (Total_Records));
@@ -100,7 +95,7 @@ begin
             end loop;
 
             if Bins (I) > 50 then
-               Put ("+"); -- Indicator that the bar extends further
+               Put ("+"); -- Indicate that the bar extends further
             end if;
          end;
          New_Line;
@@ -108,8 +103,8 @@ begin
    end loop;
 
    exception
-      when others =>
-         Put_Line ("Draw_Histogram error");
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
          return;
 
 end Draw_Histogram;
