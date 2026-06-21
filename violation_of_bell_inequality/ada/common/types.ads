@@ -111,8 +111,8 @@ package Types is
      Ada.Containers.Vectors (Positive, Integer);
    subtype Integer_List is Integer_List_Package.Vector;
 
-   package Long_Integer_Package is new
-     Ada.Containers.Vectors (Positive, Long_Integer);
-   subtype Long_Integer_Vector is Long_Integer_Package.Vector;
+   package Double_Integer_Package is new
+     Ada.Containers.Vectors (Positive, Double_Integer);
+   subtype Double_Integer_Vector is Double_Integer_Package.Vector;
 
 end Types;

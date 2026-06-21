@@ -10,8 +10,9 @@ package Printing is
    procedure Print_Integer_List
      (Name  : String; Data : Integer_List;
       Start : Positive := 1; Finish : Natural := 0);
-   procedure Print_Long_Integer_Vector (Name  : String; Data : Long_Integer_Vector;
-                              Start : Positive := 1; Finish : Natural := 0);
+   procedure Print_Double_Integer_Vector
+      (Name  : String; Data : Double_Integer_Vector;
+       Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Match_List (Name  : String; Data : Match_List;
                               Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Statistics

@@ -169,7 +169,7 @@ procedure Load_Data (CSV_Data : String;
       Num_Found := 0;
       Load_Data (Pairs_CSV, A_Data, B_Data);
       Align_Data (A_Data, B_Data);
-      Draw_Histogram  (A_Data, B_Data);
+      Draw_Histogram  (A_Data, B_Data, Width);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 

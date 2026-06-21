@@ -119,11 +119,12 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-    procedure Print_Long_Integer_Vector (Name  : String; Data : Long_Integer_Vector;
-                              Start : Positive := 1; Finish : Natural := 0) is
-      use Long_Integer_Package;
+    procedure Print_Double_Integer_Vector
+       (Name  : String; Data : Double_Integer_Vector;
+        Start : Positive := 1; Finish : Natural := 0) is
+      use Double_Integer_Package;
       Last      : Natural;
-      Item      : Long_Integer;
+      Item      : Double_Integer;
       Count     : Integer := 1;
    begin
       if Finish > 0 and then Finish <= Natural (Data.Last_index) then
@@ -136,7 +137,7 @@ package body Printing is
       if Start >= Data.First_Index and then Last <= Data.Last_index then
          for Index in Start .. Last loop
             Item := Data (Index);
-            Put (Long_Integer'Image (Item) & ",  " );
+            Put (Double_Integer'Image (Item) & ",  " );
             Count := Count + 1;
             if Count > 10 then
                New_Line;
@@ -145,7 +146,8 @@ package body Printing is
          end loop;
       else
          Put_Line
-           ("Print_Long_Integer_Vector called with invalid start or finish index.");
+           ("Print_Double_Integer_Vector called with invalid" &
+            " start or finish index.");
          Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
                    Integer'Image (Finish));
          Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
@@ -153,7 +155,7 @@ package body Printing is
       end if;
       New_Line;
 
-   end Print_Long_Integer_Vector;
+   end Print_Double_Integer_Vector;
 
    --  ------------------------------------------------------------------------
     procedure Print_Match_List (Name  : String; Data : Match_List;
