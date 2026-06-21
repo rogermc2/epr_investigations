@@ -136,7 +136,7 @@ package body Printing is
       if Start >= Data.First_Index and then Last <= Data.Last_index then
          for Index in Start .. Last loop
             Item := Data (Index);
-            Put (Integer'Image (Item.A_Index) & "  " & 
+            Put (Integer'Image (Item.A_Index) & "  " &
                Integer'Image (Item.B_Index) & "; ");
             Count := Count + 1;
             if Count > 10 then

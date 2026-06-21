@@ -4,6 +4,8 @@ with Ada.Exceptions;  use Ada.Exceptions;
 --  with Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Histogram;
+
 package body Process_Data is
 
    procedure Load_Data (CSV_Data : String;
@@ -29,7 +31,7 @@ package body Process_Data is
                A_Item.Time := A_Item.Time - Delta_Time;
                A_Data.Replace_Element (A_Curs, A_Item);
             else
-               B_Item.Time := B_Item.Time- Delta_Time;
+               B_Item.Time := B_Item.Time - Delta_Time;
                B_Data.Replace_Element (B_Curs, B_Item);
             end if;
             Next (A_Curs);
@@ -108,6 +110,7 @@ procedure Load_Data (CSV_Data : String;
      (Pairs_CSV, Match_CSV : String; Delta_A, Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Num_Rows  : Natural := 0) is
+      use Histogram;
       use Match_Package;
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Data.Match_Data_Times ";
@@ -166,6 +169,7 @@ procedure Load_Data (CSV_Data : String;
       Num_Found := 0;
       Load_Data (Pairs_CSV, A_Data, B_Data);
       Align_Data (A_Data, B_Data);
+      Draw_Histogram  (A_Data, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 

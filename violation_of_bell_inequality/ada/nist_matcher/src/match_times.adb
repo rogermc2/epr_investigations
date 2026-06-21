@@ -40,15 +40,15 @@ begin
    Put_Line (Routine_Name & "Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Pairs_CSV)) & " lines");
 
-   for del in 0 .. Delta_Val loop
-      if del mod 100000 = 0 then
-          Put_Line ("del: " & Integer'Image (del));
+   --  for del in 0 .. Delta_Val loop
+   --     if del mod 100000 = 0 then
+   --         Put_Line ("del: " & Integer'Image (del));
          Match_Data_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
                      Data_Length);
          Put_Line ("Num_Found: " & Integer'Image (Num_Found));
           New_Line;
-       end if;
-   end loop;
+   --      end if;
+   --  end loop;
 
    --  if Num_Found > 0 then
    --  Put_Line (Routine_Name & "Pairs found:" & Integer'Image (Num_Found));
