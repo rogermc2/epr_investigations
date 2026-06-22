@@ -31,32 +31,32 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
 
    function Find_Nearest (Index_A : Double_Natural;
                           Index_B : in out Double_Natural) return Double_Integer is
-      A          : constant Double_Natural := A_Data (Index_A).Time;
+      A_Time     : constant Double_Natural := A_Data (Index_A).Time;
+      B_Time     : Double_Natural;
       Delta_Time : Double_Integer;
       Result     : Double_Integer;
    begin
       if Index_B < B_Data.Last_Index then
          while Index_B < B_Data.Last_Index and then
-            B_Data (Index_B).Time < A loop
-            Delta_Time := Double_Integer (A) -
-               Double_Integer (B_Data (Index_B).Time);
+            B_Data (Index_B).Time < A_Time loop
+            B_Time := B_Data (Index_B).Time;
+            Delta_Time := Double_Integer (A_Time -  B_Time);
             if Index_B > 1 then
                if abs (Delta_Time) <
-                  abs (Double_Integer (A - B_Data (Index_B - 1).Time)) then
+                  abs (Double_Integer (A_Time - B_Data (Index_B - 1).Time)) then
                   Result := Delta_Time;
                else
                   Index_B := Index_B - 1;
-                  Result := Double_Integer (A - B_Data (Index_B).Time);
+                  Result := Double_Integer (A_Time - B_Time);
                end if;
             else
                Result := Delta_Time;
             end if;
-
             Index_B := Index_B + 1;
          end loop;
       else
          Index_B := B_Data.Last_Index;
-         Result := Double_Integer (B_Data.Last_Element.Time - A);
+         Result := Double_Integer (B_Data.Last_Element.Time - A_Time);
       end if;
 
       return Result;
