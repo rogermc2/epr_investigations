@@ -6,25 +6,28 @@ with Printing; use Printing;
 
 package body Histogram is
 
+   type Bin_Array is array (Positive range <>) of Integer;
+
+procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
+
 procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
    use Double_Integer_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
    Bin_Size     : constant Double_Integer := 10000000;
-   Num_Bins     : constant Double_Integer := 100;
-   type Bin_Array is array (1 .. Num_Bins) of Integer;
+   Num_Bins     : constant Positive := 100;
 
    Delta_Data    : Double_Integer_Vector;
    Curs_Delta    : Double_Integer_Package.Cursor := Delta_Data.First;
-   Bins          : Bin_Array := (others => 0);
+   Bins          : Bin_Array (1 .. Num_Bins) := (others => 0);
    Current_Value : Double_Integer;
-   Bin_Index     : Double_Integer;
+   Bin_Index     : Positive;
    Index_B       : Double_Natural := B_Data.First_Index;
-   Total_Records : Double_Natural := 0; -- Track size safely
+   Total_Records : Double_Natural := 0;
 
    function Find_Nearest (Index_A : Double_Natural;
-                        Index_B : in out Double_Natural) return Double_Integer is
+                          Index_B : in out Double_Natural) return Double_Integer is
       A      : constant Double_Natural := A_Data (Index_A).Time;
       Del    : Double_Integer;
       Result : Double_Integer;
@@ -74,7 +77,7 @@ begin
          Total_Records := Total_Records + 1;
 
          --  Calculate bin assignment
-         Bin_Index := (Current_Value / Bin_Size) + 1;
+         Bin_Index := Positive ((Current_Value / Bin_Size) + 1);
 
          --  Bound checking for safely updating bins
          if Bin_Index < 1 then
@@ -87,46 +90,7 @@ begin
          Next  (Curs_Delta) ;
    end loop;
 
-   Put_Line ("--- Data Distribution Histogram ---");
-   Put_Line ("Bin Range  | Frequency  | Bar Chart");
-   Put_Line ("------------------------------------");
-
-   for I in Bins'Range loop
-      declare
-         Lower_Bound : constant Double_Integer := (I - 1) * Bin_Size;
-         Upper_Bound : constant Double_Integer := (I * Bin_Size) - 1;
-      begin
-         --  Print Bin range labels cleanly
-         if I = Num_Bins then
-            Put ("  " & Double_Integer'Image (Lower_Bound) & " and up | ");
-         else
-            Put ("  " & Double_Integer'Image (Lower_Bound) & " - " &
-            Double_Integer'Image (Upper_Bound) & " | ");
-         end if;
-
-         --  Print total counts per interval
-         Put (Integer'Image (Bins (I)) & "    | ");
-
-         --  Render text bar safely (cap rendering at 50 max to prevent terminal clutter)
-         declare
-            Bar_Length : Integer := Bins (I);
-         begin
-            if Bar_Length > 50 then
-               Bar_Length := 50;
-            end if;
-
-            for J in 1 .. Bar_Length loop
-               Put ("*");
-            end loop;
-
-            if Bins (I) > 50 then
-               Put ("+"); -- Indicate that the bar extends further
-            end if;
-         end;
-         New_Line;
-      end;
-   end loop;
-
+   Print_Histogram (Bins, Bin_Size);
    Put_Line (Routine_Name & "processed " &
     Double_Natural'Image (Total_Records) & " records");
 
@@ -136,5 +100,46 @@ begin
          return;
 
 end Draw_Histogram;
+
+procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer) is
+   --  Routine_Name  : constant String := "Histogram.Print_Histogram ";
+   Bar_Length  : Integer;
+   Lower_Bound : Double_Integer;
+   Upper_Bound : Double_Integer;
+begin
+   Put_Line ("--- Data Distribution Histogram ---");
+   Put_Line ("Bin Range  | Frequency  | Bar Chart");
+   Put_Line ("------------------------------------");
+
+   for I in Bins'Range loop
+         --  Print Bin range labels
+         if I = Bins'Last then
+            Put ("  " & Double_Integer'Image (Lower_Bound) & " and up | ");
+         else
+            Put ("  " & Double_Integer'Image (Lower_Bound) & " - " &
+            Double_Integer'Image (Upper_Bound) & " | ");
+         end if;
+
+         --  Print total counts per interval
+         Put (Integer'Image (Bins (I)) & "    | ");
+
+         --  Render text bar (cap rendering at 50 max to prevent terminal clutter)
+            Bar_Length := Bins (I);
+            if Bar_Length > 50 then
+               Bar_Length := 50;
+            end if;
+
+            --  for J in 1 .. Bar_Length loop
+            --     Put ("*");
+            --  end loop;
+
+            if Bins (I) > 50 then
+                -- Indicate that the bar extends further
+               Put ("+");
+            end if;
+         New_Line;
+   end loop;
+
+   end Print_Histogram;
 
 end Histogram;
