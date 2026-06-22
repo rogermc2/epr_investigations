@@ -15,8 +15,11 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Double_Integer_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size     : constant Double_Integer := 1000;
-   Num_Bins     : constant Positive := 110;
+   Bin_Size      : constant Double_Integer := 5000;
+   Num_Bins      : constant Positive := 110;
+   Index_A_Start : constant Double_Natural := A_Data.First_Index;
+   Index_A_End   : Double_Natural :=
+          A_Data.First_Index + A_Data.Last_Index;
 
    Delta_Data    : Double_Integer_Vector;
    Curs_Delta    : Double_Integer_Package.Cursor := Delta_Data.First;
@@ -58,58 +61,71 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
 
       return Result;
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Find_Nearest" &
+          Exception_Information (Error));
+      return Result;
+
    end Find_Nearest;
 
 begin
-   Put_Line (Routine_Name);
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
-   --  for i - width / 2 <= j <= i + width / 2
    --  for index in A_Data.First_Index .. A_Data.Last_Index loop
-   for index in A_Data.First_Index .. A_Data.First_Index + 5500 loop
+   Put_Line (Routine_Name);
+
+   if Index_A_End > A_Data.Last_Index then
+         Index_A_End := A_Data.Last_Index;
+         Put_Line (Routine_Name &
+           "WARNING: Index_A_End > A_Data.Last_Index," &
+            " Index_A_End set to A_Data.Last_Index");
+      end if;
+   for index in Index_A_Start .. Index_A_End loop
       Delta_Data.Append (Find_Nearest (index, Index_B));
    end loop;
+    Put_Line (Routine_Name & "Delta_Data built");
 
    Print_Double_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
-      --  Read one integer from the current line
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
 
-      --  Calculate bin assignment
+      --  Calculate bin assignment for Current_Value
       Bin_Index := Positive ((Current_Value / Bin_Size) + 1);
-
-      --  Bound checking for safely updating bins
+      --  Bound checking for updating bins
       if Bin_Index < 1 then
          Bin_Index := 1;
       elsif Bin_Index > Num_Bins then
          Bin_Index := Num_Bins;
       end if;
 
+      --  Incement value of assigned bin
       Bins (Bin_Index) := Bins (Bin_Index) + 1;
       Next  (Curs_Delta) ;
    end loop;
 
    Print_Histogram (Bins, Bin_Size);
    Put_Line (Routine_Name & "processed " &
-    Double_Natural'Image (Total_Records) & " records");
+      Double_Natural'Image (Total_Records) & " records");
 
    exception
       when Error : others =>
          Put_Line (Routine_Name & Exception_Information (Error));
-         return;
+         raise;
 
 end Draw_Histogram;
 
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer) is
-   --  Routine_Name  : constant String := "Histogram.Print_Histogram ";
+   Routine_Name  : constant String := "Histogram.Print_Histogram ";
    Max_Bar_Length : constant Positive := 60;
    Bar_Length     : Natural;
    Lower_Bound    : Double_Integer;
    Upper_Bound    : Double_Integer;
 begin
    Put_Line ("--- Data Distribution Histogram ---");
+   Put_Line ("Bin size: " & Double_Integer'Image (Bin_Size));
    Put_Line ("            Bin Range       | Frequency | Bar Chart");
    Put_Line ("------------------------------------");
 
@@ -144,6 +160,10 @@ begin
          New_Line;
    end loop;
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
    end Print_Histogram;
 
 end Histogram;
