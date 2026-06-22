@@ -6,11 +6,10 @@ with Printing; use Printing;
 
 package body Histogram is
 
-procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector; Width : Natural) is
+procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
    use Double_Integer_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
-   H_Width      : constant Double_Natural := Double_Natural (Width / 2);
    --  Define histogram structure constants
    Bin_Size     : constant Double_Integer := 10000000;
    Num_Bins     : constant Double_Integer := 100;
@@ -24,8 +23,36 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector; Width : Natural)
    Bins          : Bin_Array := (others => 0);
    Current_Value : Double_Integer;
    Bin_Index     : Double_Integer;
-   --  Index_A       : Double_Natural;
+   Index_A       : Double_Natural;
+   Index_B       : Double_Natural;
    Total_Records : Double_Natural := 0; -- Track size safely
+
+function Find_Nearest (Index_A, Index_B : Double_Natural) return Double_Integer is
+   A      : constant Double_Natural := Data_A (Index_A).Time;
+   B_Step : Double_Natural := Index_B;
+   Del    : Double_Natural;
+   Result : Double_Integer;
+begin
+      if B_Step < Data_B.Last_Index then
+         while B_Step < Data_B.Last_Index and then
+         Data_B (B_Step).Time < A loop
+            del := A - Data_B (B_Step).Time;
+            if abs (del) < abs (A - Data_B (B_Step - 1).Time) then
+               Result := del;
+            else
+               Result := A - Data_B (B_Step - 1).Time;
+            end if;
+
+            B_Step := B_Step + 1;
+         end loop;
+      else
+         Result := Data_B (B_Step.Last_Index).Time - A;
+      end if;
+
+   return Result;
+
+end Find_Nearest;
+
 begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  for i - width / 2 <= j <= i + width / 2
@@ -34,12 +61,8 @@ begin
    --  Index_A := Double_Natural (A_Data.First_Index) + H_Width;
    --  Curs_B := B_Data.First;
    --  while Has_Element (Curs_A) loop
-   for index in Double_Natural (A_Data.First_Index) + H_Width ..
-                Double_Natural (A_Data.Last_Index) - H_Width loop
-      Delta_Data.Append
-         (Double_Integer (A_Data.Element (index).Time - B_Data.Element (index).Time));
-      --  Next (Curs_A);
-      --  Next (Curs_B);
+   for index in A_Data.First_Index .. A_Data.Last_Index loop
+      Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
 
    --  while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
