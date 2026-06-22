@@ -15,67 +15,60 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Num_Bins     : constant Double_Integer := 100;
    type Bin_Array is array (1 .. Num_Bins) of Integer;
 
-   Curs_A        : Setting_Time_Package.Cursor := A_Data.First;
-   Curs_B        : Setting_Time_Package.Cursor := B_Data.First;
    Delta_Data    : Double_Integer_Vector;
    Curs_Delta    : Double_Integer_Package.Cursor := Delta_Data.First;
-    --  Store time differences safely
    Bins          : Bin_Array := (others => 0);
    Current_Value : Double_Integer;
    Bin_Index     : Double_Integer;
-   Index_A       : Double_Natural;
-   Index_B       : Double_Natural;
+   Index_B       : Double_Natural := B_Data.First_Index;
    Total_Records : Double_Natural := 0; -- Track size safely
 
-function Find_Nearest (Index_A, Index_B : Double_Natural) return Double_Integer is
-   A      : constant Double_Natural := Data_A (Index_A).Time;
-   B_Step : Double_Natural := Index_B;
-   Del    : Double_Natural;
-   Result : Double_Integer;
-begin
-      if B_Step < Data_B.Last_Index then
-         while B_Step < Data_B.Last_Index and then
-         Data_B (B_Step).Time < A loop
-            del := A - Data_B (B_Step).Time;
-            if abs (del) < abs (A - Data_B (B_Step - 1).Time) then
-               Result := del;
+   function Find_Nearest (Index_A : Double_Natural;
+                        Index_B : in out Double_Natural) return Double_Integer is
+      A      : constant Double_Natural := A_Data (Index_A).Time;
+      Del    : Double_Integer;
+      Result : Double_Integer;
+   begin
+      if Index_B < B_Data.Last_Index then
+         while Index_B < B_Data.Last_Index and then
+         B_Data (Index_B).Time < A loop
+            del := Double_Integer (A) -
+               Double_Integer (B_Data (Index_B).Time);
+            if Index_B > 1 then
+               if abs (del) <
+                  abs (Double_Integer (A - B_Data (Index_B - 1).Time)) then
+                  Result := del;
+               else
+                  Index_B := Index_B - 1;
+                  Result := Double_Integer (A - B_Data (Index_B).Time);
+               end if;
             else
-               Result := A - Data_B (B_Step - 1).Time;
+               Result := del;
             end if;
 
-            B_Step := B_Step + 1;
+            Index_B := Index_B + 1;
          end loop;
       else
-         Result := Data_B (B_Step.Last_Index).Time - A;
+         Index_B := B_Data.Last_Index;
+         Result := Double_Integer (B_Data.Last_Element.Time - A);
       end if;
 
-   return Result;
+      return Result;
 
-end Find_Nearest;
+   end Find_Nearest;
 
 begin
+   Put_Line (Routine_Name);
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  for i - width / 2 <= j <= i + width / 2
-   --  Put_Line ( "First A and B: " & Double_Natural'Image (Element (Curs_A).Time) &
-   --           ",  " & Double_Natural'Image (Element (Curs_B).Time));
-   --  Index_A := Double_Natural (A_Data.First_Index) + H_Width;
-   --  Curs_B := B_Data.First;
-   --  while Has_Element (Curs_A) loop
    for index in A_Data.First_Index .. A_Data.Last_Index loop
-      Delta_Data.Append (Find_Nearest (Index_A, Index_B));
+      Delta_Data.Append (Find_Nearest (index, Index_B));
    end loop;
-
-   --  while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
-   --     Delta_Data.Append
-   --        (Double_Integer (Element (Curs_A).Time - Element (Curs_B).Time));
-   --     Next (Curs_A);
-   --     Next (Curs_B);
-   --  end loop;
 
    Print_Double_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
 
+   Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
-      begin
          --  Read one integer from the current line
          Current_Value := Element  (Curs_Delta);
          Total_Records := Total_Records + 1;
@@ -92,11 +85,8 @@ begin
 
          Bins (Bin_Index) := Bins (Bin_Index) + 1;
          Next  (Curs_Delta) ;
-      end;
    end loop;
 
-   Put_Line ("Processed total records: " &
-          Double_Natural'Image (Total_Records));
    Put_Line ("--- Data Distribution Histogram ---");
    Put_Line ("Bin Range  | Frequency  | Bar Chart");
    Put_Line ("------------------------------------");
@@ -136,6 +126,9 @@ begin
          New_Line;
       end;
    end loop;
+
+   Put_Line (Routine_Name & "processed " &
+    Double_Natural'Image (Total_Records) & " records");
 
    exception
       when Error : others =>
