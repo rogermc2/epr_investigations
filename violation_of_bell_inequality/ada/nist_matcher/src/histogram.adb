@@ -35,7 +35,6 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       A_Time     : constant Double_Natural := A_Data (Index_A).Time;
       B_Time     : Double_Natural;
       Delta_Time : Double_Integer := 0;
-      OK         : Boolean := False;
    begin
       Count := Count + 1;
       if Count < 15 then
@@ -53,10 +52,32 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
             B_Data (Index_B).Time < A_Time loop
             Index_B := Index_B + 1;
          end loop;
+
          --  B_Data (Index_B).Time >= A_Time
          B_Time := B_Data (Index_B).Time;
+         Delta_Time := Double_Integer (B_Time - A_Time);
 
-         -- B_Time >= A_Time
+         if Count < 15 then
+            Put_Line ("Nearest Index_B >= A_Time: " &
+               Double_Positive'Image (Index_B) &
+               ": " & Double_Natural'Image (B_Data (Index_B).Time));
+            Put_Line ("Nearest Delta_Time for Index_B >= A_Time: " &
+               Double_Integer'Image (Delta_Time));
+         end if;
+
+         if Index_B > 1 and then abs (Delta_Time) >=
+            abs (Double_Integer (B_Data (Index_B - 1).Time - A_Time)) then
+            Index_B := Index_B - 1;
+            B_Time := B_Data (Index_B).Time;
+            Delta_Time := Double_Integer (B_Time - A_Time);
+            if Count < 15 then
+               Put_Line ("Updated Index_B in: " & Double_Positive'Image (Index_B) &
+                  ": " & Double_Natural'Image (B_Data (Index_B).Time));
+               Put_Line ("Nearest B - A in: " &
+                  Double_Integer'Image
+                  (Double_Integer (B_Time - A_Time)));
+            end if;
+         end if;
          Index_B := Index_B + 1;
       else  --  Index_B = B_Data.Last_Index
          Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
