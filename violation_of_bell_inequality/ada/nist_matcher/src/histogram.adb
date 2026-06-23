@@ -41,44 +41,61 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
          Put_Line ("Nearest A_Time " & Double_Natural'Image (A_Time));
          Put_Line ("Nearest Index_B in: " & Double_Positive'Image (Index_B) &
             ": " & Double_Natural'Image (B_Data (Index_B).Time));
-         Put_Line ("Nearest B - A in: " &
-            Double_Integer'Image
-             (Double_Integer (B_Data (Index_B).Time - A_Time)));
+         --  Put_Line ("Nearest B - A in: " &
+         --     Double_Integer'Image
+         --      (Double_Integer (B_Data (Index_B).Time - A_Time)));
       end if;
 
       if Index_B < B_Data.Last_Index then
-         --  Skip Index_B for B_Data (Index_B).Time < A_Time
+         --  Skip Index_B until B_Data (Index_B).Time >= A_Time
          while Index_B < B_Data.Last_Index and then
             B_Data (Index_B).Time < A_Time loop
             Index_B := Index_B + 1;
          end loop;
-
          --  B_Data (Index_B).Time >= A_Time
+
+         if Index_B > 1 then
+            Index_B := Index_B - 1;
+         end if;
+
+         --  B_Data (Index_B).Time < A_Time
          B_Time := B_Data (Index_B).Time;
          Delta_Time := Double_Integer (B_Time - A_Time);
 
          if Count < 15 then
-            Put_Line ("Nearest Index_B >= A_Time: " &
+            Put_Line ("After skip, nearest Index_B >= A_Time: " &
                Double_Positive'Image (Index_B) &
                ": " & Double_Natural'Image (B_Data (Index_B).Time));
             Put_Line ("Nearest Delta_Time for Index_B >= A_Time: " &
                Double_Integer'Image (Delta_Time));
          end if;
 
-         if Index_B > 1 and then abs (Delta_Time) >=
-            abs (Double_Integer (B_Data (Index_B - 1).Time - A_Time)) then
-            Index_B := Index_B - 1;
+         if Index_B > 1 and then abs (Delta_Time) >
+            abs (Double_Integer (B_Data (Index_B + 1).Time - A_Time)) then
+
+            --  if Count < 10 then
+            --     Put_Line ("Test abs Delta_Time >" &
+            --        " abs (Double_Integer (B_Data (Index_B - 1).Time" &
+            --        " - A_Time))");
+            --     Put_Line ("abs Delta_Time: " &
+            --        Double_Integer'Image (abs (Delta_Time)));
+            --     Put_Line ("abs (Double_Integer (B_Data (Index_B - 1).Time" &
+            --        " - A_Time: " & Double_Integer'Image
+            --        (abs (Double_Integer (B_Data (Index_B - 1).Time - A_Time))));
+            --  end if;
+
+            Index_B := Index_B + 1;
             B_Time := B_Data (Index_B).Time;
             Delta_Time := Double_Integer (B_Time - A_Time);
             if Count < 15 then
-               Put_Line ("Updated Index_B in: " & Double_Positive'Image (Index_B) &
+               Put_Line ("Updated Index_B: " & Double_Positive'Image (Index_B) &
                   ": " & Double_Natural'Image (B_Data (Index_B).Time));
-               Put_Line ("Nearest B - A in: " &
+               Put_Line ("Updated B - A: " &
                   Double_Integer'Image
                   (Double_Integer (B_Time - A_Time)));
             end if;
          end if;
-         Index_B := Index_B + 1;
+         
       else  --  Index_B = B_Data.Last_Index
          Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
