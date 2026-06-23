@@ -46,14 +46,14 @@ procedure Find_Raw_Window_Width
       --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
-      B_Index      : Double_Natural := 1;
+      B_Index      : Double_Positive := 1;
 
       procedure Find_Width (A_Curs : Setting_Time_Package.Cursor) is
          A_Value   : constant Double_Natural :=
            Element (A_Curs).Time + Double_Natural (Delta_A);
          Width     : Natural;
       begin
-         while B_Index < Double_Natural (B_Data.Length) and then
+         while B_Index < Double_Positive (B_Data.Length) and then
            B_Data.Element (B_Index).Time < A_Value
          loop
             B_Index := B_Index + 1;
@@ -226,8 +226,8 @@ procedure Load_Data (CSV_Data : String;
       Create (Match_ID, Out_File, File_Name);
       while Has_Element (M_Curs) loop
          Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Double_Natural'Image (Rec.A_Index) & ", " &
-          Double_Natural'Image (Rec.B_Index));
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+          Double_Positive'Image (Rec.B_Index));
          Next (M_Curs);
       end loop;
 

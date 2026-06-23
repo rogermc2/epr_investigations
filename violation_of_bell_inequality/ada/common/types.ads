@@ -10,6 +10,7 @@ package Types is
    type Double is digits 15;  --  Float type
    type Double_Integer is range -2**63 .. (2**63 - 1);
    type Double_Natural is range 0 .. (2**63 - 1);
+   type Double_Positive is range 1 .. (2**63 - 1);
 
    subtype Byte is Interfaces.Unsigned_8;
    subtype Int_16 is Interfaces.Unsigned_16;
@@ -85,12 +86,12 @@ package Types is
    end record;
 
    package Setting_Time_Package is new
-     Ada.Containers.Vectors (Double_Natural, Setting_Time_Record);
+     Ada.Containers.Vectors (Double_Positive, Setting_Time_Record);
    subtype Setting_Time_Vector is Setting_Time_Package.Vector;
 
    type Index_Record is record
-      A_Index    : Double_Natural;
-      B_Index    : Double_Natural;
+      A_Index    : Double_Positive;
+      B_Index    : Double_Positive;
    end record;
 
    package Match_Package is new

@@ -18,27 +18,38 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    --  Define histogram structure constants
    Bin_Size      : constant Double_Integer := 1000;
    Num_Bins      : constant Positive := 110;
-   Index_A_Start : constant Double_Natural := A_Data.First_Index;
-   Index_A_End   : Double_Natural := A_Data.Last_Index - 10000;
+   Index_A_Start : constant Double_Positive := A_Data.First_Index;
+   Index_A_End   : Double_Positive := A_Data.Last_Index;
 
    Delta_Data    : Double_Integer_Vector;
    Curs_Delta    : Double_Integer_Package.Cursor := Delta_Data.First;
    Bins          : Bin_Array (1 .. Num_Bins) := (others => 0);
    Current_Value : Double_Integer;
    Bin_Index     : Positive;
-   Index_B       : Double_Natural := B_Data.First_Index;
+   Index_B       : Double_Positive := B_Data.First_Index;
    Total_Records : Double_Natural := 0;
+   Count         : Natural := 0;
 
-   function Find_Nearest (Index_A : Double_Natural;
-                          Index_B : in out Double_Natural) return Double_Integer is
+   function Find_Nearest (Index_A : Double_Positive;
+                          Index_B : in out Double_Positive) return Double_Integer is
       A_Time     : constant Double_Natural := A_Data (Index_A).Time;
       B_Time     : Double_Natural;
       Delta_Time : Double_Integer;
       Result     : Double_Integer;
    begin
+      if Count < 15 then
+         Put_Line ("Nearest A_Time " & Double_Natural'Image (A_Time));
+         Put_Line ("Nearest Index_B in: " & Double_Positive'Image (Index_B) &
+            ": " & Double_Natural'Image (B_Data (Index_B).Time));
+         Put_Line ("Nearest B - A in: " &
+            Double_Integer'Image
+             (Double_Integer (B_Data (Index_B).Time - A_Time)));
+      end if;
+      Count := Count + 1;
+
       if Index_B < B_Data.Last_Index then
          while Index_B < B_Data.Last_Index and then
-            B_Data (Index_B).Time < A_Time loop
+            B_Data (Index_B).Time <= A_Time loop
             B_Time := B_Data (Index_B).Time;
             Delta_Time := Double_Integer (A_Time -  B_Time);
             if Index_B > 1 then
@@ -54,9 +65,12 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
             end if;
             Index_B := Index_B + 1;
          end loop;
-      else
-         Index_B := B_Data.Last_Index;
-         Result := Double_Integer (B_Data.Last_Element.Time - A_Time);
+      end if;
+
+      if Count < 15 then
+         Put_Line ("Nearest Delta_Time " & Double_Integer'Image (Delta_Time));
+         Put_Line ("Nearest Result " & Double_Integer'Image (Result));
+         New_Line;
       end if;
 
       return Result;
@@ -74,16 +88,16 @@ begin
    --  for index in A_Data.First_Index .. A_Data.Last_Index loop
 
    if Index_A_End > A_Data.Last_Index then
-         Index_A_End := A_Data.Last_Index;
-         Put_Line (Routine_Name &
-           "WARNING: Index_A_End > A_Data.Last_Index," &
-            " Index_A_End set to A_Data.Last_Index");
-      end if;
+      Index_A_End := A_Data.Last_Index;
+      Put_Line (Routine_Name &
+         "WARNING: Index_A_End > A_Data.Last_Index," &
+         " Index_A_End set to A_Data.Last_Index");
+   end if;
 
    --  For each A, store shortest time difference between A time and B time
-   for index in Index_A_Start .. Index_A_End loop
+   for Index_A in Index_A_Start .. Index_A_End loop
       --  Store shortest time difference between A time and B time
-      Delta_Data.Append (Find_Nearest (index, Index_B));
+      Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
 
    Print_Double_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
@@ -107,7 +121,7 @@ begin
       Next  (Curs_Delta) ;
    end loop;
 
-   Print_Histogram (Bins, Bin_Size, Index_A_Start);
+   --  Print_Histogram (Bins, Bin_Size, Index_A_Start);
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
