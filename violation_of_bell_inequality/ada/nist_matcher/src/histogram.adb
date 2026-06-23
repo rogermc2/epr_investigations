@@ -9,7 +9,7 @@ package body Histogram is
    type Bin_Array is array (Positive range <>) of Integer;
 
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
-   Index_A_Start : Double_Natural);
+   Index_A_Start : Double_Positive);
 
 procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
@@ -34,9 +34,10 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
                           Index_B : in out Double_Positive) return Double_Integer is
       A_Time     : constant Double_Natural := A_Data (Index_A).Time;
       B_Time     : Double_Natural;
-      Delta_Time : Double_Integer;
-      Result     : Double_Integer;
+      Delta_Time : Double_Integer := 0;
+      OK         : Boolean := False;
    begin
+      Count := Count + 1;
       if Count < 15 then
          Put_Line ("Nearest A_Time " & Double_Natural'Image (A_Time));
          Put_Line ("Nearest Index_B in: " & Double_Positive'Image (Index_B) &
@@ -45,41 +46,34 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
             Double_Integer'Image
              (Double_Integer (B_Data (Index_B).Time - A_Time)));
       end if;
-      Count := Count + 1;
 
       if Index_B < B_Data.Last_Index then
+         --  Skip Index_B for B_Data (Index_B).Time < A_Time
          while Index_B < B_Data.Last_Index and then
-            B_Data (Index_B).Time <= A_Time loop
-            B_Time := B_Data (Index_B).Time;
-            Delta_Time := Double_Integer (A_Time -  B_Time);
-            if Index_B > 1 then
-               if abs (Delta_Time) <
-                  abs (Double_Integer (A_Time - B_Data (Index_B - 1).Time)) then
-                  Result := Delta_Time;
-               else
-                  Index_B := Index_B - 1;
-                  Result := Double_Integer (A_Time - B_Time);
-               end if;
-            else
-               Result := Delta_Time;
-            end if;
+            B_Data (Index_B).Time < A_Time loop
             Index_B := Index_B + 1;
          end loop;
+         --  B_Data (Index_B).Time >= A_Time
+         B_Time := B_Data (Index_B).Time;
+
+         -- B_Time >= A_Time
+         Index_B := Index_B + 1;
+      else  --  Index_B = B_Data.Last_Index
+         Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
 
       if Count < 15 then
          Put_Line ("Nearest Delta_Time " & Double_Integer'Image (Delta_Time));
-         Put_Line ("Nearest Result " & Double_Integer'Image (Result));
          New_Line;
       end if;
 
-      return Result;
+      return abs (Delta_Time);
 
    exception
       when Error : others =>
          Put_Line (Routine_Name & "Find_Nearest" &
           Exception_Information (Error));
-      return Result;
+      return Delta_Time;
 
    end Find_Nearest;
 
@@ -87,6 +81,7 @@ begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  for index in A_Data.First_Index .. A_Data.Last_Index loop
 
+   Count := Count + 1;
    if Index_A_End > A_Data.Last_Index then
       Index_A_End := A_Data.Last_Index;
       Put_Line (Routine_Name &
@@ -107,7 +102,6 @@ begin
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
 
-      --  Calculate bin assignment for Current_Value
       Bin_Index := Positive ((Current_Value / Bin_Size) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then
@@ -121,7 +115,7 @@ begin
       Next  (Curs_Delta) ;
    end loop;
 
-   --  Print_Histogram (Bins, Bin_Size, Index_A_Start);
+   Print_Histogram (Bins, Bin_Size, Index_A_Start);
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
@@ -133,7 +127,7 @@ begin
 end Draw_Histogram;
 
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
-   Index_A_Start  : Double_Natural) is
+   Index_A_Start  : Double_Positive) is
    Routine_Name   : constant String := "Histogram.Print_Histogram ";
    Max_Bar_Length : constant Positive := 60;
    Start          : constant Double_Integer := Double_Integer (Index_A_Start);
