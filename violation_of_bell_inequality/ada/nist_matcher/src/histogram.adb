@@ -19,6 +19,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Bin_Size      : constant Double_Integer := 1000;
    Num_Bins      : constant Positive := 110;
    Index_A_Start : constant Double_Positive := A_Data.First_Index;
+   --  Index_A_End   : Double_Positive := 200000;
    Index_A_End   : Double_Positive := A_Data.Last_Index;
 
    Delta_Data    : Double_Integer_Vector;
@@ -167,7 +168,7 @@ end Draw_Histogram;
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
    Index_A_Start  : Double_Positive) is
    Routine_Name   : constant String := "Histogram.Print_Histogram ";
-   Max_Bar_Length : constant Positive := 60;
+   Max_Bar_Length : constant Positive := 30000;
    Start          : constant Double_Integer := Double_Integer (Index_A_Start);
    Bar_Length     : Natural;
    Lower_Bound    : Double_Integer;
@@ -200,15 +201,15 @@ begin
          Bar_Length := Max_Bar_Length;
       end if;
 
-         --  for J in 1 .. Bar_Length loop
-         --     Put ("*");
-         --  end loop;
+      --  for J in 1 .. Bar_Length loop
+      --     Put ("*");
+      --  end loop;
 
-         if Bins (I) > Max_Bar_Length then
-            --  Indicate that the bar extends further
-            Put ("+");
-         end if;
-         New_Line;
+      if Bins (I) > Max_Bar_Length then
+         --  Indicate that the bar extends further
+         Put ("+");
+      end if;
+      New_Line;
    end loop;
 
    exception
