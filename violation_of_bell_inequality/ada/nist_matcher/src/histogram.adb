@@ -16,7 +16,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Double_Integer_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size      : constant Double_Integer := 100000;
+   Bin_Size      : constant Double_Integer := 300000;
    Num_Bins      : constant Positive := 110;
    Index_A_Start : constant Double_Positive := A_Data.First_Index;
    --  Index_A_End   : Double_Positive := 200000;
