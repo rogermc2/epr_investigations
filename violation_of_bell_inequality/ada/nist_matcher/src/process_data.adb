@@ -145,7 +145,8 @@ procedure Load_Data (CSV_Data : String;
          procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
          D_Width   : constant Double_Natural := Double_Natural (Width);
          A_Item    : constant Setting_Time_Record := Element (A_Curs);
-         A_Time    : constant Double_Natural := A_Item.Time + Double_Natural (Delta_A);
+         A_Time    : constant Double_Natural :=
+            A_Item.Time + Double_Natural (Delta_A) + D_Width;
          B_Val_Min : constant Double_Natural := A_Time - D_Width;
          Item      : Index_Record;
          B_Item    : Setting_Time_Record;

@@ -17,7 +17,7 @@ procedure Match_Times is
    Data            : Unbounded_String;
 
    Width            : constant Natural := 100000;
-   Delta_Val        :  Natural := 100000000;
+   Delta_Val        :  Natural := 3;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;

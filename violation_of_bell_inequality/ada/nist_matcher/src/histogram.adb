@@ -2,24 +2,19 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Printing; use Printing;
-
 package body Histogram is
 
    type Bin_Array is array (Positive range <>) of Integer;
 
-procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
-   Index_A_Start : Double_Positive);
+procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
 
 procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   --  Bin_Size      : constant Double_Integer := 300000;
-   Bin_Size      : constant Double_Integer := 200000;
-   Num_Bins      : constant Positive := 110;
-   Index_A_Start : constant Double_Positive := A_Data.First_Index;
+   Bin_Size      : constant Double_Integer := 1;
+   Num_Bins      : constant Positive := 30;
    Index_B       : Double_Positive := B_Data.First_Index;
    Delta_Data    : Double_Natural_Vector;
    Curs_Delta    : Double_Natural_Package.Cursor := Delta_Data.First;
@@ -27,7 +22,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Bin_Index     : Positive;
    Current_Value : Double_Natural;
    Total_Records : Double_Natural := 0;
-   Count         : Natural := 0;
+   --  Count         : Natural := 0;
 
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
@@ -36,12 +31,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       B_Time     : Double_Natural;
       Delta_Time : Double_Integer := 0;
    begin
-      Count := Count + 1;
-      --  if Count < 15 then
-      --     Put_Line ("Nearest A_Time " & Double_Natural'Image (A_Time));
-      --     Put_Line ("Nearest Index_B in: " & Double_Positive'Image (Index_B) &
-      --        ": " & Double_Natural'Image (B_Data (Index_B).Time));
-      --  end if;
+      --  Count := Count + 1;
 
       if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
@@ -56,18 +46,10 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
 
          --  B_Data (Index_B).Time < A_Time
          B_Time := B_Data (Index_B).Time;
-         Delta_Time := Double_Integer (B_Time - A_Time);
-
-         --  if Count < 15 then
-         --     Put_Line ("After skip, nearest Index_B >= A_Time: " &
-         --        Double_Positive'Image (Index_B) &
-         --        ": " & Double_Natural'Image (B_Data (Index_B).Time));
-         --     Put_Line ("Nearest Delta_Time for Index_B >= A_Time: " &
-         --        Double_Integer'Image (Delta_Time));
-         --  end if;
+         Delta_Time := Double_Integer (A_Time - B_Time);
 
          if Index_B > 1 and then abs (Delta_Time) >
-            abs (Double_Integer (B_Data (Index_B + 1).Time - A_Time)) then
+            abs (Double_Integer (A_Time - B_Data (Index_B + 1).Time)) then
             Index_B := Index_B + 1;
             B_Time := B_Data (Index_B).Time;
             Delta_Time := Double_Integer (B_Time - A_Time);
@@ -76,11 +58,6 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       else  --  Index_B = B_Data.Last_Index
         Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
-
-      --  if Count < 15 then
-      --     Put_Line ("Nearest Delta_Time " & Double_Integer'Image (Delta_Time));
-      --     New_Line;
-      --  end if;
 
       return Double_Natural (abs (Delta_Time));
 
@@ -94,10 +71,8 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
 
 begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
-   Count := Count + 1;
-
    --  For each A, store shortest time difference between A time and B time
-   for Index_A in Index_A_Start .. A_Data.Last_Index loop
+   for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
@@ -122,7 +97,7 @@ begin
       Next  (Curs_Delta) ;
    end loop;
 
-   Print_Histogram (Bins, Bin_Size, Index_A_Start);
+   Print_Histogram (Bins, Bin_Size);
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
@@ -134,23 +109,21 @@ begin
 
 end Draw_Histogram;
 
-procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
-   Index_A_Start  : Double_Positive) is
+procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer) is
    Routine_Name   : constant String := "Histogram.Print_Histogram ";
    Max_Bar_Length : constant Positive := 30000;
-   Start          : constant Double_Integer := Double_Integer (Index_A_Start);
    Bar_Length     : Natural;
    Lower_Bound    : Double_Integer;
    Upper_Bound    : Double_Integer;
 begin
    Put_Line ("--- Data Distribution Histogram ---");
    Put_Line ("Bin size: " & Double_Integer'Image (Bin_Size));
-   Put_Line ("       Bin Range   | Frequency | Bar Chart");
+   Put_Line ("  Bin Range (dt)   | Frequency | Bar Chart");
    Put_Line ("------------------------------------");
 
    for I in Bins'Range loop
-      Lower_Bound := Start + Double_Integer (I - 1) * Bin_Size;
-      Upper_Bound := Start + Double_Integer (I) * Bin_Size - 1;
+      Lower_Bound := Double_Integer (I - 1) * Bin_Size;
+      Upper_Bound := Double_Integer (I) * Bin_Size - 1;
       --  Print Bin range labels
       if I = Bins'Last then
          Put ("  " &
