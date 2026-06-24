@@ -16,14 +16,20 @@ package body Process_Data is
       use Setting_Time_Package;
       A_Curs       : Cursor := A_Data.First;
       B_Curs       : Cursor := B_Data.First;
-      A_Item       : Setting_Time_Record := Element (A_Curs);
-      B_Item       : Setting_Time_Record := Element (B_Curs);
+      A_Item       : Setting_Time_Record := Element (A_Data.First);
+      B_Item       : Setting_Time_Record := Element (B_Data.First);
       Delta_Time   : constant Double_Natural :=
                          abs (A_Item.Time - B_Item.Time);
       A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
+      Offset       : Double_Natural;
       begin
-         A_Curs := A_Data.First;
-         B_Curs := B_Data.First;
+         if A_Gt_B
+         then
+            Offset := B_Item.Time - 1;
+         else
+            Offset := A_Item.Time - 1;
+         end if;
+
          while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
             A_Item := Element (A_Curs);
             B_Item := Element (B_Curs);
@@ -37,6 +43,23 @@ package body Process_Data is
             Next (A_Curs);
             Next (B_Curs);
          end loop;
+
+         A_Curs := A_Data.First;
+         B_Curs := B_Data.First;
+         while Has_Element (A_Curs) loop
+            A_Item := Element (A_Curs);
+            A_Item.Time := A_Item.Time - Offset;
+            A_Data.Replace_Element (A_Curs, A_Item);
+            Next (A_Curs);
+         end loop;
+
+         while Has_Element (B_Curs) loop
+            B_Item := Element (B_Curs);
+            B_Item.Time := B_Item.Time - Offset;
+            B_Data.Replace_Element (B_Curs, B_Item);
+            Next (B_Curs);
+         end loop;
+
       end Align_Data;
 
 procedure Find_Raw_Window_Width

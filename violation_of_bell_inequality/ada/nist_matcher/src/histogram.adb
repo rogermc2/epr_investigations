@@ -16,7 +16,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Double_Integer_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size      : constant Double_Integer := 1000;
+   Bin_Size      : constant Double_Integer := 100000;
    Num_Bins      : constant Positive := 110;
    Index_A_Start : constant Double_Positive := A_Data.First_Index;
    --  Index_A_End   : Double_Positive := 200000;
@@ -71,34 +71,22 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
                Double_Integer'Image (Delta_Time));
          end if;
 
-         if Index_B > 1 and then abs (Delta_Time) >
-            abs (Double_Integer (B_Data (Index_B + 1).Time - A_Time)) then
-
-            --  if Count < 10 then
-            --     Put_Line ("Test abs Delta_Time >" &
-            --        " abs (Double_Integer (B_Data (Index_B - 1).Time" &
-            --        " - A_Time))");
-            --     Put_Line ("abs Delta_Time: " &
-            --        Double_Integer'Image (abs (Delta_Time)));
-            --     Put_Line ("abs (Double_Integer (B_Data (Index_B - 1).Time" &
-            --        " - A_Time: " & Double_Integer'Image
-            --        (abs (Double_Integer (B_Data (Index_B - 1).Time - A_Time))));
-            --  end if;
-
-            Index_B := Index_B + 1;
-            B_Time := B_Data (Index_B).Time;
-            Delta_Time := Double_Integer (B_Time - A_Time);
-            if Count < 15 then
-               Put_Line ("Updated Index_B: " & Double_Positive'Image (Index_B) &
-                  ": " & Double_Natural'Image (B_Data (Index_B).Time));
-               Put_Line ("Updated B - A: " &
-                  Double_Integer'Image
-                  (Double_Integer (B_Time - A_Time)));
-            end if;
-         end if;
+      --     if Index_B > 1 and then abs (Delta_Time) >
+      --        abs (Double_Integer (B_Data (Index_B + 1).Time - A_Time)) then
+      --        Index_B := Index_B + 1;
+      --        B_Time := B_Data (Index_B).Time;
+      --        Delta_Time := Double_Integer (B_Time - A_Time);
+      --        if Count < 15 then
+      --           Put_Line ("Updated Index_B: " & Double_Positive'Image (Index_B) &
+      --              ": " & Double_Natural'Image (B_Data (Index_B).Time));
+      --           Put_Line ("Updated B - A: " &
+      --              Double_Integer'Image
+      --              (Double_Integer (B_Time - A_Time)));
+      --        end if;
+      --     end if;
          
       else  --  Index_B = B_Data.Last_Index
-         Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
+        Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
 
       if Count < 15 then
@@ -112,7 +100,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       when Error : others =>
          Put_Line (Routine_Name & "Find_Nearest" &
           Exception_Information (Error));
-      return Delta_Time;
+      return abs (Delta_Time);
 
    end Find_Nearest;
 
