@@ -2,7 +2,7 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Printing; use Printing;
+--  with Printing; use Printing;
 
 package body Histogram is
 
@@ -13,26 +13,25 @@ procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
 
 procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
-   use Double_Integer_Package;
+   use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size      : constant Double_Integer := 300000;
+   --  Bin_Size      : constant Double_Integer := 300000;
+   Bin_Size      : constant Double_Integer := 200000;
    Num_Bins      : constant Positive := 110;
    Index_A_Start : constant Double_Positive := A_Data.First_Index;
-   --  Index_A_End   : Double_Positive := 200000;
-   Index_A_End   : Double_Positive := A_Data.Last_Index;
-
-   Delta_Data    : Double_Integer_Vector;
-   Curs_Delta    : Double_Integer_Package.Cursor := Delta_Data.First;
-   Bins          : Bin_Array (1 .. Num_Bins) := (others => 0);
-   Current_Value : Double_Integer;
-   Bin_Index     : Positive;
    Index_B       : Double_Positive := B_Data.First_Index;
+   Delta_Data    : Double_Natural_Vector;
+   Curs_Delta    : Double_Natural_Package.Cursor := Delta_Data.First;
+   Bins          : Bin_Array (1 .. Num_Bins) := (others => 0);
+   Bin_Index     : Positive;
+   Current_Value : Double_Natural;
    Total_Records : Double_Natural := 0;
    Count         : Natural := 0;
 
-   function Find_Nearest (Index_A : Double_Positive;
-                          Index_B : in out Double_Positive) return Double_Integer is
+   function Find_Nearest
+       (Index_A : Double_Positive; Index_B : in out Double_Positive)
+        return Double_Natural is
       A_Time     : constant Double_Natural := A_Data (Index_A).Time;
       B_Time     : Double_Natural;
       Delta_Time : Double_Integer := 0;
@@ -83,40 +82,34 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       --     New_Line;
       --  end if;
 
-      return abs (Delta_Time);
+      return Double_Natural (abs (Delta_Time));
 
    exception
       when Error : others =>
          Put_Line (Routine_Name & "Find_Nearest" &
           Exception_Information (Error));
-      return abs (Delta_Time);
+      return Double_Natural (abs (Delta_Time));
 
    end Find_Nearest;
 
 begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    Count := Count + 1;
-   if Index_A_End > A_Data.Last_Index then
-      Index_A_End := A_Data.Last_Index;
-      Put_Line (Routine_Name &
-         "WARNING: Index_A_End > A_Data.Last_Index," &
-         " Index_A_End set to A_Data.Last_Index");
-   end if;
 
    --  For each A, store shortest time difference between A time and B time
-   for Index_A in Index_A_Start .. Index_A_End loop
+   for Index_A in Index_A_Start .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
 
-   --  Print_Double_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
+   --  Print_Double_Natural_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
 
-      Bin_Index := Positive ((Current_Value / Bin_Size) + 1);
+      Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then
          Bin_Index := 1;
@@ -124,7 +117,7 @@ begin
          Bin_Index := Num_Bins;
       end if;
 
-      --  Incement value of assigned bin
+      --  Increment value of assigned bin
       Bins (Bin_Index) := Bins (Bin_Index) + 1;
       Next  (Curs_Delta) ;
    end loop;
@@ -135,6 +128,7 @@ begin
 
    exception
       when Error : others =>
+         New_Line;
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 

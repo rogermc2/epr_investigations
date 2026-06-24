@@ -15,6 +15,9 @@ package Printing is
        Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Match_List (Name  : String; Data : Match_List;
                               Start : Positive := 1; Finish : Natural := 0);
+   procedure Print_Double_Natural_Vector
+       (Name  : String; Data : Double_Natural_Vector;
+        Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Statistics
      (Message : String; Mean_A, Mean_B, Mean_AB : Float;
       Detections : Sample_Data_List; Det_A, Det_B : Detect_Type);
