@@ -38,14 +38,11 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       Delta_Time : Double_Integer := 0;
    begin
       Count := Count + 1;
-      if Count < 15 then
-         Put_Line ("Nearest A_Time " & Double_Natural'Image (A_Time));
-         Put_Line ("Nearest Index_B in: " & Double_Positive'Image (Index_B) &
-            ": " & Double_Natural'Image (B_Data (Index_B).Time));
-         --  Put_Line ("Nearest B - A in: " &
-         --     Double_Integer'Image
-         --      (Double_Integer (B_Data (Index_B).Time - A_Time)));
-      end if;
+      --  if Count < 15 then
+      --     Put_Line ("Nearest A_Time " & Double_Natural'Image (A_Time));
+      --     Put_Line ("Nearest Index_B in: " & Double_Positive'Image (Index_B) &
+      --        ": " & Double_Natural'Image (B_Data (Index_B).Time));
+      --  end if;
 
       if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
@@ -53,7 +50,6 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
             B_Data (Index_B).Time < A_Time loop
             Index_B := Index_B + 1;
          end loop;
-         --  B_Data (Index_B).Time >= A_Time
 
          if Index_B > 1 then
             Index_B := Index_B - 1;
@@ -63,36 +59,29 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
          B_Time := B_Data (Index_B).Time;
          Delta_Time := Double_Integer (B_Time - A_Time);
 
-         if Count < 15 then
-            Put_Line ("After skip, nearest Index_B >= A_Time: " &
-               Double_Positive'Image (Index_B) &
-               ": " & Double_Natural'Image (B_Data (Index_B).Time));
-            Put_Line ("Nearest Delta_Time for Index_B >= A_Time: " &
-               Double_Integer'Image (Delta_Time));
-         end if;
+         --  if Count < 15 then
+         --     Put_Line ("After skip, nearest Index_B >= A_Time: " &
+         --        Double_Positive'Image (Index_B) &
+         --        ": " & Double_Natural'Image (B_Data (Index_B).Time));
+         --     Put_Line ("Nearest Delta_Time for Index_B >= A_Time: " &
+         --        Double_Integer'Image (Delta_Time));
+         --  end if;
 
-      --     if Index_B > 1 and then abs (Delta_Time) >
-      --        abs (Double_Integer (B_Data (Index_B + 1).Time - A_Time)) then
-      --        Index_B := Index_B + 1;
-      --        B_Time := B_Data (Index_B).Time;
-      --        Delta_Time := Double_Integer (B_Time - A_Time);
-      --        if Count < 15 then
-      --           Put_Line ("Updated Index_B: " & Double_Positive'Image (Index_B) &
-      --              ": " & Double_Natural'Image (B_Data (Index_B).Time));
-      --           Put_Line ("Updated B - A: " &
-      --              Double_Integer'Image
-      --              (Double_Integer (B_Time - A_Time)));
-      --        end if;
-      --     end if;
-         
+         if Index_B > 1 and then abs (Delta_Time) >
+            abs (Double_Integer (B_Data (Index_B + 1).Time - A_Time)) then
+            Index_B := Index_B + 1;
+            B_Time := B_Data (Index_B).Time;
+            Delta_Time := Double_Integer (B_Time - A_Time);
+            end if;
+
       else  --  Index_B = B_Data.Last_Index
         Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
 
-      if Count < 15 then
-         Put_Line ("Nearest Delta_Time " & Double_Integer'Image (Delta_Time));
-         New_Line;
-      end if;
+      --  if Count < 15 then
+      --     Put_Line ("Nearest Delta_Time " & Double_Integer'Image (Delta_Time));
+      --     New_Line;
+      --  end if;
 
       return abs (Delta_Time);
 
@@ -106,8 +95,6 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
 
 begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
-   --  for index in A_Data.First_Index .. A_Data.Last_Index loop
-
    Count := Count + 1;
    if Index_A_End > A_Data.Last_Index then
       Index_A_End := A_Data.Last_Index;
@@ -122,7 +109,7 @@ begin
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
 
-   Print_Double_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
+   --  Print_Double_Integer_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
