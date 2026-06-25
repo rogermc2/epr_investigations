@@ -22,8 +22,13 @@ procedure Get_Data is
 begin
    NIST_Data (A_Source, A_Det_Target, A_Sync_Target, Num_Rows);
    NIST_Data (B_Source, B_Det_Target, B_Sync_Target, Num_Rows);
-   --  If needed, set stack size:  ulimit -s 64000 to prevent Combine stack overflow
-   Combine_Nist (A_Det_Target, B_Det_Target, Combined_Data, Num_Rows);
+   New_Line;
+   --  If needed, set stack size:  ulimit -s 64000
+   --  to prevent Combine stack overflow
+   Combine_Nist_Det (A_Det_Target, B_Det_Target, Combined_Data, Num_Rows);
+   New_Line;
+   Combine_Nist_Synch (A_Sync_Target, B_Sync_Target, Combined_Data, Num_Rows);
+   New_Line;
 
    Put_Line ("Number of A and B detections: " &
                Integer'Image (Count_Text_File_Lines (A_Det_Target)) & ",  "&

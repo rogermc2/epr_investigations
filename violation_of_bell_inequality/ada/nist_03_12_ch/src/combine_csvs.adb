@@ -111,9 +111,9 @@ package body Combine_CSVs is
 
    end Combine;
 
-    procedure Combine_Nist (A_CSV, B_CSV, Combined_CSV : String;
+    procedure Combine_Nist_Det (A_CSV, B_CSV, Combined_CSV : String;
       Num_Rows : Double_Natural := 30) is
-      Routine_Name : constant String := "Combine_CSVs.Combine_Nist ";
+      Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Det ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
       Data_A       : StringD19_Array (1 .. Num_Rows);
@@ -144,7 +144,7 @@ package body Combine_CSVs is
       --  Print_String40_Array (Routine_Name & "Combined", Combined,
       --                        Combined'Last - 4, Combined'Last);
       Save_NIST_Data (Combined_CSV, Combined);
-      Put_Line (Routine_Name & "Combined_CSV length: " &
+      Put_Line (Routine_Name & "Det Combined_CSV length: " &
                   Integer'Image (Count_Text_File_Lines (Combined_CSV)) &
                    " lines");
 
@@ -153,6 +153,46 @@ package body Combine_CSVs is
          Put_Line (Routine_Name & "Exception information:  " &
                      Exception_Information (Error));
 
-   end Combine_Nist;
+   end Combine_Nist_Det;
+
+   procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_CSV : String;
+      Num_Rows : Double_Natural := 30) is
+      Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
+      A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
+      B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
+      Data_A       : StringD19_Array (1 .. Num_Rows);
+      Data_B       : StringD19_Array (1 .. Num_Rows);
+      aRow         : String_40 := (others => '#');
+      Combined     : StringD40_Array (1 .. Num_Rows) :=
+     (others => (others => '#'));
+   begin
+      --  Set stack size:  ulimit -s 64000 if necessary
+      Put_Line (Routine_Name & "A length:" & Double_Natural'Image (A_Length));
+      Put_Line (Routine_Name & "B length:" & Double_Natural'Image (B_Length));
+
+      Load_NIST_Data (A_CSV, Data_A);
+      Load_NIST_Data (B_CSV, Data_B);
+
+      for row in Combined'Range loop
+           aRow := Combined (row);
+           aRow (1 .. 19) := Data_A (row);  --  includes ,
+           aRow (20 .. 21) := ", ";
+           aRow (22 .. 40) := Data_B (row);
+           Combined (row) := aRow;
+      end loop;
+
+      --  Print_String40_Array (Routine_Name & "Combined", Combined,
+      --                        Combined'Last - 4, Combined'Last);
+      Save_NIST_Data (Combined_CSV, Combined);
+      Put_Line (Routine_Name & "Synch Combined_CSV length: " &
+                  Integer'Image (Count_Text_File_Lines (Combined_CSV)) &
+                   " lines");
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
+
+   end Combine_Nist_Synch;
 
 end Combine_CSVs;

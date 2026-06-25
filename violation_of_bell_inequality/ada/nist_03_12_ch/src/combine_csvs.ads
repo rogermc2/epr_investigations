@@ -7,7 +7,9 @@ package Combine_CSVs is
      (Photon_Data_A_CSV, Photon_Data_B_CSV, OEM_Data_A_CSV,
       OEM_Data_B_CSV, Combined_CSV : String; Num_Rows : Positive := 30);
 
-    procedure Combine_Nist (A_CSV, B_CSV, Combined_CSV : String;
+   procedure Combine_Nist_Det (A_CSV, B_CSV, Combined_CSV : String;
+      Num_Rows : Double_Natural := 30);
+   procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_CSV : String;
       Num_Rows : Double_Natural := 30);
 
 end Combine_CSVs;
