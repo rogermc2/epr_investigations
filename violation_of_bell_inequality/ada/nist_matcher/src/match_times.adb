@@ -17,7 +17,7 @@ procedure Match_Times is
    Data            : Unbounded_String;
 
    Width            : constant Natural := 100000;
-   Delta_Val        :  Natural := 3;
+   Delta_Val        :  Natural := 30;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -43,7 +43,7 @@ begin
    --  for del in 0 .. Delta_Val loop
    --     if del mod 100000 = 0 then
    --         Put_Line ("del: " & Integer'Image (del));
-         Match_Data_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
+         Match_Sync_Times (Pairs_CSV, Other, Delta_Val, Width, Num_Found, Selected_Pairs,
                      Data_Length);
          Put_Line ("Num_Found: " & Integer'Image (Num_Found));
           New_Line;

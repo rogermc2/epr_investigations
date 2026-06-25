@@ -1,7 +1,6 @@
 
 --  with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
---  with Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
@@ -129,14 +128,14 @@ procedure Load_Data (CSV_Data : String;
 
    end Load_Data;
 
-   procedure Match_Data_Times
+   procedure Match_Sync_Times
      (Pairs_CSV, Match_CSV : String; Delta_A, Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Num_Rows  : Natural := 0) is
       use Histogram;
       use Match_Package;
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Match_Data_Times ";
+      Routine_Name : constant String := "Process_Data.Match_Sync_Times ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
@@ -163,7 +162,9 @@ procedure Load_Data (CSV_Data : String;
             --  Move B_Index forward until B_Value is >= (A_Value - Width)
             while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
                B_Item := Element (B_Curs);
-               B_Time := B_Item.Time;
+               if B_Item.Setting = 3 then
+                  B_Time := B_Item.Time;
+               end if;
                Next (B_Curs);
             end loop;
 
@@ -212,7 +213,7 @@ procedure Load_Data (CSV_Data : String;
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 
-   end Match_Data_Times;
+   end Match_Sync_Times;
 
    function Number_Of_Matches (File_Name : String) return Natural is
       Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
