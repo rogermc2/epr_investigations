@@ -22,7 +22,6 @@ package body Combine_Data is
       end loop;
 
       Ada.Text_IO.Close (Data_ID);
-      --  Put_Line (Routine_Name & Data_File & " closed");
       Ada.Text_IO.Put_Line (Routine_Name & "Number of rows: " &
                               Integer'Image (Row));
 
@@ -38,16 +37,10 @@ package body Combine_Data is
       use Ada.Strings;
       use Ada.Strings.Fixed;
       Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
-      --  Data_File_Length : constant Double_Natural :=
-      --   Double_Natural (Size (Data_File));
       Data_ID      : File_Type;
       Row          : Double_Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
-      --  Put_Line (Routine_Name & "Source File Length : " &
-      --                          Double_Natural'Image (Data_File_Length));
-      --  Put_Line (Routine_Name & "Data_Array Length : " &
-      --                          Double_Natural'Image (Data_Array'Length));
       Open (Data_ID, In_File, Data_File);
       while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
          Row := Row + 1;
@@ -67,7 +60,6 @@ package body Combine_Data is
       end loop;
 
       Close (Data_ID);
-      --  Put_Line (Routine_Name &  Data_File & " closed");
       Put_Line (Routine_Name & "Number of rows: " &
                               Double_Natural'Image (Row - 1));
 
@@ -132,11 +124,10 @@ package body Combine_Data is
 
    end Save_Data;
 
-procedure Save_NIST_Data (Data_File : String; Data : StringD40_Array) is
+   procedure Save_NIST_Data (Data_File : String; Data : StringD40_Array) is
       Routine_Name : constant String := "Combine_Data.Save_NIST_Data ";
       Out_ID       : File_Type;
    begin
-      Put_Line (Routine_Name & "Source File: " & Data_File);
       Create (Out_ID, Out_File, Data_File);
 
       --  Table Header
@@ -158,5 +149,31 @@ procedure Save_NIST_Data (Data_File : String; Data : StringD40_Array) is
                      Exception_Information (Error));
 
    end Save_NIST_Data;
+
+   procedure Save_NIST_Sync_Data (Data_File : String; Data : StringD40_Array) is
+      Routine_Name : constant String := "Combine_Data.Save_NIST_Sync_Data ";
+      Out_ID       : File_Type;
+   begin
+      Create (Out_ID, Out_File, Data_File);
+
+      --  Table Header
+      Put_Line (Out_ID, "A Sync Time,B Sync Time");
+      for row in Data'Range loop
+         --  if Row > Data'Last - 4 then
+         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " &
+         --   Integer'Image (Row)
+         --                           & ",   !" & Data (Row) & "!");
+         --  end if;
+         Put_Line (Out_ID, Data (row));
+      end loop;
+
+      Close (Out_ID);
+      Put_Line (Routine_Name & "Data written to " & Data_File);
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & "Exception information:  " &
+                     Exception_Information (Error));
+
+   end Save_NIST_Sync_Data;
 
 end Combine_Data;

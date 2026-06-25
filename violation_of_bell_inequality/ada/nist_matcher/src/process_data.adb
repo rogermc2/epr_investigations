@@ -7,8 +7,8 @@ with Histogram;
 
 package body Process_Data is
 
-   procedure Load_Data (CSV_Data : String;
-                Data_A, Data_B : in out Setting_Time_Vector);
+   procedure Load_Sync_Data (CSV_Data : String;
+       Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Align_Data (A_Data, B_Data : in out Setting_Time_Vector) is
@@ -92,7 +92,7 @@ procedure Find_Raw_Window_Width
       end Find_Width;
 
    begin
-      Load_Data (CSV_Times_A, A_Data, B_Data);
+      Load_Sync_Data (CSV_Times_A, A_Data, B_Data);
       Min_Width := 1;
       Max_Width := 0;
 
@@ -100,15 +100,15 @@ procedure Find_Raw_Window_Width
 
    end  Find_Raw_Window_Width;
 
-procedure Load_Data (CSV_Data : String;
-                  Data_A, Data_B : in out Setting_Time_Vector) is
+procedure Load_Sync_Data (CSV_Data : String;
+                  Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
       use Types.Setting_Time_Package;
-      File_ID : File_Type;
-      Header  : String_33;
+      File_ID  : File_Type;
+      Header   : String_33;
       A_String : String_19;
       B_String : String_19;
-      aLine   : String_40;
-      Item    : Setting_Time_Record;
+      aLine    : String_40;
+      Item     : Setting_Time_Record;
    begin
       Open (File_ID, In_File, CSV_Data);
       Header := Get_Line (File_ID);        -- Skip header
@@ -118,15 +118,15 @@ procedure Load_Data (CSV_Data : String;
          B_String := aLine (aLine'First + 21 .. aLine'Last);
          Item.Setting := Natural'Value (A_String (1 .. 1));
          Item.Time := Double_Natural'Value (A_String (4 .. 19));
-         Data_A.Append (Item);
+         Sync_Data_A.Append (Item);
          Item.Setting := Natural'Value (B_String (1 .. 1));
          Item.Time := Double_Natural'Value (B_String (4 .. 19));
-         Data_B.Append (Item);
+         Sync_Data_B.Append (Item);
       end loop;
 
       Close (File_ID);
 
-   end Load_Data;
+   end Load_Sync_Data;
 
    procedure Match_Sync_Times
      (Pairs_CSV, Match_CSV : String; Delta_A, Width : Natural;
@@ -192,9 +192,10 @@ procedure Load_Data (CSV_Data : String;
 
    begin
       Num_Found := 0;
-      Load_Data (Pairs_CSV, A_Data, B_Data);
+      Put_Line (Routine_Name & "Pairs_CSV: " & Pairs_CSV);
+      Load_Sync_Data (Pairs_CSV, A_Data, B_Data);
       Align_Data (A_Data, B_Data);
-      Draw_Histogram  (A_Data, B_Data);
+      --  Draw_Histogram  (A_Data, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 

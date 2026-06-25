@@ -18,6 +18,7 @@ procedure Get_Data is
    A_Sync_Target : constant String := "A_Sync.csv";
    B_Sync_Target : constant String := "B_Sync.csv";
    Combined_Data : constant String := "combined.csv";
+   Combined_Sync : constant String := "combined_sync.csv";
    Num_Rows      : constant Types.Double_Natural := 50000;
 begin
    NIST_Data (A_Source, A_Det_Target, A_Sync_Target, Num_Rows);
@@ -27,7 +28,7 @@ begin
    --  to prevent Combine stack overflow
    Combine_Nist_Det (A_Det_Target, B_Det_Target, Combined_Data, Num_Rows);
    New_Line;
-   Combine_Nist_Synch (A_Sync_Target, B_Sync_Target, Combined_Data, Num_Rows);
+   Combine_Nist_Synch (A_Sync_Target, B_Sync_Target, Combined_Sync, Num_Rows);
    New_Line;
 
    Put_Line ("Number of A and B detections: " &

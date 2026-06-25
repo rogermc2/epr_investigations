@@ -8,8 +8,7 @@ package body Utils is
       File       : File_Type;
       Line_Count : Natural := 0;
    begin
-      --  Put_Line ("Utils.Count_Text_File_Lines opening " & File_Name);
-      Open (File, In_File, File_Name);
+       Open (File, In_File, File_Name);
 
       while not End_Of_File (File) loop
          Skip_Line (File);

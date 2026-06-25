@@ -155,7 +155,7 @@ package body Combine_CSVs is
 
    end Combine_Nist_Det;
 
-   procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_CSV : String;
+   procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_Synch_CSV : String;
       Num_Rows : Double_Natural := 30) is
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
@@ -183,9 +183,9 @@ package body Combine_CSVs is
 
       --  Print_String40_Array (Routine_Name & "Combined", Combined,
       --                        Combined'Last - 4, Combined'Last);
-      Save_NIST_Data (Combined_CSV, Combined);
+      Save_NIST_Sync_Data (Combined_Synch_CSV, Combined);
       Put_Line (Routine_Name & "Synch Combined_CSV length: " &
-                  Integer'Image (Count_Text_File_Lines (Combined_CSV)) &
+                  Integer'Image (Count_Text_File_Lines (Combined_Synch_CSV)) &
                    " lines");
 
    exception
