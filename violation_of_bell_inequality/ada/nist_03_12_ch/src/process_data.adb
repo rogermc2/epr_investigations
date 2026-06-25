@@ -4,6 +4,9 @@ with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
+with Ada.Strings;
+with Ada.Strings.Fixed;
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Utils; use Utils;
@@ -33,6 +36,8 @@ package body Process_Data is
    procedure NIST_Data (Source_File, Det_File, Sync_File :
                          String; Num_Rows : Double_Natural := 30) is
       use Ada.Streams;
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
       Routine_Name : constant String  := "Process_Data.NIST_Data ";
       Source_Size  : constant Double_Natural :=
        Double_Natural (Ada.Directories.Size (Source_File));
@@ -121,7 +126,8 @@ package body Process_Data is
                              Unsigned_8_Byte'Image (Data.Time_Tag));
             Ada.Text_IO.New_Line (Det_ID);
          elsif Sync_Pulse then
-            Ada.Text_IO.Put (Synch_ID, Unsigned_8_Byte'Image (Data.Time_Tag));
+            Ada.Text_IO.Put (Synch_ID,
+               Trim (Unsigned_8_Byte'Image (Data.Time_Tag), Both));
             Ada.Text_IO.New_Line (Synch_ID);
          end if;
 

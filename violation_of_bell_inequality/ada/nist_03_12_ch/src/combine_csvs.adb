@@ -160,10 +160,14 @@ package body Combine_CSVs is
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
-      Data_A       : StringD19_Array (1 .. Num_Rows);
-      Data_B       : StringD19_Array (1 .. Num_Rows);
+      Min_A_Rows   : constant Double_Natural :=
+         Double_Natural'Min (A_Length, Num_Rows);
+      Min_Rows     : constant Double_Natural :=
+         Double_Natural'Min (B_Length, Min_A_Rows);
+      Data_A       : StringD19_Array (1 .. Min_Rows);
+      Data_B       : StringD19_Array (1 .. Min_Rows);
       aRow         : String_40 := (others => '#');
-      Combined     : StringD40_Array (1 .. Num_Rows) :=
+      Combined     : StringD40_Array (1 .. Min_Rows) :=
      (others => (others => '#'));
    begin
       --  Set stack size:  ulimit -s 64000 if necessary

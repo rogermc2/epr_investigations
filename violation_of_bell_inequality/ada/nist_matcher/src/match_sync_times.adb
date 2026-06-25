@@ -11,9 +11,9 @@ with Utils; use Utils;
 procedure Match_Sync_Times is
    Routine_Name    : constant String := "Match_Sync_Times ";
    Pairs_Directory : constant String := "../nist_03_12_ch/";
-   Pairs_CSV       : constant String := Pairs_Directory & "combined.csv";
-   Sync_Pairs      : constant String := "../sync_pairs.csv";
-   --  Data            : Unbounded_String;
+   Det_Pairs       : constant String := Pairs_Directory & "combined.csv";
+   Sync_Pairs      : constant String := Pairs_Directory & "combined_sync.csv";
+   Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
 
    Width           : constant Natural := 100000;
    Delta_Val       : constant Natural := 30;
@@ -31,12 +31,14 @@ procedure Match_Sync_Times is
    Selected_Pairs   : Match_List;
 begin
    Put_Line (Routine_Name & "Pairs file size:" &
-        Integer'Image (Count_Text_File_Lines (Pairs_CSV)) & " lines");
+        Integer'Image (Count_Text_File_Lines (Det_Pairs)) & " lines");
 
+   Put_Line (Routine_Name & "Sync_Pairs file size:" &
+        Integer'Image (Count_Text_File_Lines (Sync_Pairs)) & " lines");
    --  for del in 0 .. Delta_Val loop
    --     if del mod 100000 = 0 then
    --         Put_Line ("del: " & Integer'Image (del));
-         Match_Sync_Times (Pairs_CSV, Sync_Pairs, Delta_Val, Width, Num_Found, Selected_Pairs,
+         Match_Sync_Times (Sync_Pairs, Matched_Sync, Delta_Val, Width, Num_Found, Selected_Pairs,
                      Data_Length);
          Put_Line ("Num_Found: " & Integer'Image (Num_Found));
           New_Line;
