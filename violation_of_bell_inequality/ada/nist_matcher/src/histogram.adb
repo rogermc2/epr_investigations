@@ -1,12 +1,20 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Histogram is
 
-   type Bin_Array is array (Positive range <>) of Integer;
+type Bin_Array is array (Positive range <>) of Integer;
 
+--  The second channel number is the 8-byte integer raw timetag.
+--  Each timetag bin corresponds to 78.125 ps.
+--  The absolute timestamps at alice and bob are different because
+--  they were started at different times but they are counting at
+--  the same rate and are synchronized by the 10MHz external reference.
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
+procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
 
 procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    use Setting_Time_Package;
@@ -77,8 +85,6 @@ begin
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
 
-   --  Print_Double_Natural_Vector (Routine_Name & "Delta: ", Delta_Data, 1, 10);
-
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
       Current_Value := Element  (Curs_Delta);
@@ -97,9 +103,10 @@ begin
       Next  (Curs_Delta) ;
    end loop;
 
-   Print_Histogram (Bins, Bin_Size);
+   --  Print_Histogram (Bins, Bin_Size);
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
+   Save_Data ("histogram.txt", Delta_Data);
 
    exception
       when Error : others =>
@@ -143,10 +150,6 @@ begin
          Bar_Length := Max_Bar_Length;
       end if;
 
-      --  for J in 1 .. Bar_Length loop
-      --     Put ("*");
-      --  end loop;
-
       if Bins (I) > Max_Bar_Length then
          --  Indicate that the bar extends further
          Put ("+");
@@ -159,5 +162,25 @@ begin
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Print_Histogram;
+
+   procedure Save_Data (Data_File : String; Data : Double_Natural_Vector) is
+   use Ada.Strings;
+   use Ada.Strings.Fixed;
+      use Double_Natural_Package;
+      Routine_Name : constant String := "Histogram.Save_Data ";
+      Curs         : Cursor := Data.First;
+      Out_ID       : File_Type;
+   begin
+      Create (Out_ID, Out_File, Data_File);
+
+      while Has_Element (Curs) loop
+         Put_Line (Out_ID, Trim (Double_Natural'Image (Element (Curs)), Both));
+         Next (Curs);
+      end loop;
+
+      Close (Out_ID);
+      Put_Line (Routine_Name & "Data file written to " & Data_File);
+
+   end Save_Data;
 
 end Histogram;
