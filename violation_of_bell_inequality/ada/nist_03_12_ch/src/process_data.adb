@@ -6,7 +6,6 @@ with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Types; use Types;
 with Utils; use Utils;
 
 package body Process_Data is
@@ -14,7 +13,7 @@ package body Process_Data is
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
    type Channel_Type is (Detector_Click, Polarizer_0, Polarizer_45,
-                         GPS_Pps, Sync, Ch_Error);
+                         GPS_Pps, Sync, Overflow, Ch_Error);
 
    type Raw_Data_Record is record
       Channel     : Unsigned_Byte;
@@ -31,22 +30,26 @@ package body Process_Data is
    procedure Print_Processed_Data (Data : Data_Record);
    procedure Print_Raw_Data (Raw_Data : Raw_Data_Record);
 
-   procedure NIST_Data (Source_File, NIST_File : String) is
+   procedure NIST_Data (Source_File, Det_File, Sync_File :
+                         String; Num_Rows : Double_Natural := 30) is
       use Ada.Streams;
       Routine_Name : constant String  := "Process_Data.NIST_Data ";
       Source_Size  : constant Double_Natural :=
        Double_Natural (Ada.Directories.Size (Source_File));
       Data_Stream  : Stream_IO.Stream_Access;
       Source_ID    : Stream_IO.File_Type;
-      NIST_ID      : Ada.Text_IO.File_Type;
+      Det_ID       : Ada.Text_IO.File_Type;
+      Synch_ID     : Ada.Text_IO.File_Type;
       Log_ID       : Ada.Text_IO.File_Type;
       Raw_Data     : Raw_Data_Record;
       Data         : Data_Record;
-      P_Setting    : String (1 .. 1);
+      Pol_Setting  : String (1 .. 1);
       Click        : Boolean;
-      Line_Num     : Natural := 0;
-      Num_Invalid  : Natural := 0;
+      Sync_Pulse   : Boolean;
+      Line_Num     : Double_Natural := 0;
       Num_Clicks   : Natural := 0;
+      Num_Synchs   : Natural := 0;
+      Num_Invalid  : Natural := 0;
    begin
       Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
       Ada.Text_IO.Put_Line (Routine_Name &
@@ -54,13 +57,16 @@ package body Process_Data is
                      Double_Natural'Image (Source_Size));
       Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
       Data_Stream := Stream_IO.Stream (Source_ID);
-      Ada.Text_IO.Create (NIST_ID, Out_File, NIST_File);
+
+      Ada.Text_IO.Create (Det_ID, Out_File, Det_File);
+      Ada.Text_IO.Create (Synch_ID, Out_File, Sync_File);
       Ada.Text_IO.Create (Log_ID, Out_File,
        Source_File (Source_File'First + 19 .. Source_File'Last - 4) &
         "_parsing_errors.log");
       Ada.Text_IO.Put_Line (Log_ID, "*******  Parsing Errors  *******");
 
-      while not Stream_IO.End_Of_File (Source_ID) loop
+      while not Stream_IO.End_Of_File (Source_ID) and then
+       Line_Num <= Num_Rows loop
         Line_Num := Line_Num + 1;
 
          Raw_Data_Record'Read (Data_Stream, Raw_Data);
@@ -78,12 +84,14 @@ package body Process_Data is
             when 4 => Data.Channel := Polarizer_45;
             when 5 => Data.Channel := GPS_Pps;
             when 6 => Data.Channel := Sync;
+            when 64 => Data.Channel := Overflow;
             when others =>
              Data.Channel := Ch_Error;
              Num_Invalid := Num_Invalid + 1;
-             Ada.Text_IO.Put_Line (Log_ID, "Line: " & Natural'Image (Line_Num) &
-               "," & "Invalid Channel value:" &
-                Unsigned_Byte'Image (Raw_Data.Channel));
+             Ada.Text_IO.Put_Line (Log_ID, "Line: " &
+                  Double_Natural'Image (Line_Num) & "," &
+                  "Invalid Channel value:" &
+                  Unsigned_Byte'Image (Raw_Data.Channel));
          end case;
          Data.Time_Tag := Raw_Data.Time_Tag;
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
@@ -92,22 +100,29 @@ package body Process_Data is
             Print_Processed_Data (Data);
          end if;
 
-         Click :=  False;
+         Click := False;
+         Sync_Pulse := False;
          case Data.Channel is
             when Detector_Click =>
-             Click :=  True;
-             Num_Clicks := Num_Clicks + 1;
-            when Polarizer_0 => P_Setting := "0";
-            when Polarizer_45 => P_Setting := "1";
+               Click :=  True;
+               Num_Clicks := Num_Clicks + 1;
+            when Polarizer_0 => Pol_Setting := "0";
+            when Polarizer_45 => Pol_Setting := "1";
             when GPS_Pps => null;
-            when Sync => null;
+            when Sync =>
+               Sync_Pulse :=  True;
+               Num_Synchs := Num_Synchs + 1;
+            when Overflow => null;
             when Ch_Error => null;
          end case;
 
          if Click then
-            Ada.Text_IO.Put (NIST_ID,  P_Setting & "," &
+            Ada.Text_IO.Put (Det_ID,  Pol_Setting & "," &
                              Unsigned_8_Byte'Image (Data.Time_Tag));
-            Ada.Text_IO.New_Line (NIST_ID);
+            Ada.Text_IO.New_Line (Det_ID);
+         elsif Sync_Pulse then
+            Ada.Text_IO.Put (Synch_ID, Unsigned_8_Byte'Image (Data.Time_Tag));
+            Ada.Text_IO.New_Line (Synch_ID);
          end if;
 
          if Line_Num mod 4000000 = 0 then
@@ -117,17 +132,23 @@ package body Process_Data is
       New_Line;
 
       Ada.Text_IO.Close (Log_ID);
-      Ada.Text_IO.Close (NIST_ID);
+      Ada.Text_IO.Close (Synch_ID);
+      Ada.Text_IO.Close (Det_ID);
       Stream_IO.Close (Source_ID);
 
       Ada.Text_IO.Put_Line
-        (Routine_Name & "number of clicks: " & Integer'Image (Num_Clicks));
+        (Routine_Name & "number of clicks and synchs: "  &
+        Integer'Image (Num_Clicks) & ", " & Integer'Image (Num_Synchs));
       Ada.Text_IO.Put_Line
         (Routine_Name & "number of invalid items: " &
            Integer'Image (Num_Invalid));
       Ada.Text_IO.Put_Line
-        (Routine_Name & NIST_File & " file length: " &
-           Natural'Image (Count_Text_File_Lines (NIST_File)) & " lines");
+        (Routine_Name & Det_File & " file length: " &
+           Natural'Image (Count_Text_File_Lines (Det_File)) & " lines");
+
+      Ada.Text_IO.Put_Line
+        (Routine_Name & Sync_File & " file length: " &
+           Natural'Image (Count_Text_File_Lines (Sync_File)) & " lines");
       Ada.Text_IO.New_Line;
 
    exception

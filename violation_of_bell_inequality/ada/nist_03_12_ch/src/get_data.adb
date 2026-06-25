@@ -4,6 +4,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Combine_CSVs; use Combine_CSVs;
 with Process_Data; use Process_Data;
+with Types;
 with Utils; use Utils;
 
 procedure Get_Data is
@@ -12,19 +13,24 @@ procedure Get_Data is
    B_Directory   : constant String := A_Directory;
    A_Source      : constant String := A_Directory & "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
    B_Source      : constant String := B_Directory & "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
-   A_Target      : constant String := "A.csv";
-   B_Target      : constant String := "B.csv";
+   A_Det_Target  : constant String := "A_Det.csv";
+   B_Det_Target  : constant String := "B_Det.csv";
+   A_Sync_Target : constant String := "A_Sync.csv";
+   B_Sync_Target : constant String := "B_Sync.csv";
    Combined_Data : constant String := "combined.csv";
+   Num_Rows      : constant Types.Double_Natural := 50000;
 begin
-   NIST_Data (A_Source, A_Target);
-   NIST_Data (B_Source, B_Target);
+   NIST_Data (A_Source, A_Det_Target, A_Sync_Target, Num_Rows);
+   NIST_Data (B_Source, B_Det_Target, B_Sync_Target, Num_Rows);
    --  If needed, set stack size:  ulimit -s 64000 to prevent Combine stack overflow
-   Combine_Nist (A_Target, B_Target, Combined_Data, 30000);
+   Combine_Nist (A_Det_Target, B_Det_Target, Combined_Data, Num_Rows);
 
-   Put_Line ("Number of A detections: " &
-               Integer'Image (Count_Text_File_Lines (A_Target)));
-   Put_Line ("Number of B detections: " &
-               Integer'Image (Count_Text_File_Lines (B_Target)));
+   Put_Line ("Number of A and B detections: " &
+               Integer'Image (Count_Text_File_Lines (A_Det_Target)) & ",  "&
+               Integer'Image (Count_Text_File_Lines (B_Det_Target)));
+   Put_Line ("Number of A and B synchs: " &
+               Integer'Image (Count_Text_File_Lines (A_Sync_Target)) & ",  "&
+               Integer'Image (Count_Text_File_Lines (B_Sync_Target)));
 
 exception
    when Error : others =>
