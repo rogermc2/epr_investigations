@@ -157,18 +157,20 @@ package body Combine_CSVs is
 
    procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_Synch_CSV : String;
       Num_Rows : Double_Natural := 30) is
+      use StringD40_Package;
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
-      Min_A_Rows   : constant Double_Natural :=
-         Double_Natural'Min (A_Length, Num_Rows);
-      Min_Rows     : constant Double_Natural :=
-         Double_Natural'Min (B_Length, Min_A_Rows);
-      Data_A       : StringD19_Array (1 .. Min_Rows);
-      Data_B       : StringD19_Array (1 .. Min_Rows);
+      --  Min_A_Rows   : constant Double_Natural :=
+      --     Double_Natural'Min (A_Length, Num_Rows);
+      --  Min_Rows     : constant Double_Natural :=
+      --     Double_Natural'Min (B_Length, Min_A_Rows);
+      Data_A       : StringD19_Array (1 .. Num_Rows);
+      Data_B       : StringD19_Array (1 .. Num_Rows);
       aRow         : String_40 := (others => '#');
-      Combined     : StringD40_Array (1 .. Min_Rows) :=
-     (others => (others => '#'));
+   --     Combined     : StringD40_Array (1 .. Num_Rows) :=
+   --    (others => (others => '#'));
+      Combined     : StringD40_Vector;
    begin
       --  Set stack size:  ulimit -s 64000 if necessary
       Put_Line (Routine_Name & "A length:" & Double_Natural'Image (A_Length));
@@ -177,12 +179,11 @@ package body Combine_CSVs is
       Load_NIST_Data (A_CSV, Data_A);
       Load_NIST_Data (B_CSV, Data_B);
 
-      for row in Combined'Range loop
-           aRow := Combined (row);
+      for row in Data_A'Range loop
            aRow (1 .. 19) := Data_A (row);  --  includes ,
            aRow (20 .. 21) := ", ";
            aRow (22 .. 40) := Data_B (row);
-           Combined (row) := aRow;
+           Combined.Append (aRow);
       end loop;
 
       --  Print_String40_Array (Routine_Name & "Combined", Combined,

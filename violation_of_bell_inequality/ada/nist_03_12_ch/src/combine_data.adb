@@ -150,21 +150,24 @@ package body Combine_Data is
 
    end Save_NIST_Data;
 
-   procedure Save_NIST_Sync_Data (Data_File : String; Data : StringD40_Array) is
+   procedure Save_NIST_Sync_Data (Data_File : String; Data : StringD40_Vector) is
+      use StringD40_Package;
       Routine_Name : constant String := "Combine_Data.Save_NIST_Sync_Data ";
+      Curs         : Cursor := Data.First;
       Out_ID       : File_Type;
    begin
       Create (Out_ID, Out_File, Data_File);
 
       --  Table Header
       Put_Line (Out_ID, "A Sync Time,B Sync Time");
-      for row in Data'Range loop
+      while Has_Element (Curs) loop
          --  if Row > Data'Last - 4 then
          --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " &
          --   Integer'Image (Row)
          --                           & ",   !" & Data (Row) & "!");
          --  end if;
-         Put_Line (Out_ID, Data (row));
+         Put_Line (Out_ID, Data (Curs));
+         Next (Curs);
       end loop;
 
       Close (Out_ID);

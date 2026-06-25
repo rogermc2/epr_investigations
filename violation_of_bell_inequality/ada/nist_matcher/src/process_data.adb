@@ -133,14 +133,14 @@ procedure Load_Sync_Data (CSV_Data : String;
 
    end Load_Sync_Data;
 
-   procedure Match_Sync_Times
+   procedure Match_Syncs
      (Sync_Pairs_CSV, Matched_Sync_CSV : String; Delta_A, Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Num_Rows  : Natural := 0) is
       use Histogram;
       use Match_Package;
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Match_Sync_Times ";
+      Routine_Name : constant String := "Process_Data.Match_Syncs ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
@@ -221,7 +221,7 @@ procedure Load_Sync_Data (CSV_Data : String;
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 
-   end Match_Sync_Times;
+   end Match_Syncs;
 
    function Number_Of_Matches (File_Name : String) return Natural is
       Routine_Name : constant String := "Process_Data.Number_Of_Matches ";

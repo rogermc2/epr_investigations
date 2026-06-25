@@ -66,6 +66,10 @@ package Types is
      Ada.Containers.Vectors (Positive, String_33);
    subtype String33_List is String33_Package.Vector;
 
+   package StringD40_Package is new
+     Ada.Containers.Vectors (Double_Positive, String_40);
+   subtype StringD40_Vector is StringD40_Package.Vector;
+
    type Detect_Type is (Det_A, Det_B, Det_Both);
 
    type W_Record is record

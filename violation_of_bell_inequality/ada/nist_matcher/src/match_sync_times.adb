@@ -38,7 +38,7 @@ begin
    --  for del in 0 .. Delta_Val loop
    --     if del mod 100000 = 0 then
    --         Put_Line ("del: " & Integer'Image (del));
-         Match_Sync_Times (Sync_Pairs, Matched_Sync, Delta_Val, Width, Num_Found, Selected_Pairs,
+         Match_Syncs (Sync_Pairs, Matched_Sync, Delta_Val, Width, Num_Found, Selected_Pairs,
                      Data_Length);
          Put_Line ("Num_Found: " & Integer'Image (Num_Found));
           New_Line;
