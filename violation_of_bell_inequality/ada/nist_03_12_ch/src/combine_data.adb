@@ -32,17 +32,20 @@ package body Combine_Data is
 
    end Load_Photon_Data;
 
-   procedure Load_NIST_Data (Data_File   : String;
-                              Data_Array : in out StringD19_Array) is
+   procedure Load_NIST_Data (Data_File : String;
+                              Data     : in out StringD19_Vector) is
       use Ada.Strings;
       use Ada.Strings.Fixed;
+      use StringD19_Package;
       Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
       Data_ID      : File_Type;
+      Curs         : Cursor := Data.First;
       Row          : Double_Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
       Open (Data_ID, In_File, Data_File);
-      while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
+      --  while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
+      while not End_Of_File (Data_ID) and then Has_Element (Curs) loop
          Row := Row + 1;
          declare
             aLine   : constant String := Get_Line (Data_ID);
@@ -54,7 +57,7 @@ package body Combine_Data is
                Put_Line (Routine_Name & "Row, Line: " &
                 Double_Natural'Image (Row) & ", " & Line_19);
             end if;
-            Data_Array (Row) := Line_19;
+            Data.Append (Line_19);
          end;
 
       end loop;
@@ -124,21 +127,19 @@ package body Combine_Data is
 
    end Save_Data;
 
-   procedure Save_NIST_Data (Data_File : String; Data : StringD40_Array) is
+   procedure Save_NIST_Data (Data_File : String; Data : StringD40_Vector) is
+      use StringD40_Package;
       Routine_Name : constant String := "Combine_Data.Save_NIST_Data ";
       Out_ID       : File_Type;
+      Curs         : Cursor := Data.First;
    begin
       Create (Out_ID, Out_File, Data_File);
 
       --  Table Header
       Put_Line (Out_ID, "A Setting,A Time,B Setting,B_Time");
-      for row in Data'Range loop
-         --  if Row > Data'Last - 4 then
-         --     Ada.Text_IO.Put_Line (Routine_Name & "Row, data: " &
-         --   Integer'Image (Row)
-         --                           & ",   !" & Data (Row) & "!");
-         --  end if;
-         Put_Line (Out_ID, Data (row));
+      while Has_Element (Curs) loop
+         Put_Line (Out_ID, Data (Curs));
+         Next (Curs);
       end loop;
 
       Close (Out_ID);

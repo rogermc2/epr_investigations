@@ -66,6 +66,10 @@ package Types is
      Ada.Containers.Vectors (Positive, String_33);
    subtype String33_List is String33_Package.Vector;
 
+   package StringD19_Package is new
+     Ada.Containers.Vectors (Double_Positive, String_19);
+   subtype StringD19_Vector is StringD19_Package.Vector;
+
    package StringD40_Package is new
      Ada.Containers.Vectors (Double_Positive, String_40);
    subtype StringD40_Vector is StringD40_Package.Vector;

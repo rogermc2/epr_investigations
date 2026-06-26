@@ -113,14 +113,21 @@ package body Combine_CSVs is
 
     procedure Combine_Nist_Det (A_CSV, B_CSV, Combined_CSV : String;
       Num_Rows : Double_Natural := 30) is
+      use StringD19_Package;
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Det ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
-      Data_A       : StringD19_Array (1 .. Num_Rows);
-      Data_B       : StringD19_Array (1 .. Num_Rows);
+   --     Data_A       : StringD19_Array (1 .. Num_Rows);
+   --     Data_B       : StringD19_Array (1 .. Num_Rows);
+   --     Combined     : StringD40_Array (1 .. Num_Rows) :=
+   --    (others => (others => '#'));
+      Data_A       : StringD19_Vector;
+      Data_B       : StringD19_Vector;
+      Curs_A       : Cursor := Data_A.First;
+      Curs_B       : Cursor := Data_B.First;
+      Combined     : StringD40_Vector;
       aRow         : String_40 := (others => '#');
-      Combined     : StringD40_Array (1 .. Num_Rows) :=
-     (others => (others => '#'));
+      Count        : Double_Natural := 0;
    begin
       --  Set stack size:  ulimit -s 64000
       Put_Line (Routine_Name & "A length:" & Double_Natural'Image (A_Length));
@@ -133,13 +140,23 @@ package body Combine_CSVs is
       --  Put_Line (Routine_Name & "B_CSV size after Loading: " &
       --           Integer'Image (Count_Text_File_Lines (B_CSV)));
 
-      for row in Combined'Range loop
-           aRow := Combined (row);
-           aRow (1 .. 19) := Data_A (row);  --  includes ,
-           aRow (20 .. 21) := ", ";
-           aRow (22 .. 40) := Data_B (row);
-           Combined (row) := aRow;
+      --  for row in Combined'Range loop
+         --    aRow := Combined (row);
+      while Has_Element (Data_A.First) and then
+       Has_Element (Data_B.First) and then Count < Num_Rows loop
+         Count := Count + 1;
+         aRow (1 .. 19) := Element (Curs_A);  --  includes ,
+         aRow (20 .. 21) := ", ";
+         aRow (22 .. 40) := Element (Curs_B);
+         Combined.Append (aRow);
+      Next (Curs_A);
+      Next (Curs_B);
       end loop;
+         --    aRow (1 .. 19) := Data_A (row);  --  includes ,
+         --    aRow (20 .. 21) := ", ";
+         --    aRow (22 .. 40) := Data_B (row);
+         --    Combined (row) := aRow;
+      --  end loop;
 
       --  Print_String40_Array (Routine_Name & "Combined", Combined,
       --                        Combined'Last - 4, Combined'Last);
@@ -157,7 +174,7 @@ package body Combine_CSVs is
 
    procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_Synch_CSV : String;
       Num_Rows : Double_Natural := 30) is
-      use StringD40_Package;
+      use StringD19_Package;
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
@@ -165,12 +182,15 @@ package body Combine_CSVs is
       --     Double_Natural'Min (A_Length, Num_Rows);
       --  Min_Rows     : constant Double_Natural :=
       --     Double_Natural'Min (B_Length, Min_A_Rows);
-      Data_A       : StringD19_Array (1 .. Num_Rows);
-      Data_B       : StringD19_Array (1 .. Num_Rows);
-      aRow         : String_40 := (others => '#');
-   --     Combined     : StringD40_Array (1 .. Num_Rows) :=
-   --    (others => (others => '#'));
+      --  Data_A       : StringD19_Array (1 .. Num_Rows);
+      --  Data_B       : StringD19_Array (1 .. Num_Rows);
+      Data_A       : StringD19_Vector;
+      Data_B       : StringD19_Vector;
+      Curs_A       : Cursor := Data_A.First;
+      Curs_B       : Cursor := Data_B.First;
       Combined     : StringD40_Vector;
+      aRow         : String_40 := (others => '#');
+      Count        : Double_Natural := 0;
    begin
       --  Set stack size:  ulimit -s 64000 if necessary
       Put_Line (Routine_Name & "A length:" & Double_Natural'Image (A_Length));
@@ -179,11 +199,16 @@ package body Combine_CSVs is
       Load_NIST_Data (A_CSV, Data_A);
       Load_NIST_Data (B_CSV, Data_B);
 
-      for row in Data_A'Range loop
-           aRow (1 .. 19) := Data_A (row);  --  includes ,
-           aRow (20 .. 21) := ", ";
-           aRow (22 .. 40) := Data_B (row);
-           Combined.Append (aRow);
+      --  for row in Data_A'Range loop
+      while Has_Element (Curs_A) and then
+       Has_Element (Curs_B) and then Count < Num_Rows loop
+         Count := Count + 1;
+         aRow (1 .. 19) := Data_A (Curs_A);  --  includes ,
+         aRow (20 .. 21) := ", ";
+         aRow (22 .. 40) := Data_B (Curs_B);
+         Combined.Append (aRow);
+         Next (Curs_A);
+         Next (Curs_B);
       end loop;
 
       --  Print_String40_Array (Routine_Name & "Combined", Combined,
