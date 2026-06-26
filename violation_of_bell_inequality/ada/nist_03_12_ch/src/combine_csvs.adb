@@ -4,7 +4,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Combine_Data; use Combine_Data;
---  with Printing; use Printing;
+with Printing; use Printing;
 
 with Utils; use Utils;
 
@@ -201,12 +201,14 @@ package body Combine_CSVs is
          Next (Curs_B);
       end loop;
 
-      --  Print_String40_Array (Routine_Name & "Combined", Combined,
-      --                        Combined'Last - 4, Combined'Last);
+      Print_StringD40_Vector
+       (Routine_Name & "Combined", Combined, Combined.Last_index - 4,
+        Double_Natural (Combined.Last_index));
       Save_NIST_Sync_Data (Combined_Synch_CSV, Combined);
-      Put_Line (Routine_Name & "Synch Combined_CSV length: " &
-                  Integer'Image (Count_Text_File_Lines (Combined_Synch_CSV)) &
-                   " lines");
+      Put_Line
+       (Routine_Name & "Synch Combined_CSV length: " &
+         Double_Natural'Image(Count_Text_File_Lines (Combined_Synch_CSV)) &
+          " lines");
 
    exception
       when Error : others =>

@@ -29,6 +29,32 @@ package body Utils is
       return Line_Count;
 
    end Count_Text_File_Lines;
+   function Count_Text_File_Lines (File_Name  : String)
+    return Double_Natural is
+      File       : File_Type;
+      Line_Count : Double_Natural := 0;
+   begin
+       Open (File, In_File, File_Name);
+
+      while not End_Of_File (File) loop
+         Skip_Line (File);
+         Line_Count := Line_Count + 1;
+      end loop;
+
+      if Line_Count mod 4000000 = 0 then
+         Ada.Text_IO.Put (".");
+      end if;
+
+      Close (File);
+      return Line_Count;
+
+   exception
+      when Error : others =>
+         Put_Line ("Utils.Count_Text_File_Lines Double_Natural" &
+         " Exception information:  " & Exception_Information (Error));
+      return Line_Count;
+
+   end Count_Text_File_Lines;
 
    function Get_Integer_List (Data : Sample_Data_List;
                               Selection : Detect_Type) return Integer_List is
