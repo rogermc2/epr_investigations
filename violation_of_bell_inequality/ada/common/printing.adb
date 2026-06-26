@@ -207,33 +207,42 @@ package body Printing is
       Item  : String_40;
       Count : Double_Positive := 1;
    begin
-      if Finish > 0 and then Finish <= Double_Natural (Data.Last_index) then
-         Last := Double_Positive (Finish);
+      if Data.Is_Empty then
+         New_Line;
+         Put_Line ("**** " & Name & " is empty ***");
       else
-         Last := Double_Positive (Data.Last_index);
-      end if;
+         if Finish > 0 and then Finish <= Double_Natural (Data.Last_index) then
+            Last := Double_Positive (Finish);
+         else
+            Last := Double_Positive (Data.Last_index);
+         end if;
 
-      Put_Line (Name & ": ");
-      if Start >= Double_Positive (Data.First_Index) and then
-       Last <= Double_Positive (Data.Last_index) then
-         for Index in Start .. Last loop
-            Item := Data (Index);
-            Put (Item & ",  " );
-            Count := Count + 1;
-            if Count > 10 then
-               New_Line;
-               Count := 1;
-            end if;
-         end loop;
-      else
-         Put_Line
-           ("Print_StringD40_Vector called with invalid" &
-            " start or finish index.");
-         Put_Line ("Start: " & Double_Positive'Image (Start) & ",  Finish: " &
-                   Double_Natural'Image (Finish));
-         Put_Line
-         ("Data.First_Index: " & Double_Positive'Image (Data.First_Index) &
-           ",  Data.Last_index: " & Double_Positive'Image (Data.Last_index));
+         Put_Line (Name & ": ");
+         if Start >= Double_Positive (Data.First_Index) and then
+          Last <= Double_Positive (Data.Last_index) then
+            for Index in Start .. Last loop
+               Item := Data (Index);
+               Put (Item & ",  " );
+               Count := Count + 1;
+               if Count > 10 then
+                  New_Line;
+                  Count := 1;
+               end if;
+            end loop;
+
+         else
+            Put_Line
+              ("Print_StringD40_Vector called with invalid" &
+                 " start or finish index.");
+            Put_Line
+             ("Start: " & Double_Positive'Image (Start) & ",  Finish: " &
+                     Double_Natural'Image (Finish));
+            Put_Line
+              ("Data.First_Index: " &
+                Double_Positive'Image (Data.First_Index) &
+                ",  Data.Last_index: " &
+                Double_Positive'Image (Data.Last_index));
+         end if;
       end if;
       New_Line;
 

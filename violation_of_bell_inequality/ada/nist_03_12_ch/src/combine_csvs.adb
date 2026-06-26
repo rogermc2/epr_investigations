@@ -189,7 +189,6 @@ package body Combine_CSVs is
       Load_NIST_Data (A_CSV, Data_A);
       Load_NIST_Data (B_CSV, Data_B);
 
-      --  for row in Data_A'Range loop
       while Has_Element (Curs_A) and then
        Has_Element (Curs_B) and then Count < Num_Rows loop
          Count := Count + 1;
@@ -201,9 +200,7 @@ package body Combine_CSVs is
          Next (Curs_B);
       end loop;
 
-      Print_StringD40_Vector
-       (Routine_Name & "Combined", Combined, Combined.Last_index - 4,
-        Double_Natural (Combined.Last_index));
+      Print_StringD40_Vector (Routine_Name & "Combined", Combined, 1, 5);
       Save_NIST_Sync_Data (Combined_Synch_CSV, Combined);
       Put_Line
        (Routine_Name & "Synch Combined_CSV length: " &
