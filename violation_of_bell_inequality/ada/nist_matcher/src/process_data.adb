@@ -23,6 +23,7 @@ package body Process_Data is
       A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
       Offset       : Double_Natural;
       begin
+         Put_Line (Routine_Name);
          if A_Gt_B then
             Offset := B_Item.Time - 1;
          else
@@ -203,10 +204,12 @@ procedure Load_Sync_Data (CSV_Data : String;
       Put_Line (Routine_Name & "Data loaded");
 
       Align_Sync_Data (A_Data, B_Data);
+      Put_Line (Routine_Name & "Data aligned");
       --  Draw_Histogram  (A_Data, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 
+      Put_Line (Routine_Name & "Header Skiped");
       A_Data.Iterate (Find_All_Matches'Access);
       Put_Line (Routine_Name & "All matches found");
       New_Line;

@@ -1,5 +1,5 @@
 
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -56,6 +56,7 @@ package body Combine_CSVs is
    procedure Combine
      (Photon_Data_A_CSV, Photon_Data_B_CSV, OEM_Data_A_CSV,
       OEM_Data_B_CSV, Combined_CSV : String;  Num_Rows : Positive := 30) is
+      use Ada.Directories;
       Routine_Name    : constant String := "Combine_CSVs.Combine ";
       Photon_A_Length : constant Positive :=
         Positive (Size (Photon_Data_A_CSV));
@@ -113,14 +114,11 @@ package body Combine_CSVs is
 
     procedure Combine_Nist_Det (A_CSV, B_CSV, Combined_CSV : String;
       Num_Rows : Double_Natural := 30) is
+      use Ada.Directories;
       use StringD19_Package;
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Det ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
-   --     Data_A       : StringD19_Array (1 .. Num_Rows);
-   --     Data_B       : StringD19_Array (1 .. Num_Rows);
-   --     Combined     : StringD40_Array (1 .. Num_Rows) :=
-   --    (others => (others => '#'));
       Data_A       : StringD19_Vector;
       Data_B       : StringD19_Vector;
       Curs_A       : Cursor := Data_A.First;
@@ -134,16 +132,14 @@ package body Combine_CSVs is
       Put_Line (Routine_Name & "B length:" & Double_Natural'Image (B_Length));
 
       Load_NIST_Data (A_CSV, Data_A);
-      --  Put_Line (Routine_Name & "A_CSV size after Loading: " &
-      --           Integer'Image (Count_Text_File_Lines (A_CSV)));
+      Put_Line (Routine_Name & "A_CSV size after Loading: " &
+                Integer'Image (Count_Text_File_Lines (A_CSV)));
       Load_NIST_Data (B_CSV, Data_B);
-      --  Put_Line (Routine_Name & "B_CSV size after Loading: " &
-      --           Integer'Image (Count_Text_File_Lines (B_CSV)));
+      Put_Line (Routine_Name & "B_CSV size after Loading: " &
+               Integer'Image (Count_Text_File_Lines (B_CSV)));
 
-      --  for row in Combined'Range loop
-         --    aRow := Combined (row);
-      while Has_Element (Data_A.First) and then
-       Has_Element (Data_B.First) and then Count < Num_Rows loop
+      while Has_Element (Curs_A) and then
+       Has_Element (Curs_B) and then Count < Num_Rows loop
          Count := Count + 1;
          aRow (1 .. 19) := Element (Curs_A);  --  includes ,
          aRow (20 .. 21) := ", ";
@@ -152,14 +148,7 @@ package body Combine_CSVs is
       Next (Curs_A);
       Next (Curs_B);
       end loop;
-         --    aRow (1 .. 19) := Data_A (row);  --  includes ,
-         --    aRow (20 .. 21) := ", ";
-         --    aRow (22 .. 40) := Data_B (row);
-         --    Combined (row) := aRow;
-      --  end loop;
 
-      --  Print_String40_Array (Routine_Name & "Combined", Combined,
-      --                        Combined'Last - 4, Combined'Last);
       Save_NIST_Data (Combined_CSV, Combined);
       Put_Line (Routine_Name & "Det Combined_CSV length: " &
                   Integer'Image (Count_Text_File_Lines (Combined_CSV)) &
@@ -174,6 +163,7 @@ package body Combine_CSVs is
 
    procedure Combine_Nist_Synch (A_CSV, B_CSV, Combined_Synch_CSV : String;
       Num_Rows : Double_Natural := 30) is
+      use Ada.Directories;
       use StringD19_Package;
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));

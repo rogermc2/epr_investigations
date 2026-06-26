@@ -43,8 +43,9 @@ package body Combine_Data is
       Row          : Double_Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Data_File);
+      Put_Line (Routine_Name & Data_File & " length: " & 
+         Integer'Image (Data_File'Length));
       Open (Data_ID, In_File, Data_File);
-      --  while not End_Of_File (Data_ID) and then Row < Data_Array'Length loop
       while not End_Of_File (Data_ID) and then Has_Element (Curs) loop
          Row := Row + 1;
          declare

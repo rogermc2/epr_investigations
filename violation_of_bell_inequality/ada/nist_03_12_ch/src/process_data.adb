@@ -56,19 +56,22 @@ package body Process_Data is
       Num_Synchs   : Natural := 0;
       Num_Invalid  : Natural := 0;
    begin
-      Ada.Text_IO.Put_Line (Routine_Name & "Source File: " & Source_File);
-      Ada.Text_IO.Put_Line (Routine_Name &
+      Put_Line (Routine_Name & "Source File: " & Source_File);
+      Put_Line (Routine_Name & Source_File & " length: " &
+         Double_Natural'Image (Source_Size));
+      New_Line;
+      Put_Line (Routine_Name &
        Source_File (Source_File'First + 19 .. Source_File'Last) & " size: " &
                      Double_Natural'Image (Source_Size));
       Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
       Data_Stream := Stream_IO.Stream (Source_ID);
 
-      Ada.Text_IO.Create (Det_ID, Out_File, Det_File);
-      Ada.Text_IO.Create (Synch_ID, Out_File, Sync_File);
-      Ada.Text_IO.Create (Log_ID, Out_File,
+      Create (Det_ID, Out_File, Det_File);
+      Create (Synch_ID, Out_File, Sync_File);
+      Create (Log_ID, Out_File,
        Source_File (Source_File'First + 19 .. Source_File'Last - 4) &
         "_parsing_errors.log");
-      Ada.Text_IO.Put_Line (Log_ID, "*******  Parsing Errors  *******");
+      Put_Line (Log_ID, "*******  Parsing Errors  *******");
 
       while not Stream_IO.End_Of_File (Source_ID) and then
        Line_Num <= Num_Rows loop
@@ -122,40 +125,40 @@ package body Process_Data is
          end case;
 
          if Click then
-            Ada.Text_IO.Put (Det_ID,  Pol_Setting & "," &
+            Put (Det_ID,  Pol_Setting & "," &
                              Unsigned_8_Byte'Image (Data.Time_Tag));
-            Ada.Text_IO.New_Line (Det_ID);
+            New_Line (Det_ID);
          elsif Sync_Pulse then
-            Ada.Text_IO.Put (Synch_ID,
+            Put (Synch_ID,
                Trim (Unsigned_8_Byte'Image (Data.Time_Tag), Both));
-            Ada.Text_IO.New_Line (Synch_ID);
+            New_Line (Synch_ID);
          end if;
 
          if Line_Num mod 4000000 = 0 then
-            Ada.Text_IO.Put (".");
+            Put (".");
          end if;
       end loop;
       New_Line;
 
-      Ada.Text_IO.Close (Log_ID);
-      Ada.Text_IO.Close (Synch_ID);
-      Ada.Text_IO.Close (Det_ID);
+      Close (Log_ID);
+      Close (Synch_ID);
+      Close (Det_ID);
       Stream_IO.Close (Source_ID);
 
-      Ada.Text_IO.Put_Line
+      Put_Line
         (Routine_Name & "number of clicks and synchs: "  &
         Integer'Image (Num_Clicks) & ", " & Integer'Image (Num_Synchs));
-      Ada.Text_IO.Put_Line
+      Put_Line
         (Routine_Name & "number of invalid items: " &
            Integer'Image (Num_Invalid));
-      Ada.Text_IO.Put_Line
+      Put_Line
         (Routine_Name & Det_File & " file length: " &
            Natural'Image (Count_Text_File_Lines (Det_File)) & " lines");
 
-      Ada.Text_IO.Put_Line
+      Put_Line
         (Routine_Name & Sync_File & " file length: " &
            Natural'Image (Count_Text_File_Lines (Sync_File)) & " lines");
-      Ada.Text_IO.New_Line;
+      New_Line;
 
    exception
       when Error : others =>
