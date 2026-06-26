@@ -74,7 +74,7 @@ package body Data_Selection is
       Num_ba       : Natural := 0;
       Num_bb       : Natural := 0;
       Curs         : Cursor := Selected_Pairs.First;
-      item         : Index_Record;
+      Item         : Index_Record;
       W            : W_List;
       Count        : Natural := 0;
       Bad_aa       : Natural := 0;
@@ -117,7 +117,7 @@ package body Data_Selection is
       while Has_Element (Curs) loop
          item := Element (Curs);
          Count := Count + 1;
-         Indices := item;
+         Indices := Item;
          Read (OEM_A_ID, OEM_A_Line, Direct_String_5.Positive_Count (item.A_Index));
          Read (OEM_B_ID, OEM_B_Line, Direct_String_5.Positive_Count (item.B_Index));
 
@@ -149,9 +149,9 @@ package body Data_Selection is
             Write_Data (OEM_bb_ID);
          else
             Put_Line (Routine_Name & "Invalid data:");
-            Put ("OEM_A index: '" & Integer'Image (item.A_Index));
+            Put ("OEM_A index: '" & Double_Positive'Image (item.A_Index));
             Put_Line (" OEM_A_Line: '" & OEM_A_Line & "'");
-            Put ("OEM_B index: '" & Integer'Image (item.B_Index));
+            Put ("OEM_B index: '" & Double_Positive'Image (item.B_Index));
             Put_Line (" OEM_B_Line: '" & OEM_B_Line & "'");
          end if;
          W.Append (W_Item);

@@ -102,7 +102,8 @@ package body Process_Data is
                if Match then
                   --  Matched times found within window
                   Selected_Pairs.Append
-                    ((To_Index (A_Curs), To_Index (B_Curs)));
+                    (New_Item => (Double_Positive (To_Index (A_Curs)),
+                     Double_Positive (To_Index (B_Curs))));
                   Num_Found := Num_Found + 1;
                   if Num_Found < 6 then
                      Put_Line (Routine_Name & "Match, A, B index:" &
@@ -173,7 +174,8 @@ package body Process_Data is
       Create (Match_ID, Out_File, File_Name);
       while Has_Element (M_Curs) loop
          Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Integer'Image (Rec.A_Index) & ", " & Integer'Image (Rec.B_Index));
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+          Double_Positive'Image (Rec.B_Index));
          Next (M_Curs);
       end loop;
 
