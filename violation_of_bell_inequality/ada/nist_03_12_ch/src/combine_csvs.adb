@@ -134,6 +134,8 @@ package body Combine_CSVs is
       Load_NIST_Data (A_CSV, Data_A);
       Load_NIST_Data (B_CSV, Data_B);
 
+      Curs_A := Data_A.First;
+      Curs_B := Data_B.First;
       while Has_Element (Curs_A) and then
        Has_Element (Curs_B) and then Count < Num_Rows loop
          Count := Count + 1;
