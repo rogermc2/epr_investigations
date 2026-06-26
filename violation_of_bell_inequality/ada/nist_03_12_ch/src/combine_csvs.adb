@@ -4,7 +4,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Combine_Data; use Combine_Data;
-with Printing; use Printing;
+--  with Printing; use Printing;
 
 with Utils; use Utils;
 
@@ -132,11 +132,7 @@ package body Combine_CSVs is
       Put_Line (Routine_Name & "B length:" & Double_Natural'Image (B_Length));
 
       Load_NIST_Data (A_CSV, Data_A);
-      Put_Line (Routine_Name & "A_CSV size after Loading: " &
-                Integer'Image (Count_Text_File_Lines (A_CSV)));
       Load_NIST_Data (B_CSV, Data_B);
-      Put_Line (Routine_Name & "B_CSV size after Loading: " &
-               Integer'Image (Count_Text_File_Lines (B_CSV)));
 
       while Has_Element (Curs_A) and then
        Has_Element (Curs_B) and then Count < Num_Rows loop
@@ -168,16 +164,10 @@ package body Combine_CSVs is
       Routine_Name : constant String := "Combine_CSVs.Combine_Nist_Synch ";
       A_Length     : constant Double_Natural := Double_Natural (Size (A_CSV));
       B_Length     : constant Double_Natural := Double_Natural (Size (B_CSV));
-      --  Min_A_Rows   : constant Double_Natural :=
-      --     Double_Natural'Min (A_Length, Num_Rows);
-      --  Min_Rows     : constant Double_Natural :=
-      --     Double_Natural'Min (B_Length, Min_A_Rows);
-      --  Data_A       : StringD19_Array (1 .. Num_Rows);
-      --  Data_B       : StringD19_Array (1 .. Num_Rows);
       Data_A       : StringD19_Vector;
       Data_B       : StringD19_Vector;
-      Curs_A       : Cursor := Data_A.First;
-      Curs_B       : Cursor := Data_B.First;
+      Curs_A       : Cursor;
+      Curs_B       : Cursor;
       Combined     : StringD40_Vector;
       aRow         : String_40 := (others => '#');
       Count        : Double_Natural := 0;
@@ -189,6 +179,11 @@ package body Combine_CSVs is
       Load_NIST_Data (A_CSV, Data_A);
       Load_NIST_Data (B_CSV, Data_B);
 
+      --  Print_StringD19_Vector (Routine_Name & "Data_A", Data_A, 1, 5);
+      --  Print_StringD19_Vector (Routine_Name & "Data_B", Data_B, 1, 5);
+
+      Curs_A := Data_A.First;
+      Curs_B := Data_B.First;
       while Has_Element (Curs_A) and then
        Has_Element (Curs_B) and then Count < Num_Rows loop
          Count := Count + 1;
@@ -199,8 +194,9 @@ package body Combine_CSVs is
          Next (Curs_A);
          Next (Curs_B);
       end loop;
+      --  Put_Line (Routine_Name & "Total Count: " & Double_Natural'Image(Count));
 
-      Print_StringD40_Vector (Routine_Name & "Combined", Combined, 1, 5);
+      --  Print_StringD40_Vector (Routine_Name & "Combined", Combined, 1, 5);
       Save_NIST_Sync_Data (Combined_Synch_CSV, Combined);
       Put_Line
        (Routine_Name & "Synch Combined_CSV length: " &

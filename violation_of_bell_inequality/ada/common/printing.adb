@@ -1,6 +1,8 @@
 
 with Interfaces;
 
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;
@@ -199,10 +201,65 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+    procedure Print_StringD19_Vector
+       (Name  : String; Data : StringD19_Vector;
+        Start : Double_Positive := 1; Finish : Double_Natural := 0) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use StringD19_Package;
+      Last  : Double_Positive;
+      Item  : String_19;
+      Count : Double_Positive := 1;
+   begin
+      if Data.Is_Empty then
+         New_Line;
+         Put_Line ("**** " & Name & " is empty ***");
+      else
+         if Finish > 0 and then Finish <= Double_Natural (Data.Last_index) then
+            Last := Double_Positive (Finish);
+         else
+            Last := Double_Positive (Data.Last_index);
+         end if;
+
+         Put_Line (Name & ": ");
+         if Start >= Double_Positive (Data.First_Index) and then
+          Last <= Double_Positive (Data.Last_index) then
+            for Index in Start .. Last loop
+               Item := Data (Index);
+               Put (Trim (Item, Both) & ", " );
+               Count := Count + 1;
+               if Count > 5 then
+                  New_Line;
+                  Count := 1;
+               end if;
+            end loop;
+
+         else
+            Put_Line
+              ("Print_StringD19_Vector called with invalid" &
+                 " start or finish index.");
+            Put_Line
+             ("Start: " & Double_Positive'Image (Start) & ",  Finish: " &
+                     Double_Natural'Image (Finish));
+            Put_Line
+              ("Data.First_Index: " &
+                Double_Positive'Image (Data.First_Index) &
+                ",  Data.Last_index: " &
+                Double_Positive'Image (Data.Last_index));
+         end if;
+      end if;
+      New_Line;
+
+   end  Print_StringD19_Vector;
+
+   --  ------------------------------------------------------------------------
+
     procedure Print_StringD40_Vector
        (Name  : String; Data : StringD40_Vector;
         Start : Double_Positive := 1; Finish : Double_Natural := 0) is
-      use stringD40_Package;
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use StringD40_Package;
       Last  : Double_Positive;
       Item  : String_40;
       Count : Double_Positive := 1;
@@ -222,7 +279,7 @@ package body Printing is
           Last <= Double_Positive (Data.Last_index) then
             for Index in Start .. Last loop
                Item := Data (Index);
-               Put (Item & ",  " );
+               Put (Trim (Item, Both) & ", " );
                Count := Count + 1;
                if Count > 10 then
                   New_Line;

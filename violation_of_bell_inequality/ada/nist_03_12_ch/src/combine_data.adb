@@ -1,5 +1,5 @@
 
---  with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings;
 with Ada.Strings.Fixed;
@@ -33,20 +33,23 @@ package body Combine_Data is
    end Load_Photon_Data;
 
    procedure Load_NIST_Data (Data_File : String;
-                              Data     : in out StringD19_Vector) is
+                              Data     : out StringD19_Vector) is
+      use Ada.Directories;
       use Ada.Strings;
       use Ada.Strings.Fixed;
       use StringD19_Package;
       Routine_Name : constant String := "Combine_Data.Load_NIST_Data ";
+      Data_File_Length : constant Double_Natural :=
+       Double_Natural (Size (Data_File));
       Data_ID      : File_Type;
-      Curs         : Cursor := Data.First;
       Row          : Double_Natural := 0;
    begin
+      New_Line;
       Put_Line (Routine_Name & "Source File: " & Data_File);
-      Put_Line (Routine_Name & Data_File & " length: " & 
-         Integer'Image (Data_File'Length));
+      Put_Line (Routine_Name & Data_File & " length:" &
+         Double_Natural'Image (Data_File_Length));
       Open (Data_ID, In_File, Data_File);
-      while not End_Of_File (Data_ID) and then Has_Element (Curs) loop
+      while not End_Of_File (Data_ID) loop
          Row := Row + 1;
          declare
             aLine   : constant String := Get_Line (Data_ID);
@@ -65,7 +68,8 @@ package body Combine_Data is
 
       Close (Data_ID);
       Put_Line (Routine_Name & "Number of rows: " &
-                              Double_Natural'Image (Row - 1));
+         Double_Natural'Image (Row - 1));
+      New_Line;
 
    exception
       when Error : others =>
