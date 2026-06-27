@@ -30,7 +30,8 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Bin_Index     : Positive;
    Current_Value : Double_Natural;
    Total_Records : Double_Natural := 0;
-
+   Max_Frequency : Double_Natural := 0;
+   Max_Freq_Index : Double_Natural := 0;
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
@@ -97,13 +98,20 @@ begin
 
       --  Increment value of assigned bin
       Bins (Bin_Index) := Bins (Bin_Index) + 1;
+      if Double_Natural (Bins (Bin_Index)) > Max_Frequency then
+         Max_Freq_Index := Double_Natural (Bin_Index);
+         Max_Frequency := Double_Natural (Bins (Bin_Index));
+      end if;
       Next  (Curs_Delta) ;
    end loop;
 
    Print_Histogram (Bins, Bin_Size);
-   Save_Data ("histogram.txt", Delta_Data);
+   Put_Line (Routine_Name & "bin:" & Double_Natural'Image (Max_Freq_Index) &
+       ", max frequency " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
+      
+   Save_Data ("histogram.txt", Delta_Data);
    New_Line;
 
    exception
