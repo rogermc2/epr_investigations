@@ -15,7 +15,7 @@ procedure Match_Sync_Times is
    Sync_Pairs      : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
    --  Matched_Det     : constant String := Pairs_Directory & "matched_det.csv";
-   Width           : constant Natural := 100000;
+   Width           : constant Natural := 1000;
    --  Delta_Val       : constant Natural := 30;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;

@@ -116,20 +116,19 @@ procedure Load_Sync_Data (CSV_Data : String;
    begin
       Open (File_ID, In_File, CSV_Data);
       Header := Get_Line (File_ID);        -- Skip header
-      Put_Line (Routine_Name & "Header: " & Header);
+      --  Put_Line (Routine_Name & "Header: " & Header);
+      Item.Setting := Sync;
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         Put_Line (Routine_Name & "aLine: " & aLine);
          A_String := aLine (aLine'First .. aLine'First + 18);
          B_String := aLine (aLine'First + 21 .. aLine'Last);
-         Item.Setting := Channel_Type'Value (A_String (1 .. 1));
-         Item.Time := Double_Natural'Value (A_String (4 .. 19));
+         Item.Time := Double_Natural'Value (A_String (1 .. 19));
          Sync_Data_A.Append (Item);
-         Item.Setting := Channel_Type'Value (B_String (1 .. 1));
-         Item.Time := Double_Natural'Value (B_String (4 .. 19));
+         Item.Time := Double_Natural'Value (B_String (1 .. 19));
          Sync_Data_B.Append (Item);
       end loop;
       Put_Line (Routine_Name & "Sync_Data_B loaded");
+      New_Line;
 
       Close (File_ID);
 
@@ -150,16 +149,15 @@ procedure Load_Sync_Data (CSV_Data : String;
       use Match_Package;
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Data.Match_Syncs ";
+      D_Width      : constant Double_Natural := Double_Natural (Width);
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
       B_Curs       : Setting_Time_Package.Cursor := B_Data.First;
 
          procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
-         D_Width   : constant Double_Natural := Double_Natural (Width);
          A_Item    : constant Setting_Time_Record := Element (A_Curs);
          A_Time    : constant Double_Natural := A_Item.Time + D_Width;
-            --  A_Item.Time + Double_Natural (Delta_A) + D_Width;
          B_Val_Min : constant Double_Natural := A_Time - D_Width;
          Item      : Index_Record;
          B_Item    : Setting_Time_Record;
