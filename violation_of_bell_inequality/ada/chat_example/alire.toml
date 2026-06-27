@@ -1,4 +1,4 @@
-name = "check_conversion"
+name = "bell_test_example"
 description = ""
 version = "0.1.0-dev"
 
@@ -8,4 +8,4 @@ licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = []
 
-executables = ["check_conv"]
+executables = ["bell_test"]

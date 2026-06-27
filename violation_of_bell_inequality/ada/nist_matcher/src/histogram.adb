@@ -22,7 +22,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
    Bin_Size      : constant Double_Integer := 1;
-   Num_Bins      : constant Positive := 30;
+   Num_Bins      : constant Positive := 10;
    Index_B       : Double_Positive := B_Data.First_Index;
    Delta_Data    : Double_Natural_Vector;
    Curs_Delta    : Double_Natural_Package.Cursor := Delta_Data.First;
@@ -30,7 +30,6 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Bin_Index     : Positive;
    Current_Value : Double_Natural;
    Total_Records : Double_Natural := 0;
-   --  Count         : Natural := 0;
 
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
@@ -39,8 +38,6 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
       B_Time     : Double_Natural;
       Delta_Time : Double_Integer := 0;
    begin
-      --  Count := Count + 1;
-
       if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
          while Index_B < B_Data.Last_Index and then
@@ -103,10 +100,11 @@ begin
       Next  (Curs_Delta) ;
    end loop;
 
-   --  Print_Histogram (Bins, Bin_Size);
+   Print_Histogram (Bins, Bin_Size);
+   Save_Data ("histogram.txt", Delta_Data);
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
-   Save_Data ("histogram.txt", Delta_Data);
+   New_Line;
 
    exception
       when Error : others =>
@@ -125,7 +123,7 @@ procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer) is
 begin
    Put_Line ("--- Data Distribution Histogram ---");
    Put_Line ("Bin size: " & Double_Integer'Image (Bin_Size));
-   Put_Line ("  Bin Range (dt)   | Frequency | Bar Chart");
+   Put_Line ("Bin Range (dt) | Frequency | Bar Chart");
    Put_Line ("------------------------------------");
 
    for I in Bins'Range loop
@@ -138,13 +136,11 @@ begin
       else
          Put ("  " &
           Double_Integer'Image (Lower_Bound) & " - " &
-         Double_Integer'Image (Upper_Bound) & " | ");
+         Double_Integer'Image (Upper_Bound) & "     | ");
       end if;
 
-      --  Print total counts per interval
+      --  Print total counts per interval (frequency)
       Put (Integer'Image (Bins (I)) & "    | ");
-
-      --  Render text bar (cap rendering at 50 max to prevent terminal clutter)
       Bar_Length := Bins (I);
       if Bar_Length > Max_Bar_Length then
          Bar_Length := Max_Bar_Length;

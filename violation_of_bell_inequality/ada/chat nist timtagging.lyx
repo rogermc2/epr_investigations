@@ -1,0 +1,1642 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Title
+NIST Data Time Tagging
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+Each timetag bin corresponds to 78.125 ps.
+ means that your device uses an ultra-high-speed timing system where each "tick" or unit of recorded time (a bin) represents exactly 78.125 picoseconds (ps).
+ [1] 
+\end_layout
+
+\begin_layout Standard
+Here is how to break down the technical details:
+\end_layout
+
+\begin_layout Standard
+* Picosecond (ps):
+ One trillionth of a second (10⁻¹² seconds).
+\end_layout
+
+\begin_layout Standard
+* Timetag bin:
+ A single discrete unit of time used by the hardware to record exactly when an event happened.
+\end_layout
+
+\begin_layout Standard
+* The Math:
+ The value of 78.125 ps per bin corresponds to a clock frequency of exactly 12.8 GHz which can be calculated this by taking the reciprocal of the time:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{1}{78.125\times10^{-12}\text{ seconds}}=12.8\text{ GHz}
+\]
+
+\end_inset
+
+ [1,
+ 2] 
+\end_layout
+
+\begin_layout Standard
+In practical terms,
+ this gives the time resolution of the data.
+\end_layout
+
+\begin_layout Standard
+If you are recording events (like photon detections or signal edges) the device measures them in extremely precise 78.125 ps intervals.
+ 
+\end_layout
+
+\begin_layout Standard
+This allows for exact chronological reconstruction of fast signals,
+ which is highly useful in fields like quantum physics,
+ time-of-flight (TOF) experiments,
+ and high-speed logic testing.
+ [1,
+ 2] 
+\end_layout
+
+\begin_layout Standard
+If you are analyzing a specific dataset (like the NIST Bell Test Data),
+ let me know,
+ and I can help you convert these raw time-tag integers into standard seconds or nanoseconds.
+\end_layout
+
+\begin_layout Standard
+[1] [https://www.nist.gov](https://www.nist.gov/document/bell-test-data-file-folder-descriptions)
+\end_layout
+
+\begin_layout Standard
+[2] [https://uqdevices.com](http://uqdevices.com/wp-content/uploads/2019/12/Logic16-User-Manual-3.0.pdf)
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+If your timetags look completely random or evenly distributed when you subtract them then you are likely looking at uncorrelated event data instead of pulsed synchronization frames.
+ 
+\end_layout
+
+\begin_layout Standard
+In the NIST loop-hole-free Bell test experiment,
+ photons are emitted in discrete periodic intervals defined by a master laser clock but the raw logs require careful processing to see the correlations.
+ [1,
+ 2] 
+\end_layout
+
+\begin_layout Standard
+Your differences are showing a random distribution because of three common pitfalls in parsing this specific dataset:
+\end_layout
+
+\begin_layout Subsection
+You Are Calculating Absolute vs.
+ Relative Differences
+\end_layout
+
+\begin_layout Standard
+If you subtract the absolute timetag of Alice Event #1 from Alice Event #2,
+ the values will look random because the down-conversion process is probabilistic.
+ Photons are not generated on every single laser pulse.
+ [1] 
+\end_layout
+
+\begin_layout Standard
+* The Fix:
+ You need to calculate the differences modulo the laser repetition period.
+ The NIST experiment used a 100 kHz pulsed laser.
+ This means a laser pulse occurs exactly every 10 microseconds (100,000 bins if using a 100 ns window macro-clock,
+ or 128,000 bins at 78.125 ps).
+ [3,
+ 4] 
+\end_layout
+
+\begin_layout Standard
+* Take your absolute timetag,
+ calculate timetag % laser_period_in_bins,
+ and plot a histogram of those remainders.
+ You should immediately see a sharp peak where the true photon arrivals cluster.
+\end_layout
+
+\begin_layout Subsection
+Missing the Channel Mapping (Data Demultiplexing)
+\end_layout
+
+\begin_layout Standard
+The raw data files clump multiple channels together into a single bitstream.
+ A single 32-bit or 64-bit integer often contains both the timetag value and channel metadata encoded into specific bits.
+\end_layout
+
+\begin_layout Itemize
+If you do not mask out the channel metadata bits before doing your math,
+ the metadata will corrupt your numbers,
+ making your time differences look like completely random,
+ massive integers.
+\end_layout
+
+\begin_layout Itemize
+The Fix:
+\begin_inset Newline newline
+\end_inset
+
+ Consult the DataProcessingDescription.pdf file found in the [NIST Bell Test Data Repository](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-0).
+ 
+\end_layout
+
+\begin_layout Itemize
+You must use a bitwise AND mask (e.g.,
+ raw_value & 0x0FFFFFFF) to separate the pure time data from the channel markers (which identify Alice/Bob choices,
+ sync pulses or detector clicks).
+ [5,
+ 6]
+\end_layout
+
+\begin_layout Subsection
+Laser Phase Drift and Shared Clock Distances
+\end_layout
+
+\begin_layout Standard
+Alice and Bob are physically separated to close the locality loophole.
+ Because their time-tagging hardware modules are independent,
+ their internal reference clocks experience linear phase drift over the course of a long data run.
+ [1,
+ 2] 
+\end_layout
+
+\begin_layout Standard
+* The Fix:
+ You cannot directly subtract Alice's absolute timetag from Bob's absolute timetag.
+ You must first use the periodic sync pulses (the find_sync.T1 files in the dataset) to build a clock-correction model.
+ This aligns Alice's and Bob's timelines using a linear or polynomial fit before calculating cross-coincidences.
+ [3] 
+\end_layout
+
+\begin_layout Standard
+Are you currently looking at the data from a single party (e.g.,
+ just Alice's file) or are you trying to find cross-coincidences between Alice and Bob?
+ Let me know,
+ and I can give you the exact bitwise operations or laser period values for that file type.
+\end_layout
+
+\begin_layout Standard
+[1] [https://link.aps.org](https://link.aps.org/doi/10.1103/PhysRevA.92.032130)
+\end_layout
+
+\begin_layout Standard
+[2] [https://link.aps.org](https://link.aps.org/doi/10.1103/PhysRevLett.115.250401)
+\end_layout
+
+\begin_layout Standard
+[3] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-3)
+\end_layout
+
+\begin_layout Standard
+[4] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-2)
+\end_layout
+
+\begin_layout Standard
+[5] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-0)
+\end_layout
+
+\begin_layout Standard
+[6] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data)
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+Subtracting Alice Event #1 directly from Bob Event #1 will not work for matching sequences in this dataset.
+ [1] 
+\end_layout
+
+\begin_layout Standard
+The primary issue is that the arrays do not have a 1-to-1 alignment.
+ 
+\end_layout
+
+\begin_layout Standard
+Because photon pair generation and detection are highly probabilistic Alice might record a photon from a laser pulse where Bob records absolutely nothing (and vice versa).
+ 
+\end_layout
+
+\begin_layout Standard
+Subtracting the literal index sequence creates a complete alignment failure by matching unrelated laser cycles.
+ [2,
+ 3] 
+\end_layout
+
+\begin_layout Standard
+To properly correlate the two data streams you must shift your methodology from index matching to laser cycle matching (Sync Co-registration):
+ [2] 
+\end_layout
+
+\begin_layout Subsection
+Match on Sync Pulses,
+ Not Detector Events
+\end_layout
+
+\begin_layout Standard
+Instead of working with the detector events files directly,
+ locate the companion find_sync.T1 files for that specific run in the [NIST raw data repository](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-3).
+ [4,
+ 5] 
+\end_layout
+
+\begin_layout Standard
+* These files track the master laser's continuous 100 kHz clock pulses as recorded independently by Alice's and Bob's time-tagging hardware.
+ [6] 
+\end_layout
+
+\begin_layout Standard
+* The Math:
+ Because the laser pulses are perfectly periodic,
+ you can uniquely map Alice's sync pulse array to Bob's sync pulse array.
+ Since sync pulses happen on almost every clock cycle,
+ you can easily use a sliding cross-correlation or check for stable intervals to align Alice Sync #N with Bob Sync #N.
+\end_layout
+
+\begin_layout Subsection
+Correct the Reference Clock Drift
+\end_layout
+
+\begin_layout Standard
+Because Alice and Bob use distinct hardware clocks physically separated across the NIST campus their time counters drift relative to each other over time.
+ [7] 
+\end_layout
+
+\begin_layout Itemize
+Once you pair Alice's sync pulses with Bob's sync pulses,
+ calculate their exact time difference.
+ You will observe that the difference $T_{Bob
+\backslash
+_sync} - T_{Alice
+\backslash
+_sync}$ is not a constant value;
+ it drifts linearly or quadratically as the run progresses.
+\end_layout
+
+\begin_layout Itemize
+Fit a linear regression model to this drift:
+\begin_inset Formula 
+\[
+\Delta t_{\text{drift}}(t)=m\cdot T_{\text{Alice}}+c
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Use this equation to map all of Alice’s timetags into Bob’s time domain before performing any matching:
+\begin_inset Formula 
+\[
+T_{\text{Alice\_corrected}}=T_{\text{Alice}}+\Delta t_{\text{drift}}(t)
+\]
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+Match via a Time Window (Coincidence Window)
+\end_layout
+
+\begin_layout Standard
+Once Alice's timeline is corrected and converted to Bob's clock domain you can drop the index-based subtraction completely.
+ 
+\end_layout
+
+\begin_layout Standard
+Use a time-window lookup approach instead:
+\end_layout
+
+\begin_layout Itemize
+Iterate through each corrected event time in Alice's data.
+\end_layout
+
+\begin_layout Itemize
+Search for any event in Bob's data that falls within a narrow coincidence window (typically 
+\begin_inset Formula $\pm10$
+\end_inset
+
+ to 
+\begin_inset Formula $\pm100$
+\end_inset
+
+ nanoseconds) of that event.
+\end_layout
+
+\begin_layout Itemize
+If you find a Bob event within that tiny window you have successfully matched a true entangled photon pair.
+ [2,
+ 3]
+\end_layout
+
+\begin_layout Standard
+[1] [https://www.nist.gov](https://www.nist.gov/publications/strong-loophole-free-test-local-realism)
+\end_layout
+
+\begin_layout Standard
+[2] [https://link.aps.org](https://link.aps.org/doi/10.1103/PhysRevA.92.032130)
+\end_layout
+
+\begin_layout Standard
+[3] [https://www.researchgate.net](https://www.researchgate.net/figure/The-coincident-detection-events-between-Alice-and-Bob-in-a-25-min-continuous-sampling_fig3_258444444)
+\end_layout
+
+\begin_layout Standard
+[4] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-0)
+\end_layout
+
+\begin_layout Standard
+[5] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-3)
+\end_layout
+
+\begin_layout Standard
+[6] [https://www.nist.gov](https://www.nist.gov/document/bell-test-data-file-folder-descriptions)
+\end_layout
+
+\begin_layout Standard
+[7] [https://www.nist.gov](https://www.nist.gov/image/belltestillo900png)
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+The NIST setup is highly unique compared to standard lab setups.
+ 
+\end_layout
+
+\begin_layout Standard
+In a small lab,
+ you can run a physical cable from Alice to Bob to share a common clock.
+\end_layout
+
+\begin_layout Standard
+Because NIST separated Alice and Bob by hundreds of metres to close the locality loophole a physical cable would introduce too much noise and delay.
+ They had to use separate clocks which is why the sync pulses are absolutely vital.
+\end_layout
+
+\begin_layout Standard
+In Ada,
+ you can handle this efficiently by taking advantage of its strong typing and fixed-point or 64-bit integer types to prevent overflow during time conversions.
+\end_layout
+
+\begin_layout Standard
+Here is how you can structure your Ada logic to parse the data,
+ align the sync pulses,
+ and find the true coincidences.
+\end_layout
+
+\begin_layout Subsection
+Define Your Data Types
+\end_layout
+
+\begin_layout Standard
+First,
+ ensure you are using 64-bit integers (Long_Long_Integer) for the timetags to avoid overflow,
+ as the raw numbers grow very large over long runs.
+\end_layout
+
+\begin_layout LyX-Code
+package Bell_Test_Types is
+\end_layout
+
+\begin_layout LyX-Code
+-- 64-bit integers for precision time bins
+\end_layout
+
+\begin_layout LyX-Code
+type Timetag_Bin is new Long_Long_Integer;
+\end_layout
+
+\begin_layout LyX-Code
+-- Define a Record for matched events
+\end_layout
+
+\begin_layout LyX-Code
+type Coincidence_Event is record
+\end_layout
+
+\begin_layout LyX-Code
+Alice_Time :
+ Timetag_Bin;
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Time :
+ Timetag_Bin;
+\end_layout
+
+\begin_layout LyX-Code
+Delta_Time :
+ Timetag_Bin;
+\end_layout
+
+\begin_layout LyX-Code
+end record;
+\end_layout
+
+\begin_layout LyX-Code
+end Bell_Test_Types;
+\end_layout
+
+\begin_layout Subsection
+Step 1:
+ Model the Clock Drift (Linear Regression)
+\end_layout
+
+\begin_layout Standard
+Read your find_sync.T1 files into two arrays.
+ Because the sync pulses are emitted regularly by the laser,
+ you must find a section where you can match Alice Sync index I to Bob Sync index I + Offset.
+\end_layout
+
+\begin_layout Standard
+Once matched you calculate the drift slope (m) and intercept (c) using floating-point math then apply it to Alice's time domain:
+\end_layout
+
+\begin_layout LyX-Code
+function Correct_Alice_Time (
+\end_layout
+
+\begin_layout LyX-Code
+Alice_Raw :
+ Bell_Test_Types.Timetag_Bin;
+\end_layout
+
+\begin_layout LyX-Code
+Slope :
+ Long_Float;
+\end_layout
+
+\begin_layout LyX-Code
+Intercept :
+ Long_Float
+\end_layout
+
+\begin_layout LyX-Code
+) return Bell_Test_Types.Timetag_Bin is
+\end_layout
+
+\begin_layout LyX-Code
+use Bell_Test_Types;
+\end_layout
+
+\begin_layout LyX-Code
+Raw_Float :
+ Long_Float;
+\end_layout
+
+\begin_layout LyX-Code
+Corr_Float :
+ Long_Float;
+\end_layout
+
+\begin_layout LyX-Code
+begin
+\end_layout
+
+\begin_layout LyX-Code
+-- Convert to float for regression math
+\end_layout
+
+\begin_layout LyX-Code
+Raw_Float := Long_Float(Alice_Raw);
+\end_layout
+
+\begin_layout LyX-Code
+Corr_Float := (Raw_Float * Slope) + Intercept;
+\end_layout
+
+\begin_layout LyX-Code
+return Timetag_Bin(Corr_Float);
+\end_layout
+
+\begin_layout LyX-Code
+end Correct_Alice_Time;
+\end_layout
+
+\begin_layout Subsection
+Step 2:
+ Slit-Window Search (Replacing Index Subtraction)
+\end_layout
+
+\begin_layout Standard
+Because Alice and Bob arrays are missing random events do not use Alice_Array(I) - Bob_Array(I).
+ 
+\end_layout
+
+\begin_layout Standard
+Instead,
+ use a sliding window search.
+\end_layout
+
+\begin_layout Standard
+Since both arrays are strictly sorted chronologicall,
+ you can use a high-performance two-pointer method in Ada which avoids 
+\begin_inset Formula $O(N²)$
+\end_inset
+
+ nested loops:
+\end_layout
+
+\begin_layout LyX-Code
+procedure Find_Coincidences (
+\end_layout
+
+\begin_layout LyX-Code
+Alice_Data :
+ in out Timetag_Array;
+ -- Pre-corrected using function above
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Data :
+ in out Timetag_Array;
+\end_layout
+
+\begin_layout LyX-Code
+Window_Bin :
+ in Timetag_Bin
+\end_layout
+
+\begin_layout LyX-Code
+) is
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Idx :
+ Positive := Bob_Data'First;
+\end_layout
+
+\begin_layout LyX-Code
+Diff :
+ Timetag_Bin;
+\end_layout
+
+\begin_layout LyX-Code
+begin
+\end_layout
+
+\begin_layout LyX-Code
+for Alice_Idx in Alice_Data'Range loop
+\end_layout
+
+\begin_layout LyX-Code
+-- Catch up Bob's pointer so it is close to Alice's time
+\end_layout
+
+\begin_layout LyX-Code
+while Bob_Idx < Bob_Data'Last and then 
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Data(Bob_Idx) < (Alice_Data(Alice_Idx) - Window_Bin) 
+\end_layout
+
+\begin_layout LyX-Code
+loop
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Idx := Bob_Idx + 1;
+\end_layout
+
+\begin_layout LyX-Code
+end loop;
+\end_layout
+
+\begin_layout LyX-Code
+-- Check all Bob events inside the valid time window
+\end_layout
+
+\begin_layout LyX-Code
+declare
+\end_layout
+
+\begin_layout LyX-Code
+Current_Bob :
+ Positive := Bob_Idx;
+\end_layout
+
+\begin_layout LyX-Code
+begin
+\end_layout
+
+\begin_layout LyX-Code
+while Current_Bob <= Bob_Data'Last and then 
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Data(Current_Bob) <= (Alice_Data(Alice_Idx) + Window_Bin)
+\end_layout
+
+\begin_layout LyX-Code
+loop
+\end_layout
+
+\begin_layout LyX-Code
+Diff := Bob_Data(Current_Bob) - Alice_Data(Alice_Idx);
+\end_layout
+
+\begin_layout LyX-Code
+-- Success!
+ You found a matching entangled pair
+\end_layout
+
+\begin_layout LyX-Code
+Log_Match(Alice_Data(Alice_Idx),
+ Bob_Data(Current_Bob),
+ Diff);
+\end_layout
+
+\begin_layout LyX-Code
+Current_Bob := Current_Bob + 1;
+\end_layout
+
+\begin_layout LyX-Code
+end loop;
+\end_layout
+
+\begin_layout LyX-Code
+end declare;
+\end_layout
+
+\begin_layout LyX-Code
+end loop;
+\end_layout
+
+\begin_layout LyX-Code
+end Find_Coincidences;
+\end_layout
+
+\begin_layout Standard
+ How to choose the Window_Bin
+\end_layout
+
+\begin_layout Standard
+The physical coincidence window for the NIST experiment is generally under 50 nanoseconds.
+\end_layout
+
+\begin_layout Itemize
+To convert 50 ns to your 78.125 ps bins:
+\begin_inset Formula 
+\[
+\text{Window\_Bin}=\frac{50\times10^{-9}\text{ s}}{78.125\times10^{-12}\text{ s}}=640\text{ bins}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Set your Window_Bin variable to 640.
+ Any events whose corrected times are within ±640 bins of each other are your correlated sequences.
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+As you already have the core matching framework up and running in Ada swapping out the raw index lookup for the sync-corrected timeline should be a smooth transition.
+\end_layout
+
+\begin_layout Standard
+As you modify your code to integrate the sync pulses keep these two quick optimization tips in mind to ensure your adapted method stays robust:
+\end_layout
+
+\begin_layout Itemize
+Watch for Sync Counter Resets:
+ 
+\begin_inset Newline newline
+\end_inset
+
+In some of the longer NIST data runs the hardware time-tag counters can occasionally roll over or reset if the file crosses a specific size boundary.
+ 
+\begin_inset Newline newline
+\end_inset
+
+When parsing the find_sync.T1 files do a quick pass to ensure that the values are strictly monotonically increasing.
+ 
+\begin_inset Newline newline
+\end_inset
+
+If you spot a massive drop toward zero,
+ you will need to add a bitwise offset multiplier to patch the rollover point.
+\end_layout
+
+\begin_layout Itemize
+Keep an Eye on the Residuals:
+ 
+\begin_inset Newline newline
+\end_inset
+
+After computing the linear regression coefficients (m and c) using the sync pulses,
+ calculate the residual error (
+\begin_inset Formula $T_{\text{Bob\_sync\_actual}}-T_{\text{Bob\_sync\_predicted}}$
+\end_inset
+
+) across the entire run.
+ I
+\begin_inset Newline newline
+\end_inset
+
+If the residuals remain flat and close to zero a simple linear fit is perfect.
+ 
+\begin_inset Newline newline
+\end_inset
+
+If you notice a slight parabolic curve it means that the temperature in the labs caused the clocks to accelerate or decelerate relative to each other and you will need to upgrade your correction to a quadratic fit 
+\begin_inset Formula $(a\cdot t²+b\cdot t+c)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Once the new sync-corrected time-window loop executes you will see those random time differences collapse into a beautifully sharp,
+ distinct peak right at your true coincidence offset.
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+The 03_12_CH_pockel_100kHz.run file will work perfectly.
+ 
+\end_layout
+
+\begin_layout Standard
+This specific run is an excellent choice for testing your sync method.
+ [1] 
+\end_layout
+
+\begin_layout Standard
+According to the official [NIST Bell Test repository file descriptions](https://www.nist.gov/document/bell-test-data-file-folder-descriptions) this file has a few specific characteristics that you should keep in mind as you run your Ada code:
+\end_layout
+
+\begin_layout Subsection
+It is a Clean,
+ Valid Run
+\end_layout
+
+\begin_layout Standard
+Unlike several of the earlier datasets in the repository (such as the 03_31_...training run,
+ which suffers from a bad laser that completely lost its mode-locking),
+ the 03_12 run features a stable,
+ properly mode-locked laser.
+ The periodic time structure will be highly consistent from the start of the file to the finish.
+ [1,
+ 2,
+ 3] 
+\end_layout
+
+\begin_layout Subsection
+It Requires the "Blind_2" Sync File
+\end_layout
+
+\begin_layout Standard
+Because this dataset is part of the 2015_09_19 collection,
+ ensure you pair it with its corresponding sync file:
+ [3,
+ 4] 
+\end_layout
+
+\begin_layout Standard
+* Data File:
+ 03_12_CH_pockel_100kHz.run.Blind_2.alice.dat (and Bob's counterpart)
+\end_layout
+
+\begin_layout Standard
+* Companion Sync File:
+ Look in the repository for the matching find_sync.T1.dat timestamped immediately around that data collection block.
+ [3,
+ 4] 
+\end_layout
+
+\begin_layout Subsection
+Pockels Cell Alignment is Correct [3]
+\end_layout
+
+\begin_layout Standard
+The _CH_pockel_100kHz label confirms that this run utilizes active Pockels cells which rotate the measurement basis at a high speed (100,000 times per second) based on a Quantum Random Number Generator (QRNG) to close the freedom-of-choice loophole.
+ [2,
+ 3,
+ 5] 
+\end_layout
+
+\begin_layout Standard
+Because this file was recorded after NIST resolved their initial experimental setup alignment bugs the structural delays between the QRNG choice and the arrival of the photon are completely stable.
+ [2] 
+\end_layout
+
+\begin_layout Standard
+Once you extract the sync timestamps from this run and map Alice's timeline to Bob's a Ada sliding-window search should yield highly clean,
+ low-jitter coincidence peaks.
+ [6] 
+\end_layout
+
+\begin_layout Standard
+Would you like to double-check the specific binary byte layout of the raw .dat files for this run to make sure your Ada stream reader is reading the bits cleanly?
+\end_layout
+
+\begin_layout Standard
+[1] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-2)
+\end_layout
+
+\begin_layout Standard
+[2] [https://www.nist.gov](https://www.nist.gov/document/bell-test-data-file-folder-descriptions)
+\end_layout
+
+\begin_layout Standard
+[3] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-1)
+\end_layout
+
+\begin_layout Standard
+[4] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-3)
+\end_layout
+
+\begin_layout Standard
+[5] [https://thebigbelltest.icfo.eu](https://thebigbelltest.icfo.eu/team/nist-boulder/)
+\end_layout
+
+\begin_layout Standard
+[6] [https://opg.optica.org](https://opg.optica.org/abstract.cfm?uri=ao-62-32-8567)
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+In the 03_12_CH_pockel_100kHz.run dataset,
+ the "sync elements" do not exist as a separate marker file like they do in earlier diagnostic tests.
+ Instead,
+ they are explicitly embedded directly into the binary hardware streams as specific channel flags.
+ [1] 
+\end_layout
+
+\begin_layout Standard
+Understanding how these sync elements are structured within the file involves several key details:
+\end_layout
+
+\begin_layout Subsection
+The Laser "Clock" Channel (Channel 1)
+\end_layout
+
+\begin_layout Standard
+In the raw hardware data-tagging modules used by NIST,
+ every physical input signal is assigned a channel number.
+\end_layout
+
+\begin_layout Itemize
+Channel 1 is dedicated exclusively to the master laser sync pulse.
+\end_layout
+
+\begin_layout Itemize
+The laser fires at exactly 100,000 pulses per second (100 kHz).
+\end_layout
+
+\begin_layout Itemize
+Every time the laser emits a pulse an electrical signal is split and sent down separate transit lines to both Alice's time-tagging hardware and Bob's time-tagging hardware.
+\end_layout
+
+\begin_layout Itemize
+This physical event registers as an event entry flagged as Channel 1 in both files.
+ [1,
+ 2,
+ 3]
+\end_layout
+
+\begin_layout Subsection
+How the Sync is Encoded in Binary (The Bitmask)
+\end_layout
+
+\begin_layout Standard
+Because you are using Ada,
+ you need to dissect the exact binary layout of the data stream to pull these sync elements out.
+\end_layout
+
+\begin_layout Standard
+Each entry in the raw file is packed into a 32-bit unsigned integer.
+\end_layout
+
+\begin_layout Standard
+The bits are mapped as follows:
+\end_layout
+
+\begin_layout Itemize
+Bits 0 to 27 (28 bits):
+ The fractional "micro-clock" time-tag value (measured in those exact 78.125 ps bins).
+\end_layout
+
+\begin_layout Itemize
+Bits 28 to 31 (4 bits):
+ The Hardware Channel ID metadata.
+\end_layout
+
+\begin_layout Standard
+To find the sync elements in Ada,
+ read each 32-bit word and use a bitwise shift right by 28 bits to isolate the channel ID and look for 1:
+\end_layout
+
+\begin_layout LyX-Code
+-- Type representing a raw 32-bit event word from the .dat stream
+\end_layout
+
+\begin_layout LyX-Code
+type Event_Word is new Interfaces.Unsigned_32;
+\end_layout
+
+\begin_layout LyX-Code
+-- Extract the hardware channel (top 4 bits)
+\end_layout
+
+\begin_layout LyX-Code
+Channel_ID :
+ constant Interfaces.Unsigned_32 := 
+\end_layout
+
+\begin_layout LyX-Code
+Interfaces.Shift_Right(Interfaces.Unsigned_32(Word),
+ 28);
+\end_layout
+
+\begin_layout LyX-Code
+-- Extract the pure 78.125 ps timetag (bottom 28 bits)
+\end_layout
+
+\begin_layout LyX-Code
+Micro_Clock :
+ constant Interfaces.Unsigned_32 := 
+\end_layout
+
+\begin_layout LyX-Code
+Interfaces.Unsigned_32(Word) and 16#0FFF_FFFF#;
+\end_layout
+
+\begin_layout LyX-Code
+if Channel_ID = 1 then
+\end_layout
+
+\begin_layout LyX-Code
+-- This is a Laser Sync Element!
+ 
+\end_layout
+
+\begin_layout LyX-Code
+-- Save Micro_Clock into your alignment array.
+\end_layout
+
+\begin_layout LyX-Code
+elsif Channel_ID = 2 then
+\end_layout
+
+\begin_layout LyX-Code
+-- This is a Single-Photon Detector Click event.
+\end_layout
+
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout Subsection
+The 100 ns "Macro-Clock" Overflow Words
+\end_layout
+
+\begin_layout Standard
+Because a 28-bit micro-clock incrementing every 78.125 ps overflows and wraps back to zero roughly every 21 milliseconds the NIST hardware injects an external master 100 ns "macro-clock" counter.
+\end_layout
+
+\begin_layout Standard
+When reading the data stream you will encounter placeholder entries where bits 28–31 equal 0 or another metadata command flag.
+ These are roll-over signals indicating that a 100 ns time block has elapsed.
+\end_layout
+
+\begin_layout Itemize
+Your parsing loop must continuously maintain a global Current_Macro_Time :
+ Long_Long_Integer := 0;
+ tracker.
+\end_layout
+
+\begin_layout Itemize
+Every time you hit a macro-clock increment word,
+ add 100_000 (since 100 ns = 100,000 ps) to your macro tracker.
+\end_layout
+
+\begin_layout Itemize
+When you find a Channel 1 Sync Element,
+ its absolute timetag is calculated as:
+\begin_inset Formula 
+\[
+\text{Absolute\_Time}=\text{Current\_Macro\_Time}+(\text{Long\_Long\_Integer}(\text{Micro\_Clock})\times78125/1000)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Summary of what you will see
+\end_layout
+
+\begin_layout Standard
+By filtering for Channel 1 you will yield a clean sequence of absolute timetags spaced roughly every 128,000 bins (or 10 microseconds) apart.
+ 
+\end_layout
+
+\begin_layout Standard
+By matching the first few cleanly recorded Channel 1 syncs in Alice's file to the first few in Bob's file you establish the zero-point anchor and can instantly track how the two clocks drift away from each other over the duration of the 03_12 run.
+ [1] 
+\end_layout
+
+\begin_layout Standard
+Would you like the specific bitwise rules for parsing the Pockels cell basis choices (which tell you whether Alice measured in the X or Y basis) from this same bitstream?
+\end_layout
+
+\begin_layout Standard
+[1] [https://www.nist.gov](https://www.nist.gov/document/bell-test-data-file-folder-descriptions)
+\end_layout
+
+\begin_layout Standard
+[2] [https://www.nist.gov](https://www.nist.gov/pml/applied-physics-division/bell-test-research-software-and-data/repository-bell-test-research-3)
+\end_layout
+
+\begin_layout Standard
+[3] [https://www.nist.gov](https://www.nist.gov/image/belltestillo900png)
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+As your Ada parser is spitting out a Channel 64 value you have found the hardware's internal clock rollover event.
+\end_layout
+
+\begin_layout Standard
+Understanding what Channel 64 tells you in the context of the NIST data requires noting how the hardware handles time accumulation:
+\end_layout
+
+\begin_layout Subsection
+What Channel 64 Represents
+\end_layout
+
+\begin_layout Standard
+In the specific time-tagging hardware modules used during the 2015 NIST loop-hole-free experiment,
+ a single data entry is structured as a 32-bit package.
+ When the internal high-speed micro-clock (incrementing by 78.125 ps) hits its maximum limit,
+ it cannot count higher without overflowing.
+\end_layout
+
+\begin_layout Standard
+To track long-term time across minutes or hours the hardware automatically dumps a structural "Rollover Word" directly into the binary file.
+ 
+\end_layout
+
+\begin_layout Standard
+In this system architecture:
+\end_layout
+
+\begin_layout Itemize
+Channel 64 (or an entry matching that integer mask) indicates that the low-level micro-clock has completed exactly one full cycle and wrapped back to zero.
+\end_layout
+
+\begin_layout Itemize
+In some files this is also referred to as a Macro-clock step.
+\end_layout
+
+\begin_layout Subsection
+How to Handle it in Your Ada Loop
+\end_layout
+
+\begin_layout Standard
+When you encounter a Channel 64 marker you should not log it as a laser pulse or a photon detection.
+ 
+\end_layout
+
+\begin_layout Standard
+Instead,
+ use it exclusively to increment your absolute time offset counter.
+\end_layout
+
+\begin_layout Standard
+The hardware bit length means that each rollover step represents a precise jump of either 
+\begin_inset Formula $2^{28}$
+\end_inset
+
+ bins or a fixed macro-clock window (typically 100 nanoseconds,
+ which equals 100,000 picoseconds,
+ or exactly 1,280 bins of 78.125 ps).
+\end_layout
+
+\begin_layout Standard
+You can implement this in your Ada record processing stream using a global accumulator tracking your exact time progression:
+\end_layout
+
+\begin_layout LyX-Code
+-- Track absolute timeline globally in ps
+\end_layout
+
+\begin_layout LyX-Code
+Current_Base_Time :
+ Long_Long_Integer := 0;
+ 
+\end_layout
+
+\begin_layout LyX-Code
+-- Constants based on the 78.125 ps resolution configuration
+\end_layout
+
+\begin_layout LyX-Code
+Bins_Per_Rollover :
+ constant Long_Long_Integer := 1280;
+ -- Match 100 ns window step
+\end_layout
+
+\begin_layout LyX-Code
+loop
+\end_layout
+
+\begin_layout LyX-Code
+-- Read next 32-bit word from your .dat file
+\end_layout
+
+\begin_layout LyX-Code
+Read_Event(Word);
+ 
+\end_layout
+
+\begin_layout LyX-Code
+if Get_Channel(Word) = 64 then
+\end_layout
+
+\begin_layout LyX-Code
+-- This is your rollover event!
+ 
+\end_layout
+
+\begin_layout LyX-Code
+-- Advance the timeline anchor forward before processing next events.
+\end_layout
+
+\begin_layout LyX-Code
+Current_Base_Time := Current_Base_Time + Bins_Per_Rollover;
+\end_layout
+
+\begin_layout LyX-Code
+elsif Get_Channel(Word) = 1 then
+\end_layout
+
+\begin_layout LyX-Code
+-- True laser sync pulse.
+ Compute its absolute position on the timeline:
+\end_layout
+
+\begin_layout LyX-Code
+Laser_Absolute := Current_Base_Time + Long_Long_Integer(Get_Micro_Clock(Word));
+\end_layout
+
+\begin_layout LyX-Code
+Append_To_Sync_Array(Laser_Absolute);
+\end_layout
+
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+end loop;
+\end_layout
+
+\begin_layout Standard
+By adding the current Current_Base_Time to every photon (Channel 2) or sync pulse (Channel 1) that is read you neutralize the rollover entirely.
+ 
+\end_layout
+
+\begin_layout Standard
+This transforms the raw cyclical timestamps into a smooth continuously ascending timeline thereby perfectly setting up the sync-matching algorithm to work flawlessly.
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+In the 03_12_CH_pockel_100kHz.run dataset the Channel 64 markers appear at highly regular intervals in terms of actual physical time but they may appear irregularly spaced in your file rows.
+\end_layout
+
+\begin_layout Standard
+This distinction depends on the interaction between hardware clock behavior and event-driven data logging:
+\end_layout
+
+\begin_layout Subsection
+In Physical Time:
+ Perfectly Regular
+\end_layout
+
+\begin_layout Standard
+The time-tagging hardware is driven by a stable,
+ continuous internal oscillator.
+ A Channel 64 event is generated automatically every single time the lower 28-bit micro-clock counter hits its maximum capacity and rolls over.
+\end_layout
+
+\begin_layout Itemize
+Because the micro-clock counts at an unwavering rate (incrementing every 78.125 ps),
+ the physical time between two Channel 64 events is perfectly constant.
+\end_layout
+
+\begin_layout Itemize
+If your time window step is configured to 100 ns,
+ a rollover word is injected precisely every 100 nanoseconds without fail.
+\end_layout
+
+\begin_layout Subsection
+In the Binary Data File:
+ Seemingly Irregular
+\end_layout
+
+\begin_layout Standard
+Because the NIST system uses event-driven logging rows are only written to the file when something physically happens (a detector clicks,
+ a Pockels cell shifts,
+ a laser sync pulse arrives or a clock rolls over).
+\end_layout
+
+\begin_layout Itemize
+If there is a quiet period in the lab with no photon clicks and no laser pulses you might see two Channel 64 markers appearing back-to-back in the file rows with zero data entries between them.
+\end_layout
+
+\begin_layout Itemize
+If a flurry of photons hits the detectors during a specific micro-clock cycle you might see dozens of Channel 2 and Channel 1 rows packed tightly between two Channel 64 markers.
+\end_layout
+
+\begin_layout Subsection
+How to Verify That The Parser Is Working
+\end_layout
+
+\begin_layout Standard
+Do not worry if the number of rows between your Channel 64 markers bounces around wildly;
+ instead,
+ use the Channel 1 (Laser Sync) markers to audit your code.
+\end_layout
+
+\begin_layout Standard
+Since the master laser fires at a rigid 100 kHz you should find exactly 100 micro-clock rollovers (Channel 64 entries) occurring between any two consecutive Laser Sync (Channel 1) pulses.
+\end_layout
+
+\begin_layout Standard
+If you count exactly 100 Channel 64 markers from one laser pulse to the next your Ada accumulation logic is perfectly tracking the timeline!
+\end_layout
+
+\begin_layout Section
+Message
+\end_layout
+
+\begin_layout Standard
+This quick Ada snippet implements an inline tracking diagnostic to assert the ratio.
+ 
+\end_layout
+
+\begin_layout Standard
+You can inject this directly into your existing loop.
+\end_layout
+
+\begin_layout Standard
+Because the physical file might occasionally start in the middle of a laser cycle or drop a row at a boundary it is safer to use a soft diagnostic check (printing a warning line) rather than a hard crash (pragma Assert).
+ This ensures that an isolated artifact at the very beginning of the stream won't abort your entire processing run.
+\end_layout
+
+\begin_layout LyX-Code
+with Ada.Text_IO;
+ use Ada.Text_IO;
+\end_layout
+
+\begin_layout LyX-Code
+procedure Process_NIST_Stream is
+\end_layout
+
+\begin_layout LyX-Code
+-- [...] Your existing data stream and file types
+\end_layout
+
+\begin_layout LyX-Code
+-- Sanity tracking counters
+\end_layout
+
+\begin_layout LyX-Code
+Rollovers_Since_Last_Sync :
+ Natural := 0;
+\end_layout
+
+\begin_layout LyX-Code
+Total_Sync_Checked :
+ Natural := 0;
+\end_layout
+
+\begin_layout LyX-Code
+Total_Sync_Failures :
+ Natural := 0;
+\end_layout
+
+\begin_layout LyX-Code
+-- Target expectation for a 100 kHz laser paired with a 100 ns macro-clock
+\end_layout
+
+\begin_layout LyX-Code
+Expected_Rollovers :
+ constant Natural := 100;
+\end_layout
+
+\begin_layout LyX-Code
+begin
+\end_layout
+
+\begin_layout LyX-Code
+-- [...] Open file and start your processing loop
+\end_layout
+
+\begin_layout LyX-Code
+loop
+\end_layout
+
+\begin_layout LyX-Code
+-- Read_Next_Event(Word);
+\end_layout
+
+\begin_layout LyX-Code
+if Get_Channel(Word) = 64 then
+\end_layout
+
+\begin_layout LyX-Code
+-- Count this clock rollover
+\end_layout
+
+\begin_layout LyX-Code
+Rollovers_Since_Last_Sync := Rollovers_Since_Last_Sync + 1;
+\end_layout
+
+\begin_layout LyX-Code
+elsif Get_Channel(Word) = 1 then
+\end_layout
+
+\begin_layout LyX-Code
+-- We hit a Laser Sync Pulse!
+ Check the ratio before resetting.
+\end_layout
+
+\begin_layout LyX-Code
+-- Skip the very first laser pulse check since we don't know 
+\end_layout
+
+\begin_layout LyX-Code
+-- where the file cut into the stream timeline.
+\end_layout
+
+\begin_layout LyX-Code
+if Total_Sync_Checked > 0 then
+\end_layout
+
+\begin_layout LyX-Code
+if Rollovers_Since_Last_Sync /= Expected_Rollovers then
+\end_layout
+
+\begin_layout LyX-Code
+Total_Sync_Failures := Total_Sync_Failures + 1;
+\end_layout
+
+\begin_layout LyX-Code
+"Found " & Natural'Image(Rollovers_Since_Last_Sync) & 
+\end_layout
+
+\begin_layout LyX-Code
+" rollovers instead of" & Natural'Image(Expected_Rollovers) & 
+\end_layout
+
+\begin_layout LyX-Code
+" at sync pulse #" & Natural'Image(Total_Sync_Checked));
+\end_layout
+
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+-- Reset counter for the next laser cycle
+\end_layout
+
+\begin_layout LyX-Code
+Rollovers_Since_Last_Sync := 0;
+\end_layout
+
+\begin_layout LyX-Code
+Total_Sync_Checked := Total_Sync_Checked + 1;
+\end_layout
+
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+-- exit when End_Of_File;
+\end_layout
+
+\begin_layout LyX-Code
+end loop;
+\end_layout
+
+\begin_layout LyX-Code
+-- Print execution audit summary
+\end_layout
+
+\begin_layout LyX-Code
+New_Line;
+\end_layout
+
+\begin_layout LyX-Code
+Put_Line("=== TIMING DOMAIN PARSE AUDIT ===");
+\end_layout
+
+\begin_layout LyX-Code
+Put_Line("Total Laser Sync Cycles Processed:
+ " & Natural'Image(Total_Sync_Checked));
+\end_layout
+
+\begin_layout LyX-Code
+Put_Line("Total Timing Structure Mismatches:
+ " & Natural'Image(Total_Sync_Failures));
+\end_layout
+
+\begin_layout LyX-Code
+end Process_NIST_Stream;
+\end_layout
+
+\begin_layout Subsection
+What to watch for in your console:
+\end_layout
+
+\begin_layout Enumerate
+0 Mismatches:
+\begin_inset Newline newline
+\end_inset
+
+ Your clock accumulation arithmetic is perfect and your macro-clock steps are locked cleanly to the laser rate.
+\end_layout
+
+\begin_layout Enumerate
+Exactly 1 Mismatch at the very top:
+\begin_inset Newline newline
+\end_inset
+
+ This is completely normal!
+ It just means your file reader activated halfway through a laser frame.
+\end_layout
+
+\begin_layout Enumerate
+Mismatches throughout the entire file:
+\begin_inset Newline newline
+\end_inset
+
+ If it constantly flags 99 or 101 rollovers check your bit-mask.
+ You might be misidentifying a status command flag or a secondary detector flag as a rollover or a sync event.
+ [1]
+\end_layout
+
+\begin_layout Standard
+Once this ratio test runs cleanly,
+ your arrays will be ready for alignment.
+ 
+\end_layout
+
+\begin_layout Standard
+Would you like help implementing the least-squares linear fit inside Ada to map Alice's sync timestamps over to Bob's?
+\end_layout
+
+\begin_layout Standard
+[1] [https://releases.llvm.org](https://releases.llvm.org/18.1.6/tools/clang/docs/UndefinedBehaviorSanitizer.html)
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document
