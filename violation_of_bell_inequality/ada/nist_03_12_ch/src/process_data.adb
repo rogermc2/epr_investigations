@@ -15,9 +15,6 @@ package body Process_Data is
    type Unsigned_Byte is mod 2**8;
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
-   type Channel_Type is (Detector_Click, Polarizer_0, Polarizer_45,
-                         GPS_Pps, Sync, Overflow, Ch_Error);
-
    type Raw_Data_Record is record
       Channel     : Unsigned_Byte;
       Time_Tag    : Unsigned_8_Byte;

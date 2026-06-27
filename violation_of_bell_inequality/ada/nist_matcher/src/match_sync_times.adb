@@ -11,12 +11,12 @@ with Utils; use Utils;
 procedure Match_Sync_Times is
    Routine_Name    : constant String := "Match_Sync_Times ";
    Pairs_Directory : constant String := "../nist_03_12_ch/";
-   Det_Pairs       : constant String := Pairs_Directory & "combined.csv";
+   --  Det_Pairs       : constant String := Pairs_Directory & "combined_det.csv";
    Sync_Pairs      : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
-
+   --  Matched_Det     : constant String := Pairs_Directory & "matched_det.csv";
    Width           : constant Natural := 100000;
-   Delta_Val       : constant Natural := 30;
+   --  Delta_Val       : constant Natural := 30;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -28,22 +28,27 @@ procedure Match_Sync_Times is
    --  ab_Matches       : Natural;
    --  ba_Matches       : Natural;
    --  bb_Matches       : Natural;
-   Selected_Pairs   : Match_List;
+   --  Selected_Det_Pairs    : Match_List;
+   Selected_Sync_Pairs   : Match_List;
 begin
-   Put_Line (Routine_Name & "Pairs file size:" &
-        Integer'Image (Count_Text_File_Lines (Det_Pairs)) & " lines");
-
+   --  Put_Line (Routine_Name & "Det_Pairs file size:" &
+   --       Integer'Image (Count_Text_File_Lines (Det_Pairs)) & " lines");
    Put_Line (Routine_Name & "Sync_Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Sync_Pairs)) & " lines");
    --  for del in 0 .. Delta_Val loop
    --     if del mod 100000 = 0 then
    --         Put_Line ("del: " & Integer'Image (del));
-         Match_Syncs (Sync_Pairs, Matched_Sync, Delta_Val, Width, Num_Found, Selected_Pairs,
-                     Data_Length);
-         Put_Line ("Num_Found: " & Integer'Image (Num_Found));
-          New_Line;
+         --  Match_Syncs (Det_Pairs, Matched_Det, Delta_Val, Width, Num_Found,
+         --   Selected_Det_Pairs, Data_Length);
+         --  Put_Line ("Num_Found: " & Integer'Image (Num_Found));
+         --   New_Line;
    --      end if;
    --  end loop;
+
+         Match_Syncs (Sync_Pairs, Matched_Sync, Width, Num_Found,
+          Selected_Sync_Pairs, Data_Length);
+         Put_Line ("Num sync pairs found: " & Integer'Image (Num_Found));
+          New_Line;
 
    --  if Num_Found > 0 then
    --  Put_Line (Routine_Name & "Pairs found:" & Integer'Image (Num_Found));
@@ -78,6 +83,6 @@ begin
    --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb,
    --   To_String (Combined_Data), Data_Length);
    Put_Line (Routine_Name & "width: " & Natural'Image (Width));
-   Put_Line (Routine_Name & "delta: " & Natural'Image (Delta_Val));
+   --  Put_Line (Routine_Name & "delta: " & Natural'Image (Delta_Val));
 
 end Match_Sync_Times;

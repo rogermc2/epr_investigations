@@ -7,10 +7,18 @@ package Types is
    pragma Preelaborate;
 
    ns : constant Float := 10.0 ** (-9);
+
    type Double is digits 15;  --  Float type
    type Double_Integer is range -2**63 .. (2**63 - 1);
    type Double_Natural is range 0 .. (2**63 - 1);
    type Double_Positive is range 1 .. (2**63 - 1);
+
+   type Channel_Type is (Detector_Click, Polarizer_0, Polarizer_45,
+                         GPS_Pps, Sync, Overflow, Ch_Error);
+   for Channel_Type use (Detector_Click => 0, Polarizer_0 => 2,
+                         Polarizer_45 => 3,   GPS_Pps => 5,
+                         Sync => 6,           Overflow => 64,
+                         Ch_Error => 127);
 
    subtype Byte is Interfaces.Unsigned_8;
    subtype Int_16 is Interfaces.Unsigned_16;
@@ -89,7 +97,7 @@ package Types is
    subtype W_List is W_Package.Vector;
 
    type Setting_Time_Record is record
-      Setting : Natural;
+      Setting : Channel_Type;
       Time    : Double_Natural;
    end record;
 

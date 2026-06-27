@@ -23,13 +23,13 @@ package body Process_Data is
       A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
       Offset       : Double_Natural;
       begin
-         Put_Line (Routine_Name);
          if A_Gt_B then
             Offset := B_Item.Time - 1;
          else
             Offset := A_Item.Time - 1;
          end if;
-         Put_Line (Routine_Name & "Delta_Time: " & Double_Natural'Image (Delta_Time) &
+         Put_Line (Routine_Name & "Delta_Time: " &
+                   Double_Natural'Image (Delta_Time) &
                    ", Offset: " & Double_Natural'Image (Offset));
 
          while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
@@ -119,23 +119,31 @@ procedure Load_Sync_Data (CSV_Data : String;
       Put_Line (Routine_Name & "Header: " & Header);
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         Put_Line (Routine_Name & "aLine: '" & aLine & "'");
+         Put_Line (Routine_Name & "aLine: " & aLine);
          A_String := aLine (aLine'First .. aLine'First + 18);
          B_String := aLine (aLine'First + 21 .. aLine'Last);
-         Item.Setting := Natural'Value (A_String (1 .. 1));
+         Item.Setting := Channel_Type'Value (A_String (1 .. 1));
          Item.Time := Double_Natural'Value (A_String (4 .. 19));
          Sync_Data_A.Append (Item);
-         Item.Setting := Natural'Value (B_String (1 .. 1));
+         Item.Setting := Channel_Type'Value (B_String (1 .. 1));
          Item.Time := Double_Natural'Value (B_String (4 .. 19));
          Sync_Data_B.Append (Item);
       end loop;
+      Put_Line (Routine_Name & "Sync_Data_B loaded");
 
       Close (File_ID);
+
+   exception
+      when Error : others =>
+         New_Line;
+         Put_Line (Routine_Name & Exception_Information (Error));
+         Put_Line ("aLine: " & aLine);
+         raise;
 
    end Load_Sync_Data;
 
    procedure Match_Syncs
-     (Sync_Pairs_CSV, Matched_Sync_CSV : String; Delta_A, Width : Natural;
+     (Sync_Pairs_CSV, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Num_Rows  : Natural := 0) is
       use Histogram;
@@ -150,8 +158,8 @@ procedure Load_Sync_Data (CSV_Data : String;
          procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
          D_Width   : constant Double_Natural := Double_Natural (Width);
          A_Item    : constant Setting_Time_Record := Element (A_Curs);
-         A_Time    : constant Double_Natural :=
-            A_Item.Time + Double_Natural (Delta_A) + D_Width;
+         A_Time    : constant Double_Natural := A_Item.Time + D_Width;
+            --  A_Item.Time + Double_Natural (Delta_A) + D_Width;
          B_Val_Min : constant Double_Natural := A_Time - D_Width;
          Item      : Index_Record;
          B_Item    : Setting_Time_Record;
@@ -168,7 +176,7 @@ procedure Load_Sync_Data (CSV_Data : String;
             --  Move B_Index forward until B_Value is >= (A_Value - Width)
             while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
                B_Item := Element (B_Curs);
-               if B_Item.Setting = 3 then
+               if B_Item.Setting = Sync then
                   B_Time := B_Item.Time;
                end if;
                Next (B_Curs);
@@ -185,38 +193,43 @@ procedure Load_Sync_Data (CSV_Data : String;
                   Item := (To_Index (A_Curs), To_Index (B_Curs));
                   Selected_Pairs.Append (Item);
                   Num_Found := Num_Found + 1;
-                  --  if Num_Found < 6 then
-                  --     Put_Line (Routine_Name & "Match, A, B index:" &
-                  --                 Integer'Image (To_Index (A_Curs)) & ",  " &
-                  --                 Integer'Image (To_Index (B_Curs)));
-                  --  end if;
+                  if Num_Found < 6 then
+                     Put_Line (Routine_Name & "Match, A, B index:" &
+                      Double_Positive'Image (To_Index (A_Curs)) & ",  " &
+                                   Double_Positive'Image (To_Index (B_Curs)));
+                  end if;
                end if;
             end if;
          end if;
+
+      exception
+         when Error : others =>
+            Put_Line (Routine_Name & "Find_All_Matches " &
+             Exception_Information (Error));
+            raise;
 
       end Find_All_Matches;
 
    begin
       Num_Found := 0;
       Put_Line (Routine_Name &
-      "Source file, Sync_Pairs_CSV: " & Sync_Pairs_CSV);
+                "Source file, Sync_Pairs_CSV: " & Sync_Pairs_CSV);
       Load_Sync_Data (Sync_Pairs_CSV, A_Data, B_Data);
-      Put_Line (Routine_Name & "Data loaded");
+      Put_Line (Routine_Name & "Data loaded" );
 
       Align_Sync_Data (A_Data, B_Data);
-      Put_Line (Routine_Name & "Data aligned");
+      Put_Line (Routine_Name & "Data aligned" );
       --  Draw_Histogram  (A_Data, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 
-      Put_Line (Routine_Name & "Header Skiped");
+      Put_Line (Routine_Name & "Header skipped" );
       A_Data.Iterate (Find_All_Matches'Access);
-      Put_Line (Routine_Name & "All matches found");
       New_Line;
-
-      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
       Put_Line (Routine_Name & "Selected_Pairs length:" &
                   Integer'Image (Integer (Selected_Pairs.Length)));
+
+      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
       New_Line;
 
    exception

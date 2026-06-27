@@ -17,7 +17,7 @@ procedure Get_Data is
    B_Det_Target  : constant String := "B_Det.csv";
    A_Sync_Target : constant String := "A_Sync.csv";
    B_Sync_Target : constant String := "B_Sync.csv";
-   Combined_Data : constant String := "combined.csv";
+   Combined_Data : constant String := "combined_det.csv";
    Combined_Sync : constant String := "combined_sync.csv";
    Num_Rows      : constant Types.Double_Natural := 30000;
 begin
