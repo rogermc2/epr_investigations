@@ -5,7 +5,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
 
-package body Process_Data is
+package body Process_Sync_Data is
 
    procedure Load_Sync_Data (CSV_Data : String;
        Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector);
@@ -13,7 +13,7 @@ package body Process_Data is
 
    procedure Align_Sync_Data (A_Data, B_Data : in out Setting_Time_Vector) is
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Align_Sync_Data ";
+      Routine_Name : constant String := "Process_Sync_Data.Align_Sync_Data ";
       A_Curs       : Cursor := A_Data.First;
       B_Curs       : Cursor := B_Data.First;
       A_Item       : Setting_Time_Record := Element (A_Data.First);
@@ -68,7 +68,8 @@ package body Process_Data is
 --       (CSV_Times_A, CSV_Times_B : String; Delta_A : Natural;
 --        Min_Width, Max_Width     : out Natural) is
 --        use Setting_Time_Package;
---        --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
+--        --  Routine_Name : constant String :=
+--              "Process_Sync_Data.Find_Raw_Window_Width ";
 --        A_Data       : Setting_Time_Vector;
 --        B_Data       : Setting_Time_Vector;
 --        B_Index      : Double_Positive := 1;
@@ -106,7 +107,7 @@ package body Process_Data is
 procedure Load_Sync_Data (CSV_Data : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
       use Types.Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Load_Sync_Data ";
+      Routine_Name : constant String := "Process_Sync_Data.Load_Sync_Data ";
       File_ID      : File_Type;
       Header       : String_23;
       A_String     : String_19;
@@ -144,11 +145,11 @@ procedure Load_Sync_Data (CSV_Data : String;
    procedure Match_Syncs
      (Sync_Pairs_CSV, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
-      Num_Rows  : Natural := 0) is
+      Offset : out Double_Natural; Num_Rows : Natural := 0) is
       use Histogram;
       use Match_Package;
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Match_Syncs ";
+      Routine_Name : constant String := "Process_Sync_Data.Match_Syncs ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
       A_Data       : Setting_Time_Vector;
@@ -219,10 +220,10 @@ procedure Load_Sync_Data (CSV_Data : String;
       --  two data sets to the same time frame.
       --  The histogram is drawn to verify the alignment.
       Align_Sync_Data (A_Data, B_Data);
-      Draw_Histogram  (A_Data, B_Data);
+      Offset := Draw_Histogram  (A_Data, B_Data);
+
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
-
       A_Data.Iterate (Find_All_Matches'Access);
       New_Line;
       Put_Line (Routine_Name & "Selected_Pairs length:" &
@@ -239,7 +240,7 @@ procedure Load_Sync_Data (CSV_Data : String;
    end Match_Syncs;
 
    function Number_Of_Matches (File_Name : String) return Natural is
-      Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
+      Routine_Name : constant String := "Process_Sync_Data.Number_Of_Matches ";
       File_ID      : File_Type;
       aLine        : String_8;
       Num_Matches  : Natural := 0;
@@ -266,7 +267,7 @@ procedure Load_Sync_Data (CSV_Data : String;
 
    procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
       use Match_Package;
-      Routine_Name : constant String := "Process_Data.Save_Match_List ";
+      Routine_Name : constant String := "Process_Sync_Data.Save_Match_List ";
       Match_ID     : File_Type;
       M_Curs       : Cursor := First (Pairs);
       Rec          : Index_Record;
@@ -284,4 +285,4 @@ procedure Load_Sync_Data (CSV_Data : String;
 
    end Save_Match_List;
 
-end Process_Data;
+end Process_Sync_Data;

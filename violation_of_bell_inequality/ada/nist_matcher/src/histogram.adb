@@ -16,7 +16,8 @@ type Bin_Array is array (Positive range <>) of Integer;
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
 procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
 
-procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
+function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
+                           return Double_Natural is
    use Setting_Time_Package;
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
@@ -122,6 +123,8 @@ begin
 
    Save_Data ("histogram.txt", Delta_Data);
    New_Line;
+
+   return Best_Delta;
 
    exception
       when Error : others =>

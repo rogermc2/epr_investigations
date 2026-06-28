@@ -3,20 +3,21 @@ with Ada.Text_IO; use Ada.Text_IO;
 --  with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 --  with Data_Selection; use Data_Selection;
-with Printing; use Printing;
-with Process_Data; use Process_Data;
+--  with Printing; use Printing;
+with Process_Detection_Data; use Process_Detection_Data;
+with Process_Sync_Data; use Process_Sync_Data;
 with Types; use Types;
 with Utils; use Utils;
 
 procedure Match_Sync_Times is
    Routine_Name    : constant String := "Match_Sync_Times ";
    Pairs_Directory : constant String := "../nist_03_12_ch/";
-   --  Det_Pairs       : constant String := Pairs_Directory & "combined_det.csv";
+   Photon_Pairs    : constant String := Pairs_Directory & "combined_det.csv";
    Sync_Pairs      : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
-   --  Matched_Det     : constant String := Pairs_Directory & "matched_det.csv";
+   Matched_Det     : constant String := Pairs_Directory & "matched_det.csv";
    Width           : constant Natural := 1000;
-   --  Delta_Val       : constant Natural := 30;
+   Delta_Val       : Double_Natural;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -28,7 +29,7 @@ procedure Match_Sync_Times is
    --  ab_Matches       : Natural;
    --  ba_Matches       : Natural;
    --  bb_Matches       : Natural;
-   --  Selected_Det_Pairs    : Match_List;
+   Selected_Det_Pairs    : Match_List;
    Selected_Sync_Pairs   : Match_List;
 begin
    --  Put_Line (Routine_Name & "Det_Pairs file size:" &
@@ -46,16 +47,18 @@ begin
    --  end loop;
 
    Match_Syncs (Sync_Pairs, Matched_Sync, Width, Num_Found,
-               Selected_Sync_Pairs, Data_Length);
+               Selected_Sync_Pairs, Delta_Val, Data_Length);
 
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
       --  Print_Match_List ("Selected_Pairs", Selected_Sync_Pairs, 1, 10);
    else
-      Put_Line (Routine_Name & "No matched pairs found!");
+      Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
 
+   Match_Photon_Times (Photon_Pairs, Matched_Det, Delta_Val, Width, Num_Found,
+                        Selected_Det_Pairs, Data_Length);
    --  aa_Matches := Number_Of_Matches (OEM_aa);
    --  ab_Matches := Number_Of_Matches (OEM_ab);
    --  ba_Matches := Number_Of_Matches (OEM_ba);
