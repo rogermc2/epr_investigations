@@ -4,7 +4,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Process_Detection_Data is
 
-   procedure Load_Data (CSV_Data : String; Data : out String21_List);
+   procedure Load_Data (CSV_Data : String; Data_A, Data_B : out String21_List);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Find_Raw_Window_Width
@@ -38,8 +38,7 @@ package body Process_Detection_Data is
       end Find_Width;
 
    begin
-      Load_Data (CSV_Times_A, A_Data);
-      Load_Data (CSV_Times_B, B_Data);
+      Load_Data (CSV_Times_A, A_Data, B_Data);
       Min_Width := 1.0;
       Max_Width := 0.0;
 
@@ -47,7 +46,8 @@ package body Process_Detection_Data is
 
    end  Find_Raw_Window_Width;
 
-   procedure Load_Data (CSV_Data : String; Data : out String21_List) is
+   procedure Load_Data (CSV_Data : String;
+                         Data_A, Data_B : out String21_List) is
       use String21_Package;
       File_ID : File_Type;
       aLine   : String_21;
@@ -55,7 +55,7 @@ package body Process_Detection_Data is
       Open (File_ID, In_File, CSV_Data);
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         Data.Append (aLine);
+         Data_A.Append (aLine);
       end loop;
 
       Close (File_ID);
@@ -65,7 +65,7 @@ package body Process_Detection_Data is
    procedure Match_Photon_Times
      (CSV_AB, Match : String; Delta_Val : Double_Natural; Width : Natural;
       Num_Found     : out Natural; Selected_Pairs : out Match_List;
-      Num_Rows    : Natural := 0) is
+      Num_Rows      : Natural := 0) is
       use String21_Package;
       Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
@@ -122,8 +122,7 @@ package body Process_Detection_Data is
 
    begin
       Num_Found := 0;
-      --  Load_Data (CSV_A, A_Data);
-      --  Load_Data (CSV_B, B_Data);
+      Load_Data (CSV_AB, A_Data, B_Data);
       --  B_Curs := First (B_Data);
       --  Next (B_Curs);  --  Skip header
 
