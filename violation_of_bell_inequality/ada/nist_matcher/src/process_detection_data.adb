@@ -4,58 +4,84 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Process_Detection_Data is
 
-   procedure Load_Data (CSV_Data : String; Data_A, Data_B : out String21_List);
+   procedure Load_Data
+    (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
-   procedure Find_Raw_Window_Width
-     (CSV_Times_A, CSV_Times_B : String; Delta_A : Float;
-      Min_Width, Max_Width     : out Float) is
-      use String21_Package;
-      --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
-      A_Data       : String21_List;
-      B_Data       : String21_List;
-      B_Index      : Integer := 1;
+   --  procedure Find_Raw_Window_Width
+   --     (CSV_AB_Data : String; Delta_A : Float; Min_Width, Max_Width : out Float) is
+   --     use String21_Package;
+   --     --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
+   --     A_Data       : String21_List;
+   --     B_Data       : String21_List;
+   --     B_Index      : Integer := 1;
 
-      procedure Find_Width (A_Curs : String21_Package.Cursor) is
-         A_Value   : constant Double :=
-           Double'Value (Element (A_Curs)) + Double (Delta_A);
-         Width     : Float;
-      begin
-         while B_Index < Integer (B_Data.Length) and then
-           Double'Value (B_Data.Element (B_Index)) < A_Value
-         loop
-            B_Index := B_Index + 1;
-         end loop;
+   --     procedure Find_Width (A_Curs : String21_Package.Cursor) is
+   --        A_Value   : constant Double :=
+   --          Double'Value (Element (A_Curs)) + Double (Delta_A);
+   --        Width     : Float;
+   --     begin
+   --        while B_Index < Integer (B_Data.Length) and then
+   --          Double'Value (B_Data.Element (B_Index)) < A_Value
+   --        loop
+   --           B_Index := B_Index + 1;
+   --        end loop;
 
-         Width := Float (Double'Value (B_Data.Element (B_Index)) - A_Value);
-         if Width > Max_Width then
-            Max_Width := Width;
-         elsif Width < Min_Width and then Width > 0.0 then
-            --   Width can be < 0.0 at end of files.
-            Min_Width := Width;
-         end if;
+   --        Width := Float (Double'Value (B_Data.Element (B_Index)) - A_Value);
+   --        if Width > Max_Width then
+   --           Max_Width := Width;
+   --        elsif Width < Min_Width and then Width > 0.0 then
+   --           --   Width can be < 0.0 at end of files.
+   --           Min_Width := Width;
+   --        end if;
 
-      end Find_Width;
+   --     end Find_Width;
 
-   begin
-      Load_Data (CSV_Times_A, A_Data, B_Data);
-      Min_Width := 1.0;
-      Max_Width := 0.0;
+   --  begin
+   --     Load_Data (CSV_AB_Data, A_Data, B_Data);
+   --     Min_Width := 1.0;
+   --     Max_Width := 0.0;
 
-      A_Data.Iterate (Find_Width'Access);
+   --     A_Data.Iterate (Find_Width'Access);
 
-   end  Find_Raw_Window_Width;
+   --  end  Find_Raw_Window_Width;
 
-   procedure Load_Data (CSV_Data : String;
-                         Data_A, Data_B : out String21_List) is
-      use String21_Package;
+   procedure Load_Data
+    (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
       File_ID : File_Type;
-      aLine   : String_21;
+      aLine   : String_40;
+      Str_A  : String_19;
+      Str_B  : String_19;
+      Item_A  : Setting_Time_Record;
+      Item_B  : Setting_Time_Record;
    begin
-      Open (File_ID, In_File, CSV_Data);
+      Open (File_ID, In_File, CSV_AB_Data);
+      Skip_Line (File_ID);   --  Skip header
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
-         Data_A.Append (aLine);
+         Str_A := aLine (1 .. 19);
+         Str_B := aLine (22 .. 40);
+         if Str_A (1 .. 1) = "0" then
+            Item_A.Setting := Polarizer_0;
+         elsif Str_A (1 .. 1) = "1" then
+            Item_A.Setting := Polarizer_45;
+         else
+            Put_Line ("Load_Data: Invalid A setting: " & Str_A (1 .. 1));
+         end if;
+
+         Item_A.Time := Double_Natural'Value (Str_A (3 .. 19));
+
+         if Str_B (1 .. 1) = "0" then
+            Item_B.Setting := Polarizer_0;
+         elsif Str_B (1 .. 1) = "1" then
+            Item_B.Setting := Polarizer_45;
+         else
+            Put_Line ("Load_Data: Invalid B setting: " & Str_B (1 .. 1));
+         end if;
+         Item_B.Time := Double_Natural'Value (Str_B (3 .. 19));
+
+         Data_A.Append (Item_A);
+         Data_B.Append (Item_B);
       end loop;
 
       Close (File_ID);
@@ -66,67 +92,25 @@ package body Process_Detection_Data is
      (CSV_AB, Match : String; Delta_Val : Double_Natural; Width : Natural;
       Num_Found     : out Natural; Selected_Pairs : out Match_List;
       Num_Rows      : Natural := 0) is
-      use String21_Package;
+      use Setting_Time_Package;
       Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
       D_Width      : constant Double_Natural := Double_Natural (Width);
-      A_Data       : String21_List;
-      B_Data       : String21_List;
-      B_Curs       : String21_Package.Cursor;
-      Count        : Natural := 0;
-
-      procedure Find_All_Matches (A_Curs : String21_Package.Cursor) is
-         A_Value   : constant Double_Natural :=
-           Double_Natural'Value (Element (A_Curs)) + Delta_Val;
-         B_Val_Min : constant Double_Natural := A_Value - D_Width;
-         B_Value   : Double_Natural;
-         Match     : Boolean := False;
-      begin
-         Count := Count + 1;
-         if Use_Num_Rows and Count > Num_Rows then
-            null;
-         elsif Has_Element (B_Curs) then
-            B_Value := Double_Natural'Value (Element (B_Curs));
-            --  Move B_Index forward until B_Value is >= (A_Value - Width)
-            while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
-               B_Value := Double_Natural'Value (Element (B_Curs));
-               Next (B_Curs);
-            end loop;
-
-            --  Element (B_Curs) is = or > B_Val_Min
-            if Has_Element (B_Curs) then
-               B_Value := Double_Natural'Value (Element (B_Curs));
-               Match := Abs (B_Value - A_Value) <= D_Width;
-
-               if Match then
-                  --  Matched times found within window
-                  declare
-                     use Match_Package;
-                     Item : constant Index_Record :=
-                           (Double_Positive (To_Index (A_Curs)),
-                           Double_Positive (To_Index (B_Curs)));
-                  begin
-                     Selected_Pairs.Append (Item);
-                     Num_Found := Num_Found + 1;
-                     if Num_Found < 6 then
-                        Put_Line (Routine_Name & "Match, A, B index:" &
-                                    Integer'Image (To_Index (A_Curs)) & ",  " &
-                                    Integer'Image (To_Index (B_Curs)));
-                     end if;
-                  end;
-               end if;
-            end if;
-         end if;
-
-      end Find_All_Matches;
-
+      Item         : Setting_Time_Record;
+      A_Data       : Setting_Time_Vector;
+      B_Data       : Setting_Time_Vector;
+      B_Curs       : Cursor;
    begin
-      Num_Found := 0;
+      --  CSV_AB file contains four columns of A and B setting and photon
+      --  time data
       Load_Data (CSV_AB, A_Data, B_Data);
-      --  B_Curs := First (B_Data);
-      --  Next (B_Curs);  --  Skip header
-
-      --  A_Data.Iterate (Find_All_Matches'Access);
+      B_Curs := B_Data.First;
+      while Has_Element (B_Curs) loop
+         Item := Element (B_Curs);
+         Item.Time := Item.Time + Delta_Val;
+         B_Data.Replace_Element (Position => B_Curs, New_Item => Item);
+         Next (B_Curs);
+      end loop;
       New_Line;
 
       Save_Match_List (Match, Selected_Pairs);
