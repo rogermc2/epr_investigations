@@ -32,6 +32,7 @@ procedure Draw_Histogram (A_Data, B_Data : Setting_Time_Vector) is
    Total_Records : Double_Natural := 0;
    Max_Frequency : Double_Natural := 0;
    Max_Freq_Index : Double_Natural := 0;
+   Best_Delta    : Double_Natural := 0;
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
@@ -106,11 +107,19 @@ begin
    end loop;
 
    Print_Histogram (Bins, Bin_Size);
+
+   Best_Delta := Max_Freq_Index * Double_Natural (Bin_Size);
+
+   Put_Line (Routine_Name & "Max_Freq_Index " &
+          Double_Natural'Image (Max_Freq_Index));
+
    Put_Line (Routine_Name & "bin:" & Double_Natural'Image (Max_Freq_Index) &
        ", max frequency " & Double_Natural'Image (Max_Frequency));
+   Put_Line (Routine_Name & "best delta_t = " & Double_Natural'Image (Best_Delta) &
+      " ps, frequency = " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
-      
+
    Save_Data ("histogram.txt", Delta_Data);
    New_Line;
 

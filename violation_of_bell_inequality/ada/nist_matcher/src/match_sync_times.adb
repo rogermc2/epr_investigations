@@ -47,13 +47,11 @@ begin
 
    Match_Syncs (Sync_Pairs, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Data_Length);
-   Put_Line ("Num sync pairs found: " & Integer'Image (Num_Found));
-          New_Line;
 
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
-      Print_Match_List ("Selected_Pairs", Selected_Sync_Pairs, 1, 10);
+      --  Print_Match_List ("Selected_Pairs", Selected_Sync_Pairs, 1, 10);
    else
       Put_Line (Routine_Name & "No matched pairs found!");
    end if;
