@@ -1,12 +1,9 @@
 
-with Ada.Directories;
+--  with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Process_Detection_Data is
-
-   procedure Load_Data
-    (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector);
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector);
 
@@ -56,7 +53,7 @@ package body Process_Detection_Data is
     (CSV_AB,Matched_CSV_AB : String; Delta_Val : Double_Natural) is
       --    (CSV_AB, Match : String; Delta_Val : Double_Natural; Width : Natural) is
       --  Num_Found     : out Natural; Selected_Pairs : out Match_List) is
-      use Ada.Directories;
+      --  use Ada.Directories;
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Data.Match_Data_Times ";
       --  Use_Num_Rows : constant Boolean := Num_Rows > 0;
@@ -67,6 +64,7 @@ package body Process_Detection_Data is
    begin
       --  CSV_AB file contains four columns of A and B setting and photon
       --  time data
+      Put_Line (Routine_Name & "Delta_Val:" & Double_Natural'Image (Delta_Val));
       Load_Data (CSV_AB, A_Data, B_Data);
       B_Curs := B_Data.First;
       while Has_Element (B_Curs) loop
@@ -91,31 +89,31 @@ package body Process_Detection_Data is
 
    end Match_Data_Times;
 
-   function Number_Of_Matches (File_Name : String) return Natural is
-      Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
-      File_ID      : File_Type;
-      aLine        : String_8;
-      Num_Matches  : Natural := 0;
-   begin
-      Open (File_ID, In_File, File_Name);
-      Skip_Line (File_ID);   --  Skip header
-      while not End_Of_File (File_ID) loop
-         aLine := Get_Line (File_ID);
-         if aLine (1 .. 2) = aLine (4 .. 5) then
-            Num_Matches := Num_Matches + 1;
-         end if;
-      end loop;
+   --  function Number_Of_Matches (File_Name : String) return Natural is
+   --     Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
+   --     File_ID      : File_Type;
+   --     aLine        : String_8;
+   --     Num_Matches  : Natural := 0;
+   --  begin
+   --     Open (File_ID, In_File, File_Name);
+   --     Skip_Line (File_ID);   --  Skip header
+   --     while not End_Of_File (File_ID) loop
+   --        aLine := Get_Line (File_ID);
+   --        if aLine (1 .. 2) = aLine (4 .. 5) then
+   --           Num_Matches := Num_Matches + 1;
+   --        end if;
+   --     end loop;
 
-      Close (File_ID);
+   --     Close (File_ID);
 
-      return Num_Matches;
+   --     return Num_Matches;
 
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         return Num_Matches;
+   --  exception
+   --     when Error : others =>
+   --        Put_Line (Routine_Name & Exception_Information (Error));
+   --        return Num_Matches;
 
-   end Number_Of_Matches;
+   --  end Number_Of_Matches;
 
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector) is

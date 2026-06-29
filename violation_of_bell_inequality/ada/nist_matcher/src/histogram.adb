@@ -22,18 +22,18 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size      : constant Double_Integer := 1;
-   Num_Bins      : constant Positive := 10;
-   Index_B       : Double_Positive := B_Data.First_Index;
-   Delta_Data    : Double_Natural_Vector;
-   Curs_Delta    : Double_Natural_Package.Cursor := Delta_Data.First;
-   Bins          : Bin_Array (1 .. Num_Bins) := (others => 0);
-   Bin_Index     : Positive;
-   Current_Value : Double_Natural;
-   Total_Records : Double_Natural := 0;
-   Max_Frequency : Double_Natural := 0;
-   Max_Freq_Index : Double_Natural := 0;
-   Best_Delta    : Double_Natural := 0;
+   Bin_Size       : constant Double_Integer := 1;
+   Num_Bins       : constant Positive := 10;
+   Index_B        : Double_Positive := B_Data.First_Index;
+   Delta_Data     : Double_Natural_Vector;
+   Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
+   Bins           : Bin_Array (1 .. Num_Bins) := (others => 0);
+   Bin_Index      : Positive;
+   Current_Value  : Double_Natural;
+   Total_Records  : Double_Natural := 0;
+   Max_Frequency  : Double_Natural := 0;
+   Max_Freq_Index : Positive;
+   Best_Delta     : Double_Natural := 0;
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
@@ -66,6 +66,9 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
       else  --  Index_B = B_Data.Last_Index
         Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
+
+      Put_Line (Routine_Name & "abs (Delta_Time): " &
+          Double_Integer'Image (abs (Delta_Time)));
 
       return Double_Natural (abs (Delta_Time));
 
@@ -101,7 +104,7 @@ begin
       --  Increment value of assigned bin
       Bins (Bin_Index) := Bins (Bin_Index) + 1;
       if Double_Natural (Bins (Bin_Index)) > Max_Frequency then
-         Max_Freq_Index := Double_Natural (Bin_Index);
+         Max_Freq_Index := Bin_Index;
          Max_Frequency := Double_Natural (Bins (Bin_Index));
       end if;
       Next  (Curs_Delta) ;
@@ -109,12 +112,15 @@ begin
 
    Print_Histogram (Bins, Bin_Size);
 
-   Best_Delta := Max_Freq_Index * Double_Natural (Bin_Size);
+   Best_Delta :=
+      Double_Natural (Bins (Max_Freq_Index)) * Double_Natural (Bin_Size);
+   Put_Line (Routine_Name & "Calculated Best_Delta: " &
+          Double_Natural'Image (Best_Delta));
 
    Put_Line (Routine_Name & "Max_Freq_Index " &
-          Double_Natural'Image (Max_Freq_Index));
+             Integer'Image (Max_Freq_Index));
 
-   Put_Line (Routine_Name & "bin:" & Double_Natural'Image (Max_Freq_Index) &
+   Put_Line (Routine_Name & "bin:" & Integer'Image (Max_Freq_Index) &
        ", max frequency " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "best delta_t = " & Double_Natural'Image (Best_Delta) &
       " ps, frequency = " & Double_Natural'Image (Max_Frequency));
@@ -122,6 +128,9 @@ begin
       Double_Natural'Image (Total_Records) & " records");
 
    Save_Data ("histogram.txt", Delta_Data);
+
+   Put_Line (Routine_Name & "Best_Delta: " &
+          Double_Natural'Image (Best_Delta));
    New_Line;
 
    return Best_Delta;
