@@ -12,7 +12,7 @@ with Utils; use Utils;
 procedure Match_Sync_Times is
    Routine_Name    : constant String := "Match_Sync_Times ";
    Pairs_Directory : constant String := "../nist_03_12_ch/";
-   Photon_Pairs    : constant String := Pairs_Directory & "combined_det.csv";
+   Detection_Pairs : constant String := Pairs_Directory & "combined_det.csv";
    Sync_Pairs      : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
    Matched_Det     : constant String := Pairs_Directory & "matched_det.csv";
@@ -57,7 +57,7 @@ begin
       Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
 
-   Match_Photon_Times (Photon_Pairs, Delta_Val);
+   Match_Data_Times (Detection_Pairs, Matched_Det, Delta_Val);
    --  aa_Matches := Number_Of_Matches (OEM_aa);
    --  ab_Matches := Number_Of_Matches (OEM_ab);
    --  ba_Matches := Number_Of_Matches (OEM_ba);

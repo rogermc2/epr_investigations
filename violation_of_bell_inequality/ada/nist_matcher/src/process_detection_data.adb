@@ -1,4 +1,5 @@
 
+with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -51,12 +52,13 @@ package body Process_Detection_Data is
 
    end Load_Data;
 
-   procedure Match_Photon_Times
-    (CSV_AB : String; Delta_Val : Double_Natural) is
+   procedure Match_Data_Times
+    (CSV_AB,Matched_CSV_AB : String; Delta_Val : Double_Natural) is
       --    (CSV_AB, Match : String; Delta_Val : Double_Natural; Width : Natural) is
       --  Num_Found     : out Natural; Selected_Pairs : out Match_List) is
+      use Ada.Directories;
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Match_Photon_Times ";
+      Routine_Name : constant String := "Process_Data.Match_Data_Times ";
       --  Use_Num_Rows : constant Boolean := Num_Rows > 0;
       Item         : Setting_Time_Record;
       A_Data       : Setting_Time_Vector;
@@ -75,19 +77,19 @@ package body Process_Detection_Data is
       end loop;
       New_Line;
 
-      Save_Detection_Data (CSV_AB, A_Data, B_Data);
+      Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
 
       --  Save_Match_List (Match, Selected_Pairs);
       --  Put_Line (Routine_Name & "Selected_Pairs length:" &
-      --              Integer'Image (Integer (Selected_Pairs.Length)));
-      --  New_Line;
+      --             Double_Natural'Image (Double_Natural (CSV_AB'Length)));
+      New_Line;
 
    exception
       when Error : others =>
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 
-   end Match_Photon_Times;
+   end Match_Data_Times;
 
    function Number_Of_Matches (File_Name : String) return Natural is
       Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
