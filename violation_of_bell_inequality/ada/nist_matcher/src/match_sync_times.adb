@@ -57,8 +57,7 @@ begin
       Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
 
-   Match_Photon_Times (Photon_Pairs, Matched_Det, Delta_Val, Width, Num_Found,
-                        Selected_Det_Pairs, Data_Length);
+   Match_Photon_Times (Photon_Pairs, Delta_Val);
    --  aa_Matches := Number_Of_Matches (OEM_aa);
    --  ab_Matches := Number_Of_Matches (OEM_ab);
    --  ba_Matches := Number_Of_Matches (OEM_ba);
