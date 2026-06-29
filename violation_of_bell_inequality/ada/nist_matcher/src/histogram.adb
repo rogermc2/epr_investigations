@@ -67,9 +67,6 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
         Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
       end if;
 
-      Put_Line (Routine_Name & "abs (Delta_Time): " &
-          Double_Integer'Image (abs (Delta_Time)));
-
       return Double_Natural (abs (Delta_Time));
 
    exception
