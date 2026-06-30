@@ -124,7 +124,7 @@ begin
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
-   Save_Data ("histogram.txt", Delta_Data);
+   --  Save_Data ("histogram.txt", Delta_Data);
 
    Put_Line (Routine_Name & "Best_Delta: " &
           Double_Natural'Image (Best_Delta));

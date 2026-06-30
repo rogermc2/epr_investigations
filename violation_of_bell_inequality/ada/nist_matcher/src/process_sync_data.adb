@@ -11,9 +11,9 @@ package body Process_Sync_Data is
        Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
-   procedure Align_Sync_Data (A_Data, B_Data : in out Setting_Time_Vector) is
+   procedure Align_Timing_Data (A_Data, B_Data : in out Setting_Time_Vector) is
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Sync_Data.Align_Sync_Data ";
+      Routine_Name : constant String := "Process_Sync_Data.Align_Timing_Data ";
       A_Curs       : Cursor := A_Data.First;
       B_Curs       : Cursor := B_Data.First;
       A_Item       : Setting_Time_Record := Element (A_Data.First);
@@ -62,47 +62,7 @@ package body Process_Sync_Data is
             Next (B_Curs);
          end loop;
 
-   end Align_Sync_Data;
-
---  procedure Find_Raw_Window_Width
---       (CSV_Times_A, CSV_Times_B : String; Delta_A : Natural;
---        Min_Width, Max_Width     : out Natural) is
---        use Setting_Time_Package;
---        --  Routine_Name : constant String :=
---              "Process_Sync_Data.Find_Raw_Window_Width ";
---        A_Data       : Setting_Time_Vector;
---        B_Data       : Setting_Time_Vector;
---        B_Index      : Double_Positive := 1;
-
---        procedure Find_Width (A_Curs : Setting_Time_Package.Cursor) is
---           A_Value   : constant Double_Natural :=
---             Element (A_Curs).Time + Double_Natural (Delta_A);
---           Width     : Natural;
---        begin
---           while B_Index < Double_Positive (B_Data.Length) and then
---             B_Data.Element (B_Index).Time < A_Value
---           loop
---              B_Index := B_Index + 1;
---           end loop;
-
---           Width := Natural (B_Data.Element (B_Index).Time - A_Value);
---           if Width > Max_Width then
---              Max_Width := Width;
---           elsif Width < Min_Width and then Width > 0 then
---              --   Width can be < 0 at end of files.
---              Min_Width := Width;
---           end if;
-
---        end Find_Width;
-
---     begin
---        Load_Sync_Data (CSV_Times_A, A_Data, B_Data);
---        Min_Width := 1;
---        Max_Width := 0;
-
---        A_Data.Iterate (Find_Width'Access);
-
---     end  Find_Raw_Window_Width;
+   end Align_Timing_Data;
 
 procedure Load_Sync_Data (CSV_Data : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
@@ -215,11 +175,12 @@ procedure Load_Sync_Data (CSV_Data : String;
                 "Source file, Sync_Pairs_CSV: " & Sync_Pairs_CSV);
       Load_Sync_Data (Sync_Pairs_CSV, A_Data, B_Data);
 
-      --  If Align_Sync_Data is not called, Draw_Histagram will exhibit
-      --  Bin index out of range error.  Align_Sync_Data is called to align the
-      --  two data sets to the same time frame.
+      --  If Align_Timing_Data is not called for Sync data, Draw_Histagram will
+      --  exhibit a Bin index out of range error.
+      --  Align_Timing_Data is called to align two data sets
+      --  to the same time frame.
       --  The histogram is drawn to verify the alignment.
-      Align_Sync_Data (A_Data, B_Data);
+      Align_Timing_Data (A_Data, B_Data);
       Offset := Draw_Histogram  (A_Data, B_Data);
 
       B_Curs := First (B_Data);

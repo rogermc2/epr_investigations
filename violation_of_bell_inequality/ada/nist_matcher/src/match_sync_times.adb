@@ -57,7 +57,7 @@ begin
       Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
 
-   Match_Data_Times (Detection_Pairs, Matched_Det, Delta_Val);
+   Match_Detection_Times (Detection_Pairs, Matched_Det, Delta_Val);
    --  aa_Matches := Number_Of_Matches (OEM_aa);
    --  ab_Matches := Number_Of_Matches (OEM_ab);
    --  ba_Matches := Number_Of_Matches (OEM_ba);

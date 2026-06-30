@@ -49,13 +49,11 @@ package body Process_Detection_Data is
 
    end Load_Data;
 
-   procedure Match_Data_Times
+   procedure Match_Detection_Times
     (CSV_AB,Matched_CSV_AB : String; Delta_Val : Double_Natural) is
-      --    (CSV_AB, Match : String; Delta_Val : Double_Natural; Width : Natural) is
-      --  Num_Found     : out Natural; Selected_Pairs : out Match_List) is
       --  use Ada.Directories;
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Match_Data_Times ";
+      Routine_Name : constant String := "Process_Data.Match_Detection_Times ";
       --  Use_Num_Rows : constant Boolean := Num_Rows > 0;
       Item         : Setting_Time_Record;
       A_Data       : Setting_Time_Vector;
@@ -97,7 +95,7 @@ package body Process_Detection_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
 
-   end Match_Data_Times;
+   end Match_Detection_Times;
 
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector) is
