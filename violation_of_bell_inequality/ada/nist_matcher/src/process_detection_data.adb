@@ -3,6 +3,8 @@
 with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with NIST_Utils; use NIST_Utils;
+
 package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector);
@@ -50,7 +52,7 @@ package body Process_Detection_Data is
    end Load_Data;
 
    procedure Match_Detection_Times
-    (CSV_AB,Matched_CSV_AB : String; Delta_Val : Double_Natural) is
+    (CSV_AB, Matched_CSV_AB : String; Delta_Val : Double_Natural) is
       --  use Ada.Directories;
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Data.Match_Detection_Times ";
@@ -63,21 +65,24 @@ package body Process_Detection_Data is
    begin
       --  CSV_AB file contains four columns of A and B setting and photon
       --  time data
-      Put_Line (Routine_Name & "Delta_Val:" & Double_Natural'Image (Delta_Val));
+      Put_Line (Routine_Name & "Delta_Val:" &
+       Double_Natural'Image (Delta_Val));
       Load_Data (CSV_AB, A_Data, B_Data);
+      Align_Timing_Data (A_Data, B_Data);
       B_Curs := B_Data.First;
       while Has_Element (B_Curs) loop
          Count := Count + 1;
          Item := Element (B_Curs);
-         if Count < 5 then
-             Put_Line (Routine_Name & "B.Time:" & Double_Natural'Image (Item.Time));
-         end if;
+         --  if Count < 4 then
+         --      Put_Line (Routine_Name & "B.Time after alignment:" &
+         --       Double_Natural'Image (Item.Time));
+         --  end if;
          Item.Time := Item.Time + Delta_Val;
-         if Count < 5 then
-             Put_Line (Routine_Name & "B.Time after update, offset:" &
-              Double_Natural'Image (Item.Time) & "  " &
-               Double_Natural'Image (Delta_Val));
-         end if;
+         --  if Count < 4 then
+         --      Put_Line (Routine_Name & "B.Time after update, offset:" &
+         --       Double_Natural'Image (Item.Time) & "  " &
+         --        Double_Natural'Image (Delta_Val));
+         --  end if;
          B_Data.Replace_Element (Position => B_Curs, New_Item => Item);
          Next (B_Curs);
       end loop;
@@ -106,6 +111,8 @@ package body Process_Detection_Data is
       Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
       Item_A       : Setting_Time_Record;
       Item_B       : Setting_Time_Record;
+      A_Setting    : Natural;
+      B_Setting    : Natural;
    begin
       Create (Out_ID, Out_File, CSV_AB_Data);
 
@@ -114,9 +121,11 @@ package body Process_Detection_Data is
       while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
          Item_A := Element (Curs_A);
          Item_B := Element (Curs_B);
-         Put_Line (Out_ID, Channel_Type'Image (Item_A.Setting) & ", " &
+         A_Setting := Channel_Type'Pos (Item_A.Setting) - 1;
+         B_Setting := Channel_Type'Pos (Item_B.Setting) - 1;
+         Put_Line (Out_ID, Natural'Image (A_Setting) & ", " &
           Double_Natural'Image (Item_A.Time) & ", " &
-           Channel_Type'Image (Item_B.Setting) & ", " &
+           Natural'Image (B_Setting) & ", " &
             Double_Natural'Image (Item_B.Time));
          Next (Curs_A);
          Next (Curs_B);

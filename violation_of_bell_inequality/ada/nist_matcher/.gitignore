@@ -3,6 +3,6 @@ match_times
 /bin/
 /alire/
 /config/
-match_sync_times
+./match_sync_times
 
 
