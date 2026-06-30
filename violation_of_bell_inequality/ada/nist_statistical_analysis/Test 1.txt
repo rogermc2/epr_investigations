@@ -1,0 +1,43 @@
+
+   Width    4.0 * 10.0 ** (-9)
+   Delta_A  3.8 * 10.0 ** (-9)
+
+statistical_analysis
+OEMA_00 Sample_Mean:  4.34783E-02   Sample SD:  1.01391E+00
+OEMA_01 Sample_Mean:  1.11111E-01   Sample SD:  1.00504E+00
+OEMA_10 Sample_Mean:  1.60000E-01   Sample SD:  9.83953E-01
+OEMA_11 Sample_Mean:  2.85714E-02   Sample SD:  1.01914E+00
+Overall A Sample_Mean:  8.57902E-02
+
+AB_00 Sample_Mean:  3.04348E-01   Sample SD:  1.15470E+00
+Detections_00, Det_AB: 
+ 1   1   1   1  -1  -1  -1  -1   1  -1  
+ 1  -1  -1  -1  -1   1  -1   1  -1   1  
+ 1  -1  -1  -1  -1  -1  -1   1  -1  -1  
+ 1  -1  -1  -1  -1  -1  -1  -1  -1   1  
+-1  -1   1   1  -1  -1  
+Number of 1s, -1s:  15,  31
+
+AB_01 Sample_Mean:  1.11111E-01   Sample SD:  1.07778E+00
+Detections_01, Det_AB: 
+-1  -1  -1  -1  -1  -1  -1  -1  -1   1  
+-1  -1  -1  -1  -1  -1   1  -1   1   1  
+-1  -1  -1  -1  -1  -1   1  -1  -1  -1  
+-1   1  -1  -1   1  -1  -1  -1   1  -1  
+ 1   1  -1  -1  -1  
+Number of 1s, -1s:  10,  35
+
+AB_10 Sample_Mean: -4.00000E-02   Sample SD:  9.81461E-01
+AB_11 Sample_Mean: -2.00000E-01   Sample SD:  9.20358E-01
+
+E(AB) b = a: -1.00000E+00
+E(AB) b = a + 45 deg.:  5.70796E-01
+
+- a.b,  b = a = 0: -1.00000E+00
+- a.b,  b = a + 45 deg.: -7.07107E-01
+
+Roger@Rogers-Mac-mini statistical_analysis % 
+
+
+
+
