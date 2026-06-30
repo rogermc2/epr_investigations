@@ -8,6 +8,7 @@ with NIST_Utils; use NIST_Utils;
 package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector);
+   procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Load_Data
     (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
@@ -101,6 +102,52 @@ package body Process_Detection_Data is
          raise;
 
    end Match_Detection_Times;
+
+   function Number_Of_Matches (File_Name : String) return Natural is
+      Routine_Name : constant String := "Process_Sync_Data.Number_Of_Matches ";
+      File_ID      : File_Type;
+      aLine        : String_8;
+      Num_Matches  : Natural := 0;
+   begin
+      Open (File_ID, In_File, File_Name);
+      Skip_Line (File_ID);   --  Skip header
+      while not End_Of_File (File_ID) loop
+         aLine := Get_Line (File_ID);
+         if aLine (1 .. 2) = aLine (4 .. 5) then
+            Num_Matches := Num_Matches + 1;
+         end if;
+      end loop;
+
+      Close (File_ID);
+
+      return Num_Matches;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         return Num_Matches;
+
+   end Number_Of_Matches;
+
+   procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
+      use Match_Package;
+      Routine_Name : constant String := "Process_Sync_Data.Save_Match_List ";
+      Match_ID     : File_Type;
+      M_Curs       : Cursor := First (Pairs);
+      Rec          : Index_Record;
+   begin
+      Create (Match_ID, Out_File, File_Name);
+      while Has_Element (M_Curs) loop
+         Rec :=  Element (M_Curs);
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+          Double_Positive'Image (Rec.B_Index));
+         Next (M_Curs);
+      end loop;
+
+      Close (Match_ID);
+      Put_Line (Routine_Name & "Data written to " & File_Name);
+
+   end Save_Match_List;
 
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector) is

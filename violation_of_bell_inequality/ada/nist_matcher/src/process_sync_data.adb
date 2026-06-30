@@ -10,7 +10,6 @@ package body Process_Sync_Data is
 
    procedure Load_Sync_Data (CSV_Data : String;
        Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector);
-   procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
 procedure Load_Sync_Data (CSV_Data : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
@@ -135,11 +134,11 @@ procedure Load_Sync_Data (CSV_Data : String;
       Next (B_Curs);  --  Skip header
       A_Data.Iterate (Find_All_Matches'Access);
       New_Line;
-      Put_Line (Routine_Name & "Selected_Pairs length:" &
-                  Integer'Image (Integer (Selected_Pairs.Length)));
+      --  Put_Line (Routine_Name & "Selected_Pairs length:" &
+      --              Integer'Image (Integer (Selected_Pairs.Length)));
 
-      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
-      New_Line;
+      --  Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
+      --  New_Line;
 
    exception
       when Error : others =>
@@ -147,51 +146,5 @@ procedure Load_Sync_Data (CSV_Data : String;
          raise;
 
    end Match_Syncs;
-
-   function Number_Of_Matches (File_Name : String) return Natural is
-      Routine_Name : constant String := "Process_Sync_Data.Number_Of_Matches ";
-      File_ID      : File_Type;
-      aLine        : String_8;
-      Num_Matches  : Natural := 0;
-   begin
-      Open (File_ID, In_File, File_Name);
-      Skip_Line (File_ID);   --  Skip header
-      while not End_Of_File (File_ID) loop
-         aLine := Get_Line (File_ID);
-         if aLine (1 .. 2) = aLine (4 .. 5) then
-            Num_Matches := Num_Matches + 1;
-         end if;
-      end loop;
-
-      Close (File_ID);
-
-      return Num_Matches;
-
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         return Num_Matches;
-
-   end Number_Of_Matches;
-
-   procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
-      use Match_Package;
-      Routine_Name : constant String := "Process_Sync_Data.Save_Match_List ";
-      Match_ID     : File_Type;
-      M_Curs       : Cursor := First (Pairs);
-      Rec          : Index_Record;
-   begin
-      Create (Match_ID, Out_File, File_Name);
-      while Has_Element (M_Curs) loop
-         Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
-          Double_Positive'Image (Rec.B_Index));
-         Next (M_Curs);
-      end loop;
-
-      Close (Match_ID);
-      Put_Line (Routine_Name & "Data written to " & File_Name);
-
-   end Save_Match_List;
 
 end Process_Sync_Data;

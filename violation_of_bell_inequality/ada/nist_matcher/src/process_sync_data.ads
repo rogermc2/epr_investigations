@@ -10,6 +10,5 @@ package Process_Sync_Data is
      (Sync_Pairs_CSV, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Offset : out Double_Natural; Num_Rows : Natural := 0);
-   function Number_Of_Matches (File_Name : String) return Natural;
 
 end Process_Sync_Data;
