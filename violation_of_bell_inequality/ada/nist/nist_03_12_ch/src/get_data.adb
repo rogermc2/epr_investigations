@@ -9,7 +9,7 @@ with Utils; use Utils;
 
 procedure Get_Data is
    Routine_Name  : constant String := "Get_Data ";
-   A_Directory   : constant String := "../../../nist_data/";
+   A_Directory   : constant String := "../../../../nist_data/";
    B_Directory   : constant String := A_Directory;
    A_Source      : constant String := A_Directory & "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
    B_Source      : constant String := B_Directory & "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";

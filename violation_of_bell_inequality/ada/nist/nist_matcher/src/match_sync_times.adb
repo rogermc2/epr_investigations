@@ -25,7 +25,7 @@ procedure Match_Sync_Times is
    --  B_Counts         : xxCounts;
    --  Min_Width        : Float;
    --  Max_Width        : Float;
-   --  aa_Matches       : Natural;
+   aa_Matches       : Natural;
    --  ab_Matches       : Natural;
    --  ba_Matches       : Natural;
    --  bb_Matches       : Natural;
@@ -58,7 +58,7 @@ begin
    end if;
 
    Match_Detection_Times (Detection_Pairs, Matched_Det, Delta_Val);
-   --  aa_Matches := Number_Of_Matches (OEM_aa);
+   aa_Matches := Number_Of_Matches (Matched_Det);
    --  ab_Matches := Number_Of_Matches (OEM_ab);
    --  ba_Matches := Number_Of_Matches (OEM_ba);
    --  bb_Matches := Number_Of_Matches (OEM_bb);

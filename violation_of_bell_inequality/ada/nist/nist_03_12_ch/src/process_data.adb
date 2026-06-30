@@ -66,7 +66,7 @@ package body Process_Data is
       Create (Det_ID, Out_File, Det_File);
       Create (Synch_ID, Out_File, Sync_File);
       Create (Log_ID, Out_File,
-       Source_File (Source_File'First + 19 .. Source_File'Last - 4) &
+       Source_File (Source_File'First + 22 .. Source_File'Last - 4) &
         "_parsing_errors.log");
       Put_Line (Log_ID, "*******  Parsing Errors  *******");
 
