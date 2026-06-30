@@ -11,14 +11,15 @@ procedure Get_Data is
    Routine_Name  : constant String := "Get_Data ";
    A_Directory   : constant String := "../../../../nist_data/";
    B_Directory   : constant String := A_Directory;
+   Target_Dir    : constant String := "../generated_nist_data/";
    A_Source      : constant String := A_Directory & "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
    B_Source      : constant String := B_Directory & "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
-   A_Det_Target  : constant String := "A_Det.csv";
-   B_Det_Target  : constant String := "B_Det.csv";
-   A_Sync_Target : constant String := "A_Sync.csv";
-   B_Sync_Target : constant String := "B_Sync.csv";
-   Combined_Data : constant String := "combined_det.csv";
-   Combined_Sync : constant String := "combined_sync.csv";
+   A_Det_Target  : constant String := Target_Dir & "A_Det.csv";
+   B_Det_Target  : constant String := Target_Dir & "B_Det.csv";
+   A_Sync_Target : constant String := Target_Dir & "A_Sync.csv";
+   B_Sync_Target : constant String := Target_Dir & "B_Sync.csv";
+   Combined_Data : constant String := Target_Dir & "combined_det.csv";
+   Combined_Sync : constant String := Target_Dir & "combined_sync.csv";
    Num_Rows      : constant Types.Double_Natural := 30000;
 begin
    NIST_Data (A_Source, A_Det_Target, A_Sync_Target, Num_Rows);

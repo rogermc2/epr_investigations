@@ -56,7 +56,8 @@ package body Process_Detection_Data is
     (CSV_AB, Matched_CSV_AB : String; Delta_Val : Double_Natural) is
       --  use Ada.Directories;
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Data.Match_Detection_Times ";
+      Routine_Name : constant String :=
+       "Process_Detection_Data.Match_Detection_Times ";
       --  Use_Num_Rows : constant Boolean := Num_Rows > 0;
       Item         : Setting_Time_Record;
       A_Data       : Setting_Time_Vector;
@@ -104,9 +105,10 @@ package body Process_Detection_Data is
    end Match_Detection_Times;
 
    function Number_Of_Matches (File_Name : String) return Natural is
-      Routine_Name : constant String := "Process_Sync_Data.Number_Of_Matches ";
+      Routine_Name : constant String :=
+       "Process_Detection_Data.Number_Of_Matches ";
       File_ID      : File_Type;
-      aLine        : String_8;
+      aLine        : String_40;
       Num_Matches  : Natural := 0;
    begin
       Open (File_ID, In_File, File_Name);
@@ -131,7 +133,8 @@ package body Process_Detection_Data is
 
    procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
       use Match_Package;
-      Routine_Name : constant String := "Process_Sync_Data.Save_Match_List ";
+      Routine_Name : constant String :=
+       "Process_Detection_Data.Save_Match_List ";
       Match_ID     : File_Type;
       M_Curs       : Cursor := First (Pairs);
       Rec          : Index_Record;
@@ -152,7 +155,8 @@ package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector) is
       use Setting_Time_Package;
-      Routine_Name : constant String := "Combine_Data.Save_NIST_Data ";
+      Routine_Name : constant String :=
+       "Process_Detection_Data.Save_NIST_Data ";
       Out_ID       : File_Type;
       Curs_A       : Setting_Time_Package.Cursor := Data_A.First;
       Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
