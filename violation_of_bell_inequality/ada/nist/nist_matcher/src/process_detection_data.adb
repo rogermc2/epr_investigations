@@ -1,6 +1,7 @@
 
 --  with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with NIST_Utils; use NIST_Utils;
@@ -105,23 +106,39 @@ package body Process_Detection_Data is
    end Match_Detection_Times;
 
    function Number_Of_Matches (File_Name : String) return Natural is
+      use Ada.Strings.Fixed;
       Routine_Name : constant String :=
        "Process_Detection_Data.Number_Of_Matches ";
       File_ID      : File_Type;
-      aLine        : String_40;
       Num_Matches  : Natural := 0;
    begin
       Open (File_ID, In_File, File_Name);
       Skip_Line (File_ID);   --  Skip header
+      Put_Line (Routine_Name & "File_Name: " & File_Name);
       while not End_Of_File (File_ID) loop
-         aLine := Get_Line (File_ID);
-         if aLine (1 .. 2) = aLine (4 .. 5) then
-            Num_Matches := Num_Matches + 1;
-         end if;
+         declare
+            aLine : constant String := Get_Line (File_ID);
+            Pos_1 : constant Natural := Index (aLine, ",");
+            Pos_2 : Natural;
+         begin
+            if Pos_1 > 0 and then Pos_1 < aLine'Last then
+               Pos_2 := Index (aLine, ",", Pos_1 + 1);
+               if Pos_2 > 0 then
+                  if aLine (1 .. 2) = aLine (Pos_2 + 2 .. Pos_2 + 3) then
+                     Num_Matches := Num_Matches + 1;
+                  end if;
+                else
+                  Put_Line (Routine_Name & aLine & "has only one comma.");
+               end if;
+            else
+               Put_Line (Routine_Name & aLine & "has no commas.");
+            end if;
+         end;
       end loop;
 
       Close (File_ID);
 
+      Put_Line (Routine_Name & "Number of matches: " & Integer'Image (Num_Matches));
       return Num_Matches;
 
    exception

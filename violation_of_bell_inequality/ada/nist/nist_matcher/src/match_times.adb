@@ -9,9 +9,9 @@ with Process_Sync_Data; use Process_Sync_Data;
 with Types; use Types;
 with Utils; use Utils;
 
-procedure Match_Sync_Times is
-   Routine_Name    : constant String := "Match_Sync_Times ";
-   Pairs_Directory : constant String := "../nist_03_12_ch/";
+procedure Match_Times is
+   Routine_Name    : constant String := "Match_Times ";
+   Pairs_Directory : constant String := "../generated_nist_data/";
    Detection_Pairs : constant String := Pairs_Directory & "combined_det.csv";
    Sync_Pairs      : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
@@ -86,4 +86,4 @@ begin
    Put_Line (Routine_Name & "width: " & Natural'Image (Width));
    --  Put_Line (Routine_Name & "delta: " & Natural'Image (Delta_Val));
 
-end Match_Sync_Times;
+end Match_Times;
