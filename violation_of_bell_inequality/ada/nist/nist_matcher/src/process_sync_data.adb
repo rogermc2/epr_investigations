@@ -8,10 +8,9 @@ with NIST_Utils; use NIST_Utils;
 
 package body Process_Sync_Data is
 
-   procedure Load_Sync_Data (CSV_Data : String;
-       Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector);
+   procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
 
-procedure Load_Sync_Data (CSV_Data : String;
+   procedure Load_Sync_Data (CSV_Data : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
       use Types.Setting_Time_Package;
       Routine_Name : constant String := "Process_Sync_Data.Load_Sync_Data ";
@@ -24,7 +23,6 @@ procedure Load_Sync_Data (CSV_Data : String;
    begin
       Open (File_ID, In_File, CSV_Data);
       Header := Get_Line (File_ID);        -- Skip header
-      --  Put_Line (Routine_Name & "Header: " & Header);
       Item.Setting := Sync;
       while not End_Of_File (File_ID) loop
          aLine := Get_Line (File_ID);
@@ -72,49 +70,49 @@ procedure Load_Sync_Data (CSV_Data : String;
          B_Time    : Double_Natural;
          Count     : Natural := 0;
          Match     : Boolean := False;
-      begin
-         Count := Count + 1;
-         if Use_Num_Rows and Count > Num_Rows then
-            null;
-         elsif Has_Element (B_Curs) then
-            B_Item := Element (B_Curs);
-            B_Time := B_Item.Time;
-            --  Move B_Index forward until B_Value is >= (A_Value - Width)
-            while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
-               B_Item := Element (B_Curs);
-               if B_Item.Setting = Sync then
-                  B_Time := B_Item.Time;
-               end if;
-               Next (B_Curs);
-            end loop;
-
-            --  Element (B_Curs) is = or > B_Val_Min
-            if Has_Element (B_Curs) then
+         begin
+            Count := Count + 1;
+            if Use_Num_Rows and Count > Num_Rows then
+               null;
+            elsif Has_Element (B_Curs) then
                B_Item := Element (B_Curs);
                B_Time := B_Item.Time;
-               Match := Abs (B_Time - A_Time) <= D_Width;
+               --  Move B_Index forward until B_Value is >= (A_Value - Width)
+               while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
+                  B_Item := Element (B_Curs);
+                  if B_Item.Setting = Sync then
+                     B_Time := B_Item.Time;
+                  end if;
+                  Next (B_Curs);
+               end loop;
 
-               if Match then
-                  --  Matched times found within window
-                  Item := (To_Index (A_Curs), To_Index (B_Curs));
-                  Selected_Pairs.Append (Item);
-                  Num_Found := Num_Found + 1;
-                  if Num_Found < 6 then
-                     Put_Line (Routine_Name & "Match, A, B index:" &
-                      Double_Positive'Image (To_Index (A_Curs)) & ",  " &
-                                   Double_Positive'Image (To_Index (B_Curs)));
+               --  Element (B_Curs) is = or > B_Val_Min
+               if Has_Element (B_Curs) then
+                  B_Item := Element (B_Curs);
+                  B_Time := B_Item.Time;
+                  Match := Abs (B_Time - A_Time) <= D_Width;
+
+                  if Match then
+                     --  Matched times found within window
+                     Item := (To_Index (A_Curs), To_Index (B_Curs));
+                     Selected_Pairs.Append (Item);
+                     Num_Found := Num_Found + 1;
+                     if Num_Found < 6 then
+                        Put_Line (Routine_Name & "Match, A, B index:" &
+                        Double_Positive'Image (To_Index (A_Curs)) & ",  " &
+                                    Double_Positive'Image (To_Index (B_Curs)));
+                     end if;
                   end if;
                end if;
             end if;
-         end if;
 
-      exception
-         when Error : others =>
-            Put_Line (Routine_Name & "Find_All_Matches " &
-             Exception_Information (Error));
-            raise;
+         exception
+            when Error : others =>
+               Put_Line (Routine_Name & "Find_All_Matches " &
+               Exception_Information (Error));
+               raise;
 
-      end Find_All_Matches;
+         end Find_All_Matches;
 
    begin
       Num_Found := 0;
@@ -137,7 +135,7 @@ procedure Load_Sync_Data (CSV_Data : String;
       --  Put_Line (Routine_Name & "Selected_Pairs length:" &
       --              Integer'Image (Integer (Selected_Pairs.Length)));
 
-      --  Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
+      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
       --  New_Line;
 
    exception
@@ -146,5 +144,26 @@ procedure Load_Sync_Data (CSV_Data : String;
          raise;
 
    end Match_Syncs;
+
+   procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List) is
+     use Match_Package;
+      Routine_Name : constant String :=
+       "Process_Sync_Data.Save_Match_List ";
+      Match_ID     : File_Type;
+      M_Curs       : Cursor := First (Index_Pairs);
+      Rec          : Index_Record;
+   begin
+      Create (Match_ID, Out_File, File_Name);
+      while Has_Element (M_Curs) loop
+         Rec :=  Element (M_Curs);
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+         Double_Positive'Image (Rec.B_Index));
+         Next (M_Curs);
+      end loop;
+
+      Close (Match_ID);
+      Put_Line (Routine_Name & "Data written to " & File_Name);
+
+   end Save_Match_List;
 
 end Process_Sync_Data;

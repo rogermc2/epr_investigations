@@ -1,5 +1,4 @@
 
---  with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
@@ -9,7 +8,7 @@ with NIST_Utils; use NIST_Utils;
 package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector);
-   procedure Save_Match_List (File_Name : String; Pairs : Match_List);
+   --  procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Load_Data
     (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
@@ -53,18 +52,89 @@ package body Process_Detection_Data is
 
    end Load_Data;
 
-   procedure Match_Detection_Times
-    (CSV_AB, Matched_CSV_AB : String; Delta_Val : Double_Natural) is
-      --  use Ada.Directories;
+   procedure Match_Detection_Times (CSV_AB, Matched_CSV_AB : String;
+       Width : Natural; Delta_Val : Double_Natural; Num_Found : out Natural;
+        Selected_Pairs : out Match_List; Num_Rows : Natural := 0) is
       use Setting_Time_Package;
       Routine_Name : constant String :=
        "Process_Detection_Data.Match_Detection_Times ";
-      --  Use_Num_Rows : constant Boolean := Num_Rows > 0;
+      D_Width      : constant Double_Natural := Double_Natural (Width);
+      Use_Num_Rows : constant Boolean := Num_Rows > 0;
       Item         : Setting_Time_Record;
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
+      A_Curs       : Cursor;
       B_Curs       : Cursor;
+      Match_Record : Index_Record;
       Count        : Natural := 0;
+      Find_Count   : Natural := 0;
+      procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
+         A_Value   : constant Double_Natural := Element (A_Curs).Time;
+         B_Val_Min : Double_Natural;
+         B_Value   : Double_Natural;
+         Match     : Boolean := False;
+      begin
+         Count := Count + 1;
+         Find_Count := Find_Count + 1;
+         --  if Find_Count < 6 then
+         --     Put_Line (Routine_Name & "Find_All_Matches Find_Count:" &
+         --           Natural'Image (Find_Count));
+         --  end if;
+         if Double_Integer (A_Value) - Double_Integer (D_Width) < 0 then
+            B_Val_Min := 0;
+         else
+            B_Val_Min := A_Value - D_Width;
+         end if;
+
+         if Use_Num_Rows and Count > Num_Rows then
+            null;
+         elsif Has_Element (B_Curs) then
+            B_Value := Element (B_Curs).Time;
+            --  Move B_Index forward until B_Value is >= (A_Value - Width)
+            while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
+               B_Value := Element (B_Curs).Time;
+               Next (B_Curs);
+            end loop;
+
+            --  Element (B_Curs) is = or > B_Val_Min
+            if Has_Element (B_Curs) then
+               B_Value := Element (B_Curs).Time;
+               Match := Abs (B_Value - A_Value) <= D_Width;
+               --  if Find_Count < 6 then
+               --     Put_Line (Routine_Name & "Find_All_Matches B_Value:" &
+               --           Double_Natural'Image (B_Value));
+               --  end if;
+
+               if Match then
+                  Put_Line (Routine_Name & 
+                  "Find_All_Matches Match found, Find_Count" &
+                     Natural'Image (Find_Count));
+                  --  Matched times found within window
+                  Match_Record.A_Index := Double_Positive (To_Index (A_Curs));
+                  Match_Record.B_Index := Double_Positive (To_Index (B_Curs));
+                  Selected_Pairs.Append (Match_Record);
+                  Num_Found := Num_Found + 1;
+                  if Num_Found < 6 then
+                     Put_Line (Routine_Name & "Match, A, B index:" &
+                         Double_Positive'Image (To_Index (A_Curs)) & ",  " &
+                         Double_Positive'Image (To_Index (B_Curs)));
+                  end if;
+               end if;
+            end if;
+         end if;
+         if Num_Found < 6 then
+            Put_Line (Routine_Name & "Find_All_Matches Num_Found:" &
+                  Natural'Image (Num_Found));
+         end if;
+
+      exception
+         when Error : others =>
+            Put_Line (Routine_Name & "Find_All_Matches " &
+            Exception_Information (Error));
+            raise;
+
+      end Find_All_Matches;
+
    begin
       --  CSV_AB file contains four columns of A and B setting and photon
       --  time data
@@ -90,6 +160,13 @@ package body Process_Detection_Data is
          Next (B_Curs);
       end loop;
       New_Line;
+
+      A_Curs := First (A_Data);
+      Next (A_Curs);  --  Skip header
+      B_Curs := First (B_Data);
+      Next (B_Curs);  --  Skip header
+      Put_Line (Routine_Name & "A_Data.Iterate");
+      A_Data.Iterate (Find_All_Matches'Access);
 
       Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
 
@@ -148,26 +225,26 @@ package body Process_Detection_Data is
 
    end Number_Of_Matches;
 
-   procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
-      use Match_Package;
-      Routine_Name : constant String :=
-       "Process_Detection_Data.Save_Match_List ";
-      Match_ID     : File_Type;
-      M_Curs       : Cursor := First (Pairs);
-      Rec          : Index_Record;
-   begin
-      Create (Match_ID, Out_File, File_Name);
-      while Has_Element (M_Curs) loop
-         Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
-          Double_Positive'Image (Rec.B_Index));
-         Next (M_Curs);
-      end loop;
+   --  procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
+   --     use Match_Package;
+   --     Routine_Name : constant String :=
+   --      "Process_Detection_Data.Save_Match_List ";
+   --     Match_ID     : File_Type;
+   --     M_Curs       : Cursor := First (Pairs);
+   --     Rec          : Index_Record;
+   --  begin
+   --     Create (Match_ID, Out_File, File_Name);
+   --     while Has_Element (M_Curs) loop
+   --        Rec :=  Element (M_Curs);
+   --        Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+   --         Double_Positive'Image (Rec.B_Index));
+   --        Next (M_Curs);
+   --     end loop;
 
-      Close (Match_ID);
-      Put_Line (Routine_Name & "Data written to " & File_Name);
+   --     Close (Match_ID);
+   --     Put_Line (Routine_Name & "Data written to " & File_Name);
 
-   end Save_Match_List;
+   --  end Save_Match_List;
 
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector) is
