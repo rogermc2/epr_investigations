@@ -1,6 +1,8 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Printing; use Printing;
+
 package body  NIST_Utils is
 
  procedure Align_Timing_Data (A_Data, B_Data : in out Setting_Time_Vector) is
@@ -53,6 +55,9 @@ package body  NIST_Utils is
             B_Data.Replace_Element (B_Curs, B_Item);
             Next (B_Curs);
          end loop;
+
+         Print_Setting_Time_Vector ("Align_Timing_Data A_Data", A_Data, 1, 5);
+         Print_Setting_Time_Vector ("Align_Timing_Data B_Data", B_Data, 1, 5);
 
    end Align_Timing_Data;
 

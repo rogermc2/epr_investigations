@@ -32,8 +32,8 @@ procedure Match_Times is
    Selected_Det_Pairs    : Match_List;
    Selected_Sync_Pairs   : Match_List;
 begin
-   Put_Line (Routine_Name & "Sync_Pairs file size:" &
-        Integer'Image (Count_Text_File_Lines (Sync_Pairs)) & " lines");
+   --  Put_Line (Routine_Name & "Sync_Pairs file size:" &
+   --       Integer'Image (Count_Text_File_Lines (Sync_Pairs)) & " lines");
    Match_Syncs (Sync_Pairs, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Delta_Val, Data_Length);
    if Num_Found > 0 then
@@ -44,8 +44,8 @@ begin
       Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
 
-   Put_Line (Routine_Name & "Detection_Pairs file size:" &
-        Integer'Image (Count_Text_File_Lines (Detection_Pairs)) & " lines");
+   --  Put_Line (Routine_Name & "Detection_Pairs file size:" &
+   --       Integer'Image (Count_Text_File_Lines (Detection_Pairs)) & " lines");
    Match_Detection_Times (Detection_Pairs, Matched_Det, Width, Delta_Val,
    Num_Found, Selected_Det_Pairs, Data_Length);
    Put_Line (Routine_Name & "Matched_Det file size:" &

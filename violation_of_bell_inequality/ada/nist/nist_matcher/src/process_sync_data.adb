@@ -60,15 +60,15 @@ package body Process_Sync_Data is
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
       B_Curs       : Setting_Time_Package.Cursor := B_Data.First;
+      Count        : Natural := 0;
 
-         procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
+         procedure Find_Match (A_Curs : Setting_Time_Package.Cursor) is
          A_Item    : constant Setting_Time_Record := Element (A_Curs);
          A_Time    : constant Double_Natural := A_Item.Time + D_Width;
          B_Val_Min : constant Double_Natural := A_Time - D_Width;
          Item      : Index_Record;
          B_Item    : Setting_Time_Record;
          B_Time    : Double_Natural;
-         Count     : Natural := 0;
          Match     : Boolean := False;
          begin
             Count := Count + 1;
@@ -112,7 +112,7 @@ package body Process_Sync_Data is
                Exception_Information (Error));
                raise;
 
-         end Find_All_Matches;
+         end Find_Match;
 
    begin
       Num_Found := 0;
@@ -130,7 +130,7 @@ package body Process_Sync_Data is
 
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
-      A_Data.Iterate (Find_All_Matches'Access);
+      A_Data.Iterate (Find_Match'Access);
       New_Line;
       --  Put_Line (Routine_Name & "Selected_Pairs length:" &
       --              Integer'Image (Integer (Selected_Pairs.Length)));

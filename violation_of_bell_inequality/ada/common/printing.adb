@@ -201,6 +201,35 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Setting_Time_Vector
+     (Name  : String; Data : Setting_Time_Vector;
+      Start : Positive := 1; Finish : Natural := 0) is
+      use Setting_Time_Package;
+      Start_Idx : constant Double_Positive := Double_Positive (Start);
+      Last      : Double_Positive;
+      Item      : Setting_Time_Record;
+   begin
+      if Finish > 0 then
+         Last := Double_Positive (Finish);
+      else
+         Last := Double_Positive (Data.Length);
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start_Idx >= Data.First_Index and then
+       Last <= Data.Last_Index then
+         for Index in Start_Idx .. Last loop
+            Item := Data (Index);
+            Put_Line ("Channel, Time: " & Channel_Type'Image (Item.Setting) &
+             ",  " & Double_Natural'Image (Item.Time));
+         end loop;
+      else
+         Put_Line ("Print_Setting_Time_Vector called with invalid" &
+          " start or finish index.");
+      end if;
+      New_Line;
+   end Print_Setting_Time_Vector;
+
     procedure Print_StringD19_Vector
        (Name  : String; Data : StringD19_Vector;
         Start : Double_Positive := 1; Finish : Double_Natural := 0) is

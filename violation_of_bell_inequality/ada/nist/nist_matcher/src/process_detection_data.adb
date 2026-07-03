@@ -225,27 +225,6 @@ package body Process_Detection_Data is
 
    end Number_Of_Matches;
 
-   --  procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
-   --     use Match_Package;
-   --     Routine_Name : constant String :=
-   --      "Process_Detection_Data.Save_Match_List ";
-   --     Match_ID     : File_Type;
-   --     M_Curs       : Cursor := First (Pairs);
-   --     Rec          : Index_Record;
-   --  begin
-   --     Create (Match_ID, Out_File, File_Name);
-   --     while Has_Element (M_Curs) loop
-   --        Rec :=  Element (M_Curs);
-   --        Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
-   --         Double_Positive'Image (Rec.B_Index));
-   --        Next (M_Curs);
-   --     end loop;
-
-   --     Close (Match_ID);
-   --     Put_Line (Routine_Name & "Data written to " & File_Name);
-
-   --  end Save_Match_List;
-
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector) is
       use Setting_Time_Package;
