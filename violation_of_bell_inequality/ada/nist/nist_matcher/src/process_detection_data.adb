@@ -8,7 +8,6 @@ with NIST_Utils; use NIST_Utils;
 package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector);
-   --  procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Load_Data
     (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
@@ -52,7 +51,7 @@ package body Process_Detection_Data is
 
    end Load_Data;
 
-   procedure Match_Detection_Times (CSV_AB, Matched_CSV_AB : String;
+   procedure Match_Detection_Times (CSV_AB : String;
        Width : Natural; Delta_Val : Double_Natural; Num_Found : out Natural;
         Selected_Pairs : out Match_List; Num_Rows : Natural := 0) is
       use Setting_Time_Package;
@@ -68,7 +67,10 @@ package body Process_Detection_Data is
       Match_Record : Index_Record;
       Count        : Natural := 0;
       Find_Count   : Natural := 0;
-      procedure Find_All_Matches (A_Curs : Setting_Time_Package.Cursor) is
+      
+      --  Find_Match finds a B record with time in range of A record time.
+      --  If found the A and B pair are add to the selected records list.
+      procedure Find_Match (A_Curs : Setting_Time_Package.Cursor) is
          A_Value   : constant Double_Natural := Element (A_Curs).Time;
          B_Val_Min : Double_Natural;
          B_Value   : Double_Natural;
@@ -89,6 +91,7 @@ package body Process_Detection_Data is
          if Use_Num_Rows and Count > Num_Rows then
             null;
          elsif Has_Element (B_Curs) then
+            --  Find a minimum acceptable B value.
             B_Value := Element (B_Curs).Time;
             --  Move B_Index forward until B_Value is >= (A_Value - Width)
             while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
@@ -129,11 +132,11 @@ package body Process_Detection_Data is
 
       exception
          when Error : others =>
-            Put_Line (Routine_Name & "Find_All_Matches " &
+            Put_Line (Routine_Name & "Find_Match " &
             Exception_Information (Error));
             raise;
 
-      end Find_All_Matches;
+      end Find_Match;
 
    begin
       --  CSV_AB file contains four columns of A and B setting and photon
@@ -166,11 +169,10 @@ package body Process_Detection_Data is
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
       Put_Line (Routine_Name & "A_Data.Iterate");
-      A_Data.Iterate (Find_All_Matches'Access);
+      A_Data.Iterate (Find_Match'Access);
 
-      Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
+      --  Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
 
-      --  Save_Match_List (Match, Selected_Pairs);
       --  Put_Line (Routine_Name & "Selected_Pairs length:" &
       --             Double_Natural'Image (Double_Natural (CSV_AB'Length)));
       New_Line;

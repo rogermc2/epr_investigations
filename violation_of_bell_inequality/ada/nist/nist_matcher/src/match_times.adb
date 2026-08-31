@@ -1,6 +1,5 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
---  with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 --  with Data_Selection; use Data_Selection;
 --  with Printing; use Printing;
@@ -25,12 +24,13 @@ procedure Match_Times is
    --  B_Counts         : xxCounts;
    --  Min_Width        : Float;
    --  Max_Width        : Float;
-   aa_Matches       : Natural;
-   --  ab_Matches       : Natural;
-   --  ba_Matches       : Natural;
-   --  bb_Matches       : Natural;
-   Selected_Det_Pairs    : Match_List;
-   Selected_Sync_Pairs   : Match_List;
+   Num_Matches         : Natural;
+   --  Num_aa_Matches      : Natural;
+   --  Num_ab_Matches      : Natural;
+   --  Num_ba_Matches      : Natural;
+   --  Num_bb_Matches      : Natural;
+   Selected_Det_Pairs  : Match_List;
+   Selected_Sync_Pairs : Match_List;
 begin
    --  Put_Line (Routine_Name & "Sync_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Sync_Pairs_In)) & " lines");
@@ -46,22 +46,24 @@ begin
 
    --  Put_Line (Routine_Name & "Detection_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Det_Pairs_In)) & " lines");
-   Match_Detection_Times (Det_Pairs_In, Matched_Det, Width, Delta_Val,
+   Match_Detection_Times (Det_Pairs_In, Width, Delta_Val,
    Num_Found, Selected_Det_Pairs, Data_Length);
    Put_Line (Routine_Name & "Matched_Det file size:" &
         Integer'Image (Count_Text_File_Lines (Matched_Det)) & " lines");
-   aa_Matches := Number_Of_Matches (Matched_Det);
-   --  ab_Matches := Number_Of_Matches (OEM_ab);
-   --  ba_Matches := Number_Of_Matches (OEM_ba);
-   --  bb_Matches := Number_Of_Matches (OEM_bb);
-   --  Put_Line (Routine_Name & "Number of aa matches :" &
-   --              Integer'Image (aa_Matches));
+
+   Num_Matches := Number_Of_Matches (Matched_Det);
+   --  Num_aa_Matches := Number_Of_Matches (Matched_Det);
+   --  Num_ab_Matches := Number_Of_Matches (OEM_ab);
+   --  Num_ba_Matches := Number_Of_Matches (OEM_ba);
+   --  Num_bb_Matches := Number_Of_Matches (OEM_bb);
+   Put_Line (Routine_Name & "Number of detection matches :" &
+                Integer'Image (Num_Matches));
    --  Put_Line (Routine_Name & "Number of ab matches :" &
-   --              Integer'Image (ab_Matches));
+   --           Integer'Image (Num_ab_Matches));
    --  Put_Line (Routine_Name & "Number of ba matches :" &
-   --              Integer'Image (ba_Matches));
+   --         Integer'Image (Num_ba_Matches));
    --  Put_Line (Routine_Name & "Number of bb matches :" &
-   --              Integer'Image (bb_Matches));
+   --           Integer'Image (Num_bb_Matches));
    --  New_Line;
    --  Find_Raw_Window_Width (Photon_Times_A, Photon_Times_B, Delta_Val,
    --                         Min_Width, Max_Width);
