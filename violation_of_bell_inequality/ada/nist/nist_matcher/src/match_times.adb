@@ -1,7 +1,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Data_Selection; use Data_Selection;
+with Data_Selection; use Data_Selection;
 --  with Printing; use Printing;
 with Process_Detection_Data; use Process_Detection_Data;
 with Process_Sync_Data; use Process_Sync_Data;
@@ -15,13 +15,17 @@ procedure Match_Times is
    Sync_Pairs_In   : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
    Matched_Det     : constant String := Pairs_Directory & "matched_det.csv";
+   Det_aa          : constant String := Pairs_Directory & "aa.csv";
+   Det_ab          : constant String := Pairs_Directory & "ab.csv";
+   Det_ba          : constant String := Pairs_Directory & "ba.csv";
+   Det_bb          : constant String := Pairs_Directory & "bb.csv";
    Width           : constant Natural := 5000;
    Delta_Val       : Double_Natural;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
-   --  A_Counts         : xxCounts;
-   --  B_Counts         : xxCounts;
+   A_Counts         : xxCounts;
+   B_Counts         : xxCounts;
    --  Min_Width        : Float;
    --  Max_Width        : Float;
    Num_Matches         : Natural;
@@ -52,6 +56,10 @@ begin
         Integer'Image (Count_Text_File_Lines (Matched_Det)) & " lines");
 
    Num_Matches := Number_Of_Matches (Matched_Det);
+
+   Select_Data (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb,
+      A_Counts, B_Counts, Selected_Det_Pairs);
+
    --  Num_aa_Matches := Number_Of_Matches (Matched_Det);
    --  Num_ab_Matches := Number_Of_Matches (OEM_ab);
    --  Num_ba_Matches := Number_Of_Matches (OEM_ba);
