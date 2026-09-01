@@ -50,7 +50,7 @@ begin
 
    --  Put_Line (Routine_Name & "Detection_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Det_Pairs_In)) & " lines");
-   Match_Detection_Times (Det_Pairs_In, Width, Delta_Val,
+   Match_Detection_Times (Det_Pairs_In, Matched_Det, Width, Delta_Val,
    Num_Found, Selected_Det_Pairs, Data_Length);
    Put_Line (Routine_Name & "Matched_Det file size:" &
         Integer'Image (Count_Text_File_Lines (Matched_Det)) & " lines");

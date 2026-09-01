@@ -51,7 +51,7 @@ package body Process_Detection_Data is
 
    end Load_Data;
 
-   procedure Match_Detection_Times (CSV_AB : String;
+   procedure Match_Detection_Times (CSV_AB, Matched_CSV_AB : String;
        Width : Natural; Delta_Val : Double_Natural; Num_Found : out Natural;
         Selected_Pairs : out Match_List; Num_Rows : Natural := 0) is
       use Setting_Time_Package;
@@ -67,7 +67,7 @@ package body Process_Detection_Data is
       Match_Record : Index_Record;
       Count        : Natural := 0;
       Find_Count   : Natural := 0;
-      
+
       --  Find_Match finds a B record with time in range of A record time.
       --  If found the A and B pair are add to the selected records list.
       procedure Find_Match (A_Curs : Setting_Time_Package.Cursor) is
@@ -109,7 +109,7 @@ package body Process_Detection_Data is
                --  end if;
 
                if Match then
-                  Put_Line (Routine_Name & 
+                  Put_Line (Routine_Name &
                   "Find_All_Matches Match found, Find_Count" &
                      Natural'Image (Find_Count));
                   --  Matched times found within window
@@ -171,7 +171,7 @@ package body Process_Detection_Data is
       Put_Line (Routine_Name & "A_Data.Iterate");
       A_Data.Iterate (Find_Match'Access);
 
-      --  Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
+      Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
 
       --  Put_Line (Routine_Name & "Selected_Pairs length:" &
       --             Double_Natural'Image (Double_Natural (CSV_AB'Length)));

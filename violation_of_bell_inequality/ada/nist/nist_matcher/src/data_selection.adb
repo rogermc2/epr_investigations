@@ -1,7 +1,8 @@
 
 --  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Direct_IO;
+--  with Ada.Direct_IO;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Utils; use Utils;
@@ -9,7 +10,7 @@ with Utils; use Utils;
 package body Data_Selection is
 
    --  Direct_IO line includes line terminator; hence process string_4 as String_5.
-   package Direct_String_5 is new Ada.Direct_IO (String_5);
+   --  package Direct_String_5 is new Ada.Direct_IO (String_5);
 
    procedure Print_W_Record (Message : String; Data : W_Record);
 
@@ -52,19 +53,20 @@ package body Data_Selection is
    --  File Names
      (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb : String;
       A_Count, B_Count  : out xxCounts; Selected_Pairs : Match_List) is
+      use  Ada.Strings.Fixed;
       use Match_Package;
-      use Direct_String_5;
+      --  use Direct_String_5;
       Routine_Name : constant String := "Data_Selection.Select_OEM_Data ";
       Header       : constant String := "A Det,B Det";
       Matched_Size : constant Natural := Count_Text_File_Lines (Matched_Det);
-      Matched_ID   : Direct_String_5.File_Type;
+      --  Matched_ID   : Direct_String_5.File_Type;
+      Matched_ID   : File_Type;
       aa_ID    : Ada.Text_IO.File_Type;
       ab_ID    : Ada.Text_IO.File_Type;
       ba_ID    : Ada.Text_IO.File_Type;
       bb_ID    : Ada.Text_IO.File_Type;
       --  OEM_A_Line   : String_5;
       --  OEM_B_Line   : String_5;
-      Matched_Line : String_5;
       Indices      : Index_Record;
       W_Item       : W_Record;
       Num_aa       : Natural := 0;
@@ -77,25 +79,23 @@ package body Data_Selection is
       Count        : Natural := 0;
       Bad_aa       : Natural := 0;
 
-      procedure Write_Data (File : Ada.Text_IO.File_Type) is
-      begin
-         W_Item.A_Result := Matched_Line (3 .. 4);
-         W_Item.B_Result := Matched_Line (3 .. 4);
-         W_Item.AB_Result := Integer'Image
-           (Integer'Value (W_Item.A_Result) * Integer'Value (W_Item.B_Result));
-         if W_Item.AB_Result = " 1" then
-            W_Item.AB_Result := "+1";
-         end if;
-         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
-                     W_Item.AB_Result);
+     --  procedure Write_Data (File : Ada.Text_IO.File_Type) is
+     --   begin
+     --      W_Item.A_Result := Matched_Line (3 .. 4);
+     --      W_Item.B_Result := Matched_Line (3 .. 4);
+     --      W_Item.AB_Result := Integer'Image
+     --        (Integer'Value (W_Item.A_Result) * Integer'Value (W_Item.B_Result));
+     --      if W_Item.AB_Result = " 1" then
+     --         W_Item.AB_Result := "+1";
+     --      end if;
+     --      Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
+     --                  W_Item.AB_Result);
 
-      end Write_Data;
+     --   end Write_Data;
 
    begin
       Put_Line (Routine_Name & "Matched_Det file length: " &
                   Natural'Image (Matched_Size) & "  lines");
-      Open (Matched_ID, In_File, Matched_Det);
-
       Create (aa_ID, Out_File, Det_aa);
       Create (ab_ID, Out_File, Det_ab);
       Create (ba_ID, Out_File, Det_ba);
@@ -110,46 +110,55 @@ package body Data_Selection is
                   (integer (Match_Package.Length (Selected_Pairs))));
 
       --  Process Selected_Pairs
+      Open (Matched_ID, In_File, Matched_Det);
       while Has_Element (Curs) loop
          item := Element (Curs);
          Count := Count + 1;
          Indices := Item;
-         Read (Matched_ID, Matched_Line, Direct_String_5.Positive_Count (item.A_Index));
-         Read (Matched_ID, Matched_Line, Direct_String_5.Positive_Count (item.B_Index));
+        --  Read (Matched_ID, Matched_Line, Direct_String_5.Positive_Count (item.A_Index));
+        --  Read (Matched_ID, Matched_Line, Direct_String_5.Positive_Count (item.B_Index));
 
-         Count_xx (A_Count, Matched_Line);
-         Count_xx (B_Count, Matched_Line);
-
-         if Matched_Line (1) = 'a' and then Matched_Line (1) = 'a' then
-            Num_aa := Num_aa + 1;
-            W_Item.A_Setting := 'a';
-            W_Item.B_Setting := 'a';
-            Write_Data (aa_ID);
-            if W_Item.A_Result = W_Item.B_Result then
-               Bad_aa := Bad_aa + 1;
+         declare
+            aLine     : constant String := Get_Line (Matched_ID);
+            A_Setting : constant String_2 := aLine (1 .. 2);
+            B_Setting : String_2;
+            Pos       : Natural := Index (aLine (1 .. aLine'Last), ",");
+         begin
+            Pos := Index (aLine (Pos .. aLine'Last), ",");
+            B_Setting := aLine (Pos + 1 .. Pos + 2);
+            --  Count_xx (A_Count, aLine);
+            --  Count_xx (B_Count, aLine);
+            if A_Setting = " 0" and then B_Setting = " 0" then
+               Num_aa := Num_aa + 1;
+               W_Item.A_Setting := 'a';
+               W_Item.B_Setting := 'a';
+               --  Write_Data (aa_ID);
+               if W_Item.A_Result = W_Item.B_Result then
+                  Bad_aa := Bad_aa + 1;
+               end if;
+            elsif A_Setting = " 0" and then B_Setting = " 1" then
+               Num_ab := Num_ab + 1;
+               W_Item.A_Setting := 'a';
+               W_Item.B_Setting := 'b';
+               --  Write_Data (ab_ID);
+            elsif A_Setting = " 1" and then B_Setting = " 0" then
+               Num_ba := Num_ba + 1;
+               W_Item.A_Setting := 'b';
+               W_Item.B_Setting := 'a';
+               --  Write_Data (ba_ID);
+            elsif A_Setting = " 1" and then B_Setting = " 1" then
+               Num_bb := Num_bb + 1;
+               W_Item.A_Setting := 'b';
+               W_Item.B_Setting := 'b';
+               --  Write_Data (bb_ID);
+            else
+               Put_Line (Routine_Name & "Invalid data:");
+               Put ("A index: '" & Double_Positive'Image (item.A_Index));
+               Put ("B index: '" & Double_Positive'Image (item.B_Index));
+               Put_Line (" Matched_Line: '" & aLine & "'");
             end if;
-         elsif Matched_Line (1) = 'a' and then Matched_Line (1) = 'b' then
-            Num_ab := Num_ab + 1;
-            W_Item.A_Setting := 'a';
-            W_Item.B_Setting := 'b';
-            Write_Data (ab_ID);
-         elsif Matched_Line (1) = 'b' and then Matched_Line (1) = 'a' then
-            Num_ba := Num_ba + 1;
-            W_Item.A_Setting := 'b';
-            W_Item.B_Setting := 'a';
-            Write_Data (ba_ID);
-         elsif Matched_Line (1) = 'b' and then Matched_Line (1) = 'b' then
-            Num_bb := Num_bb + 1;
-            W_Item.A_Setting := 'b';
-            W_Item.B_Setting := 'b';
-            Write_Data (bb_ID);
-         else
-            Put_Line (Routine_Name & "Invalid data:");
-            Put ("A index: '" & Double_Positive'Image (item.A_Index));
-            Put ("B index: '" & Double_Positive'Image (item.B_Index));
-            Put_Line (" Matched_Line: '" & Matched_Line & "'");
-         end if;
-         W.Append (W_Item);
+            W.Append (W_Item);
+         end;  -- declare
          Curs := Next (Curs);
       end loop;
 
