@@ -50,13 +50,12 @@ package body Process_Sync_Data is
    procedure Match_Syncs
      (Sync_Pairs_CSV, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
-      Offset : out Double_Natural; Num_Rows : Natural := 0) is
+      Offset : out Double_Natural) is
       use Histogram;
       use Match_Package;
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Sync_Data.Match_Syncs ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
-      Use_Num_Rows : constant Boolean := Num_Rows > 0;
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
       B_Curs       : Setting_Time_Package.Cursor := B_Data.First;
@@ -72,9 +71,7 @@ package body Process_Sync_Data is
          Match     : Boolean := False;
          begin
             Count := Count + 1;
-            if Use_Num_Rows and Count > Num_Rows then
-               null;
-            elsif Has_Element (B_Curs) then
+            if Has_Element (B_Curs) then
                B_Item := Element (B_Curs);
                B_Time := B_Item.Time;
                --  Move B_Index forward until B_Value is >= (A_Value - Width)

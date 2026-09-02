@@ -53,12 +53,11 @@ package body Process_Detection_Data is
 
    procedure Match_Detection_Times (CSV_AB, Matched_CSV_AB : String;
        Width : Natural; Delta_Val : Double_Natural; Num_Found : out Natural;
-        Selected_Pairs : out Match_List; Num_Rows : Natural := 0) is
+        Selected_Pairs : out Match_List) is
       use Setting_Time_Package;
       Routine_Name : constant String :=
        "Process_Detection_Data.Match_Detection_Times ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
-      Use_Num_Rows : constant Boolean := Num_Rows > 0;
       Item         : Setting_Time_Record;
       A_Data       : Setting_Time_Vector;
       B_Data       : Setting_Time_Vector;
@@ -88,9 +87,7 @@ package body Process_Detection_Data is
             B_Val_Min := A_Value - D_Width;
          end if;
 
-         if Use_Num_Rows and Count > Num_Rows then
-            null;
-         elsif Has_Element (B_Curs) then
+         if Has_Element (B_Curs) then
             --  Find a minimum acceptable B value.
             B_Value := Element (B_Curs).Time;
             --  Move B_Index forward until B_Value is >= (A_Value - Width)

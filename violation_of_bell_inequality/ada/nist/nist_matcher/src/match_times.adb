@@ -21,8 +21,6 @@ procedure Match_Times is
    Det_bb          : constant String := Pairs_Directory & "bb.csv";
    Width           : constant Natural := 5000;
    Delta_Val       : Double_Natural;
-   --  **** For normal use set Data_Length to 0
-   Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
    A_Counts         : xxCounts;
    B_Counts         : xxCounts;
@@ -39,7 +37,7 @@ begin
    --  Put_Line (Routine_Name & "Sync_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Sync_Pairs_In)) & " lines");
    Match_Syncs (Sync_Pairs_In, Matched_Sync, Width, Num_Found,
-               Selected_Sync_Pairs, Delta_Val, Data_Length);
+               Selected_Sync_Pairs, Delta_Val);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
@@ -51,10 +49,12 @@ begin
    --  Put_Line (Routine_Name & "Detection_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Det_Pairs_In)) & " lines");
    Match_Detection_Times (Det_Pairs_In, Matched_Det, Width, Delta_Val,
-   Num_Found, Selected_Det_Pairs, Data_Length);
+   Num_Found, Selected_Det_Pairs);
    Put_Line (Routine_Name & "Matched_Det file size:" &
         Integer'Image (Count_Text_File_Lines (Matched_Det)) & " lines");
-
+   Put_Line (Routine_Name & "Selected_Det_Pairs length " &
+          integer'Image
+          (integer (Match_Package.Length (Selected_Det_Pairs))));
    Num_Matches := Number_Of_Matches (Matched_Det);
 
    Select_Data (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb,

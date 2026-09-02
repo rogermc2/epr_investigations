@@ -107,8 +107,8 @@ package body Data_Selection is
       Put_Line (ba_ID, Header);
       Put_Line (bb_ID, Header);
       Put_Line (Routine_Name & "Selected_Pairs length " &
-                  integer'Image
-                  (integer (Match_Package.Length (Selected_Pairs))));
+          integer'Image
+          (integer (Match_Package.Length (Selected_Pairs))));
 
       --  Process Selected_Pairs
       Open (Matched_ID, In_File, Matched_Det);
@@ -127,6 +127,10 @@ package body Data_Selection is
          begin
             Pos := Index (aLine (Pos .. aLine'Last), ",");
             B_Setting := aLine (Pos + 1 .. Pos + 2);
+            if Count < 5 then
+            Put_Line (Routine_Name & "Pos, : " & B_Setting);
+            end if;
+
             Count_xx (A_Count, aLine);
             Count_xx (B_Count, aLine);
             if A_Setting = " 0" and then B_Setting = " 0" then
