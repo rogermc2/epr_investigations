@@ -79,19 +79,20 @@ package body Data_Selection is
       Count        : Natural := 0;
       Bad_aa       : Natural := 0;
 
-     --  procedure Write_Data (File : Ada.Text_IO.File_Type) is
-     --   begin
-     --      W_Item.A_Result := Matched_Line (3 .. 4);
-     --      W_Item.B_Result := Matched_Line (3 .. 4);
-     --      W_Item.AB_Result := Integer'Image
-     --        (Integer'Value (W_Item.A_Result) * Integer'Value (W_Item.B_Result));
-     --      if W_Item.AB_Result = " 1" then
-     --         W_Item.AB_Result := "+1";
-     --      end if;
-     --      Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
-     --                  W_Item.AB_Result);
+      procedure Write_Data (File : Ada.Text_IO.File_Type;
+             A_Result, B_Result : Character) is
+             A         : constant String_2 := " " & A_Result;
+             B         : constant String_2 := " " & B_Result;
+             AB_Result : String_2;
+         begin
+         AB_Result := Integer'Image
+           (Integer'Value (A) * Integer'Value (B));
+         if AB_Result = " 1" then
+            AB_Result := "+1";
+         end if;
+         Put_Line (File, A & "," & B & "," & AB_Result);
 
-     --   end Write_Data;
+      end Write_Data;
 
    begin
       Put_Line (Routine_Name & "Matched_Det file length: " &
@@ -126,13 +127,13 @@ package body Data_Selection is
          begin
             Pos := Index (aLine (Pos .. aLine'Last), ",");
             B_Setting := aLine (Pos + 1 .. Pos + 2);
-            --  Count_xx (A_Count, aLine);
-            --  Count_xx (B_Count, aLine);
+            Count_xx (A_Count, aLine);
+            Count_xx (B_Count, aLine);
             if A_Setting = " 0" and then B_Setting = " 0" then
                Num_aa := Num_aa + 1;
                W_Item.A_Setting := 'a';
                W_Item.B_Setting := 'a';
-               --  Write_Data (aa_ID);
+               Write_Data (aa_ID, W_Item.A_Setting, W_Item.B_Setting);
                if W_Item.A_Result = W_Item.B_Result then
                   Bad_aa := Bad_aa + 1;
                end if;
@@ -140,17 +141,17 @@ package body Data_Selection is
                Num_ab := Num_ab + 1;
                W_Item.A_Setting := 'a';
                W_Item.B_Setting := 'b';
-               --  Write_Data (ab_ID);
+               Write_Data (ab_ID, W_Item.A_Setting, W_Item.B_Setting);
             elsif A_Setting = " 1" and then B_Setting = " 0" then
                Num_ba := Num_ba + 1;
                W_Item.A_Setting := 'b';
                W_Item.B_Setting := 'a';
-               --  Write_Data (ba_ID);
+               Write_Data (ba_ID, W_Item.A_Setting, W_Item.B_Setting);
             elsif A_Setting = " 1" and then B_Setting = " 1" then
                Num_bb := Num_bb + 1;
                W_Item.A_Setting := 'b';
                W_Item.B_Setting := 'b';
-               --  Write_Data (bb_ID);
+               Write_Data (bb_ID, W_Item.A_Setting, W_Item.B_Setting);
             else
                Put_Line (Routine_Name & "Invalid data:");
                Put ("A index: '" & Double_Positive'Image (item.A_Index));
