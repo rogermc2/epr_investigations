@@ -4,6 +4,7 @@ with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with NIST_Utils; use NIST_Utils;
+with Printing; use Printing;
 
 package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
@@ -76,8 +77,7 @@ package body Process_Detection_Data is
          Match     : Boolean := False;
       begin
          Count := Count + 1;
-         Find_Count := Find_Count + 1;
-         --  if Find_Count < 6 then
+         --  if Count < 5 then
          --     Put_Line (Routine_Name & "Find_All_Matches Find_Count:" &
          --           Natural'Image (Find_Count));
          --  end if;
@@ -100,12 +100,13 @@ package body Process_Detection_Data is
             if Has_Element (B_Curs) then
                B_Value := Element (B_Curs).Time;
                Match := Abs (B_Value - A_Value) <= D_Width;
-               --  if Find_Count < 6 then
-               --     Put_Line (Routine_Name & "Find_All_Matches B_Value:" &
-               --           Double_Natural'Image (B_Value));
-               --  end if;
+               if Find_Count < 4 then
+                 Put_Line (Routine_Name & "Find_All_Matches B_Value:" &
+                       Double_Natural'Image (B_Value));
+               end if;
 
                if Match then
+                  Find_Count := Find_Count + 1;
                   Put_Line (Routine_Name &
                   "Find_All_Matches Match found, Find_Count" &
                      Natural'Image (Find_Count));
@@ -165,13 +166,15 @@ package body Process_Detection_Data is
       Next (A_Curs);  --  Skip header
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
-      Put_Line (Routine_Name & "A_Data.Iterate");
       A_Data.Iterate (Find_Match'Access);
 
       Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
-
-      --  Put_Line (Routine_Name & "Selected_Pairs length:" &
+      Put_Line (Routine_Name & "Selected_Det_Pairs length " &
+          integer'Image
+          (integer (Match_Package.Length (Selected_Pairs))));
+      --  Put_Line (Routine_Name & "Selected_Pairs file length:" &
       --             Double_Natural'Image (Double_Natural (CSV_AB'Length)));
+      Print_Match_List ("Selected_Pairs", Selected_Pairs, 1, 10);
       New_Line;
 
    exception
@@ -214,7 +217,8 @@ package body Process_Detection_Data is
 
       Close (File_ID);
 
-      Put_Line (Routine_Name & "Number of matches: " & Integer'Image (Num_Matches));
+      Put_Line (Routine_Name & "Number of " & File_Name & "  matches: " &
+       Integer'Image (Num_Matches));
       return Num_Matches;
 
    exception

@@ -2,7 +2,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Data_Selection; use Data_Selection;
---  with Printing; use Printing;
+with Printing; use Printing;
 with Process_Detection_Data; use Process_Detection_Data;
 with Process_Sync_Data; use Process_Sync_Data;
 with Types; use Types;
@@ -41,7 +41,7 @@ begin
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
-      --  Print_Match_List ("Selected_Pairs", Selected_Sync_Pairs, 1, 10);
+      Print_Match_List ("Selected_Pairs", Selected_Sync_Pairs, 1, 10);
    else
       Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
@@ -57,8 +57,8 @@ begin
           (integer (Match_Package.Length (Selected_Det_Pairs))));
    Num_Matches := Number_Of_Matches (Matched_Det);
 
-   Select_Data (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb,
-      A_Counts, B_Counts, Selected_Det_Pairs);
+   --  Select_Data (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb,
+   --   A_Counts, B_Counts, Selected_Det_Pairs);
 
    --  Num_aa_Matches := Number_Of_Matches (Matched_Det);
    --  Num_ab_Matches := Number_Of_Matches (OEM_ab);
