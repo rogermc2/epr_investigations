@@ -9,6 +9,7 @@ with Printing; use Printing;
 package body Process_Detection_Data is
    procedure Save_Detection_Data (CSV_AB_Data : String;
       Data_A, Data_B : Setting_Time_Vector);
+   procedure Save_Match_List (File_Name : String; Pairs : Match_List);
 
    procedure Load_Data
     (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
@@ -52,16 +53,16 @@ package body Process_Detection_Data is
 
    end Load_Data;
 
-   procedure Match_Detection_Times (CSV_AB, Matched_CSV_AB : String;
-       Width : Natural; Delta_Val : Double_Natural; Num_Found : out Natural;
+   procedure Match_Detection_Times (CSV_AB_In, Matched_CSV_AB : String;
+       Width : Natural; Delta_Time : Double_Natural; Num_Found : out Natural;
         Selected_Pairs : out Match_List) is
       use Setting_Time_Package;
       Routine_Name : constant String :=
        "Process_Detection_Data.Match_Detection_Times ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
       Item         : Setting_Time_Record;
-      A_Data       : Setting_Time_Vector;
-      B_Data       : Setting_Time_Vector;
+      A_Data       : Setting_Time_Vector := Empty_Vector;
+      B_Data       : Setting_Time_Vector := Empty_Vector;
       A_Curs       : Cursor;
       B_Curs       : Cursor;
       Match_Record : Index_Record;
@@ -71,45 +72,47 @@ package body Process_Detection_Data is
       --  Find_Match finds a B record with time in range of A record time.
       --  If found the A and B pair are add to the selected records list.
       procedure Find_Match (A_Curs : Setting_Time_Package.Cursor) is
-         A_Value   : constant Double_Natural := Element (A_Curs).Time;
-         B_Val_Min : Double_Natural;
-         B_Value   : Double_Natural;
-         Match     : Boolean := False;
+         A_Time     : constant Double_Natural := Element (A_Curs).Time;
+         B_Max_Time : constant Double_Natural := A_Time + D_Width;
+         B_Min_Time : Double_Natural;
+         B_Time     : Double_Natural;
+         Match      : Boolean := False;
       begin
          Count := Count + 1;
          --  if Count < 5 then
-         --     Put_Line (Routine_Name & "Find_All_Matches Find_Count:" &
+         --     Put_Line (Routine_Name & "Find_Matche Find_Count:" &
          --           Natural'Image (Find_Count));
          --  end if;
-         if Double_Integer (A_Value) - Double_Integer (D_Width) < 0 then
-            B_Val_Min := 0;
+         if Double_Integer (A_Time) - Double_Integer (D_Width) < 0 then
+            B_Min_Time := 0;
          else
-            B_Val_Min := A_Value - D_Width;
+            B_Min_Time := A_Time - D_Width;
          end if;
 
          if Has_Element (B_Curs) then
+            B_Time := Element (B_Curs).Time;
+         end if;
+
+         while Has_Element (B_Curs) and then not Match and then
+               B_Time < B_Max_Time loop
             --  Find a minimum acceptable B value.
-            B_Value := Element (B_Curs).Time;
-            --  Move B_Index forward until B_Value is >= (A_Value - Width)
-            while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
-               B_Value := Element (B_Curs).Time;
+            B_Time := Element (B_Curs).Time;
+            --  Move B_Index forward until B_Time is >= (A_Time - Width)
+            while Has_Element (B_Curs) and then B_Time < B_Min_Time loop
+               B_Time := Element (B_Curs).Time;
                Next (B_Curs);
             end loop;
 
-            --  Element (B_Curs) is = or > B_Val_Min
+            --  Element (B_Curs) is = or > B_Min_Time
             if Has_Element (B_Curs) then
-               B_Value := Element (B_Curs).Time;
-               Match := Abs (B_Value - A_Value) <= D_Width;
-               if Find_Count < 4 then
-                 Put_Line (Routine_Name & "Find_All_Matches B_Value:" &
-                       Double_Natural'Image (B_Value));
-               end if;
+               Match := Abs (B_Time - A_Time) <= D_Width;
 
                if Match then
                   Find_Count := Find_Count + 1;
-                  Put_Line (Routine_Name &
-                  "Find_All_Matches Match found, Find_Count" &
-                     Natural'Image (Find_Count));
+                   --  if Find_Count < 4 then
+                   --  Put_Line (Routine_Name & "Find_Match B_Time:" &
+                   --        Double_Natural'Image (B_Time));
+                   --  end if;
                   --  Matched times found within window
                   Match_Record.A_Index := Double_Positive (To_Index (A_Curs));
                   Match_Record.B_Index := Double_Positive (To_Index (B_Curs));
@@ -122,11 +125,7 @@ package body Process_Detection_Data is
                   end if;
                end if;
             end if;
-         end if;
-         if Num_Found < 6 then
-            Put_Line (Routine_Name & "Find_All_Matches Num_Found:" &
-                  Natural'Image (Num_Found));
-         end if;
+         end loop;
 
       exception
          when Error : others =>
@@ -137,26 +136,19 @@ package body Process_Detection_Data is
       end Find_Match;
 
    begin
-      --  CSV_AB file contains four columns of A and B setting and photon
+      --  CSV_AB_In file contains four columns of A and B setting and photon
       --  time data
-      Put_Line (Routine_Name & "Delta_Val:" &
-       Double_Natural'Image (Delta_Val));
-      Load_Data (CSV_AB, A_Data, B_Data);
+      Put_Line (Routine_Name & "Delta_Time:" &
+      Double_Natural'Image (Delta_Time));
+      Load_Data (CSV_AB_In, A_Data, B_Data);
       Align_Timing_Data (A_Data, B_Data);
+
+      --  Adjust B_Data by Delta_Time
       B_Curs := B_Data.First;
       while Has_Element (B_Curs) loop
          Count := Count + 1;
          Item := Element (B_Curs);
-         --  if Count < 4 then
-         --      Put_Line (Routine_Name & "B.Time after alignment:" &
-         --       Double_Natural'Image (Item.Time));
-         --  end if;
-         Item.Time := Item.Time + Delta_Val;
-         --  if Count < 4 then
-         --      Put_Line (Routine_Name & "B.Time after update, offset:" &
-         --       Double_Natural'Image (Item.Time) & "  " &
-         --        Double_Natural'Image (Delta_Val));
-         --  end if;
+         Item.Time := Item.Time + Delta_Time;
          B_Data.Replace_Element (Position => B_Curs, New_Item => Item);
          Next (B_Curs);
       end loop;
@@ -167,14 +159,12 @@ package body Process_Detection_Data is
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
       A_Data.Iterate (Find_Match'Access);
+      Save_Match_List (Matched_CSV_AB, Selected_Pairs);
 
-      Save_Detection_Data (Matched_CSV_AB, A_Data, B_Data);
       Put_Line (Routine_Name & "Selected_Det_Pairs length " &
           integer'Image
           (integer (Match_Package.Length (Selected_Pairs))));
-      --  Put_Line (Routine_Name & "Selected_Pairs file length:" &
-      --             Double_Natural'Image (Double_Natural (CSV_AB'Length)));
-      Print_Match_List ("Selected_Pairs", Selected_Pairs, 1, 10);
+      Print_Match_List ("Selected_Pairs", Selected_Pairs);
       New_Line;
 
    exception
@@ -267,5 +257,25 @@ package body Process_Detection_Data is
                      Exception_Information (Error));
 
    end Save_Detection_Data;
+
+   procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
+      use Match_Package;
+      Routine_Name : constant String := "Process_Data.Save_Match_List ";
+      Match_ID     : File_Type;
+      M_Curs       : Cursor := First (Pairs);
+      Rec          : Index_Record;
+   begin
+      Create (Match_ID, Out_File, File_Name);
+      while Has_Element (M_Curs) loop
+         Rec :=  Element (M_Curs);
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+          Double_Positive'Image (Rec.B_Index));
+         Next (M_Curs);
+      end loop;
+
+      Close (Match_ID);
+      Put_Line (Routine_Name & "Data written to " & File_Name);
+
+   end Save_Match_List;
 
 end Process_Detection_Data;
