@@ -75,12 +75,12 @@ package body Process_Data is
         Line_Num := Line_Num + 1;
 
          Raw_Data_Record'Read (Data_Stream, Raw_Data);
-         --  if Line_Num < 8 then
-         --     Put_Line (Routine_Name & "Raw Data Time_Tag: " &
-         --              Unsigned_8_Byte'Image (Raw_Data.Time_Tag) &
-         --               ", Transfer_ID " &
-         --              Unsigned_2_Byte'Image (Raw_Data.Transfer_ID));
-         --     Print_Raw_Data (Raw_Data);
+         --  if Line_Num < 22 then
+         --     null;
+         --     Put_Line (Routine_Name & "Line_Num: " &
+         --      Double_Natural'Image (Line_Num) & ", Raw Data Channel: " &
+         --              Unsigned_Byte'Image (Raw_Data.Channel));
+         --     --  Print_Raw_Data (Raw_Data);
          --  end if;
 
          case Raw_Data.Channel is
@@ -101,9 +101,9 @@ package body Process_Data is
          Data.Time_Tag := Raw_Data.Time_Tag;
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
 
-         if Line_Num < 8 then
-            Print_Processed_Data (Data);
-         end if;
+         --  if Line_Num < 8 then
+         --     Print_Processed_Data (Data);
+         --  end if;
 
          Click := False;
          Sync_Pulse := False;
@@ -122,6 +122,11 @@ package body Process_Data is
          end case;
 
          if Click then
+            --  Click detected for Pol_Setting at Time_Tag
+            --  Put_Line (Routine_Name & "Click detected at line: " &
+            --     Double_Natural'Image (Line_Num) & ", Pol_Setting: " &
+            --     Pol_Setting & ", Time_Tag: " &
+            --     Unsigned_8_Byte'Image (Data.Time_Tag));
             Put (Det_ID,  Pol_Setting & "," &
                              Unsigned_8_Byte'Image (Data.Time_Tag));
             New_Line (Det_ID);

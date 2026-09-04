@@ -16,18 +16,18 @@ procedure Match_Times is
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
    Matched_Det_Pairs : constant String :=
     Pairs_Directory & "matched_det_pairs.csv";
-   Det_aa          : constant String := Pairs_Directory & "aa.csv";
-   Det_ab          : constant String := Pairs_Directory & "ab.csv";
-   Det_ba          : constant String := Pairs_Directory & "ba.csv";
-   Det_bb          : constant String := Pairs_Directory & "bb.csv";
-   Width           : constant Natural := 50000;
-   Delta_Val       : Double_Natural;
-   Num_Found        : Natural;
-   A_Counts         : xxCounts;
-   B_Counts         : xxCounts;
-   --  Min_Width        : Float;
-   --  Max_Width        : Float;
-   --  Num_Matches         : Natural;
+   Det_aa              : constant String := Pairs_Directory & "aa.csv";
+   Det_ab              : constant String := Pairs_Directory & "ab.csv";
+   Det_ba              : constant String := Pairs_Directory & "ba.csv";
+   Det_bb              : constant String := Pairs_Directory & "bb.csv";
+   Width               : constant Natural := 50000;
+   Delta_Val           : Double_Natural;
+   Num_Found           : Natural;
+   A_Counts            : xxCounts;
+   B_Counts            : xxCounts;
+   --  Min_Width       : Float;
+   --  Max_Width       : Float;
+   Num_Matches         : Natural;
    --  Num_aa_Matches      : Natural;
    --  Num_ab_Matches      : Natural;
    --  Num_ba_Matches      : Natural;
@@ -51,11 +51,17 @@ begin
    --       Integer'Image (Count_Text_File_Lines (Det_Pairs_In)) & " lines");
    Delta_Val := 55000;  --  max 23 at 55000, width 50000
    Match_Detection_Times (Det_Pairs_In, Matched_Det_Pairs, Width, Delta_Val,
-   Num_Found, Selected_Det_Pairs);
+   Num_Matches, Selected_Det_Pairs);
+   if Num_Matches > 0 then
+      Put_Line (Routine_Name & "matched detection pairs found:" &
+       Integer'Image (Num_Matches));
+   else
+      Put_Line (Routine_Name & "No matched detection pairs found!");
+   end if;
+   
    Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");
-   Put_Line (Routine_Name & "Selected_Det_Pairs length " &
-          integer'Image
+   Put_Line (Routine_Name & "Selected_Det_Pairs length " & integer'Image
           (integer (Match_Package.Length (Selected_Det_Pairs))));
    --  Num_Matches := Number_Of_Matches (Matched_Det);
 
