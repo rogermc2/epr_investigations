@@ -7,9 +7,11 @@ with NIST_Utils; use NIST_Utils;
 with Printing; use Printing;
 
 package body Process_Detection_Data is
-   procedure Save_Detection_Data (CSV_AB_Data : String;
+
+   procedure Save_Detection_Data (CSV_AB_In, Matched_CSV_AB : String;
       Data_A, Data_B : Setting_Time_Vector);
-   procedure Save_Match_List (File_Name : String; Pairs : Match_List);
+   procedure Save_Matched_Data (Matched_CSV_AB : String;
+    Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List);
 
    procedure Load_Data
     (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
@@ -55,7 +57,7 @@ package body Process_Detection_Data is
 
    procedure Match_Detection_Times (CSV_AB_In, Matched_CSV_AB : String;
        Width : Natural; Delta_Time : Double_Natural; Num_Found : out Natural;
-        Selected_Pairs : out Match_List) is
+        Selected_Pair_Indices : out Match_List) is
       use Setting_Time_Package;
       Routine_Name : constant String :=
        "Process_Detection_Data.Match_Detection_Times ";
@@ -116,7 +118,7 @@ package body Process_Detection_Data is
                   --  Matched times found within window
                   Match_Record.A_Index := Double_Positive (To_Index (A_Curs));
                   Match_Record.B_Index := Double_Positive (To_Index (B_Curs));
-                  Selected_Pairs.Append (Match_Record);
+                  Selected_Pair_Indices.Append (Match_Record);
                   Num_Found := Num_Found + 1;
                   if Num_Found < 6 then
                      Put_Line (Routine_Name & "Match, A, B index:" &
@@ -154,17 +156,19 @@ package body Process_Detection_Data is
       end loop;
       New_Line;
 
+      Count := 0;
       A_Curs := First (A_Data);
       Next (A_Curs);  --  Skip header
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
       A_Data.Iterate (Find_Match'Access);
-      Save_Match_List (Matched_CSV_AB, Selected_Pairs);
+      Save_Matched_Data (Matched_CSV_AB, A_Data, B_Data,
+       Selected_Pair_Indices);
 
       Put_Line (Routine_Name & "Selected_Det_Pairs length " &
           integer'Image
-          (integer (Match_Package.Length (Selected_Pairs))));
-      Print_Match_List ("Selected_Pairs", Selected_Pairs);
+          (integer (Match_Package.Length (Selected_Pair_Indices))));
+      Print_Match_List ("Selected_Pair_Indices", Selected_Pair_Indices);
       New_Line;
 
    exception
@@ -218,11 +222,11 @@ package body Process_Detection_Data is
 
    end Number_Of_Matches;
 
-   procedure Save_Detection_Data (CSV_AB_Data : String;
+   procedure Save_Detection_Data (CSV_AB_In, Matched_CSV_AB : String;
       Data_A, Data_B : Setting_Time_Vector) is
       use Setting_Time_Package;
       Routine_Name : constant String :=
-       "Process_Detection_Data.Save_NIST_Data ";
+       "Process_Detection_Data.Save_Detection_Data ";
       Out_ID       : File_Type;
       Curs_A       : Setting_Time_Package.Cursor := Data_A.First;
       Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
@@ -231,7 +235,7 @@ package body Process_Detection_Data is
       A_Setting    : Natural;
       B_Setting    : Natural;
    begin
-      Create (Out_ID, Out_File, CSV_AB_Data);
+      Create (Out_ID, Out_File, Matched_CSV_AB);
 
       --  Table Header
       Put_Line (Out_ID, "A Setting,A Time,B Setting,B_Time");
@@ -249,7 +253,7 @@ package body Process_Detection_Data is
       end loop;
 
       Close (Out_ID);
-      Put_Line (Routine_Name & "Data written to " & CSV_AB_Data);
+      Put_Line (Routine_Name & "Data written to " & Matched_CSV_AB);
 
    exception
       when Error : others =>
@@ -258,24 +262,32 @@ package body Process_Detection_Data is
 
    end Save_Detection_Data;
 
-   procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
+   procedure Save_Matched_Data (Matched_CSV_AB : String;
+    Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List) is
       use Match_Package;
-      Routine_Name : constant String := "Process_Data.Save_Match_List ";
+      Routine_Name : constant String :=
+       "Process_Detection_Data.Save_Matched_Data ";
+      --  Curs_A       : Setting_Time_Package.Cursor := Data_A.First;
+      --  Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
+      Item_A       : Setting_Time_Record;
+      Item_B       : Setting_Time_Record;
       Match_ID     : File_Type;
-      M_Curs       : Cursor := First (Pairs);
-      Rec          : Index_Record;
+      Match_Curs   : Cursor := First (Pairs);
+      Match_Rec    : Index_Record;
    begin
-      Create (Match_ID, Out_File, File_Name);
-      while Has_Element (M_Curs) loop
-         Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
-          Double_Positive'Image (Rec.B_Index));
-         Next (M_Curs);
+      Create (Match_ID, Out_File, Matched_CSV_AB);
+      while Has_Element (Match_Curs) loop
+         Match_Rec :=  Element (Match_Curs);
+         Item_A := Data_A.Element (Match_Rec.A_Index);
+         Item_B := Data_B.Element (Match_Rec.B_Index);
+         Put_Line (Match_ID, Channel_Type'Image (Item_A.Setting) &
+          ", " & Channel_Type'Image (Item_B.Setting));
+         Next (Match_Curs);
       end loop;
 
       Close (Match_ID);
-      Put_Line (Routine_Name & "Data written to " & File_Name);
+      Put_Line (Routine_Name & "Data written to " & Matched_CSV_AB);
 
-   end Save_Match_List;
+   end Save_Matched_Data;
 
 end Process_Detection_Data;

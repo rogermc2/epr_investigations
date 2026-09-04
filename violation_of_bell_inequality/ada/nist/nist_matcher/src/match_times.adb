@@ -14,8 +14,8 @@ procedure Match_Times is
    Det_Pairs_In    : constant String := Pairs_Directory & "combined_det.csv";
    Sync_Pairs_In   : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
-   Matched_Indices  : constant String :=
-    Pairs_Directory & "matched_det_indices.csv";
+   Matched_Det_Pairs : constant String :=
+    Pairs_Directory & "matched_det_pairs.csv";
    Det_aa          : constant String := Pairs_Directory & "aa.csv";
    Det_ab          : constant String := Pairs_Directory & "ab.csv";
    Det_ba          : constant String := Pairs_Directory & "ba.csv";
@@ -49,22 +49,23 @@ begin
 
    --  Put_Line (Routine_Name & "Detection_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Det_Pairs_In)) & " lines");
-   Match_Detection_Times (Det_Pairs_In, Matched_Indices, Width, Delta_Val,
+   Delta_Val := 55000;  --  max 23 at 55000, width 50000
+   Match_Detection_Times (Det_Pairs_In, Matched_Det_Pairs, Width, Delta_Val,
    Num_Found, Selected_Det_Pairs);
-   Put_Line (Routine_Name & "Matched_Det_Indices file size:" &
-        Integer'Image (Count_Text_File_Lines (Matched_Indices)) & " lines");
+   Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
+        Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");
    Put_Line (Routine_Name & "Selected_Det_Pairs length " &
           integer'Image
           (integer (Match_Package.Length (Selected_Det_Pairs))));
    --  Num_Matches := Number_Of_Matches (Matched_Det);
 
-   --  Select_Data (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb,
-   --   A_Counts, B_Counts, Selected_Det_Pairs);
+   --  Select_Data (Matched_Indices, Det_aa, Det_ab, Det_ba, Det_bb,
+   --     A_Counts, B_Counts, Selected_Det_Pairs);
 
-   --  Num_aa_Matches := Number_Of_Matches (Matched_Det);
-   --  Num_ab_Matches := Number_Of_Matches (OEM_ab);
-   --  Num_ba_Matches := Number_Of_Matches (OEM_ba);
-   --  Num_bb_Matches := Number_Of_Matches (OEM_bb);
+   --  Num_aa_Matches := Number_Of_Matches (Det_aa);
+   --  Num_ab_Matches := Number_Of_Matches (Det_ab);
+   --  Num_ba_Matches := Number_Of_Matches (Det_ba);
+   --  Num_bb_Matches := Number_Of_Matches (Det_bb);
    --  Put_Line (Routine_Name & "Number of detection matches :" &
    --             Integer'Image (Num_Matches));
    --  Put_Line (Routine_Name & "Number of ab matches :" &
