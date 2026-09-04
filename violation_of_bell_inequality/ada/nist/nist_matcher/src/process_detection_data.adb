@@ -8,8 +8,8 @@ with Printing; use Printing;
 
 package body Process_Detection_Data is
 
-   procedure Save_Detection_Data (CSV_AB_In, Matched_CSV_AB : String;
-      Data_A, Data_B : Setting_Time_Vector);
+   --  procedure Save_Detection_Data (CSV_AB_In, Matched_CSV_AB : String;
+   --     Data_A, Data_B : Setting_Time_Vector);
    procedure Save_Matched_Data (Matched_CSV_AB : String;
     Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List);
 
@@ -63,8 +63,8 @@ package body Process_Detection_Data is
        "Process_Detection_Data.Match_Detection_Times ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
       Item         : Setting_Time_Record;
-      A_Data       : Setting_Time_Vector := Empty_Vector;
-      B_Data       : Setting_Time_Vector := Empty_Vector;
+      A_Data       : Setting_Time_Vector;
+      B_Data       : Setting_Time_Vector;
       A_Curs       : Cursor;
       B_Curs       : Cursor;
       Match_Record : Index_Record;
@@ -222,53 +222,52 @@ package body Process_Detection_Data is
 
    end Number_Of_Matches;
 
-   procedure Save_Detection_Data (CSV_AB_In, Matched_CSV_AB : String;
-      Data_A, Data_B : Setting_Time_Vector) is
-      use Setting_Time_Package;
-      Routine_Name : constant String :=
-       "Process_Detection_Data.Save_Detection_Data ";
-      Out_ID       : File_Type;
-      Curs_A       : Setting_Time_Package.Cursor := Data_A.First;
-      Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
-      Item_A       : Setting_Time_Record;
-      Item_B       : Setting_Time_Record;
-      A_Setting    : Natural;
-      B_Setting    : Natural;
-   begin
-      Create (Out_ID, Out_File, Matched_CSV_AB);
+   --  procedure Save_Detection_Data (CSV_AB_In, Matched_CSV_AB : String;
+   --     Data_A, Data_B : Setting_Time_Vector) is
+   --     use Setting_Time_Package;
+   --     Routine_Name : constant String :=
+   --      "Process_Detection_Data.Save_Detection_Data ";
+   --     Out_ID       : File_Type;
+   --     Curs_A       : Setting_Time_Package.Cursor := Data_A.First;
+   --     Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
+   --     Item_A       : Setting_Time_Record;
+   --     Item_B       : Setting_Time_Record;
+   --     A_Setting    : Natural;
+   --     B_Setting    : Natural;
+   --  begin
+   --     Create (Out_ID, Out_File, Matched_CSV_AB);
 
-      --  Table Header
-      Put_Line (Out_ID, "A Setting,A Time,B Setting,B_Time");
-      while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
-         Item_A := Element (Curs_A);
-         Item_B := Element (Curs_B);
-         A_Setting := Channel_Type'Pos (Item_A.Setting) - 1;
-         B_Setting := Channel_Type'Pos (Item_B.Setting) - 1;
-         Put_Line (Out_ID, Natural'Image (A_Setting) & ", " &
-          Double_Natural'Image (Item_A.Time) & ", " &
-           Natural'Image (B_Setting) & ", " &
-            Double_Natural'Image (Item_B.Time));
-         Next (Curs_A);
-         Next (Curs_B);
-      end loop;
+   --     --  Table Header
+   --     Put_Line (Out_ID, "A Setting,A Time,B Setting,B_Time");
+   --     while Has_Element (Curs_A) and then Has_Element (Curs_B) loop
+   --        Item_A := Element (Curs_A);
+   --        Item_B := Element (Curs_B);
+   --        A_Setting := Channel_Type'Pos (Item_A.Setting) - 1;
+   --        B_Setting := Channel_Type'Pos (Item_B.Setting) - 1;
+   --        Put_Line (Out_ID, Natural'Image (A_Setting) & ", " &
+   --         Double_Natural'Image (Item_A.Time) & ", " &
+   --          Natural'Image (B_Setting) & ", " &
+   --           Double_Natural'Image (Item_B.Time));
+   --        Next (Curs_A);
+   --        Next (Curs_B);
+   --     end loop;
 
-      Close (Out_ID);
-      Put_Line (Routine_Name & "Data written to " & Matched_CSV_AB);
+   --     Close (Out_ID);
+   --     Put_Line (Routine_Name & "Data written to " & Matched_CSV_AB);
 
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & "Exception information:  " &
-                     Exception_Information (Error));
+   --  exception
+   --     when Error : others =>
+   --        Put_Line (Routine_Name & "Exception information:  " &
+   --                    Exception_Information (Error));
 
-   end Save_Detection_Data;
+   --  end Save_Detection_Data;
 
    procedure Save_Matched_Data (Matched_CSV_AB : String;
     Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List) is
       use Match_Package;
       Routine_Name : constant String :=
        "Process_Detection_Data.Save_Matched_Data ";
-      --  Curs_A       : Setting_Time_Package.Cursor := Data_A.First;
-      --  Curs_B       : Setting_Time_Package.Cursor := Data_B.First;
+      Header       : constant String := "A Setting,   B Setting";
       Item_A       : Setting_Time_Record;
       Item_B       : Setting_Time_Record;
       Match_ID     : File_Type;
@@ -276,6 +275,7 @@ package body Process_Detection_Data is
       Match_Rec    : Index_Record;
    begin
       Create (Match_ID, Out_File, Matched_CSV_AB);
+      Put_Line (Match_ID, Header);
       while Has_Element (Match_Curs) loop
          Match_Rec :=  Element (Match_Curs);
          Item_A := Data_A.Element (Match_Rec.A_Index);

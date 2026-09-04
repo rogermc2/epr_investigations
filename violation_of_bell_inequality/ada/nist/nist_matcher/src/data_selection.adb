@@ -1,5 +1,4 @@
 
---  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 --  with Ada.Direct_IO;
 with Ada.Strings.Fixed;
@@ -50,47 +49,44 @@ package body Data_Selection is
    end Print_W_Record;
 
    procedure Select_Data
-   --  File Names
+      --  File Names
      (Matched_Det, Det_aa, Det_ab, Det_ba, Det_bb : String;
       A_Count, B_Count  : out xxCounts; Selected_Pairs : Match_List) is
       use  Ada.Strings.Fixed;
       use Match_Package;
-      --  use Direct_String_5;
-      Routine_Name : constant String := "Data_Selection.Select_OEM_Data ";
+      Routine_Name : constant String := "Data_Selection.Select_Data ";
       Header       : constant String := "A Det,B Det";
       Matched_Size : constant Natural := Count_Text_File_Lines (Matched_Det);
-      --  Matched_ID   : Direct_String_5.File_Type;
       Matched_ID   : File_Type;
-      aa_ID    : Ada.Text_IO.File_Type;
-      ab_ID    : Ada.Text_IO.File_Type;
-      ba_ID    : Ada.Text_IO.File_Type;
-      bb_ID    : Ada.Text_IO.File_Type;
-      --  OEM_A_Line   : String_5;
-      --  OEM_B_Line   : String_5;
+      aa_ID        : Ada.Text_IO.File_Type;
+      ab_ID        : Ada.Text_IO.File_Type;
+      ba_ID        : Ada.Text_IO.File_Type;
+      bb_ID        : Ada.Text_IO.File_Type;
       Indices      : Index_Record;
-      W_Item       : W_Record;
+      W_Item       : Nist_W_Record;
       Num_aa       : Natural := 0;
       Num_ab       : Natural := 0;
       Num_ba       : Natural := 0;
       Num_bb       : Natural := 0;
       Curs         : Cursor := Selected_Pairs.First;
       Item         : Index_Record;
-      W            : W_List;
+      W            : Nist_W_List;
       Count        : Natural := 0;
-      Bad_aa       : Natural := 0;
+      --  Bad_aa       : Natural := 0;
 
       procedure Write_Data (File : Ada.Text_IO.File_Type;
-             A_Result, B_Result : Character) is
-             A         : constant String_2 := " " & A_Result;
-             B         : constant String_2 := " " & B_Result;
-             AB_Result : String_2;
+                            W_Item : Nist_W_Record) is
+             A         : constant String_2 := " " & W_Item.A_Setting;
+             B         : constant String_2 := " " & W_Item.B_Setting;
+            --   AB_Result : String_2;
          begin
-         AB_Result := Integer'Image
-           (Integer'Value (A) * Integer'Value (B));
-         if AB_Result = " 1" then
-            AB_Result := "+1";
-         end if;
-         Put_Line (File, A & "," & B & "," & AB_Result);
+         --  AB_Result := Integer'Image
+         --    (Integer'Value (A) * Integer'Value (B));
+         --  if AB_Result = " 1" then
+         --     AB_Result := "+1";
+         --  end if;
+         --  Put_Line (File, A & "," & B & "," & AB_Result);
+         Put_Line (File, A & "," & B );
 
       end Write_Data;
 
@@ -112,50 +108,50 @@ package body Data_Selection is
 
       --  Process Selected_Pairs
       Open (Matched_ID, In_File, Matched_Det);
+      Skip_Line (Matched_ID);  -- skip header line
       while Has_Element (Curs) loop
          item := Element (Curs);
          Count := Count + 1;
          Indices := Item;
-        --  Read (Matched_ID, Matched_Line, Direct_String_5.Positive_Count (item.A_Index));
-        --  Read (Matched_ID, Matched_Line, Direct_String_5.Positive_Count (item.B_Index));
 
          declare
             aLine     : constant String := Get_Line (Matched_ID);
-            A_Setting : constant String_2 := aLine (1 .. 2);
-            B_Setting : String_2;
+            A_Setting : Channel_Type;
+            B_Setting : Channel_Type;
             Pos       : Natural := Index (aLine (1 .. aLine'Last), ",");
          begin
             Pos := Index (aLine (Pos .. aLine'Last), ",");
-            B_Setting := aLine (Pos + 1 .. Pos + 2);
-            if Count < 5 then
-            Put_Line (Routine_Name & "Pos, : " & B_Setting);
-            end if;
+            A_Setting := Channel_Type'Value (aLine (1 .. Pos - 1));
+            B_Setting := Channel_Type'Value (aLine (Pos + 2 .. aLine'Last));
 
             Count_xx (A_Count, aLine);
             Count_xx (B_Count, aLine);
-            if A_Setting = " 0" and then B_Setting = " 0" then
+
+            if A_Setting = Polarizer_0 and then B_Setting = Polarizer_0 then
                Num_aa := Num_aa + 1;
                W_Item.A_Setting := 'a';
                W_Item.B_Setting := 'a';
-               Write_Data (aa_ID, W_Item.A_Setting, W_Item.B_Setting);
-               if W_Item.A_Result = W_Item.B_Result then
-                  Bad_aa := Bad_aa + 1;
-               end if;
-            elsif A_Setting = " 0" and then B_Setting = " 1" then
+               Write_Data (aa_ID, W_Item);
+               --  if W_Item.A_Result = W_Item.B_Result then
+               --     Bad_aa := Bad_aa + 1;
+               --  end if;
+            --  elsif A_Setting = " 0" and then B_Setting = " 1" then
+            elsif A_Setting = Polarizer_0 and then B_Setting = Polarizer_45 then
                Num_ab := Num_ab + 1;
                W_Item.A_Setting := 'a';
                W_Item.B_Setting := 'b';
-               Write_Data (ab_ID, W_Item.A_Setting, W_Item.B_Setting);
-            elsif A_Setting = " 1" and then B_Setting = " 0" then
+               Write_Data (ab_ID, W_Item);
+            --  elsif A_Setting = " 1" and then B_Setting = " 0" then
+            elsif A_Setting = Polarizer_45 and then B_Setting = Polarizer_0 then
                Num_ba := Num_ba + 1;
                W_Item.A_Setting := 'b';
                W_Item.B_Setting := 'a';
-               Write_Data (ba_ID, W_Item.A_Setting, W_Item.B_Setting);
-            elsif A_Setting = " 1" and then B_Setting = " 1" then
+               Write_Data (ba_ID, W_Item);
+            elsif A_Setting = Polarizer_45 and then B_Setting = Polarizer_45 then
                Num_bb := Num_bb + 1;
                W_Item.A_Setting := 'b';
                W_Item.B_Setting := 'b';
-               Write_Data (bb_ID, W_Item.A_Setting, W_Item.B_Setting);
+               Write_Data (bb_ID, W_Item);
             else
                Put_Line (Routine_Name & "Invalid data:");
                Put ("A index: '" & Double_Positive'Image (item.A_Index));
@@ -175,7 +171,7 @@ package body Data_Selection is
 
       Put_Line (Routine_Name & "aa length: " &
                   Integer'Image (Count_Text_File_Lines (Det_aa)));
-      Put_Line (Routine_Name & "**** bad aa Count:"  & Integer'Image (Bad_aa));
+      --  Put_Line (Routine_Name & "**** bad aa Count:"  & Integer'Image (Bad_aa));
 
       Put_Line (Routine_Name & "Number of coincident aa detections: " &
                   Integer'Image (Num_aa));
