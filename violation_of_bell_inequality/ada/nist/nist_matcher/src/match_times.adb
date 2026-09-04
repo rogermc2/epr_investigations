@@ -58,15 +58,15 @@ begin
    else
       Put_Line (Routine_Name & "No matched detection pairs found!");
    end if;
-   
+
    Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
         Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");
    Put_Line (Routine_Name & "Selected_Det_Pairs length " & integer'Image
           (integer (Match_Package.Length (Selected_Det_Pairs))));
    --  Num_Matches := Number_Of_Matches (Matched_Det);
 
-   --  Select_Data (Matched_Indices, Det_aa, Det_ab, Det_ba, Det_bb,
-   --     A_Counts, B_Counts, Selected_Det_Pairs);
+   Select_Data (Matched_Det_Pairs, Det_aa, Det_ab, Det_ba, Det_bb,
+        A_Counts, B_Counts, Selected_Det_Pairs);
 
    --  Num_aa_Matches := Number_Of_Matches (Det_aa);
    --  Num_ab_Matches := Number_Of_Matches (Det_ab);
