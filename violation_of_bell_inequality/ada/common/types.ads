@@ -96,15 +96,6 @@ package Types is
      Ada.Containers.Vectors (Natural, W_Record);
    subtype W_List is W_Package.Vector;
 
-   type Nist_W_Record is record
-      A_Setting  : Character;
-      B_Setting  : Character;
-   end record;
-
-   package Nist_W_Package is new
-     Ada.Containers.Vectors (Natural, Nist_W_Record);
-   subtype Nist_W_List is Nist_W_Package.Vector;
-
    type Setting_Time_Record is record
       Setting : Channel_Type;
       Time    : Double_Natural;
