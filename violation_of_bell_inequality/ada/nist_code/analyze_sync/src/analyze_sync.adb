@@ -4,6 +4,7 @@ with Process_Data;  use Process_Data;
 
 procedure Analyze_Sync is
    use Raw_Data_Package;
+   use Sync_Data_Package;
    File_Extension_Alice : constant String :=
     "23_55_CH_pockel_100kHz.run.ClassicalRNGXOR";
    --   "02_31_CH_pockel_100kHz.run.ClassicalRNGXOR_3";
@@ -13,12 +14,20 @@ procedure Analyze_Sync is
    Base_Path          : constant String := "../data/";
    Alice_Raw          : Raw_Data_List;
    Alice_Curs         : Raw_Data_Package.Cursor := Alice_Raw.First;
-   Syncs_Alice        : Sync_Access;
-   Syncs_Diff_Alice   : Sync_Access;
+   --  Syncs_Alice        : Sync_Access;
+   Syncs_Alice        : Sync_Data_List;
+   Syncs_Alice_Curs   : Sync_Data_Package.Cursor := Syncs_Alice.First;
+   --  Syncs_Diff_Alice   : Sync_Access;
+   Syncs_Diff_Alice   : Sync_Data_List;
+   Syncs_Alice_Diff_Curs  : Sync_Data_Package.Cursor := Syncs_Diff_Alice.First;
    Bob_Raw            : Raw_Data_List;
    Bob_Curs           : Raw_Data_Package.Cursor := Bob_Raw.First;
-   Syncs_Bob          : Sync_Access;
-   Syncs_Diff_Bob     : Sync_Access;
+   --  Syncs_Bob          : Sync_Access;
+   Syncs_Bob          : Sync_Data_List;
+   --  Syncs_Diff_Bob     : Sync_Access;
+   Syncs_Diff_Bob     : Sync_Data_List;
+   --  Syncs_Bob          : Sync_Access;
+   --  Syncs_Diff_Bob     : Sync_Access;
 
    --  Temporary storage for filtering
    Indices_Alice    : Index_Access;
@@ -32,29 +41,22 @@ begin
 
    --  print (where(alice_raw[:,1] == 0))
    Put ("(array([");
-   --  declare
-   --     First : Boolean := True;
-   --  begin
-      --  for index in Alice_Raw'Range loop
-         --  if Alice_Raw (index)(1) = 0 then
    while Has_Element (Alice_Curs) loop
       if Element (Alice_Curs) (1) = 0 then
          if not First then
             Put (", ");
          end if;
-         --  Put (index'Image);
-         Put (Extended_Index'Image (To_Index (Alice_Curs)));
+
+         Put (Raw_Data_Package.Extended_Index'Image (To_Index (Alice_Curs)));
          First := False;
          Next (Alice_Curs);
       end if;
    end loop;
-   --  end;
    Put_Line ("], dtype=int64),)");
 
    --  Alice: finding syncs
    Put_Line ("Alice: finding syncs");
    Syncs_Alice := Get_Syncs (Alice_Raw);
-   --  Free (Alice_Raw); --  del alice_raw
 
    --  Alice: calculating sync differences
    Put_Line ("Alice: calculating sync differences");
@@ -67,7 +69,6 @@ begin
 
    Put_Line ("Bob: finding syncs");
    Syncs_Bob := Get_Syncs (Bob_Raw);
-   --  Free (Bob_Raw); --  del bob_raw
 
    --  Bob: calculating sync differences
    Put_Line ("Bob: calculating sync differences");
@@ -81,32 +82,46 @@ begin
 
    --  Alice low values
    Put ("[");
-   declare
-      First : Boolean := True;
-   begin
-      for I in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (I) < 129000 then
-            if not First then
-               Put (" ");
-            end if;
-            Put (Syncs_Diff_Alice (I)'Image);
-            First := False;
+   --  declare
+   --     First : Boolean := True;
+   --  begin
+   --     for index in Syncs_Diff_Alice'Range loop
+   --        if Syncs_Diff_Alice (index) < 129000 then
+   --           if not First then
+   --              Put (" ");
+   --           end if;
+   --           Put (Syncs_Diff_Alice (index)'Image);
+   --           First := False;
+   --        end if;
+   --     end loop;
+   --  end;
+
+   First := True;
+   while Has_Element (Syncs_Alice_Diff_Curs) loop
+      if Element (Syncs_Alice_Diff_Curs) < 129000  then
+         if not First then
+            Put (", ");
          end if;
-      end loop;
-   end;
-   Put_Line ("]");
+
+         Put (Sync_Data_Package.Extended_Index'Image
+          (To_Index (Syncs_Alice_Diff_Curs)));
+         First := False;
+      end if;
+      Next (Syncs_Alice_Diff_Curs);
+   end loop;
+      Put_Line ("]");
 
    --  Bob low values
    Put ("[");
    declare
       First : Boolean := True;
    begin
-      for I in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (I) < 129000 then
+      for index in Syncs_Diff_Bob'Range loop
+         if Syncs_Diff_Bob (index) < 129000 then
             if not First then
                Put (" ");
             end if;
-            Put (Syncs_Diff_Bob (I)'Image);
+            Put (Syncs_Diff_Bob (index)'Image);
             First := False;
          end if;
       end loop;
@@ -120,8 +135,8 @@ begin
    declare
       Count : Natural := 0;
    begin
-      for I in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (I) < 129000 then
+      for index in Syncs_Diff_Alice'Range loop
+         if Syncs_Diff_Alice (index) < 129000 then
             Count := Count + 1;
          end if;
       end loop;
@@ -132,8 +147,8 @@ begin
    declare
       Count : Natural := 0;
    begin
-      for I in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (I) < 129000 then
+      for index in Syncs_Diff_Bob'Range loop
+         if Syncs_Diff_Bob (index) < 129000 then
             Count := Count + 1;
          end if;
       end loop;
@@ -147,9 +162,9 @@ begin
    Indices_Alice := Where_Less (Syncs_Diff_Alice, 129000);
    Diff_Indices_Res := Diff_Indices (Indices_Alice);
    Put ("[array([");
-   for I in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (I)'Image);
-      if I /= Diff_Indices_Res'Last then
+   for index in Diff_Indices_Res'Range loop
+      Put (Diff_Indices_Res (index)'Image);
+      if index /= Diff_Indices_Res'Last then
          Put (", ");
       end if;
    end loop;
@@ -162,9 +177,9 @@ begin
    Indices_Bob := Where_Less (Syncs_Diff_Bob, 129000);
    Diff_Indices_Res := Diff_Indices (Indices_Bob);
    Put ("[array([");
-   for I in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (I)'Image);
-      if I /= Diff_Indices_Res'Last then
+   for index in Diff_Indices_Res'Range loop
+      Put (Diff_Indices_Res (index)'Image);
+      if index /= Diff_Indices_Res'Last then
          Put (", ");
       end if;
    end loop;
@@ -184,12 +199,12 @@ begin
    declare
       First : Boolean := True;
    begin
-      for I in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (I) > 129200 then
+      for index in Syncs_Diff_Alice'Range loop
+         if Syncs_Diff_Alice (index) > 129200 then
             if not First then
                Put (" ");
             end if;
-            Put (Syncs_Diff_Alice (I)'Image);
+            Put (Syncs_Diff_Alice (index)'Image);
             First := False;
          end if;
       end loop;
@@ -201,12 +216,12 @@ begin
    declare
       First : Boolean := True;
    begin
-      for I in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (I) > 129200 then
+      for index in Syncs_Diff_Bob'Range loop
+         if Syncs_Diff_Bob (index) > 129200 then
             if not First then
                Put (" ");
             end if;
-            Put (Syncs_Diff_Bob (I)'Image);
+            Put (Syncs_Diff_Bob (index)'Image);
             First := False;
          end if;
       end loop;
@@ -220,8 +235,8 @@ begin
    declare
       Count : Natural := 0;
    begin
-      for I in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (I) > 129200 then
+      for index in Syncs_Diff_Alice'Range loop
+         if Syncs_Diff_Alice (index) > 129200 then
             Count := Count + 1;
          end if;
       end loop;
@@ -232,8 +247,8 @@ begin
    declare
       Count : Natural := 0;
    begin
-      for I in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (I) > 129200 then
+      for index in Syncs_Diff_Bob'Range loop
+         if Syncs_Diff_Bob (index) > 129200 then
             Count := Count + 1;
          end if;
       end loop;
@@ -247,9 +262,9 @@ begin
    Indices_Alice := Where_Greater (Syncs_Diff_Alice, 129200);
    Diff_Indices_Res := Diff_Indices (Indices_Alice);
    Put ("[array([");
-   for I in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (I)'Image);
-      if I /= Diff_Indices_Res'Last then
+   for index in Diff_Indices_Res'Range loop
+      Put (Diff_Indices_Res (index)'Image);
+      if index /= Diff_Indices_Res'Last then
          Put (", ");
       end if;
    end loop;
@@ -262,9 +277,9 @@ begin
    Indices_Bob := Where_Greater (Syncs_Diff_Bob, 129200);
    Diff_Indices_Res := Diff_Indices (Indices_Bob);
    Put ("[array([");
-   for I in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (I)'Image);
-      if I /= Diff_Indices_Res'Last then
+   for index in Diff_Indices_Res'Range loop
+      Put (Diff_Indices_Res (index)'Image);
+      if index /= Diff_Indices_Res'Last then
          Put (", ");
       end if;
    end loop;

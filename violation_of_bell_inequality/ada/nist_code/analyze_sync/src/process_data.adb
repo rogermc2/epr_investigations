@@ -3,7 +3,6 @@ with Ada.Streams.Stream_IO;
 
 package body Process_Data is
 
-   --  function Load_Raw_Data (Filename : String) return Raw_Data_Access is
    function Load_Raw_Data (Filename : String) return Raw_Data_List is
       use Ada.Streams.Stream_IO;
       use Raw_Data_Package;
@@ -39,12 +38,12 @@ package body Process_Data is
    end Load_Raw_Data;
 
    --  extract syncs (where column 0 == 6)
-   function Get_Syncs (Data : Raw_Data_List) return Sync_Access is
+   function Get_Syncs (Data : Raw_Data_List) return Sync_Data_List is
       use Raw_Data_Package;
       Raw_Curs : Cursor := Data.First;
       Item     : Raw_Record;
       Count    : Natural := 0;
-      Result   : Sync_Access;
+      Result   : Sync_Data_List;
       Idx      : Positive := 1;
    begin
       while Has_Element (Raw_Curs) loop
@@ -55,19 +54,12 @@ package body Process_Data is
          Next (Raw_Curs);
       end loop;
 
-      Result := new Sync_Array (1 .. Count);
-      --  for index in Data'Range loop
-      --     if Data (index)(0) = 6 then
-      --        Result (Idx) := Data (index)(1);
-      --        Idx := Idx + 1;
-      --     end if;
-      --  end loop;
+      Result := Sync_Data_List;
       Raw_Curs := Data.First;
       while Has_Element (Raw_Curs) loop
          Item := Element (Raw_Curs);
          if Item (0) = 6 then
-            Result (Idx) := Item (1);
-            Idx := Idx + 1;
+            Result.Append (Item (1));
          end if;
          Next (Raw_Curs);
       end loop;
@@ -76,8 +68,8 @@ package body Process_Data is
 
    end Get_Syncs;
 
-   function Diff (Input : Sync_Access) return Sync_Access is
-      Result : Sync_Access;
+   function Diff (Input : Sync_Data_List) return Sync_Data_List is
+      Result : Sync_Data_List;
    begin
       if Input = null or else Input'Length <= 1 then
          return new Sync_Array (1 .. 0);
