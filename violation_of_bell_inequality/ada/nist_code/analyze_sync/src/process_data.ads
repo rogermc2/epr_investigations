@@ -24,23 +24,17 @@ package Process_Data is
    procedure Free is new
       Ada.Unchecked_Deallocation (Index_Array, Index_Access);
 
-   --  Helper to read the binary file into memory
    function Load_Raw_Data (Filename : String) return Raw_Data_Access;
-
    --  Helper to extract syncs (where column 0 == 6)
    function Get_Syncs (Data : Raw_Data_Access) return Sync_Access;
-
-   --  Helper for np.diff
+   --  Helper for diff
    function Diff (Input : Sync_Access) return Sync_Access;
-
-   --  Helper for np.diff on indices
+   --  Helper for diff on indices
    function Diff_Indices (Input : Index_Access) return Index_Access;
-
-   --  Helper for np.where(diff < threshold)
+   --  Helper for where(diff < threshold)
    function Where_Less (Data : Sync_Access; Threshold : Unsigned_64)
     return Index_Access;
-
-   --  Helper for np.where(diff > threshold)
+   --  Helper for where(diff > threshold)
    function Where_Greater (Data : Sync_Access; Threshold : Unsigned_64)
     return Index_Access;
 

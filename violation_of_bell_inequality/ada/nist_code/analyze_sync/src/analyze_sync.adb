@@ -8,9 +8,11 @@ procedure Analyze_Sync is
    --  type Index_Access is access Index_Array;
    --  File path constants
    File_Extension_Alice : constant String :=
-    "02_31_CH_pockel_100kHz.run.ClassicalRNGXOR_3";
+    "23_55_CH_pockel_100kHz.run.ClassicalRNGXOR";
+   --   "02_31_CH_pockel_100kHz.run.ClassicalRNGXOR_3";
    File_Extension_Bob   : constant String :=
-     "02_31_CH_pockel_100kHz.run.ClassicalRNGXOR_3";
+     "23_55_CH_pockel_100kHz.run.ClassicalRNGXOR";
+   --    "02_31_CH_pockel_100kHz.run.ClassicalRNGXOR_3";
    Base_Path            : constant String := "../data/";
    --  Base_Path            : constant String :=
    --   "O:\Public\optical_tes\belltestdata\Data\2015-09-17-late-night\";
