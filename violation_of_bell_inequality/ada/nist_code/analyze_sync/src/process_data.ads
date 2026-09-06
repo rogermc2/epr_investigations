@@ -37,6 +37,8 @@ package Process_Data is
    function Diff (Input : Sync_Access) return Sync_Access;
    --  Helper for diff on indices
    function Diff_Indices (Input : Index_Access) return Index_Access;
+   procedure Print_Raw_Data_Vector (Name  : String; Data : Raw_Data_List;
+     Start : Positive := 1; Finish : Natural := 0);
    --  Helper for where(diff < threshold)
    function Where_Less (Data : Sync_Access; Threshold : Unsigned_64)
     return Index_Access;

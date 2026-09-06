@@ -1,7 +1,7 @@
 with "config/analyze_sync_config.gpr";
 project Analyze_Sync is
 
-   for Source_Dirs use ("src/", "config/");
+   for Source_Dirs use ("src/", "../../common/", "config/");
    for Object_Dir use "obj/" & Analyze_Sync_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use ".";

@@ -121,7 +121,7 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-    procedure Print_Double_Integer_Vector
+   procedure Print_Double_Integer_Vector
        (Name  : String; Data : Double_Integer_Vector;
         Start : Positive := 1; Finish : Natural := 0) is
       use Double_Integer_Package;

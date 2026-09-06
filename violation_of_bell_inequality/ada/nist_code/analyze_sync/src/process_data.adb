@@ -1,50 +1,41 @@
-with Ada.Text_IO;
-with Ada.Direct_IO;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Streams.Stream_IO;
 
 package body Process_Data is
 
    --  function Load_Raw_Data (Filename : String) return Raw_Data_Access is
    function Load_Raw_Data (Filename : String) return Raw_Data_List is
+      use Ada.Streams.Stream_IO;
       use Raw_Data_Package;
-      package Raw_IO is new Ada.Direct_IO (Raw_Record);
-      File_ID : Raw_IO.File_Type;
-      --  File_ID : Raw_IO.File_Type;
-      --  Size    : Raw_IO.Count;
-      --  Data : Raw_Data_Access;
-      Item : Raw_Record;
-      Data : Raw_Data_List;
+      File_ID : Ada.Streams.Stream_IO.File_Type;
+      Size    : Ada.Streams.Stream_IO.Count;
+      Item    : Raw_Record;
+      Data    : Raw_Data_List;
+      Count   : Natural := 0;
    begin
-      Raw_IO.Open (File_ID, Raw_IO.In_File, Filename);
-      --  Size := Raw_IO.Size (File);
+      Open (File_ID, In_File, Filename);
+      Put_Line ("Load_Raw_Data file opened: " & Filename);
+      Size := Ada.Streams.Stream_IO.Size (File_ID);
+      Put_Line ("File size: " & Size'Image);
 
-      while not Raw_IO.End_Of_File (File_ID) loop
-         Raw_IO.Read (File_ID, Item);
+      while not End_Of_File (File_ID) loop
+         Raw_Record'Read (Stream (File_ID), Item);
          Data.Append (Item);
+         Count := Count + 1;
+         if Count mod 10000000 = 0 then
+            Put (".");
+         end if;
       end loop;
-         --  declare
-         --     Temp : Raw_Record;
-         --  begin
-         --     Raw_IO.Read (File, Temp);
-         --     Data.Append (Temp);
-         --  end;
-      --  end loop;
+      New_Line;
 
-      --  declare
-      --     Data : Raw_Data_Array (1 .. Positive (Size));
-      --  begin
-      --  for index in 1 .. Size loop
-      --     Raw_IO.Read (File, Data (Positive (index)));
-      --  end loop;
-
-      Raw_IO.Close (File_ID);
+      Close (File_ID);
       return Data;
-      --  end;
 
    exception
       when others =>
-         Ada.Text_IO.Put_Line ("Error opening or reading file: " & Filename);
+         Put_Line ("Error opening or reading file: " & Filename);
          return Data;
-         --  return null;
+
    end Load_Raw_Data;
 
    --  extract syncs (where column 0 == 6)
@@ -56,11 +47,6 @@ package body Process_Data is
       Result   : Sync_Access;
       Idx      : Positive := 1;
    begin
-      --  for index in Data'Range loop
-      --     if Data (index)(0) = 6 then
-      --        Count := Count + 1;
-      --     end if;
-      --  end loop;
       while Has_Element (Raw_Curs) loop
          Item := Element (Raw_Curs);
          if Item (0) = 6 then
@@ -120,6 +106,44 @@ package body Process_Data is
       return Result;
 
    end Diff_Indices;
+
+procedure Print_Raw_Data_Vector (Name : String; Data : Raw_Data_List;
+        Start : Positive := 1; Finish : Natural := 0) is
+   use Raw_Data_Package;
+   Last      : Natural;
+   Item      : Raw_Record;
+   Count     : Integer := 1;
+begin
+   if Finish > 0 and then Finish <= Natural (Data.Last_Index) then
+      Last := Finish;
+   else
+      Last := Natural (Data.Last_Index);
+   end if;
+
+   Put_Line (Name & ": ");
+   if Start >= Data.First_Index and then Last <= Data.Last_Index then
+      for Index in Start .. Last loop
+         Item := Data (Index);
+         for value in Item'Range loop
+            Put (Unsigned_64'Image (Item (value)) & ",  ");
+         end loop;
+         Count := Count + 1;
+         if Count > 10 then
+            New_Line;
+            Count := 1;
+         end if;
+      end loop;
+   else
+      Put_Line ("Print_Raw_Data_Vector called with invalid" &
+         " start or finish index.");
+      Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
+                  Integer'Image (Finish));
+      Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
+                  ",  Data.Last_Index: " & Integer'Image (Data.Last_Index));
+   end if;
+   New_Line;
+
+end Print_Raw_Data_Vector;
 
    --  Helper for where(diff < threshold)
    function Where_Less (Data : Sync_Access; Threshold : Unsigned_64)
