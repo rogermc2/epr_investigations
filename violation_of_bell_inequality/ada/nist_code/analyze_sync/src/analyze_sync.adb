@@ -13,13 +13,10 @@ procedure Analyze_Sync is
    Base_Path          : constant String := "../data/";
    Alice_Raw          : Raw_Data_List;
    Alice_Curs         : Raw_Data_Package.Cursor := Alice_Raw.First;
-   --  Alice_Raw          : Raw_Data_Access;
    Syncs_Alice        : Sync_Access;
    Syncs_Diff_Alice   : Sync_Access;
    Bob_Raw            : Raw_Data_List;
    Bob_Curs           : Raw_Data_Package.Cursor := Bob_Raw.First;
-   --  Bob_Raw            : Raw_Data
-   --  _Access;
    Syncs_Bob          : Sync_Access;
    Syncs_Diff_Bob     : Sync_Access;
 
@@ -46,6 +43,7 @@ begin
             Put (", ");
          end if;
          --  Put (index'Image);
+         Put (Extended_Index'Image (To_Index (Alice_Curs)));
          First := False;
          Next (Alice_Curs);
       end if;

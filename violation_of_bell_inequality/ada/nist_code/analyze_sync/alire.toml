@@ -2,10 +2,15 @@ name = "analyze_sync"
 description = ""
 version = "0.1.0-dev"
 
-authors = ["Roger"]
-maintainers = ["Roger <rogermc@iinet.net.au>"]
+authors = ["Roger Mc Murtrie"]
+maintainers = ["Roger Mc Murtrie <rogermc@iinet.net.au>"]
+maintainers-logins = ["Rogermc2"]
 licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = []
 
 executables = ["analyze_sync"]
+
+[[actions]]
+type = "post-build"
+command = ["install_name_tool", "-delete_rpath", "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk/usr/lib", "analyze_sync"]
