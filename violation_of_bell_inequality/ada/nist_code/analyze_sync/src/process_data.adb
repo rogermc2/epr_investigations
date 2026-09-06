@@ -3,47 +3,91 @@ with Ada.Direct_IO;
 
 package body Process_Data is
 
-   function Load_Raw_Data (Filename : String) return Raw_Data_Access is
+   --  function Load_Raw_Data (Filename : String) return Raw_Data_Access is
+   function Load_Raw_Data (Filename : String) return Raw_Data_List is
+      use Raw_Data_Package;
       package Raw_IO is new Ada.Direct_IO (Raw_Record);
-      File : Raw_IO.File_Type;
-      Size : Raw_IO.Count;
-      Data : Raw_Data_Access;
+      File_ID : Raw_IO.File_Type;
+      --  File_ID : Raw_IO.File_Type;
+      --  Size    : Raw_IO.Count;
+      --  Data : Raw_Data_Access;
+      Item : Raw_Record;
+      Data : Raw_Data_List;
    begin
-      Raw_IO.Open (File, Raw_IO.In_File, Filename);
-      Size := Raw_IO.Size (File);
-      Data := new Raw_Data_Array (1 .. Positive (Size));
-      for I in 1 .. Size loop
-         Raw_IO.Read (File, Data (Positive (I)));
+      Raw_IO.Open (File_ID, Raw_IO.In_File, Filename);
+      --  Size := Raw_IO.Size (File);
+
+      while not Raw_IO.End_Of_File (File_ID) loop
+         Raw_IO.Read (File_ID, Item);
+         Data.Append (Item);
       end loop;
-      Raw_IO.Close (File);
+         --  declare
+         --     Temp : Raw_Record;
+         --  begin
+         --     Raw_IO.Read (File, Temp);
+         --     Data.Append (Temp);
+         --  end;
+      --  end loop;
+
+      --  declare
+      --     Data : Raw_Data_Array (1 .. Positive (Size));
+      --  begin
+      --  for index in 1 .. Size loop
+      --     Raw_IO.Read (File, Data (Positive (index)));
+      --  end loop;
+
+      Raw_IO.Close (File_ID);
       return Data;
+      --  end;
 
    exception
       when others =>
          Ada.Text_IO.Put_Line ("Error opening or reading file: " & Filename);
-         return null;
+         return Data;
+         --  return null;
    end Load_Raw_Data;
 
-   --  elsextract syncs (where column 0 == 6)
-   function Get_Syncs (Data : Raw_Data_Access) return Sync_Access is
-      Count  : Natural := 0;
-      Result : Sync_Access;
-      Idx    : Positive := 1;
+   --  extract syncs (where column 0 == 6)
+   function Get_Syncs (Data : Raw_Data_List) return Sync_Access is
+      use Raw_Data_Package;
+      Raw_Curs : Cursor := Data.First;
+      Item     : Raw_Record;
+      Count    : Natural := 0;
+      Result   : Sync_Access;
+      Idx      : Positive := 1;
    begin
-      for index in Data'Range loop
-         if Data (index)(0) = 6 then
+      --  for index in Data'Range loop
+      --     if Data (index)(0) = 6 then
+      --        Count := Count + 1;
+      --     end if;
+      --  end loop;
+      while Has_Element (Raw_Curs) loop
+         Item := Element (Raw_Curs);
+         if Item (0) = 6 then
             Count := Count + 1;
          end if;
+         Next (Raw_Curs);
       end loop;
 
       Result := new Sync_Array (1 .. Count);
-      for index in Data'Range loop
-         if Data (index)(0) = 6 then
-            Result (Idx) := Data (index)(1);
+      --  for index in Data'Range loop
+      --     if Data (index)(0) = 6 then
+      --        Result (Idx) := Data (index)(1);
+      --        Idx := Idx + 1;
+      --     end if;
+      --  end loop;
+      Raw_Curs := Data.First;
+      while Has_Element (Raw_Curs) loop
+         Item := Element (Raw_Curs);
+         if Item (0) = 6 then
+            Result (Idx) := Item (1);
             Idx := Idx + 1;
          end if;
+         Next (Raw_Curs);
       end loop;
+
       return Result;
+
    end Get_Syncs;
 
    function Diff (Input : Sync_Access) return Sync_Access is
