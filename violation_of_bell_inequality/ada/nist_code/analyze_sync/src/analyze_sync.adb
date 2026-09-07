@@ -19,12 +19,12 @@ procedure Analyze_Sync is
    Alice_Curs         : Raw_Data_Package.Cursor := Alice_Raw.First;
    --  Syncs_Alice        : Sync_Access;
    Syncs_Alice        : Sync_Data_List;
-   Syncs_Alice_Curs   : Sync_Data_Package.Cursor := Syncs_Alice.First;
+   --  Syncs_Alice_Curs   : Sync_Data_Package.Cursor := Syncs_Alice.First;
    --  Syncs_Diff_Alice   : Sync_Access;
    Syncs_Diff_Alice   : Sync_Data_List;
    Syncs_Alice_Diff_Curs  : Sync_Data_Package.Cursor := Syncs_Diff_Alice.First;
    Bob_Raw            : Raw_Data_List;
-   Bob_Curs           : Raw_Data_Package.Cursor := Bob_Raw.First;
+   --  Bob_Curs           : Raw_Data_Package.Cursor := Bob_Raw.First;
    --  Syncs_Bob          : Sync_Access;
    Syncs_Bob          : Sync_Data_List;
    --  Syncs_Diff_Bob     : Sync_Access;
@@ -37,18 +37,21 @@ procedure Analyze_Sync is
    --  Indices_Alice    : Index_Access;
    --  Indices_Bob      : Index_Access;
    --  Diff_Indices_Res : Index_Access;
-   Indices_Alice      : Index_List;
-   Indices_Alice_Curs : Index_Data_Package.Cursor := Indices_Alice.First;
-   Indices_Bob        : Index_List;
-   Indices_Bob_Curs   : Index_Data_Package.Cursor := Indices_Bob.First;
-   Diff_Indices_Alice : Index_List;
-   Diff_Alice_Curs    : Index_Data_Package.Cursor := Diff_Indices_Alice.First;
-   Diff_Indices_Bob   : Index_List;
-   Diff_Bob_Curs      : Index_Data_Package.Cursor := Diff_Indices_Bob.First;
-   Diff_Indices_Res   : Index_List;
-   Diff_Res_Curs      : Index_Data_Package.Cursor := Diff_Indices_Res.First;
-   First              : Boolean := True;
-   Count              : Natural := 0;
+   --  Indices_Alice      : Index_List;
+   --  Indices_Alice_Curs : Index_Data_Package.Cursor := Indices_Alice.First;
+   --  Indices_Bob        : Index_List;
+   --  Indices_Bob_Curs   : Index_Data_Package.Cursor := Indices_Bob.First;
+   Diff_Indices_Alice     : Index_List;
+   --  Diff_Alice_Curs    : Index_Data_Package.Cursor :=
+   --   Diff_Indices_Alice.First;
+   Diff_Indices_Bob       : Index_List;
+   --  Diff_Bob_Curs      : Index_Data_Package.Cursor :=
+   --  Diff_Indices_Bob.First;
+   --  Diff_Indices_Res       : Index_List;
+   --  Diff_Res_Curs      : Index_Data_Package.Cursor :=
+   --   Diff_Indices_Res.First;
+   First                  : Boolean := True;
+   Count                  : Natural := 0;
 begin
    Put_Line ("Alice: opening file");
    Alice_Raw :=
@@ -153,23 +156,24 @@ begin
    Put_Line ("Sync values where the difference is > 129,200");
 
    --  Alice large values
-   Put ("[");
+   High_Values (Syncs_Alice, Syncs_Diff_Alice);
+   --  Put ("[");
    --  declare
-   First := True;
+   --  First := True;
    --  begin
       --  for index in Syncs_Diff_Alice'Range loop
-   while Has_Element (Syncs_Alice_Diff_Curs) loop
-      if Element (Syncs_Alice_Diff_Curs) > 129200 then
-         if not First then
-            Put (" ");
-         end if;
-         Put (Element (Syncs_Alice_Diff_Curs)'Image);
-         First := False;
-      end if;
-      Next (Syncs_Alice_Diff_Curs);
-   end loop;
+   --  while Has_Element (Syncs_Alice_Diff_Curs) loop
+   --     if Element (Syncs_Alice_Diff_Curs) > 129200 then
+   --        if not First then
+   --           Put (" ");
+   --        end if;
+   --        Put (Element (Syncs_Alice_Diff_Curs)'Image);
+   --        First := False;
+   --     end if;
+   --     Next (Syncs_Alice_Diff_Curs);
+   --  end loop;
    --  end;
-   Put_Line ("]");
+   --  Put_Line ("]");
 
    --  Bob large values
    Put ("[");
@@ -211,49 +215,52 @@ begin
    --  end;
 
    --  Bob count large
+   High_Count (Syncs_Diff_Bob);
    --  declare
-   Count := 0;
+   --  Count := 0;
    --  begin
-   Syncs_Bob_Diff_Curs := Syncs_Diff_Bob.First;
-   while Has_Element (Syncs_Bob_Diff_Curs) loop
-      if Element (Syncs_Bob_Diff_Curs) > 129200 then
-         Count := Count + 1;
-      end if;
-      Next (Syncs_Bob_Diff_Curs);
-   end loop;
-   Put_Line (Count'Image);
+   --  Syncs_Bob_Diff_Curs := Syncs_Diff_Bob.First;
+   --  while Has_Element (Syncs_Bob_Diff_Curs) loop
+   --     if Element (Syncs_Bob_Diff_Curs) > 129200 then
+   --        Count := Count + 1;
+   --     end if;
+   --     Next (Syncs_Bob_Diff_Curs);
+   --  end loop;
+   --  Put_Line (Count'Image);
    --  end;
 
    New_Line;
    Put_Line ("Spacing between the large sync values");
 
    --  Alice spacing large
-   Indices_Alice := Where_Greater (Syncs_Diff_Alice, 129200);
-   Diff_Indices_Res := Diff_Indices (Indices_Alice);
-   Put ("[array([");
-   for index in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (index)'Image);
-      if index /= Diff_Indices_Res'Last then
-         Put (", ");
-      end if;
-   end loop;
+   High_Count (Syncs_Diff_Alice);
+   --  Indices_Alice := Where_Greater (Syncs_Diff_Alice, 129200);
+   --  Diff_Indices_Res := Diff_Indices (Indices_Alice);
+   --  Put ("[array([");
+   --  for index in Diff_Indices_Res'Range loop
+   --     Put (Diff_Indices_Res (index)'Image);
+   --     if index /= Diff_Indices_Res'Last then
+   --        Put (", ");
+   --     end if;
+   --  end loop;
 
-   Put_Line ("], dtype=int64)]");
+   --  Put_Line ("], dtype=int64)]");
    --  Free (Indices_Alice);
    --  Free (Diff_Indices_Res);
 
    --  Bob spacing large
-   Indices_Bob := Where_Greater (Syncs_Diff_Bob, 129200);
-   Diff_Indices_Res := Diff_Indices (Indices_Bob);
-   Put ("[array([");
-   for index in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (index)'Image);
-      if index /= Diff_Indices_Res'Last then
-         Put (", ");
-      end if;
-   end loop;
+   High_Count (Syncs_Diff_Bob);
+   --  Indices_Bob := Where_Greater (Syncs_Diff_Bob, 129200);
+   --  Diff_Indices_Res := Diff_Indices (Indices_Bob);
+   --  Put ("[array([");
+   --  for index in Diff_Indices_Res'Range loop
+   --     Put (Diff_Indices_Res (index)'Image);
+   --     if index /= Diff_Indices_Res'Last then
+   --        Put (", ");
+   --     end if;
+   --  end loop;
 
-   Put_Line ("], dtype=int64)]");
+   --  Put_Line ("], dtype=int64)]");
    --  Free (Indices_Bob);
    --  Free (Diff_Indices_Res);
 

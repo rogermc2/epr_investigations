@@ -5,18 +5,61 @@ with Process_Data;
 
 package body Analysis is
 
+   procedure High_Count (Syncs_Diff : Sync_Data_List) is
+      use Sync_Data_Package;
+      Diff_Curs : Cursor := Syncs_Diff.First;
+      Count     : Natural := 0;
+   begin
+      Put ("[array([");
+      while Has_Element (Diff_Curs) loop
+         if Element (Diff_Curs) > 129200 then
+               Count := Count + 1;
+         end if;
+         Next (Diff_Curs);
+      end loop;
+      Put_Line ("], dtype=int64)]");
+      Put_Line ("High count: " & Integer'Image (Count));
+
+   end High_Count;
+
+   procedure High_Values (Syncs, Syncs_Diff : Sync_Data_List) is
+      use Sync_Data_Package;
+      --  Syncs_Curs : Cursor := Syncs.First;
+      Diff_Curs  : Cursor := Syncs_Diff.First;
+      First      : Boolean := True;
+   begin
+      Put ("[");
+
+      while Has_Element (Diff_Curs) loop
+         if Element (Diff_Curs) > 129200  then
+            if not First then
+                  Put (", ");
+            end if;
+
+            Put (Sync_Data_Package.Extended_Index'Image
+            (To_Index (Diff_Curs)));
+            First := False;
+         end if;
+         Next (Diff_Curs);
+      end loop;
+
+      Put_Line ("]");
+
+   end High_Values;
+
    procedure Low_Count (Syncs_Diff : Sync_Data_List) is
       use Sync_Data_Package;
       Diff_Curs : Cursor := Syncs_Diff.First;
       Count     : Natural := 0;
-      First     : Boolean := True;
    begin
+      Put ("[");
       while Has_Element (Diff_Curs) loop
          if Element (Diff_Curs) < 129000 then
                Count := Count + 1;
          end if;
          Next (Diff_Curs);
       end loop;
+      Put_Line ("], dtype=int64)]");
       Put_Line ("Low count: " & Integer'Image (Count));
 
    end Low_Count;
@@ -26,7 +69,7 @@ package body Analysis is
       use Process_Data;
       use Index_Data_Package;
       Diff_Curs : Cursor := Diff_Indices.First;
-      Indices : Index_List;
+      Indices   : Index_List;
    begin
       Indices := Where_Less (Syncs_Diff, 129000);
       --  Diff_Indices_Alice := Diff_Indices (Diff_Indices);
@@ -73,7 +116,7 @@ package body Analysis is
          end if;
 
          Put (Sync_Data_Package.Extended_Index'Image
-         (To_Index (Syncs_Diff_Curs)));
+         (To_Index (Diff_Curs)));
          First := False;
       end if;
 

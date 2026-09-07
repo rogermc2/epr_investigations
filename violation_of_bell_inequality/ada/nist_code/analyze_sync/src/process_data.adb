@@ -95,7 +95,6 @@ package body Process_Data is
    function Diff_Indices (Input : Index_List) return Index_List is
       use Index_Data_Package;
       Curs   : Cursor := Input.First;
-      Result : Sync_Data_List;
       Result : Index_List;
    begin
       --  if Input = null or else Input'Length <= 1 then
@@ -120,53 +119,53 @@ package body Process_Data is
 
    end Diff_Indices;
 
-procedure Print_Raw_Data_Vector (Name : String; Data : Raw_Data_List;
-      Start : Positive := 1; Finish : Natural := 0) is
-   use Raw_Data_Package;
-   Last      : Natural;
-   Item      : Raw_Record;
-   Count     : Integer := 1;
-begin
-   if Finish > 0 and then Finish <= Natural (Data.Last_Index) then
-      Last := Finish;
-   else
-      Last := Natural (Data.Last_Index);
-   end if;
+   procedure Print_Raw_Data_Vector (Name : String; Data : Raw_Data_List;
+         Start : Positive := 1; Finish : Natural := 0) is
+      use Raw_Data_Package;
+      Last      : Natural;
+      Item      : Raw_Record;
+      Count     : Integer := 1;
+   begin
+      if Finish > 0 and then Finish <= Natural (Data.Last_Index) then
+         Last := Finish;
+      else
+         Last := Natural (Data.Last_Index);
+      end if;
 
-   Put_Line (Name & ": ");
-   if Start >= Data.First_Index and then Last <= Data.Last_Index then
-      for Index in Start .. Last loop
-         Item := Data (Index);
-         for value in Item'Range loop
-            Put (Unsigned_64'Image (Item (value)) & ",  ");
+      Put_Line (Name & ": ");
+      if Start >= Data.First_Index and then Last <= Data.Last_Index then
+         for Index in Start .. Last loop
+            Item := Data (Index);
+            for value in Item'Range loop
+               Put (Unsigned_64'Image (Item (value)) & ",  ");
+            end loop;
+            Count := Count + 1;
+            if Count > 10 then
+               New_Line;
+               Count := 1;
+            end if;
          end loop;
-         Count := Count + 1;
-         if Count > 10 then
-            New_Line;
-            Count := 1;
-         end if;
-      end loop;
-   else
-      Put_Line ("Print_Raw_Data_Vector called with invalid" &
-         " start or finish index.");
-      Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
-                  Integer'Image (Finish));
-      Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
-                  ",  Data.Last_Index: " & Integer'Image (Data.Last_Index));
-   end if;
-   New_Line;
+      else
+         Put_Line ("Print_Raw_Data_Vector called with invalid" &
+            " start or finish index.");
+         Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
+                     Integer'Image (Finish));
+         Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
+                     ",  Data.Last_Index: " & Integer'Image (Data.Last_Index));
+      end if;
+      New_Line;
 
-end Print_Raw_Data_Vector;
+   end Print_Raw_Data_Vector;
 
    --  Helper for where(diff < threshold)
    --  function Where_Less (Data : Sync_Access; Threshold : Unsigned_64)
    function Where_Less (Data : Sync_Data_List; Threshold : Unsigned_64)
-    return Index_Access is
+    return Index_List is
       use Sync_Data_Package;
       Curs   : Cursor := Data.First;
       Idx    : Positive := 1;
       Count  : Natural := 0;
-      Result : Index_Access;
+      Result : Index_List;
    begin
       --  for index in Data'Range loop
       while Has_Element (Curs) loop
@@ -177,7 +176,7 @@ end Print_Raw_Data_Vector;
          Next (Curs);
       end loop;
 
-      Result := new Index_Array (1 .. Count);
+      --  Result := new Index_Array (1 .. Count);
       --  for index in Data'Range loop
       Curs := Data.First;
       while Has_Element (Curs) loop
@@ -195,11 +194,11 @@ end Print_Raw_Data_Vector;
 
    --  Helper for where (diff > threshold)
    function Where_Greater (Data : Sync_Data_List; Threshold : Unsigned_64)
-    return Index_Access is
+    return Index_List is
       use Sync_Data_Package;
       Curs   : Cursor := Data.First;
       Count  : Natural := 0;
-      Result : Index_Access;
+      Result : Index_List;
       Idx    : Positive := 1;
    begin
       --  for index in Data'Range loop
