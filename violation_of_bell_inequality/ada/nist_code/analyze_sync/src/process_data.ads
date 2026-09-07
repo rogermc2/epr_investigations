@@ -1,6 +1,6 @@
 
 with Ada.Containers.Vectors;
-with Ada.Unchecked_Deallocation;
+--  with Ada.Unchecked_Deallocation;
 
 package Process_Data is
 
@@ -25,7 +25,8 @@ package Process_Data is
    --  Memory management helpers
    --  procedure Free is new
    --     Ada.Unchecked_Deallocation (Raw_Data_Array, Raw_Data_Access);
-   --  procedure Free is new Ada.Unchecked_Deallocation (Sync_Array, Sync_Access);
+   --  procedure Free is new Ada.Unchecked_Deallocation
+   --  (Sync_Array, Sync_Access);
    --  procedure Free is new
    --     Ada.Unchecked_Deallocation (Index_Array, Index_Access);
 

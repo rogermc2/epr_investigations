@@ -40,11 +40,12 @@ package body Process_Data is
    --  extract syncs (where column 0 == 6)
    function Get_Syncs (Data : Raw_Data_List) return Sync_Data_List is
       use Raw_Data_Package;
-      Raw_Curs : Cursor := Data.First;
+      use Sync_Data_Package;
+      Raw_Curs : Raw_Data_Package.Cursor := Data.First;
       Item     : Raw_Record;
       Count    : Natural := 0;
       Result   : Sync_Data_List;
-      Idx      : Positive := 1;
+      --  Idx      : Positive := 1;
    begin
       while Has_Element (Raw_Curs) loop
          Item := Element (Raw_Curs);
@@ -54,7 +55,6 @@ package body Process_Data is
          Next (Raw_Curs);
       end loop;
 
-      Result := Sync_Data_List;
       Raw_Curs := Data.First;
       while Has_Element (Raw_Curs) loop
          Item := Element (Raw_Curs);
@@ -69,16 +69,24 @@ package body Process_Data is
    end Get_Syncs;
 
    function Diff (Input : Sync_Data_List) return Sync_Data_List is
+      use Sync_Data_Package;
+      Curs   : Cursor := Input.First;
       Result : Sync_Data_List;
    begin
-      if Input = null or else Input'Length <= 1 then
-         return new Sync_Array (1 .. 0);
+      --  if Input = null or else Input'Length <= 1 then
+      if Integer (Sync_Data_Package.Length (Input)) > 1 then
+         --  return new Sync_Array (1 .. 0);
+      --  else
+         --  Result := new Sync_Array (1 .. Input'Length - 1);
+         --  for index in 1 .. Input'Length - 1 loop
+         while Has_Element (Curs) loop
+            --  Result (index) := Input (index + 1) - Input (index);
+            if Curs /= Input.Last then
+               Result.Append (Element (Next (Curs)) - Element (Curs));
+            end if;
+            Next (Curs);
+         end loop;
       end if;
-
-      Result := new Sync_Array (1 .. Input'Length - 1);
-      for index in 1 .. Input'Length - 1 loop
-         Result (index) := Input (index + 1) - Input (index);
-      end loop;
       return Result;
 
    end Diff;
@@ -100,7 +108,7 @@ package body Process_Data is
    end Diff_Indices;
 
 procedure Print_Raw_Data_Vector (Name : String; Data : Raw_Data_List;
-        Start : Positive := 1; Finish : Natural := 0) is
+      Start : Positive := 1; Finish : Natural := 0) is
    use Raw_Data_Package;
    Last      : Natural;
    Item      : Raw_Record;
@@ -138,47 +146,69 @@ begin
 end Print_Raw_Data_Vector;
 
    --  Helper for where(diff < threshold)
-   function Where_Less (Data : Sync_Access; Threshold : Unsigned_64)
+   --  function Where_Less (Data : Sync_Access; Threshold : Unsigned_64)
+   function Where_Less (Data : Sync_Data_List; Threshold : Unsigned_64)
     return Index_Access is
-      Count : Natural := 0; Result : Index_Access; Idx : Positive := 1;
+      use Sync_Data_Package;
+      Curs   : Cursor := Data.First;
+      Idx    : Positive := 1;
+      Count  : Natural := 0;
+      Result : Index_Access;
    begin
-      for index in Data'Range loop
-         if Data (index) < Threshold then
+      --  for index in Data'Range loop
+      while Has_Element (Curs) loop
+         --  if Data (index) < Threshold then
+         if Element (Curs) < Threshold then
             Count := Count + 1;
          end if;
+         Next (Curs);
       end loop;
 
       Result := new Index_Array (1 .. Count);
-      for index in Data'Range loop
-         if Data (index) < Threshold then
-            Result (Idx) := index;
+      --  for index in Data'Range loop
+      Curs := Data.First;
+      while Has_Element (Curs) loop
+         --  if Data (index) < Threshold then
+         if Element (Curs) < Threshold then
+            Result (Idx) := Positive (Element (Curs));
             Idx := Idx + 1;
          end if;
+         Next (Curs);
       end loop;
+
       return Result;
 
    end Where_Less;
 
    --  Helper for where (diff > threshold)
-   function Where_Greater (Data : Sync_Access; Threshold : Unsigned_64)
+   function Where_Greater (Data : Sync_Data_List; Threshold : Unsigned_64)
     return Index_Access is
+      use Sync_Data_Package;
+      Curs   : Cursor := Data.First;
       Count  : Natural := 0;
       Result : Index_Access;
       Idx    : Positive := 1;
    begin
-      for index in Data'Range loop
-         if Data (index) > Threshold then
+      --  for index in Data'Range loop
+      while Has_Element (Curs) loop
+         if Element (Curs) > Threshold then
             Count := Count + 1;
          end if;
+         Next (Curs);
       end loop;
 
-      Result := new Index_Array (1 .. Count);
-      for index in Data'Range loop
-         if Data (index) > Threshold then
-            Result (Idx) := index;
+      --  Result := new Index_Array (1 .. Count);
+      --  for index in Data'Range loop
+      Idx := 1;
+      Curs := Data.First;
+      while Has_Element (Curs) loop
+         if Element (Curs) > Threshold then
+            Result (Idx) := Integer (Element (Curs));
             Idx := Idx + 1;
          end if;
+         Next (Curs);
       end loop;
+
       return Result;
 
    end Where_Greater;

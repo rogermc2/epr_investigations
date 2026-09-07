@@ -28,12 +28,14 @@ procedure Analyze_Sync is
    Syncs_Diff_Bob     : Sync_Data_List;
    --  Syncs_Bob          : Sync_Access;
    --  Syncs_Diff_Bob     : Sync_Access;
+   Syncs_Bob_Diff_Curs    : Sync_Data_Package.Cursor := Syncs_Diff_Bob.First;
 
    --  Temporary storage for filtering
    Indices_Alice    : Index_Access;
    Indices_Bob      : Index_Access;
    Diff_Indices_Res : Index_Access;
-   First : Boolean := True;
+   First            : Boolean := True;
+   Count            : Natural := 0;
 begin
    Put_Line ("Alice: opening file");
    Alice_Raw :=
@@ -113,47 +115,53 @@ begin
 
    --  Bob low values
    Put ("[");
-   declare
-      First : Boolean := True;
-   begin
-      for index in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (index) < 129000 then
-            if not First then
-               Put (" ");
-            end if;
-            Put (Syncs_Diff_Bob (index)'Image);
-            First := False;
+   --  declare
+   First := True;
+   --  begin
+   while Has_Element (Syncs_Bob_Diff_Curs) loop
+      --  for index in Syncs_Diff_Bob'Range loop
+         --  if Syncs_Diff_Bob (index) < 129000 then
+      if Element (Syncs_Bob_Diff_Curs) < 129000 then
+         if not First then
+            Put (" ");
          end if;
-      end loop;
-   end;
+         --  Put (Syncs_Diff_Bob (index)'Image);
+         Put (Sync_Data_Package.Extended_Index'Image
+         (To_Index (Syncs_Bob_Diff_Curs)));
+            First := False;
+      end if;
+   end loop;
    Put_Line ("]");
 
    New_Line;
    Put_Line ("Number of low difference values");
 
    --  Alice count low
-   declare
-      Count : Natural := 0;
-   begin
-      for index in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (index) < 129000 then
-            Count := Count + 1;
-         end if;
-      end loop;
-      Put_Line (Count'Image);
-   end;
+   --  declare
+   Count := 0;
+   --  begin
+      --  for index in Syncs_Diff_Alice'Range loop
+   while Has_Element (Syncs_Alice_Diff_Curs) loop
+      if Element (Syncs_Alice_Diff_Curs) < 129000 then
+         Count := Count + 1;
+      end if;
+   end loop;
+   Put_Line (Count'Image);
+   --  end;
 
    --  Bob count low
-   declare
-      Count : Natural := 0;
-   begin
-      for index in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (index) < 129000 then
+   --  declare
+      Count := 0;
+   --  begin
+      --  for index in Syncs_Diff_Bob'Range loop
+   while Has_Element (Syncs_Bob_Diff_Curs) loop
+         --  if Syncs_Diff_Bob (index) < 129000 then
+         if Element (Syncs_Bob_Diff_Curs) < 129000 then
             Count := Count + 1;
          end if;
-      end loop;
-      Put_Line (Count'Image);
-   end;
+   end loop;
+   Put_Line (Count'Image);
+   --  end;
 
    New_Line;
    Put_Line ("Spacing between the low sync values");
@@ -170,8 +178,8 @@ begin
    end loop;
 
    Ada.Text_IO.Put_Line ("], dtype=int64)]");
-   Free (Indices_Alice);
-   Free (Diff_Indices_Res);
+   --  Free (Indices_Alice);
+   --  Free (Diff_Indices_Res);
 
    --  Bob spacing low
    Indices_Bob := Where_Less (Syncs_Diff_Bob, 129000);
@@ -185,8 +193,8 @@ begin
    end loop;
 
    Put_Line ("], dtype=int64)]");
-   Free (Indices_Bob);
-   Free (Diff_Indices_Res);
+   --  Free (Indices_Bob);
+   --  Free (Diff_Indices_Res);
 
    --  Large values
    New_Line (2);
@@ -196,64 +204,75 @@ begin
 
    --  Alice large values
    Put ("[");
-   declare
-      First : Boolean := True;
-   begin
-      for index in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (index) > 129200 then
-            if not First then
-               Put (" ");
-            end if;
-            Put (Syncs_Diff_Alice (index)'Image);
-            First := False;
+   --  declare
+   First := True;
+   --  begin
+      --  for index in Syncs_Diff_Alice'Range loop
+   while Has_Element (Syncs_Alice_Diff_Curs) loop
+      if Element (Syncs_Alice_Diff_Curs) > 129200 then
+         if not First then
+            Put (" ");
          end if;
-      end loop;
-   end;
+         Put (Element (Syncs_Alice_Diff_Curs)'Image);
+         First := False;
+      end if;
+      Next (Syncs_Alice_Diff_Curs);
+   end loop;
+   --  end;
    Put_Line ("]");
 
    --  Bob large values
    Put ("[");
-   declare
-      First : Boolean := True;
-   begin
-      for index in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (index) > 129200 then
-            if not First then
-               Put (" ");
-            end if;
-            Put (Syncs_Diff_Bob (index)'Image);
-            First := False;
+
+   --  declare
+   First := True;
+   --  begin
+   --  for index in Syncs_Diff_Bob'Range loop
+   Syncs_Bob_Diff_Curs := Syncs_Diff_Bob.First;
+   while Has_Element (Syncs_Bob_Diff_Curs) loop
+      if Element (Syncs_Bob_Diff_Curs) > 129200 then
+         if not First then
+            Put (" ");
          end if;
-      end loop;
-   end;
+         Put (Element (Syncs_Bob_Diff_Curs)'Image);
+         First := False;
+      end if;
+      Next (Syncs_Bob_Diff_Curs);
+   end loop;
+   --  end;
    Put_Line ("]");
 
    New_Line;
    Put_Line ("Number of large difference values");
 
    --  Alice count large
-   declare
-      Count : Natural := 0;
-   begin
-      for index in Syncs_Diff_Alice'Range loop
-         if Syncs_Diff_Alice (index) > 129200 then
-            Count := Count + 1;
-         end if;
-      end loop;
-      Put_Line (Count'Image);
-   end;
+   --  declare
+   Count := 0;
+   Syncs_Alice_Diff_Curs := Syncs_Diff_Alice.First;
+   --  begin
+      --  for index in Syncs_Diff_Alice'Range loop
+   while Has_Element (Syncs_Alice_Diff_Curs) loop
+      if Element (Syncs_Alice_Diff_Curs) > 129200 then
+         Count := Count + 1;
+      end if;
+      Next (Syncs_Alice_Diff_Curs);
+   end loop;
+   Put_Line (Count'Image);
+   --  end;
 
    --  Bob count large
-   declare
-      Count : Natural := 0;
-   begin
-      for index in Syncs_Diff_Bob'Range loop
-         if Syncs_Diff_Bob (index) > 129200 then
-            Count := Count + 1;
-         end if;
-      end loop;
-      Put_Line (Count'Image);
-   end;
+   --  declare
+      Count := 0;
+   --  begin
+   Syncs_Bob_Diff_Curs := Syncs_Diff_Bob.First;
+   while Has_Element (Syncs_Bob_Diff_Curs) loop
+      if Element (Syncs_Bob_Diff_Curs) > 129200 then
+         Count := Count + 1;
+      end if;
+      Next (Syncs_Bob_Diff_Curs);
+   end loop;
+   Put_Line (Count'Image);
+   --  end;
 
    New_Line;
    Put_Line ("Spacing between the large sync values");
@@ -270,8 +289,8 @@ begin
    end loop;
 
    Put_Line ("], dtype=int64)]");
-   Free (Indices_Alice);
-   Free (Diff_Indices_Res);
+   --  Free (Indices_Alice);
+   --  Free (Diff_Indices_Res);
 
    --  Bob spacing large
    Indices_Bob := Where_Greater (Syncs_Diff_Bob, 129200);
@@ -285,13 +304,13 @@ begin
    end loop;
 
    Put_Line ("], dtype=int64)]");
-   Free (Indices_Bob);
-   Free (Diff_Indices_Res);
+   --  Free (Indices_Bob);
+   --  Free (Diff_Indices_Res);
 
    --  Cleanup
-   Free (Syncs_Alice);
-   Free (Syncs_Diff_Alice);
-   Free (Syncs_Bob);
-   Free (Syncs_Diff_Bob);
+   --  Free (Syncs_Alice);
+   --  Free (Syncs_Diff_Alice);
+   --  Free (Syncs_Bob);
+   --  Free (Syncs_Diff_Bob);
 
 end Analyze_Sync;
