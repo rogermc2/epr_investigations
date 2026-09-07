@@ -19,8 +19,11 @@ package Process_Data is
    --  type Sync_Array is array (Positive range <>) of Unsigned_64;
    --  type Sync_Access is access Sync_Array;
 
-   type Index_Array is array (Positive range <>) of Positive;
-   type Index_Access is access Index_Array;
+   package Index_Data_Package is new
+       Ada.Containers.Vectors (Positive, Positive);
+   subtype Index_List is Index_Data_Package.Vector;
+   --  type Index_Array is array (Positive range <>) of Positive;
+   --  type Index_Access is access Index_Array;
 
    --  Memory management helpers
    --  procedure Free is new
@@ -38,14 +41,14 @@ package Process_Data is
    --  Helper for diff
    function Diff (Input : Sync_Data_List) return Sync_Data_List;
    --  Helper for diff on indices
-   function Diff_Indices (Input : Index_Access) return Index_Access;
+   function Diff_Indices (Input : Index_List) return Index_List;
    procedure Print_Raw_Data_Vector (Name  : String; Data : Raw_Data_List;
      Start : Positive := 1; Finish : Natural := 0);
    --  Helper for where(diff < threshold)
    function Where_Less (Data : Sync_Data_List; Threshold : Unsigned_64)
-    return Index_Access;
+    return Index_List;
    --  Helper for where(diff > threshold)
    function Where_Greater (Data : Sync_Data_List; Threshold : Unsigned_64)
-    return Index_Access;
+    return Index_List;
 
 end Process_Data;

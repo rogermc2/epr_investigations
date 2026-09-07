@@ -31,11 +31,17 @@ procedure Analyze_Sync is
    Syncs_Bob_Diff_Curs    : Sync_Data_Package.Cursor := Syncs_Diff_Bob.First;
 
    --  Temporary storage for filtering
-   Indices_Alice    : Index_Access;
-   Indices_Bob      : Index_Access;
-   Diff_Indices_Res : Index_Access;
-   First            : Boolean := True;
-   Count            : Natural := 0;
+   --  Indices_Alice    : Index_Access;
+   --  Indices_Bob      : Index_Access;
+   --  Diff_Indices_Res : Index_Access;
+   Indices_Alice      : Index_List;
+   Indices_Alice_Curs : Index_Data_Package.Cursor := Indices_Alice.First;
+   Indices_Bob        : Index_List;
+   Indices_Bob_Curs   : Index_Data_Package.Cursor := Indices_Bob.First;
+   Diff_Indices       : Index_List;
+   Indices_Diff_Curs  : Index_Data_Package.Cursor := Diff_Indices.First;
+   First              : Boolean := True;
+   Count              : Natural := 0;
 begin
    Put_Line ("Alice: opening file");
    Alice_Raw :=
@@ -168,13 +174,17 @@ begin
 
    --  Alice spacing low
    Indices_Alice := Where_Less (Syncs_Diff_Alice, 129000);
-   Diff_Indices_Res := Diff_Indices (Indices_Alice);
+   Diff_Indices := Diff_Indices (Indices_Alice);
    Put ("[array([");
-   for index in Diff_Indices_Res'Range loop
-      Put (Diff_Indices_Res (index)'Image);
-      if index /= Diff_Indices_Res'Last then
+   --  for index in Diff_Indices_Res'Range loop
+   while Has_Element (Indices_Diff_Curs) loop
+      --  Put (Element (Indices_Diff_Curs)'Image);
+         Put (Index_Data_Package.Extended_Index'Image
+         (To_Index (Indices_Diff_Curs)));
+      if Indices_Diff_Curs /= Diff_Indices_Res.Last then
          Put (", ");
       end if;
+      Next (Indices_Diff_Curs);
    end loop;
 
    Ada.Text_IO.Put_Line ("], dtype=int64)]");
@@ -185,7 +195,8 @@ begin
    Indices_Bob := Where_Less (Syncs_Diff_Bob, 129000);
    Diff_Indices_Res := Diff_Indices (Indices_Bob);
    Put ("[array([");
-   for index in Diff_Indices_Res'Range loop
+   --  for index in Diff_Indices_Res'Range loop
+   while Has_Element (Indices_Bob_Curs) loop
       Put (Diff_Indices_Res (index)'Image);
       if index /= Diff_Indices_Res'Last then
          Put (", ");

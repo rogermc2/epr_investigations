@@ -92,17 +92,30 @@ package body Process_Data is
    end Diff;
 
    --  Helper for diff on indices
-   function Diff_Indices (Input : Index_Access) return Index_Access is
-      Result : Index_Access;
+   function Diff_Indices (Input : Index_List) return Index_List is
+      use Index_Data_Package;
+      Curs   : Cursor := Input.First;
+      Result : Sync_Data_List;
+      Result : Index_List;
    begin
-      if Input = null or else Input'Length <= 1 then
-         return new Index_Array (1 .. 0);
-      end if;
+      --  if Input = null or else Input'Length <= 1 then
+      --     return new Index_Array (1 .. 0);
+      --  end if;
 
-      Result := new Index_Array (1 .. Input'Length - 1);
-      for index in 1 .. Input'Length - 1 loop
-         Result (index) := Input (index + 1) - Input (index);
-      end loop;
+      if Integer (Index_Data_Package.Length (Input)) > 1 then
+      --  Result := new Index_Array (1 .. Input'Length - 1);
+      --  for index in 1 .. Input'Length - 1 loop
+      --     Result (index) := Input (index + 1) - Input (index);
+      --  end loop;
+
+         while Has_Element (Curs) loop
+            --  Result (index) := Input (index + 1) - Input (index);
+            if Curs /= Input.Last then
+               Result.Append (Element (Next (Curs)) - Element (Curs));
+            end if;
+            Next (Curs);
+         end loop;
+      end if;
       return Result;
 
    end Diff_Indices;
