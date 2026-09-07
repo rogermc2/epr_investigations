@@ -1,5 +1,8 @@
+
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Analysis; use Analysis;
+with Nist_Types; use Nist_Types;
 with Process_Data;  use Process_Data;
 
 procedure Analyze_Sync is
@@ -38,8 +41,10 @@ procedure Analyze_Sync is
    Indices_Alice_Curs : Index_Data_Package.Cursor := Indices_Alice.First;
    Indices_Bob        : Index_List;
    Indices_Bob_Curs   : Index_Data_Package.Cursor := Indices_Bob.First;
-   Diff_Indices       : Index_List;
-   Indices_Diff_Curs  : Index_Data_Package.Cursor := Diff_Indices.First;
+   Diff_Indices_Alice : Index_List;
+   Diff_Alice_Curs    : Index_Data_Package.Cursor := Diff_Indices_Alice.First;
+   Diff_Indices_Bob   : Index_List;
+   Diff_Bob_Curs      : Index_Data_Package.Cursor := Diff_Indices_Bob.First;
    First              : Boolean := True;
    Count              : Natural := 0;
 begin
@@ -89,7 +94,7 @@ begin
    Put_Line ("Sync values where the difference is < 129,000");
 
    --  Alice low values
-   Put ("[");
+   --  Put ("[");
    --  declare
    --     First : Boolean := True;
    --  begin
@@ -104,42 +109,12 @@ begin
    --     end loop;
    --  end;
 
-   First := True;
-   while Has_Element (Syncs_Alice_Diff_Curs) loop
-      if Element (Syncs_Alice_Diff_Curs) < 129000  then
-         if not First then
-            Put (", ");
-         end if;
-
-         Put (Sync_Data_Package.Extended_Index'Image
-          (To_Index (Syncs_Alice_Diff_Curs)));
-         First := False;
-      end if;
-      Next (Syncs_Alice_Diff_Curs);
-   end loop;
-      Put_Line ("]");
+   Low_Values (Syncs_Alice, Syncs_Diff_Alice);
 
    --  Bob low values
-   Put ("[");
-   --  declare
-   First := True;
-   --  begin
-   while Has_Element (Syncs_Bob_Diff_Curs) loop
-      --  for index in Syncs_Diff_Bob'Range loop
-         --  if Syncs_Diff_Bob (index) < 129000 then
-      if Element (Syncs_Bob_Diff_Curs) < 129000 then
-         if not First then
-            Put (" ");
-         end if;
-         --  Put (Syncs_Diff_Bob (index)'Image);
-         Put (Sync_Data_Package.Extended_Index'Image
-         (To_Index (Syncs_Bob_Diff_Curs)));
-            First := False;
-      end if;
-   end loop;
-   Put_Line ("]");
-
+   Low_Values (Syncs_Bob, Syncs_Diff_Bob);
    New_Line;
+
    Put_Line ("Number of low difference values");
 
    --  Alice count low
@@ -174,17 +149,18 @@ begin
 
    --  Alice spacing low
    Indices_Alice := Where_Less (Syncs_Diff_Alice, 129000);
-   Diff_Indices := Diff_Indices (Indices_Alice);
+   --  Diff_Indices_Alice := Diff_Indices (Indices_Alice);
    Put ("[array([");
    --  for index in Diff_Indices_Res'Range loop
-   while Has_Element (Indices_Diff_Curs) loop
+   Diff_Alice_Curs := Indices_Alice.First;
+   while Has_Element (Diff_Alice_Curs) loop
       --  Put (Element (Indices_Diff_Curs)'Image);
          Put (Index_Data_Package.Extended_Index'Image
-         (To_Index (Indices_Diff_Curs)));
-      if Indices_Diff_Curs /= Diff_Indices_Res.Last then
+         (To_Index (Diff_Alice_Curs)));
+      if Diff_Alice_Curs /= Diff_Indices.Last then
          Put (", ");
       end if;
-      Next (Indices_Diff_Curs);
+      Next (Diff_Alice_Curs);
    end loop;
 
    Ada.Text_IO.Put_Line ("], dtype=int64)]");
