@@ -91,24 +91,8 @@ begin
    New_Line (2);
    Put_Line ("Checking low values");
    New_Line;
+
    Put_Line ("Sync values where the difference is < 129,000");
-
-   --  Alice low values
-   --  Put ("[");
-   --  declare
-   --     First : Boolean := True;
-   --  begin
-   --     for index in Syncs_Diff_Alice'Range loop
-   --        if Syncs_Diff_Alice (index) < 129000 then
-   --           if not First then
-   --              Put (" ");
-   --           end if;
-   --           Put (Syncs_Diff_Alice (index)'Image);
-   --           First := False;
-   --        end if;
-   --     end loop;
-   --  end;
-
    Low_Values (Syncs_Alice, Syncs_Diff_Alice);
 
    --  Bob low values
@@ -118,30 +102,32 @@ begin
    Put_Line ("Number of low difference values");
 
    --  Alice count low
+   Low_Count (Syncs_Diff_Alice);
    --  declare
-   Count := 0;
+   --  Count := 0;
    --  begin
       --  for index in Syncs_Diff_Alice'Range loop
-   while Has_Element (Syncs_Alice_Diff_Curs) loop
-      if Element (Syncs_Alice_Diff_Curs) < 129000 then
-         Count := Count + 1;
-      end if;
-   end loop;
-   Put_Line (Count'Image);
+   --  while Has_Element (Syncs_Alice_Diff_Curs) loop
+   --     if Element (Syncs_Alice_Diff_Curs) < 129000 then
+   --        Count := Count + 1;
+   --     end if;
+   --  end loop;
+   --  Put_Line (Count'Image);
    --  end;
 
    --  Bob count low
+   Low_Count (Syncs_Diff_Bob);
    --  declare
-      Count := 0;
+      --  Count := 0;
    --  begin
       --  for index in Syncs_Diff_Bob'Range loop
-   while Has_Element (Syncs_Bob_Diff_Curs) loop
-         --  if Syncs_Diff_Bob (index) < 129000 then
-         if Element (Syncs_Bob_Diff_Curs) < 129000 then
-            Count := Count + 1;
-         end if;
-   end loop;
-   Put_Line (Count'Image);
+   --  while Has_Element (Syncs_Bob_Diff_Curs) loop
+   --        --  if Syncs_Diff_Bob (index) < 129000 then
+   --        if Element (Syncs_Bob_Diff_Curs) < 129000 then
+   --           Count := Count + 1;
+   --        end if;
+   --  end loop;
+   --  Put_Line (Count'Image);
    --  end;
 
    New_Line;
