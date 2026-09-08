@@ -16,22 +16,26 @@ procedure Get_Data is
     "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
    B_Source      : constant String := B_Directory &
    "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
-   A_Target      : constant String := Target_Dir & "A.csv";
-   B_Target      : constant String := Target_Dir & "B.csv";
-   Combined_Data : constant String := Target_Dir & "Combined.csv";
+   A_Det_Target  : constant String := Target_Dir & "A_Det.csv";
+   B_Det_Target  : constant String := Target_Dir & "B_Det.csv";
+   A_Sync_Target : constant String := Target_Dir & "A_Sync.csv";
+   B_Sync_Target : constant String := Target_Dir & "B_Sync.csv";
    Num_Rows      : constant Types.Double_Natural := 30000;
 begin
-   NIST_Data (A_Source, A_Target, Num_Rows);
-   NIST_Data (B_Source, B_Target, Num_Rows);
+   NIST_Data (A_Source, A_Det_Target, A_Sync_Target, Num_Rows);
+   NIST_Data (B_Source, B_Det_Target, B_Sync_Target, Num_Rows);
    New_Line;
    --  If needed, set stack size:  ulimit -s 64000
    --  to prevent Combine stack overflow
-   Combine_Nist (A_Target, B_Target, Combined_Data, Num_Rows);
+   --  Combine_Nist (A_Target, B_Target, Combined_Data, Num_Rows);
    New_Line;
 
    Put_Line ("Number of A and B detections: " &
-               Integer'Image (Count_Text_File_Lines (A_Target)) & ",  "&
-               Integer'Image (Count_Text_File_Lines (B_Target)));
+               Integer'Image (Count_Text_File_Lines (A_Det_Target)) & ",  "&
+               Integer'Image (Count_Text_File_Lines (B_Det_Target)));
+   Put_Line ("Number of A and B synchs: " &
+               Integer'Image (Count_Text_File_Lines (A_Sync_Target)) & ",  "&
+               Integer'Image (Count_Text_File_Lines (B_Sync_Target)));
 
 exception
    when Error : others =>

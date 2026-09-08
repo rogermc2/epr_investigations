@@ -30,8 +30,8 @@ package body Process_Data is
    procedure Print_Processed_Data (Data : Data_Record);
    procedure Print_Raw_Data (Raw_Data : Raw_Data_Record);
 
-   procedure NIST_Data 
-      (Source_File, Target_File : String; Num_Rows : Double_Natural := 30) is
+   procedure NIST_Data (Source_File, Det_File, Sync_File :
+                         String; Num_Rows : Double_Natural := 30) is
       use Ada.Streams;
       use Ada.Strings;
       use Ada.Strings.Fixed;
@@ -40,7 +40,8 @@ package body Process_Data is
        Double_Natural (Ada.Directories.Size (Source_File));
       Data_Stream  : Stream_IO.Stream_Access;
       Source_ID    : Stream_IO.File_Type;
-      Target_ID    : Ada.Text_IO.File_Type;
+      Det_ID       : Ada.Text_IO.File_Type;
+      Synch_ID     : Ada.Text_IO.File_Type;
       Log_ID       : Ada.Text_IO.File_Type;
       Raw_Data     : Raw_Data_Record;
       Data         : Data_Record;
@@ -62,7 +63,8 @@ package body Process_Data is
       Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
       Data_Stream := Stream_IO.Stream (Source_ID);
 
-      Create (Target_ID, Out_File, Target_File);
+      Create (Det_ID, Out_File, Det_File);
+      Create (Synch_ID, Out_File, Sync_File);
       Create (Log_ID, Out_File,
        Source_File (Source_File'First + 22 .. Source_File'Last - 4) &
         "_parsing_errors.log");
@@ -125,13 +127,13 @@ package body Process_Data is
             --     Double_Natural'Image (Line_Num) & ", Pol_Setting: " &
             --     Pol_Setting & ", Time_Tag: " &
             --     Unsigned_8_Byte'Image (Data.Time_Tag));
-            Put (Target_ID,  Pol_Setting & "," &
+            Put (Det_ID,  Pol_Setting & "," &
                              Unsigned_8_Byte'Image (Data.Time_Tag));
-            New_Line (Target_ID);
+            New_Line (Det_ID);
          elsif Sync_Pulse then
-            Put (Target_ID,
+            Put (Synch_ID,
                Trim (Unsigned_8_Byte'Image (Data.Time_Tag), Both));
-            New_Line (Target_ID);
+            New_Line (Synch_ID);
          end if;
 
          if Line_Num mod 4000000 = 0 then
@@ -141,7 +143,8 @@ package body Process_Data is
       New_Line;
 
       Close (Log_ID);
-      Close (Target_ID);
+      Close (Synch_ID);
+      Close (Det_ID);
       Stream_IO.Close (Source_ID);
 
       Put_Line
@@ -151,8 +154,12 @@ package body Process_Data is
         (Routine_Name & "number of invalid items: " &
            Integer'Image (Num_Invalid));
       Put_Line
-        (Routine_Name & Target_File & " file length: " &
-           Natural'Image (Count_Text_File_Lines (Target_File)) & " lines");
+        (Routine_Name & Det_File & " file length: " &
+           Natural'Image (Count_Text_File_Lines (Det_File)) & " lines");
+
+      Put_Line
+        (Routine_Name & Sync_File & " file length: " &
+           Natural'Image (Count_Text_File_Lines (Sync_File)) & " lines");
       New_Line;
 
    exception
