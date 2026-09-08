@@ -8,7 +8,7 @@ package Types is
 
    ns : constant Float := 10.0 ** (-9);
 
-   type Channel_Type is (A, B);
+   type Station_Type is (A, B);
    type Double is digits 15;  --  Float type
    type Double_Integer is range -2**63 .. (2**63 - 1);
    type Double_Natural is range 0 .. (2**63 - 1);
@@ -89,15 +89,6 @@ package Types is
    package W_Package is new
      Ada.Containers.Vectors (Natural, W_Record);
    subtype W_List is W_Package.Vector;
-
-   type Setting_Time_Record is record
-      Setting : Channel_Type;
-      Time    : Double_Natural;
-   end record;
-
-   package Setting_Time_Package is new
-     Ada.Containers.Vectors (Double_Positive, Setting_Time_Record);
-   subtype Setting_Time_Vector is Setting_Time_Package.Vector;
 
    type Index_Record is record
       A_Index    : Double_Positive;

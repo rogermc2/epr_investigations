@@ -1,4 +1,8 @@
 
+with Ada.Containers.Vectors;
+
+with Types; use Types;
+
 package NIST_Types is
 
    type Unsigned_Byte is mod 2**8;
@@ -23,5 +27,14 @@ package NIST_Types is
       Time_Tag    : Unsigned_8_Byte;
       Transfer_ID : Integer;
    end record;
+
+   type Setting_Time_Record is record
+      Setting : Channel_Type;
+      Time    : Double_Natural;
+   end record;
+
+   package Setting_Time_Package is new
+     Ada.Containers.Vectors (Double_Positive, Setting_Time_Record);
+   subtype Setting_Time_Vector is Setting_Time_Package.Vector;
    
    end NIST_Types;

@@ -3,6 +3,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Printing; use Printing;
 
+with Types; use Types;
+
 package body  NIST_Utils is
 
  procedure Align_Timing_Data (A_Data, B_Data : in out Setting_Time_Vector) is

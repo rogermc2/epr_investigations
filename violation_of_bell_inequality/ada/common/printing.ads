@@ -1,5 +1,6 @@
 
 with Types; use Types;
+with NIST_Types; use NIST_Types;
 
 package Printing is
 
