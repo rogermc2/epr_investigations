@@ -1,0 +1,529 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+In the 2015 NIST loophole-free EPRB/Bell experiment (Shalm et al.) the “client” at A or B is essentially a fast,
+ randomly switched polarization analyser followed by a single-photon detector and time tagger.
+ The Pockels cell is what rapidly changes the measurement basis.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+One measurement station
+\end_layout
+
+\begin_layout Standard
+The optical path at either A or B can be pictured approximately as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\boxed{\text{incoming photon}}\rightarrow\boxed{\text{wave plates}}\rightarrow\boxed{\text{Pockels cell}}\rightarrow\boxed{\text{polarizer}}\rightarrow\boxed{\text{SNSPD}}\rightarrow\boxed{\text{time tagger}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The actual NIST receiver uses two half-wave plates,
+ a quarter-wave plate,
+ a Pockels cell and two plate polarizers.
+\end_layout
+
+\begin_layout Standard
+The important point is that the Pockels cell is not the photon detector.
+ It is an electro-optical polarization rotator.
+\end_layout
+
+\begin_layout Section
+A random bit chooses the measurement
+\end_layout
+
+\begin_layout Standard
+While the photon is travelling from the source toward A,
+ A's random-number system generates a bit,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x=0\quad\text{or}\quad x=1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+B independently generates
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y=0\quad\text{or}\quad y=1
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These select between the two Bell-test measurement settings:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x=0\rightarrow a,\qquad x=1\rightarrow a'
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+y=0\rightarrow b,\qquad y=1\rightarrow b'
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+NIST actually XORed outputs from two random-number generators together with predetermined pseudorandom bits.
+\end_layout
+
+\begin_layout Section
+The random bit controls the Pockels cell
+\end_layout
+
+\begin_layout Standard
+This is the clever part.
+\end_layout
+
+\begin_layout Standard
+For random bit 0 the Pockels cell is left OFF.
+ The incoming polarization therefore encounters the analyser in one effective orientation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{PC OFF}\quad\Rightarrow\quad a
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+for A or 
+\begin_inset Formula $b$
+\end_inset
+
+ for B.
+\end_layout
+
+\begin_layout Standard
+For random bit 1 a high voltage is rapidly applied:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{PC ON}\quad\Rightarrow\quad a'
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+or 
+\begin_inset Formula $b'$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The electric field changes the birefringence of the Pockels-cell crystal.
+ 
+\end_layout
+
+\begin_layout Standard
+Consequently the photon's polarization is rotated before it encounters the fixed polarizer.
+ Thus the experiment doesn't mechanically rotate a polarizer between 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $a'$
+\end_inset
+
+;
+ it electrically rotates the polarization relative to a fixed analyser.
+\end_layout
+
+\begin_layout Standard
+Conceptually,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+|\psi\rangle\xrightarrow{\quad U_{{\rm PC}}(x)\quad}|\psi_{x}\rangle\xrightarrow{\quad\text{polarizer}\quad}\text{detector}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+The polarizer performs the projection
+\end_layout
+
+\begin_layout Standard
+After the Pockels cell comes a very high-contrast polarization analyser.
+ 
+\end_layout
+
+\begin_layout Standard
+The two NIST plate polarizers together have a contrast ratio greater than 
+\begin_inset Formula $7000:1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This is where an important subtlety arises.
+\end_layout
+
+\begin_layout Standard
+This particular NIST experiment does not implement the measurement like a standard EPRB analyser:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+ &  & D_{+}\\
+\text{photon} & \rightarrow & \text{PBS}\\
+ &  & D_{-}
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with two detectors,
+ one representing 
+\begin_inset Formula $+1$
+\end_inset
+
+ and one representing 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The NIST setup uses the polarizer as a transmit/reject analyser and the transmitted photon is coupled back into single-mode fibre and sent to one superconducting nanowire single-photon detector (SNSPD) at each station.
+\end_layout
+
+\begin_layout Standard
+So at A the primitive result is essentially
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+A=\begin{cases}
+1 & \text{photon detected in the measurement window}\\
+0 & \text{no photon detected}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+rather than a direct 
+\begin_inset Formula $+1/-1$
+\end_inset
+
+ result from two output detectors.
+\end_layout
+
+\begin_layout Standard
+That distinction is important for interpreting the NIST raw data.
+\end_layout
+
+\begin_layout Section
+The SNSPD produces the detection event
+\end_layout
+
+\begin_layout Standard
+A photon that passes the analyser travels through a single-mode fibre to a superconducting nanowire detector which converts the absorption of a photon into an electrical pulse.
+\end_layout
+
+\begin_layout Standard
+The NIST paper reports detector efficiencies of 
+\begin_inset Formula $91\pm2\%$
+\end_inset
+
+ and total system efficiencies of approximately:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\eta_{A}=74.7\%,\qquad\eta_{B}=75.6\%.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Those high efficiencies are crucial because the experiment is designed to close the detection/fair-sampling loophole.
+\end_layout
+
+\begin_layout Section
+The time tagger records the result
+\end_layout
+
+\begin_layout Standard
+The electrical pulse from the SNSPD is amplified and sent to a time tagger:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{SNSPD pulse}\rightarrow\text{amplifier}\rightarrow\boxed{\text{time tag}}
+\]
+
+\end_inset
+
+so the recorded data are fundamentally event times associated with the measurement settings rather than simply a pre-made table of 
+\begin_inset Formula $A=\pm1,B=\pm1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+NIST explicitly says that the measurement outcome is taken to be fixed when it is recorded by the time tagger.
+\end_layout
+
+\begin_layout Standard
+This is why the NIST repository contains large separate A and B event files—
+the raw experimental output consists of the locally recorded streams.
+\end_layout
+
+\begin_layout Section
+Putting the whole operation together
+\end_layout
+
+\begin_layout Standard
+For A:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\boxed{\text{RNG}}\longrightarrow x\longrightarrow\boxed{\text{Pockels-cell voltage}}
+\]
+
+\end_inset
+
+while simultaneously
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\boxed{\text{photon}}\rightarrow\boxed{\text{PC}(x)}\rightarrow\boxed{\text{polarizer}}\rightarrow\boxed{\text{SNSPD}}\rightarrow\boxed{t_{A}}.
+\]
+
+\end_inset
+
+B independently performs
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\boxed{\text{RNG}}\longrightarrow y\longrightarrow\boxed{\text{PC}(y)}
+\]
+
+\end_inset
+
+and
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\boxed{\text{photon}}\rightarrow\boxed{\text{PC}(y)}\rightarrow\boxed{\text{polarizer}}\rightarrow\boxed{\text{SNSPD}}\rightarrow\boxed{t_{B}}.
+\]
+
+\end_inset
+
+T
+\end_layout
+
+\begin_layout Standard
+In the NIST experiment A and B's detectors were 184 m apart with the source 126 m and 132 m from them.
+ 
+\end_layout
+
+\begin_layout Standard
+The random setting are selected while the photons are in flight.
+\end_layout
+
+\begin_layout Standard
+This also explains something important about the data analysis we were doing previously:
+ we should not automatically interpret the NIST detector records as conventional two-channel 
+\begin_inset Formula $+1/-1$
+\end_inset
+
+ polarizer outcomes.
+ 
+\end_layout
+
+\begin_layout Standard
+The physical measurement is a randomly selected projection followed by a detection/no-detection result.
+ 
+\end_layout
+
+\begin_layout Standard
+How that gets converted into the 
+\begin_inset Formula $A,B$
+\end_inset
+
+ variables used in a particular processed file therefore matters considerably.
+\end_layout
+
+\end_body
+\end_document
