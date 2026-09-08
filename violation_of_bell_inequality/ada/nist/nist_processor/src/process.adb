@@ -1,9 +1,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Data_Selection; use Data_Selection;
 with Printing; use Printing;
-with Process_Sync_Data; use Process_Sync_Data;
 with Types; use Types;
 with Utils; use Utils;
 
