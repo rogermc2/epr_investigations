@@ -47,7 +47,6 @@ package body Process_Data is
       Data         : Data_Record;
       Pol_Setting  : String (1 .. 2);
       Click        : Boolean;
-      Pol          : Boolean;
       Sync_Pulse   : Boolean;
       Line_Num     : Double_Natural := 0;
       Num_Clicks   : Natural := 0;
@@ -107,19 +106,13 @@ package body Process_Data is
          --  end if;
 
          Click := False;
-         Pol := False;
          Sync_Pulse := False;
          case Data.Channel is
             when Detector_Click =>
                Click :=  True;
-               Pol_Setting := "ck";
                Num_Clicks := Num_Clicks + 1;
-            when Polarizer_0 =>
-               Pol := True;
-               Pol_Setting := " 0";
-            when Polarizer_45 =>
-               Pol := True;
-               Pol_Setting := "45";
+            when Polarizer_0 => Pol_Setting := " 0";
+            when Polarizer_45 => Pol_Setting := "45";
             when GPS_Pps => null;
             when Sync =>
                Sync_Pulse :=  True;
@@ -132,7 +125,7 @@ package body Process_Data is
             Put (Synch_ID,
                Trim (Unsigned_8_Byte'Image (Data.Time_Tag), Both));
             New_Line (Synch_ID);
-         elsif Click or Pol then
+         elsif Click then
             --  Click detected for Pol_Setting at Time_Tag
             --  Put_Line (Routine_Name & "Click detected at line: " &
             --     Double_Natural'Image (Line_Num) & ", Pol_Setting: " &
@@ -175,7 +168,7 @@ package body Process_Data is
          raise;
    end NIST_Data;
 
-   procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
+      procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
    begin
       Put_Line ("Raw Data:");
       Put_Line ("Channel: " & Unsigned_Byte'Image (Raw_Data.Channel));
