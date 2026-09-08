@@ -47,6 +47,7 @@ package body Process_Data is
       Data         : Data_Record;
       Pol_Setting  : String (1 .. 2);
       Click        : Boolean;
+      Pol          : Boolean;
       Sync_Pulse   : Boolean;
       Line_Num     : Double_Natural := 0;
       Num_Clicks   : Natural := 0;
@@ -106,13 +107,19 @@ package body Process_Data is
          --  end if;
 
          Click := False;
+         Pol := False;
          Sync_Pulse := False;
          case Data.Channel is
             when Detector_Click =>
                Click :=  True;
+               Pol_Setting := "ck";
                Num_Clicks := Num_Clicks + 1;
-            when Polarizer_0 => Pol_Setting := " 0";
-            when Polarizer_45 => Pol_Setting := "45";
+            when Polarizer_0 =>
+               Pol := True;
+               Pol_Setting := " 0";
+            when Polarizer_45 =>
+               Pol := True;
+               Pol_Setting := "45";
             when GPS_Pps => null;
             when Sync =>
                Sync_Pulse :=  True;
@@ -121,19 +128,19 @@ package body Process_Data is
             when Ch_Error => null;
          end case;
 
-         if Click then
+         if Sync_Pulse then
+            Put (Synch_ID,
+               Trim (Unsigned_8_Byte'Image (Data.Time_Tag), Both));
+            New_Line (Synch_ID);
+         elsif Click or Pol then
             --  Click detected for Pol_Setting at Time_Tag
             --  Put_Line (Routine_Name & "Click detected at line: " &
             --     Double_Natural'Image (Line_Num) & ", Pol_Setting: " &
             --     Pol_Setting & ", Time_Tag: " &
             --     Unsigned_8_Byte'Image (Data.Time_Tag));
-            Put (Det_ID,  Pol_Setting & "," &
-                             Unsigned_8_Byte'Image (Data.Time_Tag));
+            Put (Det_ID, Unsigned_8_Byte'Image (Data.Time_Tag) & "," &
+                Pol_Setting );
             New_Line (Det_ID);
-         elsif Sync_Pulse then
-            Put (Synch_ID,
-               Trim (Unsigned_8_Byte'Image (Data.Time_Tag), Both));
-            New_Line (Synch_ID);
          end if;
 
          if Line_Num mod 4000000 = 0 then
