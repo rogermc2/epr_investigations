@@ -8,17 +8,11 @@ package Types is
 
    ns : constant Float := 10.0 ** (-9);
 
+   type Channel_Type is (A, B);
    type Double is digits 15;  --  Float type
    type Double_Integer is range -2**63 .. (2**63 - 1);
    type Double_Natural is range 0 .. (2**63 - 1);
    type Double_Positive is range 1 .. (2**63 - 1);
-
-   type Channel_Type is (Detector_Click, Polarizer_0, Polarizer_45,
-                         GPS_Pps, Sync, Overflow, Ch_Error);
-   for Channel_Type use (Detector_Click => 0, Polarizer_0 => 2,
-                         Polarizer_45 => 3,   GPS_Pps => 5,
-                         Sync => 6,           Overflow => 64,
-                         Ch_Error => 127);
 
    subtype Byte is Interfaces.Unsigned_8;
    subtype Int_16 is Interfaces.Unsigned_16;

@@ -1,34 +1,16 @@
 
---  with Interfaces; use Interfaces;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Strings;
 with Ada.Strings.Fixed;
-
 with Ada.Text_IO; use Ada.Text_IO;
 
+with NIST_Types; use NIST_Types;
 with Utils; use Utils;
 
 package body Process_Data is
-   type Unsigned_Byte is mod 2**8;
-   type Unsigned_2_Byte is mod 2**16;
-   type Unsigned_8_Byte is mod 2**64;
-   type Raw_Data_Record is record
-      Channel     : Unsigned_Byte;
-      Time_Tag    : Unsigned_8_Byte;
-      Transfer_ID : Unsigned_2_Byte;
-   end record;
-
-   type Data_Record is record
-      Channel     : Channel_Type;
-      Time_Tag    : Unsigned_8_Byte;
-      Transfer_ID : Integer;
-   end record;
-
-   procedure Print_Processed_Data (Data : Data_Record);
-   procedure Print_Raw_Data (Raw_Data : Raw_Data_Record);
 
    procedure NIST_Data (Source_File, Det_File, Sync_File :
                          String; Num_Rows : Double_Natural := 30) is
@@ -147,19 +129,17 @@ package body Process_Data is
       Close (Det_ID);
       Stream_IO.Close (Source_ID);
 
-      Put_Line
-        (Routine_Name & "number of clicks and synchs: "  &
-        Integer'Image (Num_Clicks) & ", " & Integer'Image (Num_Synchs));
-      Put_Line
-        (Routine_Name & "number of invalid items: " &
-           Integer'Image (Num_Invalid));
+      --  Put_Line
+      --    (Routine_Name & "number of clicks and synchs: "  &
+      --    Integer'Image (Num_Clicks) & ", " & Integer'Image (Num_Synchs));
+      Put_Line (Routine_Name & "number of invalid items: " &
+      Integer'Image (Num_Invalid));
       Put_Line
         (Routine_Name & Det_File & " file length: " &
            Natural'Image (Count_Text_File_Lines (Det_File)) & " lines");
 
-      Put_Line
-        (Routine_Name & Sync_File & " file length: " &
-           Natural'Image (Count_Text_File_Lines (Sync_File)) & " lines");
+      --  Put_Line (Routine_Name & Sync_File & " file length: " &
+      --       Natural'Image (Count_Text_File_Lines (Sync_File)) & " lines");
       New_Line;
 
    exception
@@ -167,23 +147,5 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end NIST_Data;
-
-      procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
-   begin
-      Put_Line ("Raw Data:");
-      Put_Line ("Channel: " & Unsigned_Byte'Image (Raw_Data.Channel));
-      Put_Line ("Time_Tag: " & Unsigned_8_Byte'Image (Raw_Data.Time_Tag));
-      Put_Line ("Transfer_ID: " & Unsigned_2_Byte'Image (Raw_Data.Transfer_ID));
-      New_Line;
-   end Print_Raw_Data;
-
-   procedure Print_Processed_Data (Data : Data_Record) is
-   begin
-      Put_Line ("Processed Data:");
-      Put_Line ("Channel: " & Channel_Type'Image (Data.Channel));
-      Put_Line ("Time_Tag: " & Unsigned_8_Byte'Image (Data.Time_Tag));
-      Put_Line ("Transfer_ID: " & Integer'Image (Data.Transfer_ID));
-      New_Line;
-   end Print_Processed_Data;
 
 end Process_Data;

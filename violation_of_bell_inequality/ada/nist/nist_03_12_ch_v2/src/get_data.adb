@@ -2,7 +2,6 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Combine_CSVs; use Combine_CSVs;
 with Process_Data; use Process_Data;
 with Types;
 with Utils; use Utils;
