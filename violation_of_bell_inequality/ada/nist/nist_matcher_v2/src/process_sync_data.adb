@@ -89,7 +89,7 @@ package body Process_Sync_Data is
                      Selected_Pairs.Append (Item);
                      Num_Found := Num_Found + 1;
                      if Num_Found < 6 then
-                        Put_Line (Routine_Name & "Match, A, B index:" &
+                        Put_Line (Routine_Name & "Find_Match, A, B index:" &
                         Double_Positive'Image (To_Index (A_Curs)) & ",  " &
                                     Double_Positive'Image (To_Index (B_Curs)));
                      end if;
@@ -119,14 +119,11 @@ package body Process_Sync_Data is
       Offset := Draw_Histogram  (A_Data, B_Data);
 
       B_Curs := First (B_Data);
-      Next (B_Curs);  --  Skip header
+      --  Next (B_Curs);  --  Skip header
       A_Data.Iterate (Find_Match'Access);
       New_Line;
-      --  Put_Line (Routine_Name & "Selected_Pairs length:" &
-      --              Integer'Image (Integer (Selected_Pairs.Length)));
 
       Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
-      --  New_Line;
 
    exception
       when Error : others =>

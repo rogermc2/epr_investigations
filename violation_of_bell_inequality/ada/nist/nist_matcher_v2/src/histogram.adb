@@ -111,24 +111,12 @@ begin
 
    Best_Delta :=
       Double_Natural (Bins (Max_Freq_Index)) * Double_Natural (Bin_Size);
-   Put_Line (Routine_Name & "Calculated Best_Delta: " &
-          Double_Natural'Image (Best_Delta));
-
-   Put_Line (Routine_Name & "Max_Freq_Index " &
-             Integer'Image (Max_Freq_Index));
-
-   Put_Line (Routine_Name & "bin:" & Integer'Image (Max_Freq_Index) &
-       ", max frequency " & Double_Natural'Image (Max_Frequency));
-   Put_Line (Routine_Name & "best delta_t = " & Double_Natural'Image (Best_Delta) &
+   Put_Line (Routine_Name & "best delta = " & Double_Natural'Image (Best_Delta) &
       " ps, frequency = " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
    --  Save_Data ("histogram.txt", Delta_Data);
-
-   Put_Line (Routine_Name & "Best_Delta: " &
-          Double_Natural'Image (Best_Delta));
-   New_Line;
 
    return Best_Delta;
 

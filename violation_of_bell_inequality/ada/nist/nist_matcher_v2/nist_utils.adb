@@ -1,15 +1,13 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Printing; use Printing;
-
-with Types; use Types;
+with Printing; use Printing;
 
 package body  NIST_Utils is
 
- procedure Align_Timing_Data (A_Data, B_Data : in out Setting_Time_Vector) is
+   procedure Align_Sync_Timing_Data (A_Data, B_Data : in out Setting_Time_Vector) is
       use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Sync_Data.Align_Timing_Data ";
+      Routine_Name : constant String := "Process_Sync_Data.Align_Sync_Timing_Data ";
       A_Curs       : Cursor := A_Data.First;
       B_Curs       : Cursor := B_Data.First;
       A_Item       : Setting_Time_Record := Element (A_Data.First);
@@ -58,9 +56,9 @@ package body  NIST_Utils is
             Next (B_Curs);
          end loop;
 
-         --  Print_Setting_Time_Vector ("Align_Timing_Data A_Data", A_Data, 1, 5);
-         --  Print_Setting_Time_Vector ("Align_Timing_Data B_Data", B_Data, 1, 5);
+         Print_Setting_Time_Vector ("Align_Sync_Timing_Data A_Data", A_Data, 1, 5);
+         Print_Setting_Time_Vector ("Align_Sync_Timing_Data B_Data", B_Data, 1, 5);
 
-   end Align_Timing_Data;
+   end Align_Sync_Timing_Data;
 
 end NIST_Utils;
