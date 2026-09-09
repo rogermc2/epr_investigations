@@ -23,6 +23,8 @@ procedure Match is
    --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
    --  Det_bb              : constant String := Pairs_Directory & "bb.csv";
    Width               : constant Natural := 50000;
+   Align_Delta         : Double_Natural;
+   Align_Offset        : Double_Natural;
    Delta_Val           : Double_Natural;
    Num_Found           : Natural;
    --  A_Counts            : xxCounts;
@@ -40,7 +42,7 @@ begin
    --  Put_Line (Routine_Name & "Sync_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Sync_Pairs_In)) & " lines");
    Match_Syncs (A_Sync_In, B_Sync_In, Matched_Sync, Width, Num_Found,
-               Selected_Sync_Pairs, Delta_Val);
+               Selected_Sync_Pairs, Align_Delta, Align_Offset, Delta_Val);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));

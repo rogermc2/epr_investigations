@@ -44,7 +44,7 @@ package body Process_Sync_Data is
    procedure Match_Syncs
      (A_Sync_CSV, B_Sync_CSV, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
-      Offset : out Double_Natural) is
+      Align_Delta, Align_Offset, Offset : out Double_Natural) is
       use Histogram;
       use Match_Package;
       use Setting_Time_Package;
@@ -110,12 +110,12 @@ package body Process_Sync_Data is
       Load_Sync_Data (A_Sync_CSV, A_Data);
       Load_Sync_Data (B_Sync_CSV, B_Data);
 
-      --  If Align_Timing_Data is not called for Sync data, Draw_Histagram will
+      --  If Align_Sync_Data is not called for Sync data, Draw_Histagram will
       --  exhibit a Bin index out of range error.
       --  Align_Timing_Data is called to align two data sets
       --  to the same time frame.
       --  The histogram is drawn to verify the alignment.
-      Align_Timing_Data (A_Data, B_Data);
+      Align_Sync_Data (A_Data, B_Data, Align_Delta, Align_Offset);
       Offset := Draw_Histogram  (A_Data, B_Data);
 
       B_Curs := First (B_Data);

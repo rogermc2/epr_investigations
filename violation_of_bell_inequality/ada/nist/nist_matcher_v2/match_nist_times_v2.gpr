@@ -1,5 +1,5 @@
 
-project Match_NIST_Times is
+project Match_NIST_Times_V2 is
 
    for Languages use ("Ada");
    for Source_Dirs use ("src", "../../common", "../nist_common");
@@ -16,5 +16,5 @@ project Match_NIST_Times is
       for Switches ("ada") use ("-gnatw.ufkpru", "-gnatybcdefux", "-gnat2022");
    end Compiler;
 
-end Match_NIST_Times;
+end Match_NIST_Times_V2;
 
