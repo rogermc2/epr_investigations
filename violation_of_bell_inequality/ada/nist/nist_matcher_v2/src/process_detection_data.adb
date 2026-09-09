@@ -3,7 +3,6 @@ with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with NIST_Types; use NIST_Types;
 with NIST_Utils; use NIST_Utils;
 with Printing; use Printing;
 
@@ -13,6 +12,52 @@ package body Process_Detection_Data is
    --     Data_A, Data_B : Setting_Time_Vector);
    procedure Save_Matched_Data (Matched_CSV_AB : String;
     Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List);
+
+   procedure Align_Detection_Data
+    (A_Det_Data, B_Det_Data : in out Setting_Time_Vector;
+     Delta_Time, Offset : Double_Natural; A_Gt_B : Boolean) is
+      use Setting_Time_Package;
+      Routine_Name : constant String := "Process_Detection_Data.Align_Detection_Data ";
+      A_Curs       : Cursor := A_Det_Data.First;
+      B_Curs       : Cursor := B_Det_Data.First;
+      A_Item       : Setting_Time_Record := Element (A_Det_Data.First);
+      B_Item       : Setting_Time_Record := Element (B_Det_Data.First);
+      --  A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
+      begin
+         while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
+            A_Item := Element (A_Curs);
+            B_Item := Element (B_Curs);
+            if A_Gt_B then
+               A_Item.Time := A_Item.Time - Delta_Time;
+               A_Det_Data.Replace_Element (A_Curs, A_Item);
+            else
+               B_Item.Time := B_Item.Time - Delta_Time;
+               B_Sync_Data.Replace_Element (B_Curs, B_Item);
+            end if;
+            Next (A_Curs);
+            Next (B_Curs);
+         end loop;
+
+         A_Curs := A_Sync_Data.First;
+         B_Curs := B_Sync_Data.First;
+         while Has_Element (A_Curs) loop
+            A_Item := Element (A_Curs);
+            A_Item.Time := A_Item.Time - Offset;
+            A_Sync_Data.Replace_Element (A_Curs, A_Item);
+            Next (A_Curs);
+         end loop;
+
+         while Has_Element (B_Curs) loop
+            B_Item := Element (B_Curs);
+            B_Item.Time := B_Item.Time - Offset;
+            B_Sync_Data.Replace_Element (B_Curs, B_Item);
+            Next (B_Curs);
+         end loop;
+
+         --  Print_Setting_Time_Vector ("Align_Sync_Data A_Data", A_Sync_Data, 1, 5);
+         --  Print_Setting_Time_Vector ("Align_Sync_Data B_Data", B_Sync_Data, 1, 5);
+
+   end Align_Detection_Data;
 
    procedure Load_Data
     (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
@@ -144,7 +189,7 @@ package body Process_Detection_Data is
       Put_Line (Routine_Name & "Delta_Time:" &
       Double_Natural'Image (Delta_Time));
       Load_Data (CSV_AB_In, A_Data, B_Data);
-      Align_Timing_Data (A_Data, B_Data);
+      Align_Detection_Data (A_Data, B_Data, Delta_Time, Offset, A_Gt_B);
 
       --  Adjust B_Data by Delta_Time
       B_Curs := B_Data.First;

@@ -7,15 +7,15 @@ package body  NIST_Utils is
 
  procedure Align_Sync_Data
     (A_Sync_Data, B_Sync_Data : in out Setting_Time_Vector;
-     Delta_Time, Offset : out Double_Natural) is
+     Delta_Time, Offset : out Double_Natural; A_Gt_B : out Boolean) is
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Sync_Data.Align_Sync_Data ";
       A_Curs       : Cursor := A_Sync_Data.First;
       B_Curs       : Cursor := B_Sync_Data.First;
       A_Item       : Setting_Time_Record := Element (A_Sync_Data.First);
       B_Item       : Setting_Time_Record := Element (B_Sync_Data.First);
-      A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
    begin
+      A_Gt_B := A_Item.Time >= B_Item.Time;
       Delta_Time := abs (A_Item.Time - B_Item.Time);
          if A_Gt_B then
             Offset := B_Item.Time - 1;
