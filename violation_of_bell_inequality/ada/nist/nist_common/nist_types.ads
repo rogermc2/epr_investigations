@@ -36,5 +36,5 @@ package NIST_Types is
    package Setting_Time_Package is new
      Ada.Containers.Vectors (Double_Positive, Setting_Time_Record);
    subtype Setting_Time_Vector is Setting_Time_Package.Vector;
-   
+
    end NIST_Types;

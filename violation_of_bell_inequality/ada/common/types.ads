@@ -30,6 +30,7 @@ package Types is
    subtype String_9  is String (1 .. 9);
    subtype String_11 is String (1 .. 11);
    subtype String_12 is String (1 .. 12);
+   subtype String_16 is String (1 .. 16);
    subtype String_18 is String (1 .. 18);
    subtype String_19 is String (1 .. 19);
    subtype String_20 is String (1 .. 20);
@@ -45,6 +46,7 @@ package Types is
    type String4_Array is array (Integer range <>) of String_4;
    type String5_Array is array (Integer range <>) of String_5;
    type String8_Array is array (Integer range <>) of String_8;
+   type String16_Array is array (Integer range <>) of String_16;
    type String19_Array is array (Integer range <>) of String_19;
    type StringD19_Array is array (Double_Natural range <>) of String_19;
    type String20_Array is array (Integer range <>) of String_20;

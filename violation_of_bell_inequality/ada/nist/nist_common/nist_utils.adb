@@ -58,8 +58,8 @@ package body  NIST_Utils is
             Next (B_Curs);
          end loop;
 
-         Print_Setting_Time_Vector ("Align_Timing_Data A_Data", A_Data, 1, 5);
-         Print_Setting_Time_Vector ("Align_Timing_Data B_Data", B_Data, 1, 5);
+         --  Print_Setting_Time_Vector ("Align_Timing_Data A_Data", A_Data, 1, 5);
+         --  Print_Setting_Time_Vector ("Align_Timing_Data B_Data", B_Data, 1, 5);
 
    end Align_Timing_Data;
 
