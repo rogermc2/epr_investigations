@@ -4,7 +4,6 @@ with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
-with NIST_Types; use NIST_Types;
 with NIST_Utils; use NIST_Utils;
 
 package body Process_Sync_Data is
@@ -42,7 +41,7 @@ package body Process_Sync_Data is
    end Load_Sync_Data;
 
    procedure Match_Syncs
-     (A_Sync_CSV, B_Sync_CSV, Matched_Sync_CSV : String; Width : Natural;
+     (A_Sync_Data, B_Sync_Data : Setting_Time_Vector; Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Align_Delta, Align_Offset, Offset : out Double_Natural;
       A_Gt_B : out Boolean) is
@@ -51,9 +50,7 @@ package body Process_Sync_Data is
       use Setting_Time_Package;
       Routine_Name : constant String := "Process_Sync_Data.Match_Syncs ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
-      A_Data       : Setting_Time_Vector;
-      B_Data       : Setting_Time_Vector;
-      B_Curs       : Setting_Time_Package.Cursor := B_Data.First;
+      B_Curs       : Setting_Time_Package.Cursor := B_Sync_Data.First;
       Count        : Natural := 0;
 
          procedure Find_Match (A_Curs : Setting_Time_Package.Cursor) is
@@ -108,20 +105,18 @@ package body Process_Sync_Data is
 
    begin
       Num_Found := 0;
-      Load_Sync_Data (A_Sync_CSV, A_Data);
-      Load_Sync_Data (B_Sync_CSV, B_Data);
 
       --  If Align_Sync_Data is not called for Sync data, Draw_Histagram will
       --  exhibit a Bin index out of range error.
       --  Align_Timing_Data is called to align two data sets
       --  to the same time frame.
       --  The histogram is drawn to verify the alignment.
-      Align_Sync_Data (A_Data, B_Data, Align_Delta, Align_Offset, A_Gt_B);
-      Offset := Draw_Histogram  (A_Data, B_Data);
+      Align_Sync_Data (A_Sync_Data, B_Sync_Data, Align_Delta, Align_Offset, A_Gt_B);
+      Offset := Draw_Histogram  (A_Sync_Data, B_Sync_Data);
 
-      B_Curs := First (B_Data);
+      B_Curs := First (B_Sync_Data);
       --  Next (B_Curs);  --  Skip header
-      A_Data.Iterate (Find_Match'Access);
+      A_Sync_Data.Iterate (Find_Match'Access);
       New_Line;
 
       Save_Match_List (Matched_Sync_CSV, Selected_Pairs);

@@ -22,6 +22,8 @@ procedure Match is
    --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
    --  Det_bb              : constant String := Pairs_Directory & "bb.csv";
    Width               : constant Natural := 50000;
+   A_Sync_Data          : Setting_Time_Vector;
+   B_Sync_Data          : Setting_Time_Vector;
    A_Det_Data          : Setting_Time_Vector;
    B_Det_Data          : Setting_Time_Vector;
    A_Gt_B              : Boolean;
@@ -43,6 +45,12 @@ procedure Match is
 begin
    --  Put_Line (Routine_Name & "Sync_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Sync_Pairs_In)) & " lines");
+
+   Load_Sync_Data (A_Sync_In, A_Sync_Data);
+   Load_Sync_Data (B_Sync_In, B_Sync_Data);
+   Load_Sync_Data
+      (B_Sync_In, B_Sync_Data);
+   Align_Sync_Data (A_Sync_Data, B_Sync_Data, Align_Delta, Align_Offset, A_Gt_B);
    Match_Syncs (A_Sync_In, B_Sync_In, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Align_Delta, Align_Offset, Delta_Val, A_Gt_B);
    if Num_Found > 0 then
