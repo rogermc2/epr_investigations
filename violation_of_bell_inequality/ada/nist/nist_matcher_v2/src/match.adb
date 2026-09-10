@@ -5,14 +5,15 @@ with Ada.Text_IO; use Ada.Text_IO;
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
 with Printing; use Printing;
+with Process_Detection_Data; use Process_Detection_Data;
 with Process_Sync_Data; use Process_Sync_Data;
 with Types; use Types;
 
 procedure Match is
    Routine_Name      : constant String := "Match ";
    Pairs_Directory   : constant String := "../generated_nist_data/";
-   --  A_Det_In          : constant String := Pairs_Directory & "A_Det.csv";
-   --  B_Det_In          : constant String := Pairs_Directory & "B_Det.csv";
+   A_Det_In          : constant String := Pairs_Directory & "A_Det.csv";
+   B_Det_In          : constant String := Pairs_Directory & "B_Det.csv";
    A_Sync_In         : constant String := Pairs_Directory & "A_Sync.csv";
    B_Sync_In         : constant String := Pairs_Directory & "B_Sync.csv";
    Matched_Sync      : constant String := Pairs_Directory & "matched_sync.csv";
@@ -25,8 +26,8 @@ procedure Match is
    Width               : constant Natural := 50000;
    A_Sync_Data         : Setting_Time_Vector;
    B_Sync_Data         : Setting_Time_Vector;
-   --  A_Det_Data          : Setting_Time_Vector;
-   --  B_Det_Data          : Setting_Time_Vector;
+   A_Det_Data          : Setting_Time_Vector;
+   B_Det_Data          : Setting_Time_Vector;
    A_Gt_B              : Boolean;
    Align_Delta         : Double_Natural;
    Align_Offset        : Double_Natural;
@@ -49,8 +50,8 @@ begin
 
    Load_Sync_Data (A_Sync_In, A_Sync_Data);
    Load_Sync_Data (B_Sync_In, B_Sync_Data);
-   Load_Sync_Data
-      (B_Sync_In, B_Sync_Data);
+   Load_Detection_Data (A_Det_In, A_Det_Data);
+   Load_Detection_Data (B_Det_In, B_Det_Data);
    Align_Sync_Data (A_Sync_Data, B_Sync_Data, Align_Delta, Align_Offset, A_Gt_B);
    Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Align_Delta, Align_Offset, Delta_Val, A_Gt_B);

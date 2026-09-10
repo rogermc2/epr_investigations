@@ -3,7 +3,7 @@ with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with NIST_Utils; use NIST_Utils;
+--  with NIST_Utilities; use NIST_Utilities;
 with Printing; use Printing;
 
 package body Process_Detection_Data is
@@ -13,95 +13,38 @@ package body Process_Detection_Data is
    procedure Save_Matched_Data (Matched_CSV_AB : String;
     Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List);
 
-   procedure Align_Detection_Data
-    (A_Det_Data, B_Det_Data : in out Setting_Time_Vector;
-     Delta_Time, Offset : Double_Natural; A_Gt_B : Boolean) is
-      use Setting_Time_Package;
-      Routine_Name : constant String := "Process_Detection_Data.Align_Detection_Data ";
-      A_Curs       : Cursor := A_Det_Data.First;
-      B_Curs       : Cursor := B_Det_Data.First;
-      A_Item       : Setting_Time_Record := Element (A_Det_Data.First);
-      B_Item       : Setting_Time_Record := Element (B_Det_Data.First);
-      --  A_Gt_B       : constant Boolean := A_Item.Time >= B_Item.Time;
-      begin
-         while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
-            A_Item := Element (A_Curs);
-            B_Item := Element (B_Curs);
-            if A_Gt_B then
-               A_Item.Time := A_Item.Time - Delta_Time;
-               A_Det_Data.Replace_Element (A_Curs, A_Item);
-            else
-               B_Item.Time := B_Item.Time - Delta_Time;
-               B_Sync_Data.Replace_Element (B_Curs, B_Item);
-            end if;
-            Next (A_Curs);
-            Next (B_Curs);
-         end loop;
-
-         A_Curs := A_Sync_Data.First;
-         B_Curs := B_Sync_Data.First;
-         while Has_Element (A_Curs) loop
-            A_Item := Element (A_Curs);
-            A_Item.Time := A_Item.Time - Offset;
-            A_Sync_Data.Replace_Element (A_Curs, A_Item);
-            Next (A_Curs);
-         end loop;
-
-         while Has_Element (B_Curs) loop
-            B_Item := Element (B_Curs);
-            B_Item.Time := B_Item.Time - Offset;
-            B_Sync_Data.Replace_Element (B_Curs, B_Item);
-            Next (B_Curs);
-         end loop;
-
-         --  Print_Setting_Time_Vector ("Align_Sync_Data A_Data", A_Sync_Data, 1, 5);
-         --  Print_Setting_Time_Vector ("Align_Sync_Data B_Data", B_Sync_Data, 1, 5);
-
-   end Align_Detection_Data;
-
-   procedure Load_Data
-    (CSV_AB_Data : String; Data_A, Data_B : out Setting_Time_Vector) is
+   procedure Load_Detection_Data (CSV_Det_Data : String;
+    Data_Out : out Setting_Time_Vector) is
+      use Ada.Strings.Fixed;
       File_ID : File_Type;
-      aLine   : String_40;
-      Str_A  : String_19;
-      Str_B  : String_19;
-      Item_A  : Setting_Time_Record;
-      Item_B  : Setting_Time_Record;
+      Item    : Setting_Time_Record;
    begin
-      Open (File_ID, In_File, CSV_AB_Data);
-      Skip_Line (File_ID);   --  Skip header
+      Open (File_ID, In_File, CSV_Det_Data);
       while not End_Of_File (File_ID) loop
-         aLine := Get_Line (File_ID);
-         Str_A := aLine (1 .. 19);
-         Str_B := aLine (22 .. 40);
-         if Str_A (1 .. 1) = "0" then
-            Item_A.Setting := Polarizer_0;
-         elsif Str_A (1 .. 1) = "1" then
-            Item_A.Setting := Polarizer_45;
+      declare
+         aLine    : constant String := Get_Line (File_ID);
+         Pos      : constant Natural := Index (aLine (1 .. aLine'Last), ",");
+         Time_Tag : constant String_19 := aLine (1 .. Pos - 1);
+         Setting  : constant String_2 := aLine (Pos + 1 .. Pos + 2);
+      begin
+         Item.Time := Double_Natural'Value (Time_Tag);
+         if Setting = " 0" then
+            Item.Setting := Polarizer_0;
+         elsif Setting = "45" then
+            Item.Setting := Polarizer_45;
          else
-            Put_Line ("Load_Data: Invalid A setting: " & Str_A (1 .. 1));
+            Put_Line ("Load_Data: Invalid setting: " & Setting);
          end if;
+       end;
 
-         Item_A.Time := Double_Natural'Value (Str_A (3 .. 19));
-
-         if Str_B (1 .. 1) = "0" then
-            Item_B.Setting := Polarizer_0;
-         elsif Str_B (1 .. 1) = "1" then
-            Item_B.Setting := Polarizer_45;
-         else
-            Put_Line ("Load_Data: Invalid B setting: " & Str_B (1 .. 1));
-         end if;
-         Item_B.Time := Double_Natural'Value (Str_B (3 .. 19));
-
-         Data_A.Append (Item_A);
-         Data_B.Append (Item_B);
+         Data_Out.Append (Item);
       end loop;
 
       Close (File_ID);
 
-   end Load_Data;
+   end Load_Detection_Data;
 
-   procedure Match_Detection_Times (CSV_AB_In, Matched_CSV_AB : String;
+   procedure Match_Detection_Times (A_Data, B_Data : in out Setting_Time_Vector; Matched_CSV_AB : String;
        Width : Natural; Delta_Time : Double_Natural; Num_Found : out Natural;
         Selected_Pair_Indices : out Match_List) is
       use Setting_Time_Package;
@@ -109,8 +52,6 @@ package body Process_Detection_Data is
        "Process_Detection_Data.Match_Detection_Times ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
       Item         : Setting_Time_Record;
-      A_Data       : Setting_Time_Vector;
-      B_Data       : Setting_Time_Vector;
       A_Curs       : Cursor;
       B_Curs       : Cursor;
       Match_Record : Index_Record;
@@ -188,8 +129,7 @@ package body Process_Detection_Data is
       --  time data
       Put_Line (Routine_Name & "Delta_Time:" &
       Double_Natural'Image (Delta_Time));
-      Load_Data (CSV_AB_In, A_Data, B_Data);
-      Align_Detection_Data (A_Data, B_Data, Delta_Time, Offset, A_Gt_B);
+      --  Align_Detection_Data (A_Data, B_Data, Delta_Time, Offset, A_Gt_B);
 
       --  Adjust B_Data by Delta_Time
       B_Curs := B_Data.First;
