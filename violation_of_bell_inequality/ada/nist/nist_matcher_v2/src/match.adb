@@ -52,9 +52,10 @@ begin
    Load_Sync_Data (B_Sync_In, B_Sync_Data);
    Load_Detection_Data (A_Det_In, A_Det_Data);
    Load_Detection_Data (B_Det_In, B_Det_Data);
-   Align_Sync_Data (A_Sync_Data, B_Sync_Data, Align_Delta, Align_Offset, A_Gt_B);
+   Align_Data (A_Sync_Data, B_Sync_Data, A_Det_Data, B_Det_Data,
+   Align_Delta, Align_Offset);
    Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
-               Selected_Sync_Pairs, Align_Delta, Align_Offset, Delta_Val, A_Gt_B);
+               Selected_Sync_Pairs, Delta_Val);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
