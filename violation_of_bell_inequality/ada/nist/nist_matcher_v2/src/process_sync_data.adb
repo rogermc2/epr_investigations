@@ -4,7 +4,7 @@ with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
-with NIST_Utils; use NIST_Utils;
+with NIST_Utilities; use NIST_Utilities;
 
 package body Process_Sync_Data is
 
@@ -41,7 +41,7 @@ package body Process_Sync_Data is
    end Load_Sync_Data;
 
    procedure Match_Syncs
-     (A_Sync_Data, B_Sync_Data : Setting_Time_Vector; Matched_Sync_CSV : String; Width : Natural;
+     (A_Sync_Data, B_Sync_Data : in out Setting_Time_Vector; Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Align_Delta, Align_Offset, Offset : out Double_Natural;
       A_Gt_B : out Boolean) is
