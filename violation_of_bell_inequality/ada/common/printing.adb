@@ -201,34 +201,41 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   procedure Print_Setting_Time_Vector
-     (Name  : String; Data : Setting_Time_Vector;
-      Start : Positive := 1; Finish : Natural := 0) is
-      use Setting_Time_Package;
-      Start_Idx : constant Double_Positive := Double_Positive (Start);
-      Last      : Double_Positive;
-      Item      : Setting_Time_Record;
+procedure Print_Match_List (Name  : String; Data : Match_List;
+                               Start : Positive := 1; Finish : Natural := 0) is
+      Item : Index_Record;
+      Last : Positive;
+      Count : Natural := 0;
    begin
-      if Finish > 0 then
-         Last := Double_Positive (Finish);
+      if Finish > 0 and then Finish <= Natural (Data.Last_index) then
+         Last := Finish;
       else
-         Last := Double_Positive (Data.Length);
+         Last := Natural (Data.Last_index);
       end if;
 
       Put_Line (Name & ": ");
-      if Start_Idx >= Data.First_Index and then
-       Last <= Data.Last_Index then
-         for Index in Start_Idx .. Last loop
+      if Start >= Data.First_Index and then Last <= Data.Last_index then
+         for Index in Start .. Last loop
             Item := Data (Index);
-            Put_Line ("Channel, Time: " & Channel_Type'Image (Item.Setting) &
-             ",  " & Double_Natural'Image (Item.Time));
+            Put (Double_Positive'Image (Item.A_Index) & "  " &
+               Double_Positive'Image (Item.B_Index) & "; ");
+            Count := Count + 1;
+            if Count > 10 then
+               New_Line;
+               Count := 1;
+            end if;
          end loop;
       else
-         Put_Line ("Print_Setting_Time_Vector called with invalid" &
-          " start or finish index.");
+         Put_Line
+           ("Print_Match_List called with invalid start or finish index.");
+         Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
+                   Integer'Image (Finish));
+         Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
+                   ",  Data.Last_index: " & Integer'Image (Data.Last_index));
       end if;
       New_Line;
-   end Print_Setting_Time_Vector;
+
+   end Print_Match_List;
 
     procedure Print_StringD19_Vector
        (Name  : String; Data : StringD19_Vector;
@@ -333,45 +340,6 @@ package body Printing is
       New_Line;
 
    end  Print_StringD40_Vector;
-
-   --  ------------------------------------------------------------------------
-
-    procedure Print_Match_List (Name  : String; Data : Match_List;
-                              Start : Positive := 1; Finish : Natural := 0) is
-      use Match_Package;
-      Last      : Natural;
-      Item      : Index_Record;
-      Count     : Integer := 1;
-   begin
-      if Finish > 0 and then Finish <= Natural (Data.Last_index) then
-         Last := Finish;
-      else
-         Last := Natural (Data.Last_index);
-      end if;
-
-      Put_Line (Name & ": ");
-      if Start >= Data.First_Index and then Last <= Data.Last_index then
-         for Index in Start .. Last loop
-            Item := Data (Index);
-            Put (Double_Positive'Image (Item.A_Index) & "  " &
-               Double_Positive'Image (Item.B_Index) & "; ");
-            Count := Count + 1;
-            if Count > 10 then
-               New_Line;
-               Count := 1;
-            end if;
-         end loop;
-      else
-         Put_Line
-           ("Print_Match_List called with invalid start or finish index.");
-         Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
-                   Integer'Image (Finish));
-         Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
-                   ",  Data.Last_index: " & Integer'Image (Data.Last_index));
-      end if;
-      New_Line;
-
-   end Print_Match_List;
 
    --  ------------------------------------------------------------------------
 

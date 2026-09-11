@@ -4,6 +4,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 --  with Data_Selection; use Data_Selection;
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
+--  with NIST_Printing; use NIST_Printing;
 with Printing; use Printing;
 with Process_Detection_Data; use Process_Detection_Data;
 with Process_Sync_Data; use Process_Sync_Data;
@@ -28,10 +29,7 @@ procedure Match is
    B_Sync_Data         : Setting_Time_Vector;
    A_Det_Data          : Setting_Time_Vector;
    B_Det_Data          : Setting_Time_Vector;
-   A_Gt_B              : Boolean;
-   Align_Delta         : Double_Natural;
-   Align_Offset        : Double_Natural;
-   Delta_Val           : Double_Natural;
+   Delta_Time          : Double_Natural;
    Num_Found           : Natural;
    --  A_Counts            : xxCounts;
    --  B_Counts            : xxCounts;
@@ -52,10 +50,9 @@ begin
    Load_Sync_Data (B_Sync_In, B_Sync_Data);
    Load_Detection_Data (A_Det_In, A_Det_Data);
    Load_Detection_Data (B_Det_In, B_Det_Data);
-   Align_Data (A_Sync_Data, B_Sync_Data, A_Det_Data, B_Det_Data,
-   Align_Delta, Align_Offset);
+   Align_Data (A_Sync_Data, B_Sync_Data, A_Det_Data, B_Det_Data);
    Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
-               Selected_Sync_Pairs, Delta_Val);
+               Selected_Sync_Pairs, Delta_Time);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
