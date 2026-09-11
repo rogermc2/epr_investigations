@@ -24,8 +24,8 @@ package body Process_Detection_Data is
       declare
          aLine    : constant String := Get_Line (File_ID);
          Pos      : constant Natural := Index (aLine (1 .. aLine'Last), ",");
-         Time_Tag : constant String_19 := aLine (1 .. Pos - 1);
-         Setting  : constant String_2 := aLine (Pos + 1 .. Pos + 2);
+         Time_Tag : constant String := aLine (1 .. Pos - 1);
+         Setting  : constant String := aLine (Pos + 1 .. Pos + 2);
       begin
          Item.Time := Double_Natural'Value (Time_Tag);
          if Setting = " 0" then
