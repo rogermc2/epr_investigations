@@ -42,8 +42,8 @@ package body NIST_Printing is
        Last <= Data.Last_Index then
          for Index in Start_Idx .. Last loop
             Item := Data (Index);
-            Put_Line ("Channel, Time: " & Channel_Type'Image (Item.Setting) &
-             ",  " & Double_Natural'Image (Item.Time));
+            Put_Line ("Time: " & Double_Natural'Image (Item.Time));
+            Put_Line ("Channel: " & Channel_Type'Image (Item.Setting));
          end loop;
       else
          Put_Line ("Print_Setting_Time_Vector called with invalid" &

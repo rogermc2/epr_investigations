@@ -16,15 +16,14 @@ type Bin_Array is array (Positive range <>) of Integer;
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
 procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
 
-function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
-                           return Double_Natural is
-   use Setting_Time_Package;
+function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
+      return Double_Natural is
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
    Bin_Size       : constant Double_Integer := 1;
    Num_Bins       : constant Positive := 10;
-   Index_B        : Double_Positive := B_Data.First_Index;
+   Index_B        : Natural := Natural (B_Data.First_Element);
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
    Bins           : Bin_Array (1 .. Num_Bins) := (others => 0);
@@ -33,39 +32,44 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
    Total_Records  : Double_Natural := 0;
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
+   Nearest        : Double_Natural;
    Best_Delta     : Double_Natural := 0;
+
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
-      A_Time     : constant Double_Natural := A_Data (Index_A).Time;
-      B_Time     : Double_Natural;
-      Delta_Time : Double_Integer := 0;
+      A_Time      : constant Double_Natural := A_Data (Positive (Index_A));
+      Pos_Index_B : Positive := Positive (Index_B);
+      B_Time      : Double_Natural;
+      Delta_Time  : Double_Integer := 0;
    begin
-      if Index_B < B_Data.Last_Index then
+      if Pos_Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
-         while Index_B < B_Data.Last_Index and then
-            B_Data (Index_B).Time < A_Time loop
-            Index_B := Index_B + 1;
+         while Pos_Index_B < B_Data.Last_Index and then
+            B_Data (Pos_Index_B) < A_Time loop
+            Pos_Index_B := Pos_Index_B + 1;
          end loop;
 
-         if Index_B > 1 then
-            Index_B := Index_B - 1;
+         if Pos_Index_B > 1 then
+            Pos_Index_B := Pos_Index_B - 1;
          end if;
 
          --  B_Data (Index_B).Time < A_Time
-         B_Time := B_Data (Index_B).Time;
+         B_Time := B_Data (Pos_Index_B);
          Delta_Time := Double_Integer (A_Time - B_Time);
 
-         if Index_B > 1 and then abs (Delta_Time) >
-            abs (Double_Integer (A_Time - B_Data (Index_B + 1).Time)) then
-            Index_B := Index_B + 1;
-            B_Time := B_Data (Index_B).Time;
+         if Pos_Index_B > 1 and then abs (Delta_Time) >
+            abs (Double_Integer (A_Time - B_Data (Pos_Index_B + 1))) then
+            Pos_Index_B := Pos_Index_B + 1;
+            B_Time := B_Data (Pos_Index_B);
             Delta_Time := Double_Integer (B_Time - A_Time);
             end if;
 
       else  --  Index_B = B_Data.Last_Index
-        Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time);
+        Delta_Time := Double_Integer (A_Time - B_Data (Pos_Index_B));
       end if;
+
+      Index_B := Double_Positive (Pos_Index_B);
 
       return Double_Natural (abs (Delta_Time));
 
@@ -82,7 +86,9 @@ begin
    --  For each A, store shortest time difference between A time and B time
    for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
-      Delta_Data.Append (Find_Nearest (Index_A, Index_B));
+      Nearest :=
+       Find_Nearest (Double_Positive (Index_A),Double_Positive (Index_B));
+      Delta_Data.Append (Nearest);
    end loop;
 
    Curs_Delta := Delta_Data.First;

@@ -25,8 +25,8 @@ procedure Match is
    --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
    --  Det_bb              : constant String := Pairs_Directory & "bb.csv";
    Width               : constant Natural := 50000;
-   A_Sync_Data         : Setting_Time_Vector;
-   B_Sync_Data         : Setting_Time_Vector;
+   A_Sync_Data         : Double_Natural_Vector;
+   B_Sync_Data         : Double_Natural_Vector;
    A_Det_Data          : Setting_Time_Vector;
    B_Det_Data          : Setting_Time_Vector;
    Delta_Time          : Double_Natural;

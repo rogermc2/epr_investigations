@@ -1,6 +1,5 @@
 
 with Types; use Types;
-with NIST_Types; use NIST_Types;
 
 package Printing is
 
@@ -13,6 +12,9 @@ package Printing is
       Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Double_Integer_Vector
       (Name  : String; Data : Double_Integer_Vector;
+       Start : Positive := 1; Finish : Natural := 0);
+   procedure Print_Double_Natural_Vector
+      (Name  : String; Data : Double_Natural_Vector;
        Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Match_List (Name  : String; Data : Match_List;
                               Start : Positive := 1; Finish : Natural := 0);

@@ -125,9 +125,9 @@ package body Printing is
        (Name  : String; Data : Double_Integer_Vector;
         Start : Positive := 1; Finish : Natural := 0) is
       use Double_Integer_Package;
-      Last      : Natural;
-      Item      : Double_Integer;
-      Count     : Integer := 1;
+      Last  : Natural;
+      Item  : Double_Integer;
+      Count : Integer := 1;
    begin
       if Finish > 0 and then Finish <= Natural (Data.Last_index) then
          Last := Finish;
@@ -161,43 +161,43 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
-   --  procedure Print_Double_Natural_Vector
-   --      (Name  : String; Data : Double_Natural_Vector;
-   --       Start : Positive := 1; Finish : Natural := 0) is
-   --     use Double_Natural_Package;
-   --     Last  : Natural;
-   --     Item  : Double_Natural;
-   --     Count : Integer := 1;
-   --  begin
-   --     if Finish > 0 and then Finish <= Natural (Data.Last_index) then
-   --        Last := Finish;
-   --     else
-   --        Last := Natural (Data.Last_index);
-   --     end if;
+   procedure Print_Double_Natural_Vector
+       (Name  : String; Data : Double_Natural_Vector;
+        Start : Positive := 1; Finish : Natural := 0) is
+      use Double_Natural_Package;
+      Last  : Natural;
+      Item  : Double_Natural;
+      Count : Integer := 1;
+   begin
+      if Finish > 0 and then Finish <= Natural (Data.Last_index) then
+         Last := Finish;
+      else
+         Last := Natural (Data.Last_index);
+      end if;
 
-   --     Put_Line (Name & ": ");
-   --     if Start >= Data.First_Index and then Last <= Data.Last_index then
-   --        for Index in Start .. Last loop
-   --           Item := Data (Index);
-   --           Put (Double_Natural'Image (Item) & ",  " );
-   --           Count := Count + 1;
-   --           if Count > 10 then
-   --              New_Line;
-   --              Count := 1;
-   --           end if;
-   --        end loop;
-   --     else
-   --        Put_Line
-   --          ("Print_Double_Natural_Vector called with invalid" &
-   --           " start or finish index.");
-   --        Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
-   --                  Integer'Image (Finish));
-   --        Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
-   --                  ",  Data.Last_index: " & Integer'Image (Data.Last_index));
-   --     end if;
-   --     New_Line;
+      Put_Line (Name & ": ");
+      if Start >= Data.First_Index and then Last <= Data.Last_index then
+         for Index in Start .. Last loop
+            Item := Data (Index);
+            Put (Double_Natural'Image (Item) & ",  " );
+            Count := Count + 1;
+            if Count > 10 then
+               New_Line;
+               Count := 1;
+            end if;
+         end loop;
+      else
+         Put_Line
+           ("Print_Double_Natural_Vector called with invalid" &
+            " start or finish index.");
+         Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
+                   Integer'Image (Finish));
+         Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
+                   ",  Data.Last_index: " & Integer'Image (Data.Last_index));
+      end if;
+      New_Line;
 
-   --  end Print_Double_Natural_Vector;
+   end Print_Double_Natural_Vector;
 
    --  ------------------------------------------------------------------------
 
