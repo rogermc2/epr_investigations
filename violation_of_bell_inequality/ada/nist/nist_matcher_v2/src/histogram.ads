@@ -1,5 +1,5 @@
 
-with NIST_Types; use NIST_Types;
+--  with NIST_Types; use NIST_Types;
 with Types; use Types;
 
 package Histogram is

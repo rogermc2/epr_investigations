@@ -22,8 +22,8 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size       : constant Double_Positive := 10;
-   Num_Bins       : constant Positive := 100;
+   Bin_Size       : constant Double_Positive := 10000;
+   Num_Bins       : constant Positive := 10;
    Index_B        : Double_Positive := B_Data.First_Index;
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
@@ -33,44 +33,40 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    Total_Records  : Double_Natural := 0;
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
-   Nearest        : Double_Natural;
    Best_Delta     : Double_Natural := 0;
 
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
       A_Time      : constant Double_Natural := A_Data (Index_A);
-      Pos_Index_B : Double_Positive := Index_B;
       B_Time      : Double_Natural;
       Delta_Time  : Double_Integer := 0;
    begin
-      if Pos_Index_B < B_Data.Last_Index then
+      if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
-         while Pos_Index_B < B_Data.Last_Index and then
-            B_Data (Pos_Index_B) < A_Time loop
-            Pos_Index_B := Pos_Index_B + 1;
+         while Index_B < B_Data.Last_Index and then
+            B_Data (Index_B) < A_Time loop
+            Index_B := Index_B + 1;
          end loop;
 
-         if Pos_Index_B > 1 then
-            Pos_Index_B := Pos_Index_B - 1;
+         if Index_B > 1 then
+            Index_B := Index_B - 1;
          end if;
 
          --  B_Data (Index_B).Time < A_Time
-         B_Time := B_Data (Pos_Index_B);
+         B_Time := B_Data (Index_B);
          Delta_Time := Double_Integer (A_Time - B_Time);
 
-         if Pos_Index_B > 1 and then abs (Delta_Time) >
-            abs (Double_Integer (A_Time - B_Data (Pos_Index_B + 1))) then
-            Pos_Index_B := Pos_Index_B + 1;
-            B_Time := B_Data (Pos_Index_B);
+         if Index_B > 1 and then abs (Delta_Time) >
+            abs (Double_Integer (A_Time - B_Data (Index_B + 1))) then
+            Index_B := Index_B + 1;
+            B_Time := B_Data (Index_B);
             Delta_Time := Double_Integer (B_Time - A_Time);
             end if;
 
       else  --  Index_B = B_Data.Last_Index
-        Delta_Time := Double_Integer (A_Time - B_Data (Pos_Index_B));
+        Delta_Time := Double_Integer (A_Time - B_Data (Index_B));
       end if;
-
-      Index_B := Double_Positive (Pos_Index_B);
 
       return Double_Natural (abs (Delta_Time));
 
@@ -87,9 +83,8 @@ begin
    --  For each A, store shortest time difference between A time and B time
    for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
-      Nearest :=
-       Find_Nearest (Double_Positive (Index_A), Double_Positive (Index_B));
-      Delta_Data.Append (Nearest);
+      Delta_Data.Append (Find_Nearest (Index_A, Index_B));
+
    end loop;
    --  Printing.Print_Double_Natural_Vector ("Delta_Data", Delta_Data, 1, 10);
 
@@ -100,7 +95,11 @@ begin
       --  Put_Line (Routine_Name & "Current_Value " &
       --     Double_Natural'Image (Current_Value));
 
-      Bin_Index := Positive (Double_Positive (Delta_Data.Length) / Bin_Size + 1);
+      Put_Line (Routine_Name & "Current_Value: " &
+          Double_Natural'Image (Current_Value));
+      Put_Line (Routine_Name & "Bin_Size: " &
+       Double_Positive'Image (Bin_Size));
+       Bin_Index := Positive (Current_Value / Double_Natural (Bin_Size)) + 1;
       --  Bound checking for updating bins
       if Bin_Index < 1 then
          Bin_Index := 1;
@@ -121,6 +120,9 @@ begin
 
    Best_Delta :=
       Double_Natural (Bins (Max_Freq_Index)) * Double_Natural (Bin_Size);
+      Put_Line (Routine_Name & "Calculated Best_Delta: " &
+          Double_Natural'Image (Best_Delta));
+
    Put_Line (Routine_Name & "best delta = " & Double_Natural'Image (Best_Delta) &
       " ps, frequency = " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "processed " &
