@@ -12,15 +12,18 @@ package body Process_Sync_Data is
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
 
    procedure Load_Sync_Data
-      (CSV_Data : String; Sync_Data : in out Double_Natural_Vector) is
+      (CSV_Data : String; Sync_Data : in out Double_Natural_Vector;
+         Num_Rows : Double_Natural) is
       use Double_Natural_Package;
       Routine_Name : constant String := "Process_Sync_Data.Load_Sync_Data ";
       File_ID      : File_Type;
       Item         : Double_Natural;
+      Count        : Double_Natural := 0;
    begin
       Open (File_ID, In_File, CSV_Data);
       Item := 0;
-      while not End_Of_File (File_ID) loop
+      while Count < Num_Rows and then not End_Of_File (File_ID) loop
+         Count := Count + 1;
          declare
             Time_Tag : constant String := Get_Line (File_ID);
          begin
@@ -28,6 +31,7 @@ package body Process_Sync_Data is
          end;
          Sync_Data.Append (Item);
       end loop;
+      Put_Line (Routine_Name & "Count " & Double_Natural'Image (Count));
       Put_Line (Routine_Name & "Sync_Data loaded from " & CSV_Data);
       New_Line;
 

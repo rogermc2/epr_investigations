@@ -14,28 +14,30 @@ package body Process_Detection_Data is
     Data_A, Data_B : Setting_Time_Vector; Pairs : Match_List);
 
    procedure Load_Detection_Data (CSV_Det_Data : String;
-    Data_Out : out Setting_Time_Vector) is
+    Data_Out : out Setting_Time_Vector; Num_Rows : Double_Natural) is
       use Ada.Strings.Fixed;
       File_ID : File_Type;
       Item    : Setting_Time_Record;
+      Count    : Double_Natural := 0;
    begin
       Open (File_ID, In_File, CSV_Det_Data);
-      while not End_Of_File (File_ID) loop
-      declare
-         aLine    : constant String := Get_Line (File_ID);
-         Pos      : constant Natural := Index (aLine (1 .. aLine'Last), ",");
-         Time_Tag : constant String := aLine (1 .. Pos - 1);
-         Setting  : constant String := aLine (Pos + 1 .. Pos + 2);
-      begin
-         Item.Time := Double_Natural'Value (Time_Tag);
-         if Setting = " 0" then
-            Item.Setting := Polarizer_0;
-         elsif Setting = "45" then
-            Item.Setting := Polarizer_45;
-         else
-            Put_Line ("Load_Data: Invalid setting: " & Setting);
-         end if;
-       end;
+      while Count < Num_Rows and then not End_Of_File (File_ID) loop
+         Count := Count + 1;
+         declare
+            aLine    : constant String := Get_Line (File_ID);
+            Pos      : constant Natural := Index (aLine (1 .. aLine'Last), ",");
+            Time_Tag : constant String := aLine (1 .. Pos - 1);
+            Setting  : constant String := aLine (Pos + 1 .. Pos + 2);
+         begin
+            Item.Time := Double_Natural'Value (Time_Tag);
+            if Setting = " 0" then
+               Item.Setting := Polarizer_0;
+            elsif Setting = "45" then
+               Item.Setting := Polarizer_45;
+            else
+               Put_Line ("Load_Data: Invalid setting: " & Setting);
+            end if;
+         end;
 
          Data_Out.Append (Item);
       end loop;

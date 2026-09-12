@@ -20,7 +20,7 @@ procedure Get_Data is
    B_Sync_Target : constant String := Target_Dir & "B_Sync.csv";
    Combined_Data : constant String := Target_Dir & "combined_det.csv";
    Combined_Sync : constant String := Target_Dir & "combined_sync.csv";
-   Num_Rows      : constant Types.Double_Natural := 30000;
+Num_Rows      : constant Types.Double_Natural := 30000;
 begin
    NIST_Data (A_Source, A_Det_Target, A_Sync_Target, Num_Rows);
    NIST_Data (B_Source, B_Det_Target, B_Sync_Target, Num_Rows);
