@@ -1,17 +1,16 @@
 
-with Ada.Text_IO; use Ada.Text_IO;
+--  with Ada.Text_IO; use Ada.Text_IO;
 
-with NIST_Printing; use NIST_Printing;
-with Printing;
+--  with NIST_Printing; use NIST_Printing;
+--  with Printing; use Printing;
 
 package body  NIST_Utilities is
 
    procedure Align_Data
     (A_Sync_Data, B_Sync_Data: in out Double_Natural_Vector;
      A_Det_Data, B_Det_Data : in out Setting_Time_Vector) is
-      use Printing;
       use Setting_Time_Package;
-      Routine_Name : constant String := "NIST_Utilities.Align_Sync_Data ";
+      --  Routine_Name : constant String := "NIST_Utilities.Align_Sync_Data ";
       AgtB         : constant Boolean := A_Sync_Data.First_Element >
                         B_Sync_Data.First_Element;
       Delta_Time   : Double_Natural;
@@ -90,8 +89,8 @@ package body  NIST_Utilities is
    begin
       Delta_Time := Min_Time (A_Sync_Data.First_Element, B_Sync_Data.First_Element,
        A_Det_Data.First_Element, B_Det_Data.First_Element);
-      Put_Line (Routine_Name & "Delta_Time: " &
-                  Double_Natural'Image (Delta_Time));
+      --  Put_Line (Routine_Name & "Delta_Time: " &
+      --              Double_Natural'Image (Delta_Time));
       --  Adjust A and B times to start at the same time
       if AgtB then
          Apply_Delta_Time (A_Sync_Data, A_Det_Data, Delta_Time);
@@ -99,24 +98,24 @@ package body  NIST_Utilities is
          Apply_Delta_Time (B_Sync_Data, B_Det_Data, Delta_Time);
       end if;
 
-      Print_Double_Natural_Vector ("Align_Data A_Sync_Data", A_Sync_Data, 1, 3);
-      Print_Double_Natural_Vector ("Align_Data B_Sync_Data", B_Sync_Data, 1, 3);
-      Print_Setting_Time_Vector ("Align_Data A_Det_Data", A_Det_Data, 1, 3);
-      Print_Setting_Time_Vector ("Align_Data B_Det_Data", B_Det_Data, 1, 3);
+      --  Print_Double_Natural_Vector ("Align_Data A_Sync_Data", A_Sync_Data, 1, 1);
+      --  Print_Double_Natural_Vector ("Align_Data B_Sync_Data", B_Sync_Data, 1, 1);
+      --  Print_Setting_Time_Vector ("Align_Data A_Det_Data", A_Det_Data, 1, 1);
+      --  Print_Setting_Time_Vector ("Align_Data B_Det_Data", B_Det_Data, 1, 1);
 
       Offset := Min_Time (A_Sync_Data.First_Element, B_Sync_Data.First_Element,
        A_Det_Data.First_Element, B_Det_Data.First_Element) - 1;
-      Put_Line (Routine_Name & "Offset: " & Double_Natural'Image (Offset));
+      --  Put_Line (Routine_Name & "Offset: " & Double_Natural'Image (Offset));
       --  Adjust A and B times to both start at 0.
       Apply_Sync_Offset (A_Sync_Data, Offset);
       Apply_Sync_Offset (B_Sync_Data, Offset);
       Apply_Det_Offset (A_Det_Data, Offset);
       Apply_Det_Offset (B_Det_Data, Offset);
 
-      Print_Double_Natural_Vector ("Align_Sync_Data A_Data", A_Sync_Data, 1, 5);
-      --  Print_Double_Natural_Vector ("Align_Sync_Data B_Data", B_Sync_Data, 1, 5);
-      --  Print_Setting_Time_Vector ("Align_Det_Data A_Data", A_Sync_Data, 1, 5);
-      --  Print_Setting_Time_Vector ("Align_Det_Data B_Data", B_Sync_Data, 1, 5);
+      --  Print_Double_Natural_Vector ("Align_Sync_Data A_Data", A_Sync_Data, 1, 1);
+      --  Print_Double_Natural_Vector ("Align_Sync_Data B_Data", B_Sync_Data, 1, 1);
+      --  Print_Setting_Time_Vector ("Align_Det_Data A_Data", A_Det_Data, 1, 1);
+      --  Print_Setting_Time_Vector ("Align_Det_Data B_Data", B_Det_Data, 1, 1);
 
    end Align_Data;
 

@@ -22,7 +22,7 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
    Bin_Size       : constant Double_Integer := 1;
-   Num_Bins       : constant Positive := 10;
+   Num_Bins       : constant Positive := 100;
    Index_B        : Natural := Natural (B_Data.First_Element);
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
