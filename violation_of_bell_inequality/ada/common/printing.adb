@@ -163,21 +163,23 @@ package body Printing is
 
    procedure Print_Double_Natural_Vector
        (Name  : String; Data : Double_Natural_Vector;
-        Start : Positive := 1; Finish : Natural := 0) is
+        Start : Double_Positive := 1; Finish : Double_Natural := 0) is
       use Double_Natural_Package;
-      Last  : Natural;
+      Last  : Double_Natural;
       Item  : Double_Natural;
       Count : Integer := 1;
    begin
-      if Finish > 0 and then Finish <= Natural (Data.Last_index) then
+      if Finish > 0 and then Finish <=
+       Double_Natural (Data.Last_index) then
          Last := Finish;
       else
-         Last := Natural (Data.Last_index);
+         Last := Double_Natural (Data.Last_index);
       end if;
 
       Put_Line (Name & ": ");
-      if Start >= Data.First_Index and then Last <= Data.Last_index then
-         for Index in Start .. Last loop
+      if Start >= Data.First_Index and then
+       Double_Positive (Last) <= Data.Last_index then
+         for Index in Start .. Double_Positive (Last) loop
             Item := Data (Index);
             Put (Double_Natural'Image (Item) & ",  " );
             Count := Count + 1;
@@ -190,10 +192,11 @@ package body Printing is
          Put_Line
            ("Print_Double_Natural_Vector called with invalid" &
             " start or finish index.");
-         Put_Line ("Start: " & Integer'Image (Start) & ",  Finish: " &
-                   Integer'Image (Finish));
-         Put_Line ("Data.First_Index: " & Integer'Image (Data.First_Index) &
-                   ",  Data.Last_index: " & Integer'Image (Data.Last_index));
+         Put_Line ("Start: " & Double_Positive'Image (Start) & ",  Finish: " &
+                   Double_Natural'Image (Finish));
+         Put_Line
+          ("Data.First_Index: " & Double_Positive'Image (Data.First_Index) &
+             ",  Data.Last_index: " & Double_Positive'Image (Data.Last_index));
       end if;
       New_Line;
 

@@ -24,7 +24,7 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    --  Define histogram structure constants
    Bin_Size       : constant Double_Positive := 10;
    Num_Bins       : constant Positive := 100;
-   Index_B        : Natural := Natural (B_Data.First_Element);
+   Index_B        : Double_Positive := B_Data.First_Index;
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
    Bins           : Bin_Array (1 .. Num_Bins) := (others => 0);
@@ -39,8 +39,8 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
-      A_Time      : constant Double_Natural := A_Data (Positive (Index_A));
-      Pos_Index_B : Positive := Positive (Index_B);
+      A_Time      : constant Double_Natural := A_Data (Index_A);
+      Pos_Index_B : Double_Positive := Index_B;
       B_Time      : Double_Natural;
       Delta_Time  : Double_Integer := 0;
    begin
@@ -88,7 +88,7 @@ begin
    for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
       Nearest :=
-       Find_Nearest (Double_Positive (Index_A),Double_Positive (Index_B));
+       Find_Nearest (Double_Positive (Index_A), Double_Positive (Index_B));
       Delta_Data.Append (Nearest);
    end loop;
    --  Printing.Print_Double_Natural_Vector ("Delta_Data", Delta_Data, 1, 10);

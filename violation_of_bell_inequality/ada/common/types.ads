@@ -116,7 +116,7 @@ package Types is
    subtype Integer_List is Integer_List_Package.Vector;
 
    package Double_Natural_Package is new
-     Ada.Containers.Vectors (Positive, Double_Natural);
+     Ada.Containers.Vectors (Double_Positive, Double_Natural);
    subtype Double_Natural_Vector is Double_Natural_Package.Vector;
 
    package Double_Integer_Package is new
