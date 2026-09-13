@@ -9,6 +9,7 @@ with Printing; use Printing;
 with Process_Detection_Data; use Process_Detection_Data;
 with Process_Sync_Data; use Process_Sync_Data;
 with Types; use Types;
+with Utils; use Utils;
 
 procedure Match is
    Routine_Name      : constant String := "Match ";
@@ -18,8 +19,8 @@ procedure Match is
    A_Sync_In         : constant String := Pairs_Directory & "A_Sync.csv";
    B_Sync_In         : constant String := Pairs_Directory & "B_Sync.csv";
    Matched_Sync      : constant String := Pairs_Directory & "matched_sync.csv";
-   --  Matched_Det_Pairs : constant String :=
-   --   Pairs_Directory & "matched_det_pairs.csv";
+   Matched_Det_Pairs : constant String :=
+    Pairs_Directory & "matched_det_pairs.csv";
    --  Det_aa              : constant String := Pairs_Directory & "aa.csv";
    --  Det_ab              : constant String := Pairs_Directory & "ab.csv";
    --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
@@ -36,7 +37,7 @@ procedure Match is
    --  B_Counts            : xxCounts;
    --  Min_Width       : Float;
    --  Max_Width       : Float;
-   --  Num_Matches         : Natural;
+   Num_Matches         : Natural;
    --  Num_aa_Matches      : Natural;
    --  Num_ab_Matches      : Natural;
    --  Num_ba_Matches      : Natural;
@@ -63,12 +64,12 @@ begin
       Put_Line (Routine_Name & "No matched sync pairs found!");
    end if;
 
-   --  Put_Line (Routine_Name & "Detection_Pairs file size:" &
-   --       Integer'Image (Count_Text_File_Lines (Det_Pairs_In)) & " lines");
-   --  Delta_Val := 55000;  --  max 23 at 55000, width 50000
-   --  Match_Detection_Times (A_Det_In, B_Det_In, Matched_Det_Pairs, Width,
-   --  Align_Delta, Align_Offset, A_Gt_B,
-   --   Delta_Val, Num_Matches, Selected_Det_Pairs);
+   Put_Line (Routine_Name & "Detection A and B file sizes:" &
+        Integer'Image (Count_Text_File_Lines (A_Det_In))  & "," &
+        Integer'Image (Count_Text_File_Lines (B_Det_In)) & " lines");
+   Delta_Time := 55000;  --  max 23 at 55000, width 50000
+   Match_Detection_Times (A_Det_Data, B_Det_Data, Matched_Det_Pairs, Width,
+   Delta_Time, Num_Matches);
    --  if Num_Matches > 0 then
    --     Put_Line (Routine_Name & "matched detection pairs found:" &
    --      Integer'Image (Num_Matches));

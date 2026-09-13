@@ -46,21 +46,22 @@ package body Process_Detection_Data is
 
    end Load_Detection_Data;
 
-   procedure Match_Detection_Times (A_Data, B_Data : in out Setting_Time_Vector; Matched_CSV_AB : String;
-       Width : Natural; Delta_Time : Double_Natural; Num_Found : out Natural;
-        Selected_Pair_Indices : out Match_List) is
+   procedure Match_Detection_Times (A_Data, B_Data : in out Setting_Time_Vector;
+    Matched_CSV_AB : String; Width : Natural; Delta_Time : Double_Natural;
+    Num_Found : out Natural) is
       use Setting_Time_Package;
       Routine_Name : constant String :=
        "Process_Detection_Data.Match_Detection_Times ";
       D_Width      : constant Double_Natural := Double_Natural (Width);
       Item         : Setting_Time_Record;
+      Selected_Pair_Indices : Match_List;
       A_Curs       : Cursor;
       B_Curs       : Cursor;
       Match_Record : Index_Record;
       Count        : Natural := 0;
       Find_Count   : Natural := 0;
 
-      --  Find_Match finds a B record with time in range of A record time.
+      --  Find_Match finds A B record with time in range of A record time.
       --  If found the A and B pair are add to the selected records list.
       procedure Find_Match (A_Curs : Setting_Time_Package.Cursor) is
          A_Time     : constant Double_Natural := Element (A_Curs).Time;
