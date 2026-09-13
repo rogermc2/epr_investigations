@@ -22,7 +22,7 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
-   Bin_Size       : constant Double_Positive := 10000;
+   Bin_Size       : constant Double_Positive := 1;
    Num_Bins       : constant Positive := 10;
    Index_B        : Double_Positive := B_Data.First_Index;
    Delta_Data     : Double_Natural_Vector;
@@ -86,11 +86,11 @@ begin
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
 
    end loop;
-   --  Printing.Print_Double_Natural_Vector ("Delta_Data", Delta_Data, 1, 10);
+   Printing.Print_Double_Natural_Vector ("Delta_Data", Delta_Data, 1, 10);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
-      Current_Value := Element  (Curs_Delta);
+      Current_Value := Element (Curs_Delta);
       Total_Records := Total_Records + 1;
       --  Put_Line (Routine_Name & "Current_Value " &
       --     Double_Natural'Image (Current_Value));
@@ -103,7 +103,7 @@ begin
           Double_Natural'Image (Current_Value));
       Put_Line (Routine_Name & "Bin_Size: " &
           Double_Positive'Image (Bin_Size));
-       Bin_Index := Positive (Current_Value / Double_Natural (Bin_Size)) + 1;
+       Bin_Index := Positive (Current_Value / Double_Natural (Bin_Size) + 1);
       Put_Line (Routine_Name & "Bin_Index" & Positive'Image (Bin_Index));
       --  Bound checking for updating bins
       if Bin_Index < 1 then
@@ -160,8 +160,8 @@ begin
    for I in Bins'Range loop
       if I > 1 then
          Lower_Bound := Double_Positive (I - 1) * Bin_Size;
+         Upper_Bound := Double_Positive (I) * Bin_Size - 1;
       end if;
-      Upper_Bound := Double_Positive (I) * Bin_Size - 1;
       --  Print Bin range labels
       if I = Bins'Last then
          Put ("  " &
