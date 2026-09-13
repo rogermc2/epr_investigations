@@ -85,11 +85,11 @@ package body Process_Sync_Data is
                      Item.B_Index := Double_Positive (To_Index (B_Curs));
                      Selected_Pairs.Append (Item);
                      Num_Found := Num_Found + 1;
-                     if Num_Found < 4 then
-                        Put_Line (Routine_Name & "Find_Match, A, B index:" &
-                        Double_Positive'Image (Item.A_Index) & ",  " &
-                                    Double_Positive'Image (Item.B_Index));
-                     end if;
+                     --  if Num_Found < 4 then
+                     --     Put_Line (Routine_Name & "Find_Match, A, B index:" &
+                     --     Double_Positive'Image (Item.A_Index) & ",  " &
+                     --                 Double_Positive'Image (Item.B_Index));
+                     --  end if;
                   end if;
                end if;
             end if;

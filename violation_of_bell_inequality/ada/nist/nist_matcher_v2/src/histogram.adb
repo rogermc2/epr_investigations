@@ -92,19 +92,7 @@ begin
    while Has_Element (Curs_Delta) loop
       Current_Value := Element (Curs_Delta);
       Total_Records := Total_Records + 1;
-      --  Put_Line (Routine_Name & "Current_Value " &
-      --     Double_Natural'Image (Current_Value));
-
-      Put_Line (Routine_Name & "A 1 Value: " &
-          Double_Natural'Image (A_Data (1)));
-      Put_Line (Routine_Name & "B 1 Value: " &
-          Double_Natural'Image (B_Data (1)));
-      Put_Line (Routine_Name & "Current_Value: " &
-          Double_Natural'Image (Current_Value));
-      Put_Line (Routine_Name & "Bin_Size: " &
-          Double_Positive'Image (Bin_Size));
        Bin_Index := Positive (Current_Value / Double_Natural (Bin_Size) + 1);
-      Put_Line (Routine_Name & "Bin_Index" & Positive'Image (Bin_Index));
       --  Bound checking for updating bins
       if Bin_Index < 1 then
          Bin_Index := 1;
@@ -125,7 +113,7 @@ begin
 
    Best_Delta :=
       Double_Natural (Bins (Max_Freq_Index)) * Double_Natural (Bin_Size);
-      Put_Line (Routine_Name & "Calculated Best_Delta: " &
+   Put_Line (Routine_Name & "Calculated Best_Delta: " &
           Double_Natural'Image (Best_Delta));
 
    Put_Line (Routine_Name & "best delta = " & Double_Natural'Image (Best_Delta) &
@@ -149,7 +137,7 @@ procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Positive) is
    Routine_Name   : constant String := "Histogram.Print_Histogram ";
    Max_Bar_Length : constant Positive := 30000;
    Bar_Length     : Natural;
-   Lower_Bound    : Double_Positive := 1;
+   Lower_Bound    : Double_Natural := 0;
    Upper_Bound    : Double_Positive;
 begin
    Put_Line ("--- Data Distribution Histogram ---");
@@ -159,16 +147,16 @@ begin
 
    for I in Bins'Range loop
       if I > 1 then
-         Lower_Bound := Double_Positive (I - 1) * Bin_Size;
-         Upper_Bound := Double_Positive (I) * Bin_Size - 1;
+         Lower_Bound := Double_Natural (I - 1) * Double_Natural (Bin_Size);
       end if;
+      Upper_Bound := Double_Positive (I) * Bin_Size;
       --  Print Bin range labels
       if I = Bins'Last then
          Put ("  " &
-          Double_Positive'Image (Lower_Bound) & " and up | ");
+          Double_Natural'Image (Lower_Bound) & " and up | ");
       else
          Put ("  " &
-          Double_Positive'Image (Lower_Bound) & " - " &
+          Double_Natural'Image (Lower_Bound) & " - " &
          Double_Positive'Image (Upper_Bound) & "     | ");
       end if;
 
