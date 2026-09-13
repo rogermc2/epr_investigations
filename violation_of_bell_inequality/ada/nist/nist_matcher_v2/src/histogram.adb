@@ -29,7 +29,7 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
    Bins           : Bin_Array (1 .. Num_Bins) := (others => 0);
    Bin_Index      : Positive;
-   Current_Value  : Double_Natural;
+   Current_Delta  : Double_Natural;
    Total_Records  : Double_Natural := 0;
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
@@ -79,7 +79,7 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
    end Find_Nearest;
 
 begin
-   --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
+   --  Histogram Delta = B (j) - A_(i)  for B (j) near A_(i)
    --  For each A, store shortest time difference between A time and B time
    for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
@@ -90,9 +90,9 @@ begin
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
-      Current_Value := Element (Curs_Delta);
+      Current_Delta := Element (Curs_Delta);
       Total_Records := Total_Records + 1;
-       Bin_Index := Positive (Current_Value / Double_Natural (Bin_Size) + 1);
+       Bin_Index := Positive (Current_Delta / Double_Natural (Bin_Size) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then
          Bin_Index := 1;

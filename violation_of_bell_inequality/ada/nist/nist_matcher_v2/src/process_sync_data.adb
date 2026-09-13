@@ -1,10 +1,9 @@
 
---  with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
---  with NIST_Types; use NIST_Types;
+with Printing; use Printing;
 --  with NIST_Utilities; use NIST_Utilities;
 
 package body Process_Sync_Data is
@@ -58,16 +57,22 @@ package body Process_Sync_Data is
       Count        : Natural := 0;
 
          procedure Find_Sync_Match (A_Curs : Double_Natural_Package.Cursor) is
-         A_Item    : constant Double_Natural := Element (A_Curs);
-         A_Time    : constant Double_Natural := A_Item + D_Width;
-         B_Val_Min : constant Double_Natural := A_Time - D_Width;
-         Item      : Index_Record;
-         B_Time    : Double_Natural;
-         Match     : Boolean := False;
+            A_Item    : constant Double_Natural := Element (A_Curs);
+            A_Time    : constant Double_Natural := A_Item + D_Width;
+            B_Val_Min : constant Double_Natural := A_Time - D_Width;
+            Item      : Index_Record;
+            B_Time    : Double_Natural;
+            Match     : Boolean := False;
          begin
             Count := Count + 1;
+            if Count < 4 then
+               Put_Line (Natural'Image (Count) & "  A_Item" &  Double_Natural'Image (A_Item));
+            end if;
             if Has_Element (B_Curs) then
                B_Time := Element (B_Curs);
+               if Count < 4 then
+                  Put_Line ("   B_Time" & Double_Natural'Image (B_Time));
+               end if;
                --  Move B_Index forward until B_Value is >= (A_Value - Width)
                while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
                   B_Time := Element (B_Curs);
@@ -85,12 +90,8 @@ package body Process_Sync_Data is
                      Item.B_Index := Double_Positive (To_Index (B_Curs));
                      Selected_Pairs.Append (Item);
                      Num_Found := Num_Found + 1;
-                     --  if Num_Found < 4 then
-                     --     Put_Line (Routine_Name & "Find_Match, A, B index:" &
-                     --     Double_Positive'Image (Item.A_Index) & ",  " &
-                     --                 Double_Positive'Image (Item.B_Index));
-                     --  end if;
                   end if;
+                  Next (B_Curs);
                end if;
             end if;
 
@@ -102,9 +103,9 @@ package body Process_Sync_Data is
          end Find_Sync_Match;
 
    begin
+      Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, 8);
+      Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, 8);
       Num_Found := 0;
-      B_Curs := First (B_Sync_Data);
-      --  Next (B_Curs);  --  Skip header
       A_Sync_Data.Iterate (Find_Sync_Match'Access);
       New_Line;
 
@@ -135,7 +136,7 @@ package body Process_Sync_Data is
       Create (Match_ID, Out_File, File_Name);
       while Has_Element (M_Curs) loop
          Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & "," &
          Double_Positive'Image (Rec.B_Index));
          Next (M_Curs);
       end loop;
