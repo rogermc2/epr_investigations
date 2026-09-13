@@ -14,7 +14,8 @@ package body  NIST_Utilities is
       AgtB         : constant Boolean := A_Sync_Data.First_Element >
                         B_Sync_Data.First_Element;
       Delta_Time   : Double_Natural;
-      Offset       : Double_Natural;
+      A_Offset     : Double_Natural;
+      B_Offset       : Double_Natural;
 
       procedure Apply_Delta_Time
        (Sync_Data : in out Double_Natural_Vector;
@@ -98,22 +99,32 @@ package body  NIST_Utilities is
          Apply_Delta_Time (B_Sync_Data, B_Det_Data, Delta_Time);
       end if;
 
-      --  Print_Double_Natural_Vector ("Align_Data A_Sync_Data", A_Sync_Data, 1, 1);
+      --  Print_Double_Natural_Vector ("Align_Data A_Sync_Data after delta", A_Sync_Data, 1, 1);
       --  Print_Double_Natural_Vector ("Align_Data B_Sync_Data", B_Sync_Data, 1, 1);
       --  Print_Setting_Time_Vector ("Align_Data A_Det_Data", A_Det_Data, 1, 1);
       --  Print_Setting_Time_Vector ("Align_Data B_Det_Data", B_Det_Data, 1, 1);
 
-      Offset := Min_Time (A_Sync_Data.First_Element, B_Sync_Data.First_Element,
-       A_Det_Data.First_Element, B_Det_Data.First_Element) - 1;
-      --  Put_Line (Routine_Name & "Offset: " & Double_Natural'Image (Offset));
-      --  Adjust A and B times to both start at 0.
-      Apply_Sync_Offset (A_Sync_Data, Offset);
-      Apply_Sync_Offset (B_Sync_Data, Offset);
-      Apply_Det_Offset (A_Det_Data, Offset);
-      Apply_Det_Offset (B_Det_Data, Offset);
+      A_Offset := A_Sync_Data.First_Element;
+      if A_Det_Data.First_Element.Time <  A_Offset then
+         A_Offset := A_Det_Data.First_Element.Time;
+      end if;
+      A_Offset := A_Offset - 1;
+      B_Offset := B_Sync_Data.First_Element;
+      if B_Det_Data.First_Element.Time <  B_Offset then
+         B_Offset := B_Det_Data.First_Element.Time;
+      end if;
+      B_Offset := B_Offset - 1;
 
+      --  Adjust A and B times to both start at 0.
+      Apply_Sync_Offset (A_Sync_Data, A_Offset);
+      Apply_Sync_Offset (B_Sync_Data, B_Offset);
+      Apply_Det_Offset (A_Det_Data, A_Offset);
+      Apply_Det_Offset (B_Det_Data, B_Offset);
+
+      --  Put_Line ("A_Offset:" & Double_Natural'Image (A_Offset));
       --  Print_Double_Natural_Vector ("Align_Sync_Data A_Data", A_Sync_Data, 1, 1);
       --  Print_Double_Natural_Vector ("Align_Sync_Data B_Data", B_Sync_Data, 1, 1);
+      --  New_Line;
       --  Print_Setting_Time_Vector ("Align_Det_Data A_Data", A_Det_Data, 1, 1);
       --  Print_Setting_Time_Vector ("Align_Det_Data B_Data", B_Det_Data, 1, 1);
 

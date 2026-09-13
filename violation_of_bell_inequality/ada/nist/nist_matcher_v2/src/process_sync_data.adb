@@ -85,7 +85,7 @@ package body Process_Sync_Data is
                      Item.B_Index := Double_Positive (To_Index (B_Curs));
                      Selected_Pairs.Append (Item);
                      Num_Found := Num_Found + 1;
-                     if Num_Found < 6 then
+                     if Num_Found < 4 then
                         Put_Line (Routine_Name & "Find_Match, A, B index:" &
                         Double_Positive'Image (Item.A_Index) & ",  " &
                                     Double_Positive'Image (Item.B_Index));
@@ -103,6 +103,12 @@ package body Process_Sync_Data is
 
    begin
       Num_Found := 0;
+      B_Curs := First (B_Sync_Data);
+      --  Next (B_Curs);  --  Skip header
+      A_Sync_Data.Iterate (Find_Sync_Match'Access);
+      New_Line;
+
+      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
 
       --  If Align_Sync_Data is not called for Sync data, Draw_Histagram will
       --  exhibit a Bin index out of range error.
@@ -110,13 +116,6 @@ package body Process_Sync_Data is
       --  to the same time frame.
       --  The histogram is drawn to verify the alignment.
       Offset := Draw_Histogram  (A_Sync_Data, B_Sync_Data);
-
-      B_Curs := First (B_Sync_Data);
-      --  Next (B_Curs);  --  Skip header
-      A_Sync_Data.Iterate (Find_Sync_Match'Access);
-      New_Line;
-
-      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
 
    exception
       when Error : others =>

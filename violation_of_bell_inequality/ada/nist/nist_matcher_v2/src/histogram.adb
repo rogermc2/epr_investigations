@@ -95,11 +95,16 @@ begin
       --  Put_Line (Routine_Name & "Current_Value " &
       --     Double_Natural'Image (Current_Value));
 
+      Put_Line (Routine_Name & "A 1 Value: " &
+          Double_Natural'Image (A_Data (1)));
+      Put_Line (Routine_Name & "B 1 Value: " &
+          Double_Natural'Image (B_Data (1)));
       Put_Line (Routine_Name & "Current_Value: " &
           Double_Natural'Image (Current_Value));
       Put_Line (Routine_Name & "Bin_Size: " &
-       Double_Positive'Image (Bin_Size));
+          Double_Positive'Image (Bin_Size));
        Bin_Index := Positive (Current_Value / Double_Natural (Bin_Size)) + 1;
+      Put_Line (Routine_Name & "Bin_Index" & Positive'Image (Bin_Index));
       --  Bound checking for updating bins
       if Bin_Index < 1 then
          Bin_Index := 1;
