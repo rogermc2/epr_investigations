@@ -3,8 +3,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
-with Printing; use Printing;
---  with NIST_Utilities; use NIST_Utilities;
+--  with Printing; use Printing;
 
 package body Process_Sync_Data is
 
@@ -30,9 +29,8 @@ package body Process_Sync_Data is
          end;
          Sync_Data.Append (Item);
       end loop;
-      Put_Line (Routine_Name & "Count " & Double_Natural'Image (Count));
+      --  Put_Line (Routine_Name & "Count " & Double_Natural'Image (Count));
       Put_Line (Routine_Name & "Sync_Data loaded from " & CSV_Data);
-      New_Line;
 
       Close (File_ID);
 
@@ -65,14 +63,8 @@ package body Process_Sync_Data is
             Match     : Boolean := False;
          begin
             Count := Count + 1;
-            if Count < 4 then
-               Put_Line (Natural'Image (Count) & "  A_Item" &  Double_Natural'Image (A_Item));
-            end if;
             if Has_Element (B_Curs) then
                B_Time := Element (B_Curs);
-               if Count < 4 then
-                  Put_Line ("   B_Time" & Double_Natural'Image (B_Time));
-               end if;
                --  Move B_Index forward until B_Value is >= (A_Value - Width)
                while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
                   B_Time := Element (B_Curs);
@@ -103,8 +95,8 @@ package body Process_Sync_Data is
          end Find_Sync_Match;
 
    begin
-      Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, 8);
-      Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, 8);
+      --  Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, 8);
+      --  Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, 8);
       Num_Found := 0;
       A_Sync_Data.Iterate (Find_Sync_Match'Access);
       New_Line;

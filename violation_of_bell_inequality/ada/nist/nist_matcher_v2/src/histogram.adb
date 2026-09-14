@@ -57,7 +57,7 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
          B_Time := B_Data (Index_B);
          Delta_Time := Double_Integer (A_Time - B_Time);
 
-         if Index_B > 1 and then abs (Delta_Time) >
+         if abs (Delta_Time) >
             abs (Double_Integer (A_Time - B_Data (Index_B + 1))) then
             Index_B := Index_B + 1;
             B_Time := B_Data (Index_B);
@@ -68,6 +68,10 @@ function Draw_Histogram (A_Data, B_Data : Double_Natural_Vector)
         Delta_Time := Double_Integer (A_Time - B_Data (Index_B));
       end if;
 
+      --  if Index_B < 4 then
+      --     Put_Line ("Index_B, Delta_Time" & Double_Positive'Image (Index_B)
+      --      & Double_Integer'Image (abs (Delta_Time)));
+      --  end if;
       return Double_Natural (abs (Delta_Time));
 
    exception
@@ -112,12 +116,10 @@ begin
    Print_Histogram (Bins, Bin_Size);
 
    Best_Delta :=
-      Double_Natural (Bins (Max_Freq_Index)) * Double_Natural (Bin_Size);
+      Double_Natural (Max_Freq_Index) * Double_Natural (Bin_Size);
    Put_Line (Routine_Name & "Calculated Best_Delta: " &
           Double_Natural'Image (Best_Delta));
 
-   Put_Line (Routine_Name & "best delta = " & Double_Natural'Image (Best_Delta) &
-      " ps, frequency = " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
