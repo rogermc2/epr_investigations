@@ -9,11 +9,10 @@ package NIST_Types is
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
 
-   type Channel_Type is (Detector_Click, Polarizer_0, Polarizer_45,
+   type Channel_Type is (Detector_Click, Pol_0, Pol_45,
                          GPS_Pps, Sync, Overflow, Ch_Error);
-   for Channel_Type use (Detector_Click => 0, Polarizer_0 => 2,
-                         Polarizer_45 => 3,   GPS_Pps => 5,
-                         Sync => 6,           Overflow => 64,
+   for Channel_Type use (Detector_Click => 0, Pol_0 => 2, Pol_45 => 3,
+                        GPS_Pps => 5, Sync => 6, Overflow => 64,
                          Ch_Error => 127);
 
    type Raw_Data_Record is record

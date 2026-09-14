@@ -56,6 +56,8 @@ begin
    Align_Data (A_Sync_Data, B_Sync_Data, A_Det_Data, B_Det_Data);
    Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Delta_Time);
+   Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, Finish => 5);
+   Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, Finish => 5);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
@@ -67,15 +69,15 @@ begin
    Put_Line (Routine_Name & "Detection A and B file sizes:" &
         Integer'Image (Count_Text_File_Lines (A_Det_In))  & "," &
         Integer'Image (Count_Text_File_Lines (B_Det_In)) & " lines");
-   Delta_Time := 55000;  --  max 23 at 55000, width 50000
+
    Match_Detection_Times (A_Det_Data, B_Det_Data, Matched_Det_Pairs, Width,
    Delta_Time, Num_Matches);
-   --  if Num_Matches > 0 then
-   --     Put_Line (Routine_Name & "matched detection pairs found:" &
-   --      Integer'Image (Num_Matches));
-   --  else
-   --     Put_Line (Routine_Name & "No matched detection pairs found!");
-   --  end if;
+   if Num_Matches > 0 then
+      Put_Line (Routine_Name & "matched detection pairs found:" &
+       Integer'Image (Num_Matches));
+   else
+      Put_Line (Routine_Name & "No matched detection pairs found!");
+   end if;
 
    --  Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");

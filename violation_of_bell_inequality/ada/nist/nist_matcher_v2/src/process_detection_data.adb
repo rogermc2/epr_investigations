@@ -31,9 +31,9 @@ package body Process_Detection_Data is
          begin
             Item.Time := Double_Natural'Value (Time_Tag);
             if Setting = " 0" then
-               Item.Setting := Polarizer_0;
+               Item.Setting := Pol_0;
             elsif Setting = "45" then
-               Item.Setting := Polarizer_45;
+               Item.Setting := Pol_45;
             else
                Put_Line ("Load_Data: Invalid setting: " & Setting);
             end if;
