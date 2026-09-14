@@ -207,7 +207,7 @@ package body Printing is
 procedure Print_Match_List (Name  : String; Data : Match_List;
                                Start : Positive := 1; Finish : Natural := 0) is
       Item : Index_Record;
-      Last : Positive;
+      Last : Natural;
       Count : Natural := 0;
    begin
       if Finish > 0 and then Finish <= Natural (Data.Last_index) then

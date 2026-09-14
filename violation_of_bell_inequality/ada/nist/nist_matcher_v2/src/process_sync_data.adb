@@ -50,19 +50,23 @@ package body Process_Sync_Data is
       use Match_Package;
       use Double_Natural_Package;
       Routine_Name : constant String := "Process_Sync_Data.Match_Syncs ";
-      D_Width      : constant Double_Natural := Double_Natural (Width);
+      D_Width      : constant Double_Natural := Double_Natural (Width / 2);
       B_Curs       : Double_Natural_Package.Cursor := B_Sync_Data.First;
       Count        : Natural := 0;
 
          procedure Find_Sync_Match (A_Curs : Double_Natural_Package.Cursor) is
-            A_Item    : constant Double_Natural := Element (A_Curs);
-            A_Time    : constant Double_Natural := A_Item + D_Width;
-            B_Val_Min : constant Double_Natural := A_Time - D_Width;
+            A_Time    : constant Double_Natural := Element (A_Curs);
+            --  A_Time    : constant Double_Natural := A_Item + D_Width;
+            B_Val_Min : Double_Natural := A_Time;
             Item      : Index_Record;
             B_Time    : Double_Natural;
             Match     : Boolean := False;
          begin
             Count := Count + 1;
+            if A_Time >= D_Width then
+               B_Val_Min := A_Time - D_Width;
+            end if;
+
             if Has_Element (B_Curs) then
                B_Time := Element (B_Curs);
                --  Move B_Index forward until B_Value is >= (A_Value - Width)

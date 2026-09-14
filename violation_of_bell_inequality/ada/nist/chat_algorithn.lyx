@@ -1,0 +1,693 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\spellchecker_ignore english analysed
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Title
+NIST Processing
+\end_layout
+
+\begin_layout Standard
+Strictly,
+ from NIST’s own documentation,
+ the safest reconstruction is the following.
+\end_layout
+
+\begin_layout Standard
+NIST says that the raw Alice and Bob files are time-tagged event streams.
+ 
+\end_layout
+
+\begin_layout Standard
+Each raw record contains a channel number,
+ a raw time tag and a transfer counter.
+\end_layout
+
+\begin_layout Standard
+The time-tag resolution is 78.125 ps.
+\end_layout
+
+\begin_layout Standard
+Alice and Bob’s time taggers share the same 10 MHz reference so they run at the same rate,
+ although their absolute time origins differ.
+\end_layout
+
+\begin_layout Standard
+The stored raw-data channels are:
+\end_layout
+
+\begin_layout Description
+0 detector click
+\end_layout
+
+\begin_layout Description
+2 RNG output 0
+\end_layout
+
+\begin_layout Description
+4 RNG output 1
+\end_layout
+
+\begin_layout Description
+5 GPS PPS
+\end_layout
+
+\begin_layout Description
+6 sync
+\end_layout
+
+\begin_layout Standard
+NIST explicitly describes channel 6 as the arrival of a sync pulse used to turn on the Pockels cell.
+\end_layout
+
+\begin_layout Standard
+It is the output of the interface circuit that samples the random-number generator.
+\end_layout
+
+\begin_layout Standard
+From there,
+ the NIST processing chain is:
+\end_layout
+
+\begin_layout LyX-Code
+raw Alice event stream
+\end_layout
+
+\begin_layout LyX-Code
+raw Bob event stream
+\end_layout
+
+\begin_layout LyX-Code
+↓
+\end_layout
+
+\begin_layout LyX-Code
+identify sync events
+\end_layout
+
+\begin_layout LyX-Code
+identify RNG setting associated with each sync
+\end_layout
+
+\begin_layout LyX-Code
+identify detector clicks relative to each sync
+\end_layout
+
+\begin_layout LyX-Code
+↓
+\end_layout
+
+\begin_layout LyX-Code
+construct one processed "event"
+\end_layout
+
+\begin_layout LyX-Code
+↓
+\end_layout
+
+\begin_layout LyX-Code
+event contains:
+\end_layout
+
+\begin_layout LyX-Code
+Alice setting
+\end_layout
+
+\begin_layout LyX-Code
+Bob setting
+\end_layout
+
+\begin_layout LyX-Code
+16-bit Alice click mask
+\end_layout
+
+\begin_layout LyX-Code
+16-bit Bob click mask
+\end_layout
+
+\begin_layout Standard
+The last step is not an interpretation:
+ NIST explicitly says that its processed cw45 format is a time-ordered record of events with each event containing the settings plus two 16-bit click fields.
+\end_layout
+
+\begin_layout Standard
+For each processed event the setting byte is:
+\end_layout
+
+\begin_layout Itemize
+bit 0 :
+ Alice RNG setting 0
+\end_layout
+
+\begin_layout Itemize
+bit 1 :
+ Alice RNG setting 1
+\end_layout
+
+\begin_layout Itemize
+bit 2 :
+ Bob RNG setting 0
+\end_layout
+
+\begin_layout Itemize
+bit 3 :
+ Bob RNG setting 1
+\end_layout
+
+\begin_layout Standard
+NIST notes that on rare occasions both or neither setting bits may be present for one party so an analysis should not silently assume every event has exactly one valid setting.
+\end_layout
+
+\begin_layout Standard
+The click representation is equally explicit.
+\end_layout
+
+\begin_layout Standard
+Alice gets a 16-bit unsigned integer and Bob gets another 16-bit unsigned integer.
+\end_layout
+
+\begin_layout Standard
+NIST says that there are 16 possible laser cycles while the Pockels cell is on and bit position 
+\begin_inset Formula $j$
+\end_inset
+
+ indicates whether or not a click occurred in that laser slot.
+\end_layout
+
+\begin_layout Standard
+Thus:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+A_{k} & = & \sum_{j=0}^{15}a_{kj}2^{j}\\
+B_{k} & = & \sum_{j=0}^{15}b_{kj}2^{j}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a_{kj},b_{kj}\in\{0,1\}.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Slot 1 corresponds to bit 0 and slot 16 to bit 15.
+\end_layout
+
+\begin_layout Standard
+So,
+ strictly following NIST,
+ a processing algorithm can be written as:
+\end_layout
+
+\begin_layout LyX-Code
+READ Alice raw records
+\end_layout
+
+\begin_layout LyX-Code
+READ Bob raw records
+\end_layout
+
+\begin_layout LyX-Code
+for each side:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+extract channel-6 sync timestamps
+\end_layout
+
+\begin_layout LyX-Code
+extract channel-2 and channel-4 RNG timestamps
+\end_layout
+
+\begin_layout LyX-Code
+extract channel-0 detector timestamps
+\end_layout
+
+\begin_layout LyX-Code
+align Alice and Bob streams in time
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+for each valid sync/event k:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+determine Alice RNG setting
+\end_layout
+
+\begin_layout LyX-Code
+determine Bob RNG setting
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+for each detector click near that sync:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+compute detector delay relative to sync
+\end_layout
+
+\begin_layout LyX-Code
+determine which of the 16 laser slots that the click belongs to
+\end_layout
+
+\begin_layout LyX-Code
+set corresponding bit in Alice or Bob click mask
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+save:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Alice_setting
+\end_layout
+
+\begin_layout LyX-Code
+Bob_setting
+\end_layout
+
+\begin_layout LyX-Code
+Alice_click_mask[16]
+\end_layout
+
+\begin_layout LyX-Code
+Bob_click_mask[16]
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+The critical detail is that the click window is defined relative to the sync.
+\end_layout
+
+\begin_layout Standard
+NIST says that its HDF5 files store the relative delay from the sync used to define a click,
+ the radius of the timing window,
+ each detector click’s delay relative to sync and the sync number associated with each detector click.
+\end_layout
+
+\begin_layout Standard
+Therefore,
+ for a given event 
+\begin_inset Formula $k$
+\end_inset
+
+ and pulse slot 
+\begin_inset Formula $j$
+\end_inset
+
+,
+ the local result is simply
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+A_{kj} & = & \begin{cases}
+1, & \text{Alice click-mask bit }j=1,\\
+0, & \text{Alice click-mask bit }j=0,
+\end{cases}
+\end{eqnarray}
+
+\end_inset
+
+and similarly:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+B_{kj} & = & \begin{cases}
+1, & \text{Bob click-mask bit }j=1,\\
+0, & \text{Bob click-mask bit }j=0.
+\end{cases}
+\end{eqnarray}
+
+\end_inset
+
+Hence the four outcomes for that pulse slot are:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+++ & \equiv & (1,1),\\
++0 & \equiv & (1,0),\\
+0+ & \equiv & (0,1),\\
+00 & \equiv & (0,0).
+\end{eqnarray}
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+This terminology is confirmed by NIST’s own spreadsheet description:
+\end_layout
+
+\begin_layout Standard
+the processed analysis files have columns ordered as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+++ab,\quad+0ab,\quad0+ab,\quad00ab,
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and then the same four outcomes for 
+\begin_inset Formula $ab'$
+\end_inset
+
+,
+ 
+\begin_inset Formula $a'b$
+\end_inset
+
+,
+ and 
+\begin_inset Formula $a'b'$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+So 00 is reconstructed,
+ not detected.
+ 
+\end_layout
+
+\begin_layout Standard
+For a valid event with a valid Alice/Bob setting pair examine a specified pulse slot or pulse grouping.
+\end_layout
+
+\begin_layout Standard
+If neither Alice nor Bob has a click bit set for that slot/group then the outcome is 00.
+\end_layout
+
+\begin_layout Standard
+In pseudocode:
+\end_layout
+
+\begin_layout LyX-Code
+for each processed event k:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+if Alice setting is invalid:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+reject / flag event
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+if Bob setting is invalid:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+reject / flag event
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+for each pulse slot j of interest:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+A = bit (Alice_click_mask,
+ j)
+\end_layout
+
+\begin_layout LyX-Code
+B = bit (Bob_click_mask,
+ j)
+\end_layout
+
+\begin_layout LyX-Code
+if A == 1 and B == 1:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+outcome = "++"
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+elif A == 1 and B == 0:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+outcome = "+0"
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+elif A == 0 and B == 1:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+outcome = "0+"
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+else:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+outcome = "00"
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Standard
+There is one major qualification.
+\end_layout
+
+\begin_layout Standard
+NIST explicitly warns that the old processed_compressed/cw45 files do not contain enough metadata to reproduce the full event definition.
+ 
+\end_layout
+
+\begin_layout Standard
+The name cw45 only tells you that a radius of 4 was used at Alice and 5 at Bob;
+ the actual delay from the sync pulse has to come from the YAML configuration used by build_file_txt.py.
+ 
+\end_layout
+
+\begin_layout Standard
+NIST actually discourages relying on those files alone for analysis because the full chain is not documented there.
+\end_layout
+
+\begin_layout Standard
+The HDF5 form is therefore much better for a reconstruction because it preserves the settings,
+ click masks,
+ anomalous syncs,
+ clock-alignment information,
+ click-window delay and radius,
+ individual click delays relative to sync and the sync number for each detector click.
+\end_layout
+
+\begin_layout Standard
+One more important warning from NIST:
+ some of Peter Bierhorst’s spreadsheets have incorrect 00 entries due to a programming error.
+ However NIST says those entries did not affect the reported p-value.
+\end_layout
+
+\begin_layout Standard
+So for your own clean analysis,
+ I would define the core data object as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\boxed{(k,\;x_{k},\;y_{k},\;A_{k}^{(16)},\;B_{k}^{(16)})}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $k$
+\end_inset
+
+ is the synchronized event number,
+ 
+\begin_inset Formula $x_{k},y_{k}$
+\end_inset
+
+ are the RNG settings,
+ and 
+\begin_inset Formula $A_{k}^{(16)},B_{k}^{(16)}$
+\end_inset
+
+ are the 16-bit click masks.
+\end_layout
+
+\begin_layout Standard
+Then 00 is not found by searching for a special record.
+ It is simply
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\boxed{a_{kj}=0,\qquad b_{kj}=0}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+for a valid synchronized event and the pulse slot or pulse grouping being analysed.
+\end_layout
+
+\begin_layout Standard
+The next useful step is to go one level deeper into the NIST analysis code—
+especially build_file_txt.py / the HDF5-building code—
+and extract the exact rule by which a detector delay is assigned to one of those 16 bits.
+\end_layout
+
+\begin_layout Standard
+That would remove the last ambiguity between the sync histogram you already produced and the final ++,+0,0+,00 records.
+\end_layout
+
+\end_body
+\end_document

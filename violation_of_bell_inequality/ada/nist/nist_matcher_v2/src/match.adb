@@ -25,7 +25,7 @@ procedure Match is
    --  Det_ab              : constant String := Pairs_Directory & "ab.csv";
    --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
    --  Det_bb              : constant String := Pairs_Directory & "bb.csv";
-   Width               : constant Natural := 50000;
+   Width               : constant Natural := 11;
    Num_Rows            : constant Types.Double_Natural := 30000;
    A_Sync_Data         : Double_Natural_Vector;
    B_Sync_Data         : Double_Natural_Vector;
@@ -56,8 +56,9 @@ begin
    Align_Data (A_Sync_Data, B_Sync_Data, A_Det_Data, B_Det_Data);
    Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Delta_Time);
-   Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, Finish => 5);
-   Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, Finish => 5);
+   Print_Match_List ("Selected_Sync_Pairs", Selected_Sync_Pairs, 1000, 1010);
+   Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, 5);
+   Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, 5);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &
        Integer'Image (Num_Found));
