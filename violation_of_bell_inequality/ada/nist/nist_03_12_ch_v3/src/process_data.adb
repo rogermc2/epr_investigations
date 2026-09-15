@@ -3,20 +3,15 @@ with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
---  with Ada.Strings;
---  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with NIST_Types; use NIST_Types;
---  with Utils; use Utils;
 
 package body Process_Data is
 
    procedure Load_NIST_Data
     (Source_File, Target_File : String; Num_Rows : Double_Natural := 30) is
        use Ada.Streams;
-      --  use Ada.Strings;
-      --  use Ada.Strings.Fixed;
       Routine_Name : constant String  := "Process_Data.Load_NIST_Data ";
       Source_Size  : constant Double_Natural :=
        Double_Natural (Ada.Directories.Size (Source_File));
@@ -27,7 +22,7 @@ package body Process_Data is
       Raw_Data     : Raw_Data_Record;
       Data         : Data_Record;
       Pol_Setting  : String (1 .. 2);
-      Click        : Boolean;
+      Clicked      : Boolean;
       Sync_Pulse   : Boolean;
       Line_Num     : Double_Natural := 0;
       Num_Clicks   : Natural := 0;
@@ -49,8 +44,7 @@ package body Process_Data is
         "_parsing_errors.log");
       Put_Line (Log_ID, "*******  Parsing Errors  *******");
       Create (Target_ID, Out_File, Target_File);
-      --  while not Stream_IO.End_Of_File (Source_ID) and then
-      --   Line_Num <= Num_Rows loop
+
       while not Stream_IO.End_Of_File (Source_ID) and then
          Line_Num <= Num_Rows loop
         Line_Num := Line_Num + 1;
@@ -65,7 +59,7 @@ package body Process_Data is
          --  end if;
 
          case Raw_Data.Channel is
-            when 0 => Data.Channel := Detector_Click;
+            when 0 => Data.Channel := Click;
             when 2 => Data.Channel := Pol_0;
             when 4 => Data.Channel := Pol_45;
             when 5 => Data.Channel := GPS_Pps;
@@ -81,15 +75,11 @@ package body Process_Data is
          Data.Time_Tag := Double_Positive (Raw_Data.Time_Tag);
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
 
-         --  if Line_Num < 8 then
-         --     Print_Processed_Data (NIST_Data);
-         --  end if;
-
-         Click := False;
+         Clicked := False;
          Sync_Pulse := False;
          case Data.Channel is
-            when Detector_Click =>
-               Click :=  True;
+            when Click =>
+               Clicked :=  True;
                Num_Clicks := Num_Clicks + 1;
             when Pol_0 => Pol_Setting := " 0";
             when Pol_45 => Pol_Setting := "45";
@@ -114,9 +104,6 @@ package body Process_Data is
       Stream_IO.Close (Source_ID);
       Close (Target_ID);
 
-      --  Put_Line
-      --    (Routine_Name & "number of clicks and synchs: "  &
-      --    Integer'Image (Num_Clicks) & ", " & Integer'Image (Num_Synchs));
       Put_Line (Routine_Name & "number of invalid items: " &
       Integer'Image (Num_Invalid));
 

@@ -17,7 +17,7 @@ procedure Get_Data is
    "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
    A_Target      : constant String := Target_Dir & "A.csv";
    B_Target      : constant String := Target_Dir & "B.csv";
-   Num_Rows      : constant Types.Double_Natural := 30000;
+   Num_Rows      : constant Types.Double_Natural := 100000;
 begin
    Load_NIST_Data (A_Source, A_Target, Num_Rows);
    Load_NIST_Data (B_Source, B_Target, Num_Rows);
