@@ -1,7 +1,7 @@
 
 with Types; use Types;
 
-package Process_Sync_Data is
+package Process_Data is
 
   procedure Load_Sync_Data
       (CSV_Data : String; Sync_Data : in out Double_Natural_Vector;
@@ -11,5 +11,8 @@ package Process_Sync_Data is
       Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Offset : out Double_Natural);
+   
+   procedure NIST_Data (Source_File, Det_File, Sync_File :
+                         String; Num_Rows : Double_Natural := 30);
 
-end Process_Sync_Data;
+end Process_Data;

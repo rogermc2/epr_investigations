@@ -7,17 +7,20 @@ with NIST_Utilities; use NIST_Utilities;
 --  with NIST_Printing; use NIST_Printing;
 with Printing; use Printing;
 with Process_Detection_Data; use Process_Detection_Data;
-with Process_Sync_Data; use Process_Sync_Data;
+with Process_Data; use Process_Data;
 with Types; use Types;
 with Utils; use Utils;
 
 procedure Match is
    Routine_Name      : constant String := "Match ";
    Pairs_Directory   : constant String := "../generated_nist_data/";
-   A_Det_In          : constant String := Pairs_Directory & "A_Det.csv";
-   B_Det_In          : constant String := Pairs_Directory & "B_Det.csv";
-   A_Sync_In         : constant String := Pairs_Directory & "A_Sync.csv";
-   B_Sync_In         : constant String := Pairs_Directory & "B_Sync.csv";
+   A_In_Directory   : constant String := "../../../../nist_data/";
+   B_In_Directory   : constant String := A_In_Directory;
+   Target_Dir    : constant String := "../generated_nist_data/";
+   A_Source      : constant String := A_In_Directory &
+    "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
+   B_Source      : constant String := B_In_Directory &
+   "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
    Matched_Sync      : constant String := Pairs_Directory & "matched_sync.csv";
    Matched_Det_Pairs : constant String :=
     Pairs_Directory & "matched_det_pairs.csv";
