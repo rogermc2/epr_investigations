@@ -50,22 +50,15 @@ package body Process_Data is
         Line_Num := Line_Num + 1;
 
          Raw_Data_Record'Read (Data_Stream, Raw_Data);
-         --  if Line_Num < 22 then
-         --     null;
-         --     Put_Line (Routine_Name & "Line_Num: " &
-         --      Double_Natural'Image (Line_Num) & ", Raw Data Channel: " &
-         --              Unsigned_Byte'Image (Raw_Data.Channel));
-         --     --  Print_Raw_Data (Raw_Data);
-         --  end if;
 
          case Raw_Data.Channel is
-            when 0 => Data.Channel := Click;
-            when 2 => Data.Channel := Pol_0;
-            when 4 => Data.Channel := Pol_45;
-            when 5 => Data.Channel := GPS_Pps;
-            when 6 => Data.Channel := Sync;
-            when 64 => Data.Channel := Overflow;
-            when others => Data.Channel := Ch_Error;
+            when 0 => Data.Channel := CLICK;
+            when 2 => Data.Channel := POL_0;
+            when 4 => Data.Channel := POL_45;
+            when 5 => Data.Channel := GPS_PPS;
+            when 6 => Data.Channel := SYNC;
+            when 64 => Data.Channel := OVERFLOW;
+            when others => Data.Channel := CH_ERROR;
              Num_Invalid := Num_Invalid + 1;
              Ada.Text_IO.Put_Line (Log_ID, "Line: " &
                   Double_Natural'Image (Line_Num) & "," &

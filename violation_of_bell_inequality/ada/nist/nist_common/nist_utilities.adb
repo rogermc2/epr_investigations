@@ -1,8 +1,11 @@
 
+--  with Ada.Assertions; use Ada.Assertions;
 --  with Ada.Text_IO; use Ada.Text_IO;
 
 --  with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
+--  with Ada.Text_IO;
+with Types; use Types;
 
 package body  NIST_Utilities is
 
@@ -17,14 +20,18 @@ package body  NIST_Utilities is
       B_Offset     : Double_Natural;
 
       procedure Apply_Delta_Time
-       (Data : in out Nist_Data_List; Delta_Time : Double_Natural) is
+       (Data : in out Nist_Data_List; Delta_Time : Double_Positive) is
          Curs :  Nist_Data_Package.Cursor := Data.First;
          Item : Data_Record;
       begin
          while Has_Element (Curs) loop
             Item := Element (Curs);
-            Item.Time_Tag := Item.Time_Tag - Double_Positive (Delta_Time);
-            Data.Replace_Element (Curs, Item);
+            --  Ada.Text_IO.Put_Line ("Apply_Delta_Time Item.Time_Tag, Delta_Time" &
+            --  Double_Positive'Image (Item.Time_Tag) & ", " & Double_Positive'Image (Delta_Time));
+            if Delta_Time > Item.Time_Tag then
+               Item.Time_Tag := Item.Time_Tag - Delta_Time;
+               Data.Replace_Element (Curs, Item);
+            end if;
             Next (Curs);
          end loop;
 
@@ -38,8 +45,10 @@ package body  NIST_Utilities is
       begin
          while Has_Element (Curs) loop
             Item := Element (Curs);
-            Item.Time_Tag := Item.Time_Tag - Double_Positive (Offset);
-            Data.Replace_Element (Curs, Item);
+            if Item.Time_Tag > Double_Positive (Offset) then
+               Item.Time_Tag := Item.Time_Tag - Double_Positive (Offset);
+               Data.Replace_Element (Curs, Item);
+            end if;
             Next (Curs);
          end loop;
 
@@ -58,15 +67,21 @@ package body  NIST_Utilities is
       end Min_Time;
 
    begin
+      --  Assert (A_Data.First_Element.Time_Tag > 0,
+      --  "A_Data.First_Element.Time_Tag invalid: " &
+      --  Double_Positive'Image (A_Data.First_Element.Time_Tag));
       Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
        B_Data.First_Element.Time_Tag);
+      if Delta_Time > 1 then
+         Delta_Time := Delta_Time - 1;
+      end if;
       --  Put_Line (Routine_Name & "Delta_Time: " &
       --              Double_Natural'Image (Delta_Time));
       --  Adjust A and B times to start at the same time
       if AgtB then
-         Apply_Delta_Time (A_Data, Double_Natural (Delta_Time));
+         Apply_Delta_Time (A_Data, Delta_Time);
       else
-         Apply_Delta_Time (B_Data, Double_Natural (Delta_Time));
+         Apply_Delta_Time (B_Data, Delta_Time);
       end if;
 
       --  Print_Double_Natural_Vector ("Align_Data A_Sync_Data after delta", A_Sync_Data, 1, 1);

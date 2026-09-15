@@ -5,6 +5,37 @@ with Types; use Types;
 
 package body NIST_Printing is
 
+   procedure Print_NIST_Data_List
+    (Name  : String; Data : Nist_Data_List;
+      Start : Positive := 1; Finish : Natural := 0) is
+      use Nist_Data_Package;
+      Start_Idx : constant Double_Positive := Double_Positive (Start);
+      Last      : Double_Positive;
+      Item      : Data_Record;
+   begin
+      if Finish > 0 then
+         Last := Double_Positive (Finish);
+      else
+         Last := Double_Positive (Data.Length);
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start_Idx >= Data.First_Index and then
+       Last <= Data.Last_Index then
+         for Index in Start_Idx .. Last loop
+            Item := Data (Index);
+            Put ("Channel: " & Channel_Type'Image (Item.Channel));
+            Put (",  Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
+            Put_Line (",  Transfer_ID: " & Integer'Image (Item.Transfer_ID));
+         end loop;
+      else
+         Put_Line ("Print_NIST_Data_List called with invalid" &
+          " start or finish index.");
+      end if;
+      New_Line;
+
+   end Print_NIST_Data_List;
+
    procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
    begin
       Put_Line ("Raw Data:");
@@ -18,7 +49,7 @@ package body NIST_Printing is
    begin
       Put_Line ("Processed Data:");
       Put_Line ("Channel: " & Channel_Type'Image (Data.Channel));
-      Put_Line ("Time_Tag: " & Unsigned_8_Byte'Image (Data.Time_Tag));
+      Put_Line ("Time_Tag: " & Double_Positive'Image (Data.Time_Tag));
       Put_Line ("Transfer_ID: " & Integer'Image (Data.Transfer_ID));
       New_Line;
    end Print_Processed_Data;

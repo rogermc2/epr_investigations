@@ -1,8 +1,9 @@
 
+--  with Ada.Assertions; use Ada.Assertions;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Streams;
-with Ada.Streams.Stream_IO;
+with Ada.Strings;
+with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
@@ -11,6 +12,68 @@ with Histogram;
 package body Process_Data is
 
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
+
+   procedure Load_NIST_Data (Source_File : String;
+    NIST_Data : out Nist_Data_List) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use Nist_Data_Package;
+      Routine_Name : constant String  := "Process_Data.Load_NIST_Data ";
+      Source_Size  : constant Double_Natural :=
+         Double_Natural (Ada.Directories.Size (Source_File));
+      Source_ID    : File_Type;
+      Data         : Data_Record;
+      Line_Num     : Double_Natural := 0;
+   begin
+      Put_Line (Routine_Name & "Source File: " & Source_File);
+      Put_Line (Routine_Name & Source_File & " length: " &
+         Double_Natural'Image (Source_Size));
+      New_Line;
+      Put_Line (Routine_Name &
+       Source_File (Source_File'First + 19 .. Source_File'Last) & " size: " &
+                     Double_Natural'Image (Source_Size));
+      Open (Source_ID, In_File, Source_File);
+
+      while not End_Of_File (Source_ID) loop
+        Line_Num := Line_Num + 1;
+         declare
+            aline : constant String := Get_Line (Source_ID);
+            Pos_1 : constant Natural :=
+             Index (aLine (aLine'First .. aLine'Last), ",");
+            Pos_2 : constant Natural :=
+             Index (aLine (Pos_1 + 1 .. aLine'Last), ",");
+         begin
+            if Pos_1 - aline'First > 1 then
+               Data.Channel :=
+               Channel_Type'Value (aline (aline'First .. Pos_1 - 1));
+               Data.Time_Tag :=
+                  Double_Positive'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
+               Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
+               --  Assert (Data.Time_Tag > 0, "Data.Time_Tag invalid: " &
+               --  Double_Positive'Image (Data.Time_Tag));
+            else
+               Put_Line (Routine_Name & "aline'First, Pos_1: " &
+               Integer'Image (aline'First) & "," & Integer'Image (Pos_1));
+            end if;
+        end;
+
+         if Data.Channel /= Overflow then
+            NIST_Data.Append (Data);
+         end if;
+
+         if Line_Num mod 4000000 = 0 then
+            Put (".");
+         end if;
+      end loop;
+      New_Line;
+
+      Close (Source_ID);
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+   end Load_NIST_Data;
 
    procedure Match_Syncs
      (A_Sync_Data, B_Sync_Data : in out Double_Natural_Vector; Matched_Sync_CSV : String; Width : Natural;
@@ -26,7 +89,6 @@ package body Process_Data is
 
          procedure Find_Sync_Match (A_Curs : Double_Natural_Package.Cursor) is
             A_Time    : constant Double_Natural := Element (A_Curs);
-            --  A_Time    : constant Double_Natural := A_Item + D_Width;
             B_Val_Min : Double_Natural := A_Time;
             Item      : Index_Record;
             B_Time    : Double_Natural;
@@ -90,118 +152,6 @@ package body Process_Data is
          raise;
 
    end Match_Syncs;
-
-   procedure Load_NIST_Data (Source_File : String;
-    NIST_Data : out Nist_Data_List) is
-      use Ada.Streams;
-      --  use Ada.Strings;
-      --  use Ada.Strings.Fixed;
-      use Nist_Data_Package;
-      Routine_Name : constant String  := "Process_Data.Load_NIST_Data ";
-      Source_Size  : constant Double_Natural :=
-       Double_Natural (Ada.Directories.Size (Source_File));
-      Data_Stream  : Stream_IO.Stream_Access;
-      Source_ID    : Stream_IO.File_Type;
-      Log_ID       : Ada.Text_IO.File_Type;
-      Raw_Data     : Raw_Data_Record;
-      Data         : Data_Record;
-      Pol_Setting  : String (1 .. 2);
-      Click        : Boolean;
-      Sync_Pulse   : Boolean;
-      Line_Num     : Double_Natural := 0;
-      Num_Clicks   : Natural := 0;
-      Num_Synchs   : Natural := 0;
-      Num_Invalid  : Natural := 0;
-   begin
-      Put_Line (Routine_Name & "Source File: " & Source_File);
-      Put_Line (Routine_Name & Source_File & " length: " &
-         Double_Natural'Image (Source_Size));
-      New_Line;
-      Put_Line (Routine_Name &
-       Source_File (Source_File'First + 19 .. Source_File'Last) & " size: " &
-                     Double_Natural'Image (Source_Size));
-      Stream_IO.Open (Source_ID, Stream_IO.In_File, Source_File);
-      Data_Stream := Stream_IO.Stream (Source_ID);
-
-      Create (Log_ID, Out_File,
-       Source_File (Source_File'First + 22 .. Source_File'Last - 4) &
-        "_parsing_errors.log");
-      Put_Line (Log_ID, "*******  Parsing Errors  *******");
-
-      --  while not Stream_IO.End_Of_File (Source_ID) and then
-      --   Line_Num <= Num_Rows loop
-      while not Stream_IO.End_Of_File (Source_ID) loop
-        Line_Num := Line_Num + 1;
-
-         Raw_Data_Record'Read (Data_Stream, Raw_Data);
-         --  if Line_Num < 22 then
-         --     null;
-         --     Put_Line (Routine_Name & "Line_Num: " &
-         --      Double_Natural'Image (Line_Num) & ", Raw Data Channel: " &
-         --              Unsigned_Byte'Image (Raw_Data.Channel));
-         --     --  Print_Raw_Data (Raw_Data);
-         --  end if;
-
-         case Raw_Data.Channel is
-            when 0 => Data.Channel := Detector_Click;
-            when 2 => Data.Channel := Pol_0;
-            when 4 => Data.Channel := Pol_45;
-            when 5 => Data.Channel := GPS_Pps;
-            when 6 => Data.Channel := Sync;
-            when 64 => Data.Channel := Overflow;
-            when others => Data.Channel := Ch_Error;
-             Num_Invalid := Num_Invalid + 1;
-             Ada.Text_IO.Put_Line (Log_ID, "Line: " &
-                  Double_Natural'Image (Line_Num) & "," &
-                  "Invalid Channel value:" &
-                  Unsigned_Byte'Image (Raw_Data.Channel));
-         end case;
-         Data.Time_Tag := Types.Double_Positive (Raw_Data.Time_Tag);
-         Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
-
-         --  if Line_Num < 8 then
-         --     Print_Processed_Data (NIST_Data);
-         --  end if;
-
-         Click := False;
-         Sync_Pulse := False;
-         case Data.Channel is
-            when Detector_Click =>
-               Click :=  True;
-               Num_Clicks := Num_Clicks + 1;
-            when Pol_0 => Pol_Setting := " 0";
-            when Pol_45 => Pol_Setting := "45";
-            when GPS_Pps => null;
-            when Sync =>
-               Sync_Pulse :=  True;
-               Num_Synchs := Num_Synchs + 1;
-            when Overflow => null;
-            when Ch_Error => null;
-         end case;
-         NIST_Data.Append (Data);
-
-         if Line_Num mod 4000000 = 0 then
-            Put (".");
-         end if;
-      end loop;
-      New_Line;
-
-      Close (Log_ID);
-      Stream_IO.Close (Source_ID);
-
-      --  Put_Line
-      --    (Routine_Name & "number of clicks and synchs: "  &
-      --    Integer'Image (Num_Clicks) & ", " & Integer'Image (Num_Synchs));
-      Put_Line (Routine_Name & "number of invalid items: " &
-      Integer'Image (Num_Invalid));
-
-      New_Line;
-
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         raise;
-   end Load_NIST_Data;
 
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List) is
      use Match_Package;

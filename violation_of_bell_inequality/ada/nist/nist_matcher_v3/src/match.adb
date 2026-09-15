@@ -4,7 +4,7 @@
 --  with Data_Selection; use Data_Selection;
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
---  with NIST_Printing; use NIST_Printing;
+with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
 --  with Process_Detection_Data; use Process_Detection_Data;
 with Process_Data; use Process_Data;
@@ -13,14 +13,9 @@ with Process_Data; use Process_Data;
 
 procedure Match is
    --  Routine_Name      : constant String := "Match ";
-   --  Pairs_Directory   : constant String := "../generated_nist_data/";
-   A_In_Directory   : constant String := "../../../../nist_data/";
-   B_In_Directory   : constant String := A_In_Directory;
-   --  Target_Dir    : constant String := "../generated_nist_data/";
-   A_Source      : constant String := A_In_Directory &
-    "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
-   B_Source      : constant String := B_In_Directory &
-   "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
+   In_Directory  : constant String := "../generated_nist_data/";
+   A_Source      : constant String := In_Directory & "A.csv";
+   B_Source      : constant String := In_Directory & "B.csv";
    --  Matched_Sync      : constant String := Pairs_Directory & "matched_sync.csv";
    --  Matched_Det_Pairs : constant String :=
    --   Pairs_Directory & "matched_det_pairs.csv";
@@ -50,6 +45,7 @@ begin
    Load_NIST_Data (B_Source, B_Data);
 
    Align_Data (A_Data, B_Data);
+   Print_NIST_Data_List ("A_Data", A_Data, 1, 5);
    --  Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
    --              Selected_Sync_Pairs, Delta_Time);
    --  Print_Match_List ("Selected_Sync_Pairs", Selected_Sync_Pairs, 1000, 1010);
