@@ -3,7 +3,7 @@
 
 --  with Data_Selection; use Data_Selection;
 with NIST_Types; use NIST_Types;
---  with NIST_Utilities; use NIST_Utilities;
+with NIST_Utilities; use NIST_Utilities;
 --  with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
 --  with Process_Detection_Data; use Process_Detection_Data;
@@ -49,7 +49,7 @@ begin
    Load_NIST_Data (A_Source, A_Data);
    Load_NIST_Data (B_Source, B_Data);
 
-   --  Align_Data (A_Sync_Data, B_Sync_Data, A_Det_Data, B_Det_Data);
+   Align_Data (A_Data, B_Data);
    --  Match_Syncs (A_Sync_Data, B_Sync_Data, Matched_Sync, Width, Num_Found,
    --              Selected_Sync_Pairs, Delta_Time);
    --  Print_Match_List ("Selected_Sync_Pairs", Selected_Sync_Pairs, 1000, 1010);

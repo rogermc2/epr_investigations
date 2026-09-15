@@ -156,7 +156,7 @@ package body Process_Data is
                   "Invalid Channel value:" &
                   Unsigned_Byte'Image (Raw_Data.Channel));
          end case;
-         Data.Time_Tag := Raw_Data.Time_Tag;
+         Data.Time_Tag := Types.Double_Positive (Raw_Data.Time_Tag);
          Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
 
          --  if Line_Num < 8 then

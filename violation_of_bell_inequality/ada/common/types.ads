@@ -119,6 +119,10 @@ package Types is
      Ada.Containers.Vectors (Double_Positive, Double_Natural);
    subtype Double_Natural_Vector is Double_Natural_Package.Vector;
 
+   package Double_Positive_Package is new
+     Ada.Containers.Vectors (Double_Positive, Double_Positive);
+   subtype Double_Positive_Vector is Double_Positive_Package.Vector;
+
    package Double_Integer_Package is new
      Ada.Containers.Vectors (Positive, Double_Integer);
    subtype Double_Integer_Vector is Double_Integer_Package.Vector;

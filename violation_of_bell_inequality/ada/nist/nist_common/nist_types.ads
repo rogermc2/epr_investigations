@@ -27,7 +27,7 @@ package NIST_Types is
 
    type Data_Record is record
       Channel     : Channel_Type;
-      Time_Tag    : Unsigned_8_Byte;
+      Time_Tag    : Double_Positive;
       Transfer_ID : Integer;
    end record;
 
