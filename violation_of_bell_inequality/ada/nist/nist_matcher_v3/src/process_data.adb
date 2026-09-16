@@ -6,12 +6,78 @@ with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Histogram;
+with Types; use Types;
 --  with Printing; use Printing;
 
 package body Process_Data is
 
+   function Get_Events (Data_In : Nist_Data_List) return  Nist_Data_List;
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
+
+   procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
+      Events : out Nist_Event_List) is
+      use Nist_Data_Package;
+      use Nist_Event_Package;
+      Routine_Name : constant String := "Process_Data.Build_Event_List ";
+      --  A_Index       : Nist_Event_Package.Extended_Index := A_Data.First_Index;
+      --  B_Index       : Nist_Event_Package.Extended_Index := B_Data.First_Index;
+      --  Synch_Index   : Nist_Event_Package.Extended_Index;
+      --  Setting_Index : Nist_Event_Package.Extended_Index;
+      --  Click_Index   : Nist_Event_Package.Extended_Index;
+   begin
+      A_Data := Get_Events (A_Data);
+      B_Data := Get_Events (B_Data);
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+   end Build_Event_List;
+
+   function Get_Events (Data_In : Nist_Data_List) return  Nist_Data_List is
+      use Nist_Data_Package;
+      Routine_Name  : constant String := "Process_Data.Get_Events ";
+      Data_Index    : Nist_Event_Package.Extended_Index := Data_In.First_Index;
+      Synch_Index   : Nist_Event_Package.Extended_Index;
+      Setting_Index : Nist_Event_Package.Extended_Index;
+      Click_Index   : Nist_Event_Package.Extended_Index;
+      Item          : Data_Record;
+      Data_Out      : Nist_Data_List;
+   begin
+      while Data_Index < Data_In.Last_Index - 2 loop
+         while Data_In (Data_Index).Channel /= Click and then
+         Data_Index < Data_In.Last_Index - 2 loop
+            Data_Index := Data_Index + 1;
+         end loop;
+         Click_Index := Data_Index;
+         if Data_In (Click_Index - 2).Channel = Sync and then
+            (Data_In (Click_Index - 1).Channel = Pol_0 or else
+          Data_In (Click_Index - 1).Channel = Pol_45) then
+            Setting_Index := Data_Index - 1;
+            Synch_Index := Data_Index - 2;
+            Item.Channel := Sync;
+            Item.Time_Tag := Data_In (Synch_Index).Time_Tag;
+            Data_Out.Append (Item);
+
+            Item.Channel := Sync;
+            Item.Channel := Data_In (Setting_Index).Channel;
+            Item.Time_Tag := Data_In (Setting_Index).Time_Tag;
+            Data_Out.Append (Item);
+
+            Item.Channel := Click;
+            Item.Time_Tag := Data_In (Click_Index).Time_Tag;
+            Data_Out.Append (Item);
+         end if;
+         Data_Index := Data_Index + 1;
+      end loop;
+
+      return Data_Out;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+   end Get_Events;
 
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List) is
@@ -74,84 +140,6 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Load_NIST_Data;
-
-   procedure Match_Syncs
-     (A_Sync_Data, B_Sync_Data : in out Double_Natural_Vector; Matched_Sync_CSV : String; Width : Natural;
-      Num_Found : out Natural; Selected_Pairs : out Match_List;
-      Offset : out Double_Natural) is
-      use Histogram;
-      use Match_Package;
-      use Double_Natural_Package;
-      Routine_Name : constant String := "Process_Sync_Data.Match_Syncs ";
-      D_Width      : constant Double_Natural := Double_Natural (Width / 2);
-      B_Curs       : Double_Natural_Package.Cursor := B_Sync_Data.First;
-      Count        : Natural := 0;
-
-         procedure Find_Sync_Match (A_Curs : Double_Natural_Package.Cursor) is
-            A_Time    : constant Double_Natural := Element (A_Curs);
-            B_Val_Min : Double_Natural := A_Time;
-            Item      : Index_Record;
-            B_Time    : Double_Natural;
-            Match     : Boolean := False;
-         begin
-            Count := Count + 1;
-            if A_Time >= D_Width then
-               B_Val_Min := A_Time - D_Width;
-            end if;
-
-            if Has_Element (B_Curs) then
-               B_Time := Element (B_Curs);
-               --  Move B_Index forward until B_Value is >= (A_Value - Width)
-               while Has_Element (B_Curs) and then B_Time < B_Val_Min loop
-                  B_Time := Element (B_Curs);
-                  Next (B_Curs);
-               end loop;
-
-               --  Element (B_Curs) is = or > B_Val_Min
-               if Has_Element (B_Curs) then
-                  B_Time := Element (B_Curs);
-                  Match := Abs (B_Time - A_Time) <= D_Width;
-
-                  if Match then
-                     --  Matched times found within window
-                     Item.A_Index := Double_Positive (To_Index (A_Curs));
-                     Item.B_Index := Double_Positive (To_Index (B_Curs));
-                     Selected_Pairs.Append (Item);
-                     Num_Found := Num_Found + 1;
-                  end if;
-                  Next (B_Curs);
-               end if;
-            end if;
-
-         exception
-            when Error : others =>
-               Put_Line (Routine_Name & Exception_Information (Error));
-               raise;
-
-         end Find_Sync_Match;
-
-   begin
-      --  Print_Double_Natural_Vector ("A_Sync_Data", A_Sync_Data, 1, 8);
-      --  Print_Double_Natural_Vector ("B_Sync_Data", B_Sync_Data, 1, 8);
-      Num_Found := 0;
-      A_Sync_Data.Iterate (Find_Sync_Match'Access);
-      New_Line;
-
-      Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
-
-      --  If Align_Sync_Data is not called for Sync data, Draw_Histagram will
-      --  exhibit a Bin index out of range error.
-      --  Align_Timing_Data is called to align two data sets
-      --  to the same time frame.
-      --  The histogram is drawn to verify the alignment.
-      Offset := Draw_Histogram  (A_Sync_Data, B_Sync_Data);
-
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         raise;
-
-   end Match_Syncs;
 
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List) is
      use Match_Package;

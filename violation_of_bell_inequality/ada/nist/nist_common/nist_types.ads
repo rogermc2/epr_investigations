@@ -1,4 +1,5 @@
 
+with Interfaces;
 with Ada.Containers.Vectors;
 
 with Types; use Types;
@@ -28,7 +29,7 @@ package NIST_Types is
    type Data_Record is record
       Channel     : Channel_Type;
       Time_Tag    : Double_Positive;
-      Transfer_ID : Integer;
+      Transfer_ID : Integer := 0;
    end record;
 
    package Nist_Data_Package is new
@@ -43,5 +44,16 @@ package NIST_Types is
    package Setting_Time_Package is new
      Ada.Containers.Vectors (Double_Positive, Setting_Time_Record);
    subtype Setting_Time_Vector is Setting_Time_Package.Vector;
+
+   type NIST_Event_Record is record
+      A_Setting    : Channel_Type;
+      B_Setting    : Channel_Type;
+      A_Click_Mask : Interfaces.Unsigned_16;
+      B_Click_Mask : Interfaces.Unsigned_16;
+   end record;
+
+   package Nist_Event_Package is new
+     Ada.Containers.Vectors (Double_Positive, Data_Record);
+   subtype Nist_Event_List is Nist_Event_Package.Vector;
 
    end NIST_Types;
