@@ -1,5 +1,5 @@
 
---  with Ada.Assertions; use Ada.Assertions;
+with Ada.Assertions; use Ada.Assertions;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings;
@@ -12,6 +12,7 @@ with Types; use Types;
 package body Process_Data is
 
    function Get_Events (Data_In : Nist_Data_List) return  Nist_Data_List;
+   function Match_Events (A_Data, B_Data : Nist_Data_List) return Nist_Event_List;
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
 
    procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
@@ -27,6 +28,7 @@ package body Process_Data is
    begin
       A_Data := Get_Events (A_Data);
       B_Data := Get_Events (B_Data);
+      Events := Match_Events (A_Data, B_Data);
 
    exception
       when Error : others =>
@@ -140,6 +142,58 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Load_NIST_Data;
+
+   function Match_Events (A_Data, B_Data : Nist_Data_List)
+       return Nist_Event_List  is
+      use Nist_Data_Package;
+      Routine_Name    : constant String := "Process_Data.Match_Events ";
+      A_Index         : Extended_Index := A_Data.First_Index;
+      B_Index         : Extended_Index := B_Data.First_Index;
+      A_Synch_Index   : Extended_Index := A_Index;
+      A_Setting_Index : Extended_Index := A_Synch_Index + 1;
+      A_Click_Index   : Extended_Index := A_Synch_Index + 2;
+      B_Synch_Index   : Extended_Index := B_Index;
+      B_Setting_Index : Extended_Index := B_Synch_Index + 1;
+      B_Click_Index   : Extended_Index := B_Synch_Index + 2;
+      A_Item          : Data_Record := A_Data.First_Element;
+      B_Item          : Data_Record := B_Data.First_Element;
+      Time_Width      : constant Double_Positive := 600000;
+      anEvent         : NIST_Event_Record;
+      Events          : Nist_Event_List;
+   begin
+      while A_Index < A_Data.Last_Index - 2 and then
+         B_Index < B_Data.Last_Index - 2 loop
+         Assert (A_Item.Channel = Sync, Routine_Name &
+            "invalid A item; " & Channel_Type'Image (A_Item.Channel) &
+            " should be Sync");
+         Assert (B_Item.Channel = Sync, Routine_Name &
+            "invalid B item; " & Channel_Type'Image (B_Item.Channel) &
+            " should be Sync");
+         if A_Item.Time_Tag <= B_Item.Time_Tag then
+            anEvent.A_Setting := A_Item.Channel;
+            if B_Item.Time_Tag > A_Item.Time_Tag - Time_Width and then
+               B_Item.Time_Tag < A_Item.Time_Tag + Time_Width then
+               anEvent.B_Setting := B_Item.Channel;
+               B_Index := B_Index + 3;
+               B_Item := B_Data (B_Index);
+            end if;
+            A_Index := A_Index + 3;
+            A_Item := A_Data (A_Index);
+         else
+            anEvent.B_Setting := B_Item.Channel;
+            if A_Item.Time_Tag > B_Item.Time_Tag - Time_Width and then
+               A_Item.Time_Tag < B_Item.Time_Tag + Time_Width then
+               anEvent.A_Setting := A_Item.Channel;
+               A_Index := A_Index + 3;
+               A_Item := A_Data (A_Index);
+            end if;
+            B_Index := B_Index + 3;
+            B_Item := B_Data (B_Index);
+         end if;
+      end loop;
+      return Events;
+
+   end Match_Events;
 
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List) is
      use Match_Package;

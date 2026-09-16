@@ -53,7 +53,7 @@ package NIST_Types is
    end record;
 
    package Nist_Event_Package is new
-     Ada.Containers.Vectors (Double_Positive, Data_Record);
+     Ada.Containers.Vectors (Double_Positive, NIST_Event_Record);
    subtype Nist_Event_List is Nist_Event_Package.Vector;
 
    end NIST_Types;

@@ -42,7 +42,7 @@ begin
 
    Align_Data (A_Data, B_Data);
    Build_Event_List (A_Data, B_Data, Events);
-   Print_NIST_Data_List ("A_Data", A_Data, 88, 94);
-   Print_NIST_Data_List ("B_Data", B_Data, 88, 94);
+   --  Print_NIST_Data_List ("A_Data", A_Data, 88, 94);
+   --  Print_NIST_Data_List ("B_Data", B_Data, 88, 94);
 
 end Match;
