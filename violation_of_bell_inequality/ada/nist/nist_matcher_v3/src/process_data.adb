@@ -11,7 +11,6 @@ with Types; use Types;
 
 package body Process_Data is
 
-   function Get_Events (Data_In : Nist_Data_List) return  Nist_Data_List;
    function Match_Events (A_Data, B_Data : Nist_Data_List) return Nist_Event_List;
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
 
@@ -26,8 +25,6 @@ package body Process_Data is
       --  Setting_Index : Nist_Event_Package.Extended_Index;
       --  Click_Index   : Nist_Event_Package.Extended_Index;
    begin
-      A_Data := Get_Events (A_Data);
-      B_Data := Get_Events (B_Data);
       Events := Match_Events (A_Data, B_Data);
 
    exception
@@ -35,51 +32,6 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Build_Event_List;
-
-   function Get_Events (Data_In : Nist_Data_List) return  Nist_Data_List is
-      use Nist_Data_Package;
-      Routine_Name  : constant String := "Process_Data.Get_Events ";
-      Data_Index    : Nist_Event_Package.Extended_Index := Data_In.First_Index;
-      Synch_Index   : Nist_Event_Package.Extended_Index;
-      Setting_Index : Nist_Event_Package.Extended_Index;
-      Click_Index   : Nist_Event_Package.Extended_Index;
-      Item          : Data_Record;
-      Data_Out      : Nist_Data_List;
-   begin
-      while Data_Index < Data_In.Last_Index - 2 loop
-         while Data_In (Data_Index).Channel /= Click and then
-         Data_Index < Data_In.Last_Index - 2 loop
-            Data_Index := Data_Index + 1;
-         end loop;
-         Click_Index := Data_Index;
-         if Data_In (Click_Index - 2).Channel = Sync and then
-            (Data_In (Click_Index - 1).Channel = Pol_0 or else
-          Data_In (Click_Index - 1).Channel = Pol_45) then
-            Setting_Index := Data_Index - 1;
-            Synch_Index := Data_Index - 2;
-            Item.Channel := Sync;
-            Item.Time_Tag := Data_In (Synch_Index).Time_Tag;
-            Data_Out.Append (Item);
-
-            Item.Channel := Sync;
-            Item.Channel := Data_In (Setting_Index).Channel;
-            Item.Time_Tag := Data_In (Setting_Index).Time_Tag;
-            Data_Out.Append (Item);
-
-            Item.Channel := Click;
-            Item.Time_Tag := Data_In (Click_Index).Time_Tag;
-            Data_Out.Append (Item);
-         end if;
-         Data_Index := Data_Index + 1;
-      end loop;
-
-      return Data_Out;
-
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         raise;
-   end Get_Events;
 
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List) is
@@ -160,6 +112,22 @@ package body Process_Data is
       Time_Width      : constant Double_Positive := 600000;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
+
+      procedure Next_Click (Data_In : Nist_Data_List;
+         Synch_Index : in out Extended_Index) is
+         Item        : Data_Record;
+      begin
+         while Synch_Index < Data_In.Last_Index - 2 and then
+            Data_In (Synch_Index).Channel /= Click loop
+               Synch_Index := Synch_Index + 2;
+         end loop;
+
+      exception
+         when Error : others =>
+            Put_Line (Routine_Name & Exception_Information (Error));
+            raise;
+      end Next_Click;
+      
    begin
       while A_Index < A_Data.Last_Index - 2 and then
          B_Index < B_Data.Last_Index - 2 loop
@@ -169,6 +137,9 @@ package body Process_Data is
          Assert (B_Item.Channel = Sync, Routine_Name &
             "invalid B item; " & Channel_Type'Image (B_Item.Channel) &
             " should be Sync");
+         Next_Click (A_Data, A_Synch_Index);
+         Next_Click (B_Data, B_Synch_Index);
+
          if A_Item.Time_Tag <= B_Item.Time_Tag then
             anEvent.A_Setting := A_Item.Channel;
             if B_Item.Time_Tag > A_Item.Time_Tag - Time_Width and then
