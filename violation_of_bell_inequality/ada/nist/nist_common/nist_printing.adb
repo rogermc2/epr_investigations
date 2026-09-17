@@ -1,4 +1,6 @@
 
+with Interfaces;
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Types; use Types;
@@ -45,6 +47,42 @@ package body NIST_Printing is
       New_Line;
 
    end Print_NIST_Data_Record;
+
+   procedure Print_NIST_Event_List (Name : String; Data : Nist_Event_List;
+      Start : Positive := 1; Finish : Natural := 0) is
+      use Interfaces;
+      use Nist_Event_Package;
+      Start_Idx : constant Double_Positive := Double_Positive (Start);
+      Last      : Double_Positive;
+      Item      : NIST_Event_Record;
+   begin
+      if Finish > 0 then
+         if Finish <= Natural (Data.Length) then
+            Last := Double_Positive (Finish);
+         else
+            Last := Double_Positive (Data.Length);
+         end if;
+      else
+         Last := Double_Positive (Data.Length);
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start_Idx >= Data.First_Index and then
+       Last <= Data.Last_Index then
+         for Index in Start_Idx .. Last loop
+            Item := Data (Index);
+            Put ("A Click Mask: " & Unsigned_16'Image (Item.A_Click_Mask));
+            Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
+            Put ("B Click Mask: " & Unsigned_16'Image (Item.B_Click_Mask));
+            Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));
+         end loop;
+      else
+         Put_Line ("Print_NIST_Event_List called with invalid" &
+          " start or finish index.");
+      end if;
+      New_Line;
+
+   end Print_NIST_Event_List;
 
    procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
    begin
