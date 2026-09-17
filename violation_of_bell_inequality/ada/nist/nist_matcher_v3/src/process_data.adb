@@ -1,11 +1,12 @@
 
-with Ada.Assertions; use Ada.Assertions;
+--  with Ada.Assertions; use Ada.Assertions;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with NIST_Printing;
 with Types; use Types;
 --  with Printing; use Printing;
 
@@ -110,6 +111,7 @@ package body Process_Data is
       A_Item          : Data_Record := A_Data.First_Element;
       B_Item          : Data_Record := B_Data.First_Element;
       Time_Width      : constant Double_Positive := 600000;
+      Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
 
@@ -122,23 +124,39 @@ package body Process_Data is
                Synch_Index := Synch_Index + 2;
          end loop;
 
-      exception
-         when Error : others =>
-            Put_Line (Routine_Name & Exception_Information (Error));
-            raise;
       end Next_Click;
-      
+
+      procedure Nearest_B_Time is
+         Ref_Time   : constant Double_Positive :=
+          A_Data (A_Index).Time_Tag;
+          B_Time    : Double_Positive;
+          Time_Diff : Double_Natural;
+      begin
+         while B_Index < B_Data.Last_Index and then
+            B_Data (B_Index).Time_Tag <  Ref_Time loop
+               B_Index := B_Index + 1;
+         end loop;
+         B_Time := B_Data (B_Index).Time_Tag;
+         Time_Diff := Double_Natural (abs (B_Time - Ref_Time));
+         if B_Index < B_Data.Last_Index and then
+            Double_Natural
+            (abs (B_Data (B_Index + 1).Time_Tag - Ref_Time)) < Time_Diff then
+            B_Index := B_Index + 1;
+         end if;
+
+      end Nearest_B_Time;
+
    begin
       while A_Index < A_Data.Last_Index - 2 and then
          B_Index < B_Data.Last_Index - 2 loop
-         Assert (A_Item.Channel = Sync, Routine_Name &
-            "invalid A item; " & Channel_Type'Image (A_Item.Channel) &
-            " should be Sync");
-         Assert (B_Item.Channel = Sync, Routine_Name &
-            "invalid B item; " & Channel_Type'Image (B_Item.Channel) &
-            " should be Sync");
+         Count := Count + 1;
          Next_Click (A_Data, A_Synch_Index);
          Next_Click (B_Data, B_Synch_Index);
+
+         --  if Count < 4 then
+         --     NIST_Printing.Print_NIST_Data_List ("A_Data", A_Data, 1, 3);
+         --     NIST_Printing.Print_NIST_Data_List ("B_Data", B_Data, 1, 3);
+         --  end if;
 
          if A_Item.Time_Tag <= B_Item.Time_Tag then
             anEvent.A_Setting := A_Item.Channel;

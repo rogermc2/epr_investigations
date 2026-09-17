@@ -36,6 +36,16 @@ package body NIST_Printing is
 
    end Print_NIST_Data_List;
 
+   procedure Print_NIST_Data_Record (Name : String; Item : Data_Record) is
+   begin
+      Put_Line (Name & ": ");
+      Put ("Channel: " & Channel_Type'Image (Item.Channel));
+      Put (",  Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
+      Put_Line (",  Transfer_ID: " & Integer'Image (Item.Transfer_ID));
+      New_Line;
+
+   end Print_NIST_Data_Record;
+
    procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
    begin
       Put_Line ("Raw Data:");
