@@ -108,9 +108,6 @@ package body Process_Data is
       B_Synch_Index   : Extended_Index := B_Index;
       B_Setting_Index : Extended_Index := B_Synch_Index + 1;
       B_Click_Index   : Extended_Index := B_Synch_Index + 2;
-      A_Item          : Data_Record := A_Data.First_Element;
-      B_Item          : Data_Record := B_Data.First_Element;
-      Time_Width      : constant Double_Positive := 600000;
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
@@ -125,6 +122,26 @@ package body Process_Data is
          end loop;
 
       end Next_Click;
+
+      procedure Nearest_A_Time is
+         Ref_Time   : constant Double_Positive :=
+          B_Data (B_Index).Time_Tag;
+          A_Time    : Double_Positive;
+          Time_Diff : Double_Natural;
+      begin
+         while A_Index < A_Data.Last_Index and then
+            A_Data (A_Index).Time_Tag <  Ref_Time loop
+               A_Index := A_Index + 1;
+         end loop;
+         A_Time := A_Data (A_Index).Time_Tag;
+         Time_Diff := Double_Natural (abs (A_Time - Ref_Time));
+         if A_Index < A_Data.Last_Index and then
+            Double_Natural
+            (abs (A_Data (A_Index + 1).Time_Tag - Ref_Time)) < Time_Diff then
+            A_Index := A_Index + 1;
+         end if;
+
+      end Nearest_A_Time;
 
       procedure Nearest_B_Time is
          Ref_Time   : constant Double_Positive :=
@@ -157,29 +174,36 @@ package body Process_Data is
          --     NIST_Printing.Print_NIST_Data_List ("A_Data", A_Data, 1, 3);
          --     NIST_Printing.Print_NIST_Data_List ("B_Data", B_Data, 1, 3);
          --  end if;
-
-         if A_Item.Time_Tag <= B_Item.Time_Tag then
-            anEvent.A_Setting := A_Item.Channel;
-            if B_Item.Time_Tag > A_Item.Time_Tag - Time_Width and then
-               B_Item.Time_Tag < A_Item.Time_Tag + Time_Width then
-               anEvent.B_Setting := B_Item.Channel;
-               B_Index := B_Index + 3;
-               B_Item := B_Data (B_Index);
+         Nearest_B_Time;
+         anEvent.A_Click_Mask := 1;
+         anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+         if B_Data (B_Index + 2).Channel = Click then
+         anEvent.B_Click_Mask := 1;
             end if;
-            A_Index := A_Index + 3;
-            A_Item := A_Data (A_Index);
-         else
-            anEvent.B_Setting := B_Item.Channel;
-            if A_Item.Time_Tag > B_Item.Time_Tag - Time_Width and then
-               A_Item.Time_Tag < B_Item.Time_Tag + Time_Width then
-               anEvent.A_Setting := A_Item.Channel;
-               A_Index := A_Index + 3;
-               A_Item := A_Data (A_Index);
-            end if;
-            B_Index := B_Index + 3;
-            B_Item := B_Data (B_Index);
-         end if;
+         anEvent.B_Setting := B_Data (B_Index + 1).Channel;
+         Events.Append (anEvent);
       end loop;
+
+      while B_Index < B_Data.Last_Index - 2 and then
+         A_Index < A_Data.Last_Index - 2 loop
+         Count := Count + 1;
+         Next_Click (A_Data, A_Synch_Index);
+         Next_Click (B_Data, B_Synch_Index);
+
+         --  if Count < 4 then
+         --     NIST_Printing.Print_NIST_Data_List ("A_Data", A_Data, 1, 3);
+         --     NIST_Printing.Print_NIST_Data_List ("B_Data", B_Data, 1, 3);
+         --  end if;
+         Nearest_A_Time;
+         anEvent.B_Click_Mask := 1;
+         anEvent.B_Setting := B_Data (B_Index + 1).Channel;
+         if A_Data (A_Index + 2).Channel = Click then
+         anEvent.A_Click_Mask := 1;
+            end if;
+         anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+         Events.Append (anEvent);
+      end loop;
+      
       return Events;
 
    end Match_Events;
