@@ -7,6 +7,7 @@ with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with NIST_Printing;
+with Printing;
 with Types; use Types;
 --  with Printing; use Printing;
 
@@ -107,6 +108,7 @@ package body Process_Data is
       --  B_Setting_Index : Extended_Index := B_Synch_Index + 1;
       --  B_Click_Index   : Extended_Index := B_Synch_Index + 2;
       Count           : Natural := 0;
+      anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
 
       procedure Nearest_A_Time is
@@ -150,10 +152,9 @@ package body Process_Data is
       end Nearest_B_Time;
 
       procedure Next_Sync is
-         anEvent : NIST_Event_Record;
-         --  A_Time  : Double_Positive;
-         --  B_Time  : Double_Positive;
       begin
+         A_Synch_Index := A_Synch_Index + 1;
+         B_Synch_Index := B_Synch_Index + 1;
          while A_Synch_Index < A_Data.Last_Index - 2 and then
             A_Data (A_Synch_Index).Channel /= Sync loop
                A_Synch_Index := A_Synch_Index + 1;
@@ -164,52 +165,42 @@ package body Process_Data is
                B_Synch_Index := B_Synch_Index + 1;
          end loop;
 
-         if Count < 4 then
-            Put_Line (Routine_Name & "Next_Sync, A_Synch_Index, B_Synch_Index"
-             & Double_Positive'Image (A_Synch_Index) & ", " &
-            Double_Positive'Image (B_Synch_Index));
-         end if;
-
-         if A_Data (A_Synch_Index).Time_Tag <= B_Data (B_Synch_Index).Time_Tag
-          then
-            if A_Data (A_Synch_Index + 2).Channel = Click then
-               anEvent.A_Click_Mask := 1;
-               anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
-               Nearest_B_Time;
-               if B_Data (B_Synch_Index + 2).Channel = Click then
-                  anEvent.B_Click_Mask := 1;
-               end if;
-               anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
-            end if;
-         else   --  A_Data (A_Synch_Index).Time_Tag > B_Data (B_Synch_Index).Time_Tag
-            if B_Data (B_Synch_Index + 2).Channel = Click then
-               anEvent.B_Click_Mask := 1;
-               anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
-               Nearest_A_Time;
-               if A_Data (A_Synch_Index + 2).Channel = Click then
-                  anEvent.A_Click_Mask := 1;
-               end if;
-               anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
-            end if;
-         end if;
-         Events.Append (anEvent);
-         A_Synch_Index := A_Synch_Index + 1;
-         B_Synch_Index := B_Synch_Index + 1;
-
       end Next_Sync;
 
    begin
       while A_Synch_Index < A_Data.Last_Index - 2 and then
          B_Synch_Index < B_Data.Last_Index - 2 loop
          Count := Count + 1;
+         if A_Data (A_Synch_Index + 2).Channel=Click then
+            Nearest_B_Time;
+            anEvent.A_Click_Mask := 1;
+            anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
+            if B_Data (B_Synch_Index + 2).Channel = Click then
+                  anEvent.B_Click_Mask := 1;
+            end if;
+            anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
+            Events.Append (anEvent);
+            Put_Line (Routine_Name & "anEvent appended to Events for A");
+         elsif B_Data (B_Synch_Index + 2).Channel=Click then
+            Nearest_A_Time;
+            anEvent.B_Click_Mask := 1;
+            anEvent.b_Setting := b_Data (B_Synch_Index + 1).Channel;
+            if A_Data (A_Synch_Index + 2).Channel = Click then
+                  anEvent.A_Click_Mask := 1;
+            end if;
+            anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
+            Events.Append (anEvent);
+            Put_Line (Routine_Name & "anEvent appended to Events for B");
+         end if;
          Next_Sync;
-         if Count < 4 then
-            Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index" &
-            Double_Positive'Image (A_Synch_Index) & ", " &
+
+         if Count < 7 then
+            Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index"
+             & Double_Positive'Image (A_Synch_Index) & ", " &
             Double_Positive'Image (B_Synch_Index));
-            NIST_Printing.Print_NIST_Event_List ("A_Data", Events, 1, 3);
          end if;
       end loop;
+      NIST_Printing.Print_NIST_Event_List ("Events", Events);
 
       return Events;
 
