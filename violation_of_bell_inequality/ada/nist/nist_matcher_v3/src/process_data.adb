@@ -6,6 +6,7 @@ with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Interfaces;
 with NIST_Printing;
 with Printing;
 with Types; use Types;
@@ -14,7 +15,6 @@ with Types; use Types;
 package body Process_Data is
 
    function Match_Events (A_Data, B_Data : Nist_Data_List) return Nist_Event_List;
-   procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
 
    procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
       Events : out Nist_Event_List) is
@@ -141,7 +141,7 @@ package body Process_Data is
             B_Data (B_Index).Time_Tag <  Ref_Time loop
                B_Index := B_Index + 1;
          end loop;
-         
+
          B_Time := B_Data (B_Index).Time_Tag;
          Time_Diff := Double_Natural (abs (B_Time - Ref_Time));
          if B_Index < B_Data.Last_Index and then
@@ -181,7 +181,7 @@ package body Process_Data is
             end if;
             anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
             Events.Append (anEvent);
-            
+
          elsif B_Data (B_Synch_Index + 2).Channel=Click then
             Nearest_A_Time;
             anEvent.B_Click_Mask := 1;
@@ -206,25 +206,57 @@ package body Process_Data is
 
    end Match_Events;
 
-   procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List) is
-     use Match_Package;
-      Routine_Name : constant String :=
-       "Process_Sync_Data.Save_Match_List ";
-      Match_ID     : File_Type;
-      M_Curs       : Cursor := First (Index_Pairs);
-      Rec          : Index_Record;
+   procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
+    BB_File_Name  : String; Events : Nist_Event_List) is
+      use Interfaces;
+      use Nist_Event_Package;
+      Routine_Name : constant String := "Process_Sync_Data.Save_Events ";
+      AA_ID        : File_Type;
+      BA_ID        : File_Type;
+      AB_ID        : File_Type;
+      BB_ID        : File_Type;
+      Events_Curs  : Cursor := First (Events);
+      Rec          : NIST_Event_Record;
    begin
-      Create (Match_ID, Out_File, File_Name);
-      while Has_Element (M_Curs) loop
-         Rec :=  Element (M_Curs);
-         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & "," &
-         Double_Positive'Image (Rec.B_Index));
-         Next (M_Curs);
+      Create (AA_ID, Out_File, AA_File_Name);
+      Create (AB_ID, Out_File, AB_File_Name);
+      Create (BA_ID, Out_File, BA_File_Name);
+      Create (BB_ID, Out_File, BB_File_Name);
+
+      while Has_Element (Events_Curs) loop
+         Rec :=  Element (Events_Curs);
+         case Rec.A_Setting is
+            when Pol_0 =>
+               if Rec.B_Setting = Pol_0 then
+                  Put_Line (AA_ID, Unsigned_16'Image (Rec.A_Click_Mask)
+                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+               else
+                  Put_Line (AB_ID, Unsigned_16'Image (Rec.A_Click_Mask)
+                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+               end if;
+            when Pol_45 =>
+               if Rec.B_Setting = Pol_0 then
+                  Put_Line (BA_ID, Unsigned_16'Image (Rec.A_Click_Mask)
+                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+               else
+                  Put_Line (BB_ID, Unsigned_16'Image (Rec.A_Click_Mask)
+                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+               end if;
+
+            when others => null;
+         end case;
+         Next (Events_Curs);
       end loop;
 
-      Close (Match_ID);
-      Put_Line (Routine_Name & "Data written to " & File_Name);
+      Close (AA_ID);
+      Close (AB_ID);
+      Close (BA_ID);
+      Close (BB_ID);
+      Put_Line (Routine_Name & "AA Events written to " & AA_File_Name);
+      Put_Line (Routine_Name & "AB Events written to " & AB_File_Name);
+      Put_Line (Routine_Name & "BA Events written to " & BA_File_Name);
+      Put_Line (Routine_Name & "BB Events written to " & BB_File_Name);
 
-   end Save_Match_List;
+   end Save_Events;
 
 end Process_Data;

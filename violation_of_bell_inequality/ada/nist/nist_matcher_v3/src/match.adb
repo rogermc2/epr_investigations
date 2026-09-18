@@ -13,21 +13,17 @@ with Process_Data; use Process_Data;
 
 procedure Match is
    --  Routine_Name      : constant String := "Match ";
-   In_Directory  : constant String := "../generated_nist_data/";
-   A_Source      : constant String := In_Directory & "A.csv";
-   B_Source      : constant String := In_Directory & "B.csv";
-   --  Matched_Sync      : constant String := Pairs_Directory & "matched_sync.csv";
-   --  Matched_Det_Pairs : constant String :=
-   --   Pairs_Directory & "matched_det_pairs.csv";
-   --  Det_aa              : constant String := Pairs_Directory & "aa.csv";
-   --  Det_ab              : constant String := Pairs_Directory & "ab.csv";
-   --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
-   --  Det_bb              : constant String := Pairs_Directory & "bb.csv";
-   --  Width               : constant Natural := 11;
+   Directory     : constant String := "../generated_nist_data/";
+   A_Source      : constant String := Directory & "A.csv";
+   B_Source      : constant String := Directory & "B.csv";
+   aa            : constant String := Directory & "aa.csv";
+   ab            : constant String := Directory & "ab.csv";
+   ba            : constant String := Directory & "ba.csv";
+   bb            : constant String := Directory & "bb.csv";
    --  Num_Rows            : constant Types.Double_Natural := 30000;
-   A_Data              : Nist_Data_List;
-   B_Data              : Nist_Data_List;
-   Events              : Nist_Event_List;
+   A_Data        : Nist_Data_List;
+   B_Data        : Nist_Data_List;
+   Events        : Nist_Event_List;
    --  Num_Found           : Natural;
    --  A_Counts            : xxCounts;
    --  B_Counts            : xxCounts;
@@ -42,7 +38,6 @@ begin
 
    Align_Data (A_Data, B_Data);
    Build_Event_List (A_Data, B_Data, Events);
-   --  Print_NIST_Data_List ("A_Data", A_Data, 88, 94);
-   --  Print_NIST_Data_List ("B_Data", B_Data, 88, 94);
+   Save_Events (aa, ab, ba, bb, Events);
 
 end Match;
