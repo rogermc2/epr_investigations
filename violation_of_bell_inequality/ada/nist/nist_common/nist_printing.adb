@@ -72,9 +72,10 @@ package body NIST_Printing is
          for Index in Start_Idx .. Last loop
             Item := Data (Index);
             Put ("A Click Mask: " & Unsigned_16'Image (Item.A_Click_Mask));
-            Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
-            Put ("B Click Mask: " & Unsigned_16'Image (Item.B_Click_Mask));
-            Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));
+            --  Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
+            Put (",  B Click Mask: " & Unsigned_16'Image (Item.B_Click_Mask));
+            --  Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));
+         New_Line;
          end loop;
       else
          Put_Line ("Print_NIST_Event_List called with invalid" &
