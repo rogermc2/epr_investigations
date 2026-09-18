@@ -141,6 +141,7 @@ package body Process_Data is
             B_Data (B_Index).Time_Tag <  Ref_Time loop
                B_Index := B_Index + 1;
          end loop;
+         
          B_Time := B_Data (B_Index).Time_Tag;
          Time_Diff := Double_Natural (abs (B_Time - Ref_Time));
          if B_Index < B_Data.Last_Index and then
@@ -161,7 +162,7 @@ package body Process_Data is
          end loop;
 
          while B_Synch_Index < B_Data.Last_Index - 2 and then
-            B_Data (A_Synch_Index).Channel /= Sync loop
+            B_Data (B_Synch_Index).Channel /= Sync loop
                B_Synch_Index := B_Synch_Index + 1;
          end loop;
 
@@ -180,7 +181,7 @@ package body Process_Data is
             end if;
             anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
             Events.Append (anEvent);
-            Put_Line (Routine_Name & "anEvent appended to Events for A");
+            
          elsif B_Data (B_Synch_Index + 2).Channel=Click then
             Nearest_A_Time;
             anEvent.B_Click_Mask := 1;
@@ -190,17 +191,16 @@ package body Process_Data is
             end if;
             anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
             Events.Append (anEvent);
-            Put_Line (Routine_Name & "anEvent appended to Events for B");
          end if;
-         Next_Sync;
 
          if Count < 7 then
             Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index"
              & Double_Positive'Image (A_Synch_Index) & ", " &
             Double_Positive'Image (B_Synch_Index));
          end if;
+         Next_Sync;
       end loop;
-      NIST_Printing.Print_NIST_Event_List ("Events", Events);
+      NIST_Printing.Print_NIST_Event_List ("Events", Events, 1, 7);
 
       return Events;
 
