@@ -178,6 +178,8 @@ package body Process_Data is
             anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
             if B_Data (B_Synch_Index + 2).Channel = Click then
                   anEvent.B_Click_Mask := 1;
+            else
+                  anEvent.B_Click_Mask := 0;
             end if;
             anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
             Events.Append (anEvent);
@@ -188,6 +190,8 @@ package body Process_Data is
             anEvent.b_Setting := b_Data (B_Synch_Index + 1).Channel;
             if A_Data (A_Synch_Index + 2).Channel = Click then
                   anEvent.A_Click_Mask := 1;
+            else
+                  anEvent.A_Click_Mask := 0;
             end if;
             anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
             Events.Append (anEvent);
@@ -217,6 +221,8 @@ package body Process_Data is
       BB_ID        : File_Type;
       Events_Curs  : Cursor := First (Events);
       Rec          : NIST_Event_Record;
+      Click_A      : Integer;
+      Click_B      : Integer;
    begin
       Create (AA_ID, Out_File, AA_File_Name);
       Create (AB_ID, Out_File, AB_File_Name);
@@ -225,22 +231,33 @@ package body Process_Data is
 
       while Has_Element (Events_Curs) loop
          Rec :=  Element (Events_Curs);
+         if Rec.A_Click_Mask > 0 then
+            Click_A := 1;
+         else
+             Click_A := -1;
+         end if;
+
+         if Rec.B_Click_Mask > 0 then
+            Click_B := 1;
+         else
+             Click_B := -1;
+         end if;
          case Rec.A_Setting is
             when Pol_0 =>
                if Rec.B_Setting = Pol_0 then
-                  Put_Line (AA_ID, Unsigned_16'Image (Rec.A_Click_Mask)
-                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+                  Put_Line (AA_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B));
                else
-                  Put_Line (AB_ID, Unsigned_16'Image (Rec.A_Click_Mask)
-                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+                  Put_Line (AB_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B));
                end if;
             when Pol_45 =>
                if Rec.B_Setting = Pol_0 then
-                  Put_Line (BA_ID, Unsigned_16'Image (Rec.A_Click_Mask)
-                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+                  Put_Line (BA_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B));
                else
-                  Put_Line (BB_ID, Unsigned_16'Image (Rec.A_Click_Mask)
-                     & "," & Unsigned_16'Image (Rec.B_Click_Mask));
+                  Put_Line (BB_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B));
                end if;
 
             when others => null;
