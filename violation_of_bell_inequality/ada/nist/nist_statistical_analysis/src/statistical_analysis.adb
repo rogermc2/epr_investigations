@@ -2,6 +2,7 @@
 with Ada.Numerics; use Ada.Numerics;  --  for Pi
 with Ada.Numerics.Elementary_Functions;
 use Ada.Numerics.Elementary_Functions;  -- for Cos
+with Ada.Float_Text_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Process_Data; use Process_Data;
@@ -36,6 +37,7 @@ procedure Statistical_Analysis is
    Mean_AB_01    : Float;
    Mean_AB_10    : Float;
    Mean_AB_11    : Float;
+   Overall_Mean  : Float;
    --  Valid_Data    : Sample_Data_List;
    --  False_Count   : Natural;
 begin
@@ -53,13 +55,12 @@ begin
    Print_Statistics ("11", Mean_A_11, Mean_B_11, Mean_AB_11,
                      Detections_11, Det_A, Det_B);
    New_Line;
-   Put_Line ("Overall a Sample_Mean: " &
-               Float'Image
-               ((Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0));
-   Put_Line ("Overall b Sample_Mean: " &
-               Float'Image
-               ((Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0));
-
+   Put ("Overall a Sample_Mean: ");
+    Ada.Float_Text_IO.Put ((Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0, Aft => 3, Exp => 0);
+   New_Line;
+   Put ("Overall a Sample_Mean: ");
+    Ada.Float_Text_IO.Put ((Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0, Aft => 3, Exp => 0);
+   New_Line;
    New_Line;
    Put_Line ("E(AB) b = a: " & Float'Image (Statistical_EAB (0.0)));
    Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (Statistical_EAB (Pi / 4.0)));
