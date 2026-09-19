@@ -66,12 +66,11 @@ package body Process_Data is
       OEM_ID           : File_Type;
       First            : Positive;
       Last             : Natural;
-      Header           : String_11;
+      --  Header           : String_11;
       True_Count       : Natural;
       Valid_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);
-      Header := Get_Line (OEM_ID);  --  Header
       Find_Token (OEM_File, To_Set ("OEM"), Inside, First, Last);
       if OEM_File (Last + 2 .. Last + 3) = "aa" then
          Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
@@ -91,36 +90,28 @@ package body Process_Data is
 
    end False_Positives;
 
-   function Get_Detections (OEM, a_File, b_File : String) return Sample_Data_List is
-      OEM_ID     : File_Type;
-      a_ID       : File_Type;
-      b_ID       : File_Type;
-      Header     : String_11;
-      aLine      : String_8;
-      A_Result   : String_2;
-      B_Result   : String_2;
-      Sample     : Sample_Data_Record;
-      Detections : Sample_Data_List;
+   function Get_Detections (Detection_Data : String)
+      return Sample_Data_List is
+      --  Routine_Name : constant String := "Process_Data.Get_Detections ";
+      Data_ID      : File_Type;
+      aLine        : String_5;
+      A_Result     : String_2;
+      B_Result     : String_2;
+      Sample       : Sample_Data_Record;
+      Detections   : Sample_Data_List;
    begin
-      Open (OEM_ID, In_File, OEM);
-      Create (a_ID, Out_File, a_File);
-      Create (b_ID, Out_File, b_File);
-      Header := Get_Line (OEM_ID);  --  Header
+      Open (Data_ID, In_File, Detection_Data);
 
-      while not End_Of_File (OEM_ID) loop
-         aLine := Get_Line (OEM_ID);
+      while not End_Of_File (Data_ID) loop
+         aLine := Get_Line (Data_ID);
          A_Result := aLine (1 .. 2);
          B_Result := aLine (4 .. 5);
-         Put_Line (a_ID, A_Result);
-         Put_Line (b_ID, B_Result);
          Sample.A_Detection := Sample_Val (A_Result);
          Sample.B_Detection := Sample_Val (B_Result);
          Sample.AB := Sample.A_Detection * Sample.B_Detection;
          Detections.Append (Sample);
       end loop;
-      Close (OEM_ID);
-      Close (a_ID);
-      Close (b_ID);
+      Close (Data_ID);
 
       return Detections;
 
@@ -158,7 +149,7 @@ package body Process_Data is
    function Sample_Val (Result : String_2) return UV is
       Val : UV;
    begin
-      if Result = "+1" then
+      if Result = "+1" or else Result = " 1" then
          Val := 1;
       elsif Result = "-1" then
          Val := -1;

@@ -354,14 +354,14 @@ procedure Print_Match_List (Name  : String; Data : Match_List;
    begin
       Put_Line (Message & ": ");
 
-      Put (" Sample_Mean A: " & Float'Image (Mean_A));
-      Put_Line ("   Sample SD A: " & Float'Image (Sample_Std_Deviation
+      Put (" Sample_Mean a: " & Float'Image (Mean_A));
+      Put_Line ("   Sample SD a: " & Float'Image (Sample_Std_Deviation
                 (Get_Integer_List (Detections, Det_A), Mean_A)));
-      Put (" Sample_Mean B: " & Float'Image (Mean_B));
-      Put_Line ("   Sample SD B: " & Float'Image (Sample_Std_Deviation
+      Put (" Sample_Mean b: " & Float'Image (Mean_B));
+      Put_Line ("   Sample SD b: " & Float'Image (Sample_Std_Deviation
                 (Get_Integer_List (Detections, Det_B), Mean_B)));
-      Put (" Sample_Mean AB: " & Float'Image (Mean_AB));
-      Put_Line ("   Sample SD AB: " & Float'Image (Sample_Std_Deviation
+      Put (" Sample_Mean ab: " & Float'Image (Mean_AB));
+      Put_Line ("   Sample SD ab: " & Float'Image (Sample_Std_Deviation
                 (Get_Integer_List (Detections, Det_B), Mean_AB)));
 
    end Print_Statistics;

@@ -9,63 +9,54 @@ with Printing; use Printing;
 with Types; use Types;
 
 procedure Statistical_Analysis is
-   use Sample_Data_Package;
+   --  use Sample_Data_Package;
    --  type Quantile_Table is array (Positive range <>) of Float;
    --   package Float_Estimators is new Estimators (Float, Data_Vector);
    --   package Float_Samples is new
    --     Samples (Float, Quantile_Table,  use_sub_histogram_index => False);
 
    AB_Dir        : constant String := "../generated_nist_data/";
-   OEM_00        : constant String := AB_Dir & "aa.csv";
-   OEM_01        : constant String := AB_Dir & "ba.csv";
-   OEM_10        : constant String := AB_Dir & "ab.csv";
-   OEM_11        : constant String := AB_Dir & "bb.csv";
-   --  a00_Data      : constant String := AB_Dir & "a00.csv";
-   --  b00_Data      : constant String := AB_Dir & "b00.csv";
-   --  a01_Data      : constant String := AB_Dir & "a01.csv";
-   --  b01_Data      : constant String := AB_Dir & "b01.csv";
-   --  a10_Data      : constant String := AB_Dir & "a10.csv";
-   --  b10_Data      : constant String := AB_Dir & "b10.csv";
-   --  a11_Data      : constant String := AB_Dir & "a11.csv";
-   --  b11_Data      : constant String := AB_Dir & "b11.csv";
-
-   --  Detections_00     : constant Sample_Data_List := Get_Detections (OEM_00, a00_Data, b00_data);
-   --  Detections_01     : constant Sample_Data_List := Get_Detections (OEM_01, a01_Data, b01_data);
-   --  Detections_10     : constant Sample_Data_List := Get_Detections (OEM_10, a10_Data, b10_data);
-   --  Detections_11     : constant Sample_Data_List := Get_Detections (OEM_11, a11_Data, b11_data);
-   Mean_A_00         : Float;
-   Mean_A_01         : Float;
-   Mean_A_10         : Float;
-   Mean_A_11         : Float;
-   Mean_B_00         : Float;
-   Mean_B_01         : Float;
-   Mean_B_10         : Float;
-   Mean_B_11         : Float;
-   Mean_AB_00        : Float;
-   Mean_AB_01        : Float;
-   Mean_AB_10        : Float;
-   Mean_AB_11        : Float;
-   Valid_Data        : Sample_Data_List;
-   False_Count       : Natural;
+   File_00       : constant String := AB_Dir & "aa.csv";
+   File_01       : constant String := AB_Dir & "ba.csv";
+   File_10       : constant String := AB_Dir & "ab.csv";
+   File_11       : constant String := AB_Dir & "bb.csv";
+   Detections_00 : constant Sample_Data_List := Get_Detections (File_00);
+   Detections_01 : constant Sample_Data_List := Get_Detections (File_01);
+   Detections_10 : constant Sample_Data_List := Get_Detections (File_10);
+   Detections_11 : constant Sample_Data_List := Get_Detections (File_11);
+   Mean_A_00     : Float;
+   Mean_A_01     : Float;
+   Mean_A_10     : Float;
+   Mean_A_11     : Float;
+   Mean_B_00     : Float;
+   Mean_B_01     : Float;
+   Mean_B_10     : Float;
+   Mean_B_11     : Float;
+   Mean_AB_00    : Float;
+   Mean_AB_01    : Float;
+   Mean_AB_10    : Float;
+   Mean_AB_11    : Float;
+   --  Valid_Data    : Sample_Data_List;
+   --  False_Count   : Natural;
 begin
-   --  Sample_Means (Detections_00, Mean_A_00, Mean_B_00, Mean_AB_00);
-   --  Sample_Means (Detections_01, Mean_A_01, Mean_B_01, Mean_AB_01);
-   --  Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);
-   --  Sample_Means (Detections_11, Mean_A_11, Mean_B_11, Mean_AB_11);
+   Sample_Means (Detections_00, Mean_A_00, Mean_B_00, Mean_AB_00);
+   Sample_Means (Detections_01, Mean_A_01, Mean_B_01, Mean_AB_01);
+   Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);
+   Sample_Means (Detections_11, Mean_A_11, Mean_B_11, Mean_AB_11);
 
-   --  Print_Statistics ("OEMA_00", Mean_A_00, Mean_B_00, Mean_AB_00,
-   --                    Detections_00, Det_A, Det_B);
-   --  Print_Statistics ("OEMA_01", Mean_A_01, Mean_B_01, Mean_AB_01,
-   --                    Detections_01, Det_A, Det_B);
-   --  Print_Statistics ("OEMA_10", Mean_A_10, Mean_B_10, Mean_AB_10,
-   --                    Detections_10, Det_A, Det_B);
-   --  Print_Statistics ("OEMA_11", Mean_A_11, Mean_B_11, Mean_AB_11,
-   --                    Detections_11, Det_A, Det_B);
-
-   Put_Line ("Overall A Sample_Mean: " &
+   Print_Statistics ("00", Mean_A_00, Mean_B_00, Mean_AB_00,
+                     Detections_00, Det_A, Det_B);
+   Print_Statistics ("01", Mean_A_01, Mean_B_01, Mean_AB_01,
+                     Detections_01, Det_A, Det_B);
+   Print_Statistics ("10", Mean_A_10, Mean_B_10, Mean_AB_10,
+                     Detections_10, Det_A, Det_B);
+   Print_Statistics ("11", Mean_A_11, Mean_B_11, Mean_AB_11,
+                     Detections_11, Det_A, Det_B);
+   New_Line;
+   Put_Line ("Overall a Sample_Mean: " &
                Float'Image
                ((Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0));
-   Put_Line ("Overall B Sample_Mean: " &
+   Put_Line ("Overall b Sample_Mean: " &
                Float'Image
                ((Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0));
 
@@ -87,13 +78,13 @@ begin
    --              Integer'Image (Integer (Length (Detections_11))));
    --  New_Line;
 
-   Valid_Data := False_Positives (OEM_00, False_Count);
-   Put_Line ("AB_00 false positives: " & Integer'Image (False_Count));
-   Valid_Data := False_Positives (OEM_01, False_Count);
-   Put_Line ("AB_01 false positives: " & Integer'Image (False_Count));
-   Valid_Data := False_Positives (OEM_10, False_Count);
-   Put_Line ("AB_10 false positives: " & Integer'Image (False_Count));
-   Valid_Data := False_Positives (OEM_11, False_Count);
-   Put_Line ("AB_11 false positives: " & Integer'Image (False_Count));
+   --  Valid_Data := False_Positives (OEM_00, False_Count);
+   --  Put_Line ("AB_00 false positives: " & Integer'Image (False_Count));
+   --  Valid_Data := False_Positives (OEM_01, False_Count);
+   --  Put_Line ("AB_01 false positives: " & Integer'Image (False_Count));
+   --  Valid_Data := False_Positives (OEM_10, False_Count);
+   --  Put_Line ("AB_10 false positives: " & Integer'Image (False_Count));
+   --  Valid_Data := False_Positives (OEM_11, False_Count);
+   --  Put_Line ("AB_11 false positives: " & Integer'Image (False_Count));
 
 end Statistical_Analysis;
