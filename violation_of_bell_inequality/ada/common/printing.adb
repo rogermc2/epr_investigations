@@ -54,6 +54,20 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Float_2 (Message_1 : String; Data_1 : Float;
+      Message_2 : String; Data_2 : Float;
+      Aft : Natural := 3; Exp : Integer := 0) is
+   begin
+      Put (Message_1 & ": ");
+      Ada.Float_Text_IO.Put (Data_1, Aft => Aft, Exp => Exp);
+      Put ("  " & Message_2 & ": ");
+      Ada.Float_Text_IO.Put (Data_2, Aft => Aft, Exp => Exp);
+      New_Line;
+
+   end Print_Float_2;
+
+   --  ------------------------------------------------------------------------
+
    --  procedure Print_Hex_Byte_Array (Name  : String; Data : Byte_Array;
    --     Start : Positive := 1; Finish : Natural := 0) is
    --     Last  : Positive;
@@ -365,16 +379,12 @@ procedure Print_Match_List (Name  : String; Data : Match_List;
       use Utils;
    begin
       Put_Line (Message & ": ");
-
-      Put (" Sample_Mean a: " & Float'Image (Mean_A));
-      Put_Line ("   Sample SD a: " & Float'Image (Sample_Std_Deviation
-                (Get_Integer_List (Detections, Det_A), Mean_A)));
-      Put (" Sample_Mean b: " & Float'Image (Mean_B));
-      Put_Line ("   Sample SD b: " & Float'Image (Sample_Std_Deviation
-                (Get_Integer_List (Detections, Det_B), Mean_B)));
-      Put (" Sample_Mean ab: " & Float'Image (Mean_AB));
-      Put_Line ("   Sample SD ab: " & Float'Image (Sample_Std_Deviation
-                (Get_Integer_List (Detections, Det_B), Mean_AB)));
+      Print_Float_2 (" Sample_Mean a", Mean_A, " Sample SD a",
+       Sample_Std_Deviation (Get_Integer_List (Detections, Det_A), Mean_A));
+      Print_Float_2 (" Sample_Mean b", Mean_B, " Sample SD b",
+       Sample_Std_Deviation (Get_Integer_List (Detections, Det_B), Mean_B));
+      Print_Float_2 (" Sample_Mean ab", Mean_AB, " Sample SD ab",
+       Sample_Std_Deviation (Get_Integer_List (Detections, Det_A), Mean_AB));
 
    end Print_Statistics;
 
