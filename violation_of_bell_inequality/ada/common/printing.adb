@@ -3,6 +3,7 @@ with Interfaces;
 
 with Ada.Strings;
 with Ada.Strings.Fixed;
+with Ada.Float_Text_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;
@@ -41,6 +42,17 @@ package body Printing is
    end Print_Byte_Array;
 
    --  ------------------------------------------------------------------
+
+   procedure Print_Float (Message : String; Data : Float;
+    Aft : Natural := 3; Exp : Integer := 0) is
+   begin
+      Put (Message & ": ");
+      Ada.Float_Text_IO.Put (Data, Aft => Aft, Exp => Exp);
+      New_Line;
+
+   end Print_Float;
+
+   --  ------------------------------------------------------------------------
 
    --  procedure Print_Hex_Byte_Array (Name  : String; Data : Byte_Array;
    --     Start : Positive := 1; Finish : Natural := 0) is
