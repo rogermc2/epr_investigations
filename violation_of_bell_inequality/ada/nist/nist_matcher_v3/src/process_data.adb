@@ -197,14 +197,14 @@ package body Process_Data is
             Events.Append (anEvent);
          end if;
 
-         if Count < 7 then
-            Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index"
-             & Double_Positive'Image (A_Synch_Index) & ", " &
-            Double_Positive'Image (B_Synch_Index));
-         end if;
+         --  if Count < 7 then
+         --     Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index"
+         --      & Double_Positive'Image (A_Synch_Index) & ", " &
+         --     Double_Positive'Image (B_Synch_Index));
+         --  end if;
          Next_Sync;
       end loop;
-      NIST_Printing.Print_NIST_Event_List ("Events", Events, 1, 7);
+      NIST_Printing.Print_NIST_Event_List ("Events", Events, 1, 11);
 
       return Events;
 
