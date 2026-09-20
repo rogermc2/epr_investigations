@@ -1,5 +1,6 @@
 
 with NIST_Types; use NIST_Types;
+with Types; use Types;
 
 package Process_Data is
 

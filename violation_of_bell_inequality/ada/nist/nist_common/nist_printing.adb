@@ -7,6 +7,31 @@ with Types; use Types;
 
 package body NIST_Printing is
 
+   procedure Find_Clicks (Message : String; Data : Nist_Data_List;
+   Number : Positive := 5) is
+      use Nist_Data_Package;
+      Item    : Data_Record;
+      Curs    : Cursor := Data.First;
+      Rec_Num : Natural := 0;
+      Count   : Natural := 0;
+   begin
+      Put_Line (Message);
+      while Has_Element (Curs) loop
+         Item := Element  (Curs);
+         Rec_Num := Rec_Num + 1;
+         if Count <= Number and then Item.Channel = Click then
+            Count := Count + 1;
+            Print_NIST_Data_Record (Natural'Image (Rec_Num), Item);
+         end if;
+         Next (Curs);
+      end loop;
+
+      if Count = 0 then
+         Put_Line ("No clicks found.");
+      end if;
+
+   end Find_Clicks;
+
    procedure Print_NIST_Data_List
     (Name  : String; Data : Nist_Data_List;
       Start : Positive := 1; Finish : Natural := 0) is

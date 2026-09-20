@@ -22,10 +22,6 @@ package NIST_Types is
       Transfer_ID : Unsigned_2_Byte;
    end record;
 
-   --  package Nist_Raw_Data_Package is new
-   --    Ada.Containers.Vectors (Double_Positive, Raw_Data_Record);
-   --  subtype Nist_Raw_Data_List is Nist_Raw_Data_Package.Vector;
-
    type Data_Record is record
       Channel     : Channel_Type;
       Time_Tag    : Double_Positive;

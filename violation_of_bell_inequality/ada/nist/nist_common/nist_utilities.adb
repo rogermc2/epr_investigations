@@ -1,6 +1,6 @@
 
 --  with Ada.Assertions; use Ada.Assertions;
---  with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
 --  with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;

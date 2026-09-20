@@ -22,9 +22,6 @@ begin
    Load_NIST_Data (A_Source, A_Target, Num_Rows);
    Load_NIST_Data (B_Source, B_Target, Num_Rows);
    New_Line;
-   --  If needed, set stack size:  ulimit -s 64000
-   --  to prevent Combine stack overflow
-   New_Line;
 
 exception
    when Error : others =>

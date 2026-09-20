@@ -7,14 +7,15 @@ with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Interfaces;
-with NIST_Printing;
-with Printing;
-with Types; use Types;
---  with Printing; use Printing;
+with NIST_Printing; use NIST_Printing;
+with Printing; use Printing;
 
 package body Process_Data is
 
-   function Match_Events (A_Data, B_Data : Nist_Data_List) return Nist_Event_List;
+   function Match_Events (A_Data, B_Data : Nist_Data_List;
+    Sync_Pairs : Match_List) return Nist_Event_List;
+   function Match_Syncs (A_Data, B_Data : Nist_Data_List)
+       return Match_List;
 
    procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
       Events : out Nist_Event_List) is
@@ -24,8 +25,10 @@ package body Process_Data is
       --  Synch_Index   : Nist_Event_Package.Extended_Index;
       --  Setting_Index : Nist_Event_Package.Extended_Index;
       --  Click_Index   : Nist_Event_Package.Extended_Index;
+      Sync_Pairs   : Match_List;
    begin
-      Events := Match_Events (A_Data, B_Data);
+      Sync_Pairs := Match_Syncs (A_Data, B_Data);
+      Events := Match_Events (A_Data, B_Data, Sync_Pairs);
 
    exception
       when Error : others =>
@@ -95,120 +98,76 @@ package body Process_Data is
          raise;
    end Load_NIST_Data;
 
-   function Match_Events (A_Data, B_Data : Nist_Data_List)
-       return Nist_Event_List  is
+   function Match_Events (A_Data, B_Data : Nist_Data_List;
+    Sync_Pairs : Match_List) return Nist_Event_List  is
+      --  use Match_Package;
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Events ";
+      Sync_Pairs_Curs : Match_Package.Cursor := Sync_Pairs.First;
+      --  Time difference between first two A syncs: 129104
+      Time_Slot       : constant Double_Positive := 200000;
       A_Index         : Extended_Index := A_Data.First_Index;
       B_Index         : Extended_Index := B_Data.First_Index;
       A_Synch_Index   : Extended_Index := A_Index;
-      --  A_Setting_Index : Extended_Index := A_Synch_Index + 1;
-      --  A_Click_Index   : Extended_Index := A_Synch_Index + 2;
       B_Synch_Index   : Extended_Index := B_Index;
-      --  B_Setting_Index : Extended_Index := B_Synch_Index + 1;
-      --  B_Click_Index   : Extended_Index := B_Synch_Index + 2;
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
-
-      procedure Nearest_A_Time is
-         Ref_Time   : constant Double_Positive :=
-          B_Data (B_Index).Time_Tag;
-          A_Time    : Double_Positive;
-          Time_Diff : Double_Natural;
-      begin
-         while A_Index < A_Data.Last_Index and then
-            A_Data (A_Index).Time_Tag <  Ref_Time loop
-               A_Index := A_Index + 1;
-         end loop;
-         A_Time := A_Data (A_Index).Time_Tag;
-         Time_Diff := Double_Natural (abs (A_Time - Ref_Time));
-         if A_Index < A_Data.Last_Index and then
-            Double_Natural
-            (abs (A_Data (A_Index + 1).Time_Tag - Ref_Time)) < Time_Diff then
-            A_Index := A_Index + 1;
-         end if;
-
-      end Nearest_A_Time;
-
-      procedure Nearest_B_Time is
-         Ref_Time   : constant Double_Positive :=
-          A_Data (A_Index).Time_Tag;
-          B_Time    : Double_Positive;
-          Time_Diff : Double_Natural;
-      begin
-         while B_Index < B_Data.Last_Index and then
-            B_Data (B_Index).Time_Tag <  Ref_Time loop
-               B_Index := B_Index + 1;
-         end loop;
-
-         B_Time := B_Data (B_Index).Time_Tag;
-         Time_Diff := Double_Natural (abs (B_Time - Ref_Time));
-         if B_Index < B_Data.Last_Index and then
-            Double_Natural
-            (abs (B_Data (B_Index + 1).Time_Tag - Ref_Time)) < Time_Diff then
-            B_Index := B_Index + 1;
-         end if;
-
-      end Nearest_B_Time;
-
-      procedure Next_Sync is
-      begin
-         A_Synch_Index := A_Synch_Index + 1;
-         B_Synch_Index := B_Synch_Index + 1;
-         while A_Synch_Index < A_Data.Last_Index - 2 and then
-            A_Data (A_Synch_Index).Channel /= Sync loop
-               A_Synch_Index := A_Synch_Index + 1;
-         end loop;
-
-         while B_Synch_Index < B_Data.Last_Index - 2 and then
-            B_Data (B_Synch_Index).Channel /= Sync loop
-               B_Synch_Index := B_Synch_Index + 1;
-         end loop;
-
-      end Next_Sync;
-
    begin
-      while A_Synch_Index < A_Data.Last_Index - 2 and then
-         B_Synch_Index < B_Data.Last_Index - 2 loop
+      while Match_Package.Has_Element (Sync_Pairs_Curs) loop
          Count := Count + 1;
-         if A_Data (A_Synch_Index + 2).Channel=Click then
-            Nearest_B_Time;
-            anEvent.A_Click_Mask := 1;
-            anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
-            if B_Data (B_Synch_Index + 2).Channel = Click then
-                  anEvent.B_Click_Mask := 1;
-            else
-                  anEvent.B_Click_Mask := 0;
-            end if;
-            anEvent.B_Setting := B_Data (B_Synch_Index + 1).Channel;
-            Events.Append (anEvent);
 
-         elsif B_Data (B_Synch_Index + 2).Channel=Click then
-            Nearest_A_Time;
-            anEvent.B_Click_Mask := 1;
-            anEvent.b_Setting := b_Data (B_Synch_Index + 1).Channel;
-            if A_Data (A_Synch_Index + 2).Channel = Click then
-                  anEvent.A_Click_Mask := 1;
-            else
-                  anEvent.A_Click_Mask := 0;
-            end if;
-            anEvent.A_Setting := A_Data (A_Synch_Index + 1).Channel;
-            Events.Append (anEvent);
-         end if;
-
-         --  if Count < 7 then
+         --  if Count < 11 then
          --     Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index"
          --      & Double_Positive'Image (A_Synch_Index) & ", " &
          --     Double_Positive'Image (B_Synch_Index));
          --  end if;
-         Next_Sync;
+         Match_Package.Next (Sync_Pairs_Curs);
       end loop;
+
       NIST_Printing.Print_NIST_Event_List ("Events", Events, 1, 11);
 
       return Events;
 
    end Match_Events;
+
+   function Match_Syncs (A_Data, B_Data : Nist_Data_List)
+       return Match_List  is
+      use Nist_Data_Package;
+      Routine_Name    : constant String := "Process_Data.Match_Syncs ";
+      --  Time difference between first two A syncs: 129104
+      Time_Slot       : constant Double_Positive := 200000;
+      A_Index         : Extended_Index := A_Data.First_Index;
+      B_Index         : Extended_Index := B_Data.First_Index;
+      A_Time          : Double_Positive;
+      B_Time          : Double_Positive;
+      Item            : Index_Record;
+      Count           : Natural := 0;
+      Synch_Pairs     : Match_List;
+   begin
+   for Item_A of A_Data loop
+      for Item_B of B_Data loop
+         if abs (Item_A.Time_Tag - Item_B.Time_Tag) <= Time_Slot then
+            Synch_Pairs.Append (Item_A'Index, Item_B'Index);
+         end if;
+      end loop;
+   end loop;
+
+      --  while A_Index < A_Data.Last_Index - 2 and then
+      --     B_Index < B_Data.Last_Index - 2 loop
+      --     Count := Count + 1;
+      --     A_Time := A_Data (A_Index).Time_Tag;
+      --     B_Time := B_Data (B_Index).Time_Tag;
+      --     if abs (B_Time - A_Time) <= Time_Slot then
+      --        if A_Data (A_Index).Channel=Sync then
+      --           Item.A_Index := A_Index;
+      --           Item.B_Index := A_Index;
+      --        end if;
+      --     end if;
+      --  end loop;
+      return Synch_Pairs;
+
+   end Match_Syncs;
 
    procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name  : String; Events : Nist_Event_List) is

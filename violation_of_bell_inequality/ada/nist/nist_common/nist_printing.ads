@@ -3,6 +3,8 @@ with NIST_Types; use NIST_Types;
 
 package NIST_Printing is
 
+   procedure Find_Clicks (Message : String; Data : Nist_Data_List;
+    Number : Positive := 5);
    procedure Print_NIST_Data_List
       (Name  : String; Data : Nist_Data_List;
          Start : Positive := 1; Finish : Natural := 0);
