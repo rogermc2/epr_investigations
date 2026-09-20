@@ -242,6 +242,7 @@ procedure Print_Match_List (Name  : String; Data : Match_List;
          Last := Natural (Data.Last_index);
       end if;
 
+      Put_Line ("Number of pairs: " & Integer'Image (Integer (Data.Length)));
       Put_Line (Name & ": ");
       if Start >= Data.First_Index and then Last <= Data.Last_index then
          for Index in Start .. Last loop

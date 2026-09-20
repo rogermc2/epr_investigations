@@ -21,13 +21,10 @@ package body Process_Data is
    procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
       Events : out Nist_Event_List) is
       Routine_Name : constant String := "Process_Data.Build_Event_List ";
-      --  A_Index       : Nist_Event_Package.Extended_Index := A_Data.First_Index;
-      --  B_Index       : Nist_Event_Package.Extended_Index := B_Data.First_Index;
-      --  Synch_Index   : Nist_Event_Package.Extended_Index;
-      --  Setting_Index : Nist_Event_Package.Extended_Index;
-      --  Click_Index   : Nist_Event_Package.Extended_Index;
       Sync_Pairs   : Match_List;
    begin
+      Print_NIST_Data_List ("Build_Event_List A_Data", A_Data, 86, Finish => 94);
+      Print_NIST_Data_List ("Build_Event_List B_Data", B_Data, 86, Finish => 94);
       Sync_Pairs := Match_Syncs (A_Data, B_Data);
       Events := Match_Events (A_Data, B_Data, Sync_Pairs);
 
@@ -145,13 +142,11 @@ package body Process_Data is
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Syncs ";
       --  Time difference between first two A syncs: 129104
-      Time_Slot       : constant Double_Positive := 200000;
+      Time_Slot       : constant Double_Positive := 2000000;
       A_Time          : Double_Positive;
-      --  B_Time          : Double_Positive;
       B_Index         : Double_Positive := B_Data.First_Index;
       Last_B_Index    : Double_Positive := B_Index;
       Item            : Index_Record;
-      --  Count           : Natural := 0;
       Synch_Pairs     : Match_List;
       Found           : Boolean := False;
    begin
@@ -170,7 +165,9 @@ package body Process_Data is
       Last_B_Index := B_Index;
    end loop;
 
-   --  Print_Match_List ("Synch_Pairs", Synch_Pairs);
+   Print_Match_List ("Synch_Pairs", Synch_Pairs, 1000, 1006);
+   Print_NIST_Data_List ("A_Data", A_Data, 1000, 1006);
+   Print_NIST_Data_List ("B_Data", B_Data, 1000, 1006);
    return Synch_Pairs;
 
    end Match_Syncs;

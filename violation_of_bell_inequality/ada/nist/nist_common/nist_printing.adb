@@ -51,7 +51,7 @@ package body NIST_Printing is
        Last <= Data.Last_Index then
          for Index in Start_Idx .. Last loop
             Item := Data (Index);
-            Put ("Channel: " & Channel_Type'Image (Item.Channel));
+            Put (Double_Positive'Image (Index) & " Channel: " & Channel_Type'Image (Item.Channel));
             Put (",  Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
             Put_Line (",  Transfer_ID: " & Integer'Image (Item.Transfer_ID));
          end loop;
