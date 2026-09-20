@@ -105,24 +105,31 @@ package body Process_Data is
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Events ";
       Sync_Pairs_Curs : Match_Package.Cursor := Sync_Pairs.First;
-      --  Time difference between first two A syncs: 129104
-      Time_Slot       : constant Double_Positive := 200000;
-      A_Index         : Extended_Index := A_Data.First_Index;
-      B_Index         : Extended_Index := B_Data.First_Index;
-      A_Synch_Index   : Extended_Index := A_Index;
-      B_Synch_Index   : Extended_Index := B_Index;
+      Synch_Pair      : Index_Record;
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
    begin
       while Match_Package.Has_Element (Sync_Pairs_Curs) loop
          Count := Count + 1;
+         Synch_Pair := Match_Package.Element (Sync_Pairs_Curs);
+         if A_Data (Synch_Pair.A_Index + 2).Channel = Click or else
+            B_Data (Synch_Pair.B_Index + 2).Channel = Click then
+            if A_Data (Synch_Pair.A_Index + 2).Channel = Click then
+               anEvent.A_Click_Mask := 1;
+            else
+               anEvent.A_Click_Mask := 0;
+            end if;
+            anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
 
-         --  if Count < 11 then
-         --     Put_Line (Routine_Name & "A_Synch_Index, B_Synch_Index"
-         --      & Double_Positive'Image (A_Synch_Index) & ", " &
-         --     Double_Positive'Image (B_Synch_Index));
-         --  end if;
+            if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
+               anEvent.B_Click_Mask := 1;
+            else
+               anEvent.B_Click_Mask := 0;
+            end if;
+            anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
+            Events.Append (anEvent);
+         end if;
          Match_Package.Next (Sync_Pairs_Curs);
       end loop;
 
@@ -140,16 +147,15 @@ package body Process_Data is
       --  Time difference between first two A syncs: 129104
       Time_Slot       : constant Double_Positive := 200000;
       A_Time          : Double_Positive;
-      B_Time          : Double_Positive;
+      --  B_Time          : Double_Positive;
       B_Index         : Double_Positive := B_Data.First_Index;
       Last_B_Index    : Double_Positive := B_Index;
       Item            : Index_Record;
-      Count           : Natural := 0;
+      --  Count           : Natural := 0;
       Synch_Pairs     : Match_List;
       Found           : Boolean := False;
    begin
    for A_Index in A_Data.First_Index .. A_Data.Last_Index loop
-      --  Put_Line (Routine_Name & "A_Index: " & Double_Positive'Image (A_Index));
       A_Time := A_Data (A_Index).Time_Tag;
       Found := False;
       while not Found and then B_Index < B_Data.Last_Index loop
@@ -164,21 +170,8 @@ package body Process_Data is
       Last_B_Index := B_Index;
    end loop;
 
-   Print_Match_List ("Synch_Pairs", Synch_Pairs);
-
-      --  while A_Index < A_Data.Last_Index - 2 and then
-      --     B_Index < B_Data.Last_Index - 2 loop
-      --     Count := Count + 1;
-      --     A_Time := A_Data (A_Index).Time_Tag;
-      --     B_Time := B_Data (B_Index).Time_Tag;
-      --     if abs (B_Time - A_Time) <= Time_Slot then
-      --        if A_Data (A_Index).Channel=Sync then
-      --           Item.A_Index := A_Index;
-      --           Item.B_Index := A_Index;
-      --        end if;
-      --     end if;
-      --  end loop;
-      return Synch_Pairs;
+   --  Print_Match_List ("Synch_Pairs", Synch_Pairs);
+   return Synch_Pairs;
 
    end Match_Syncs;
 
