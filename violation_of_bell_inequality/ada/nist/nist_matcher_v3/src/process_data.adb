@@ -134,6 +134,11 @@ package body Process_Data is
 
       return Events;
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+
    end Match_Events;
 
    function Match_Syncs (A_Data, B_Data : Nist_Data_List)
@@ -151,10 +156,11 @@ package body Process_Data is
       Found           : Boolean := False;
    begin
    for A_Index in A_Data.First_Index .. A_Data.Last_Index loop
+      if A_Data (A_Index).Channel = Sync then
       A_Time := A_Data (A_Index).Time_Tag;
       Found := False;
       while not Found and then B_Index < B_Data.Last_Index loop
-         Found := abs (B_Data (B_Index).Time_Tag - A_Time) <= Time_Slot;
+         Found := B_Data (B_Index).Channel = Sync and then (B_Data (B_Index).Time_Tag - A_Time) <= Time_Slot;
          if Found then
             Item.A_Index := A_Index;
             Item.B_Index := B_Index;
@@ -163,6 +169,7 @@ package body Process_Data is
          B_Index := B_Index + 1;
       end loop;
       --  Last_B_Index := B_Index;
+      end if;
    end loop;
 
    Print_Match_List ("Synch_Pairs", Synch_Pairs, 1000, 1006);
