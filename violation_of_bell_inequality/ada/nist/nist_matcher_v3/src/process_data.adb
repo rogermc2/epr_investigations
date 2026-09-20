@@ -145,7 +145,7 @@ package body Process_Data is
       Time_Slot       : constant Double_Positive := 2000000;
       A_Time          : Double_Positive;
       B_Index         : Double_Positive := B_Data.First_Index;
-      Last_B_Index    : Double_Positive := B_Index;
+      --  Last_B_Index    : Double_Positive := B_Index;
       Item            : Index_Record;
       Synch_Pairs     : Match_List;
       Found           : Boolean := False;
@@ -162,7 +162,7 @@ package body Process_Data is
          end if;
          B_Index := B_Index + 1;
       end loop;
-      Last_B_Index := B_Index;
+      --  Last_B_Index := B_Index;
    end loop;
 
    Print_Match_List ("Synch_Pairs", Synch_Pairs, 1000, 1006);
