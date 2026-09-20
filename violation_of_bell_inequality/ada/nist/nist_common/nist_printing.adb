@@ -81,30 +81,34 @@ package body NIST_Printing is
       Last      : Double_Positive;
       Item      : NIST_Event_Record;
    begin
-      if Finish > 0 then
-         if Finish <= Natural (Data.Length) then
-            Last := Double_Positive (Finish);
+      if Integer (Data.Length) > 0 then
+         if Finish > 0 then
+            if Finish <= Natural (Data.Length) then
+               Last := Double_Positive (Finish);
+            else
+               Last := Double_Positive (Data.Length);
+            end if;
          else
             Last := Double_Positive (Data.Length);
          end if;
-      else
-         Last := Double_Positive (Data.Length);
-      end if;
 
-      Put_Line (Name & ": ");
-      if Start_Idx >= Data.First_Index and then
-       Last <= Data.Last_Index then
-         for Index in Start_Idx .. Last loop
-            Item := Data (Index);
-            Put (Double_Positive'Image (Index) & " ");
-            Put (" A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
-            Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
-            Put (";  B Click Mask:" & Unsigned_16'Image (Item.B_Click_Mask));
-            Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));
-         end loop;
+         Put_Line (Name & ": ");
+         if Start_Idx >= Data.First_Index and then
+         Last <= Double_Positive (Data.Last_Index) then
+            for Index in Start_Idx .. Last loop
+               Item := Data (Index);
+               Put (Double_Positive'Image (Index) & " ");
+               Put (" A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
+               Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
+               Put (";  B Click Mask:" & Unsigned_16'Image (Item.B_Click_Mask));
+               Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));
+            end loop;
+         else
+            Put_Line ("Print_NIST_Event_List called with invalid" &
+            " start or finish index.");
+         end if;
       else
-         Put_Line ("Print_NIST_Event_List called with invalid" &
-          " start or finish index.");
+         Put_Line (Name & " Event_List is empty");
       end if;
       New_Line;
 

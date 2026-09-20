@@ -9,6 +9,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces;
 with NIST_Printing; use NIST_Printing;
 with Printing; use Printing;
+with Types; use Types;
 
 package body Process_Data is
 
@@ -133,25 +134,37 @@ package body Process_Data is
 
    function Match_Syncs (A_Data, B_Data : Nist_Data_List)
        return Match_List  is
+      use Match_Package;
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Syncs ";
       --  Time difference between first two A syncs: 129104
       Time_Slot       : constant Double_Positive := 200000;
-      A_Index         : Extended_Index := A_Data.First_Index;
-      B_Index         : Extended_Index := B_Data.First_Index;
       A_Time          : Double_Positive;
       B_Time          : Double_Positive;
+      B_Index         : Double_Positive := B_Data.First_Index;
+      Last_B_Index    : Double_Positive := B_Index;
       Item            : Index_Record;
       Count           : Natural := 0;
       Synch_Pairs     : Match_List;
+      Found           : Boolean := False;
    begin
-   for Item_A of A_Data loop
-      for Item_B of B_Data loop
-         if abs (Item_A.Time_Tag - Item_B.Time_Tag) <= Time_Slot then
-            Synch_Pairs.Append (Item_A'Index, Item_B'Index);
+   for A_Index in A_Data.First_Index .. A_Data.Last_Index loop
+      --  Put_Line (Routine_Name & "A_Index: " & Double_Positive'Image (A_Index));
+      A_Time := A_Data (A_Index).Time_Tag;
+      Found := False;
+      while not Found and then B_Index < B_Data.Last_Index loop
+         Found := abs (B_Data (B_Index).Time_Tag - A_Time) <= Time_Slot;
+         if Found then
+            Item.A_Index := A_Index;
+            Item.B_Index := B_Index;
+            Synch_Pairs.Append (Item);
          end if;
+         B_Index := B_Index + 1;
       end loop;
+      Last_B_Index := B_Index;
    end loop;
+
+   Print_Match_List ("Synch_Pairs", Synch_Pairs);
 
       --  while A_Index < A_Data.Last_Index - 2 and then
       --     B_Index < B_Data.Last_Index - 2 loop
