@@ -9,7 +9,6 @@ with Printing; use Printing;
 with Types; use Types;
 
 procedure Statistical_Analysis is
-   --  use Sample_Data_Package;
    --  type Quantile_Table is array (Positive range <>) of Float;
    --   package Float_Estimators is new Estimators (Float, Data_Vector);
    --   package Float_Samples is new
