@@ -1,6 +1,7 @@
 
 with Interfaces;
 
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Types; use Types;
@@ -111,6 +112,11 @@ package body NIST_Printing is
          Put_Line (Name & " Event_List is empty");
       end if;
       New_Line;
+
+   exception
+      when Error : others =>
+         Put_Line ("Print_NIST_Event_List " & Exception_Information (Error));
+         raise;
 
    end Print_NIST_Event_List;
 
