@@ -131,6 +131,8 @@ package body Process_Data is
          Match_Package.Next (Sync_Pairs_Curs);
       end loop;
 
+      Put_Line (Routine_Name & "Number of events: " &
+       Integer'Image (Integer (Events.Length)));
       --  Print_NIST_Event_List ("Events", Events, 1, 11);
 
       return Events;
@@ -146,22 +148,29 @@ package body Process_Data is
        return Match_List  is
       use Match_Package;
       use Nist_Data_Package;
-      --  Routine_Name    : constant String := "Process_Data.Match_Syncs ";
+      Routine_Name    : constant String := "Process_Data.Match_Syncs ";
       --  Time difference between first two A syncs: 129104
-      Time_Slot       : constant Double_Positive := 2000000;
+      Time_Slot       : constant Double_Positive := 10;
       A_Time          : Double_Positive;
       B_Index         : Double_Positive := B_Data.First_Index;
       Item            : Index_Record;
       Synch_Pairs     : Match_List;
       Found           : Boolean := False;
    begin
+      Put_Line (Routine_Name & "A_Data size: " &
+       Integer'Image (Integer (A_Data.Length)));
+      Put_Line (Routine_Name & "B_Data size: " &
+       Integer'Image (Integer (B_Data.Length)));
       for A_Index in A_Data.First_Index .. A_Data.Last_Index loop
          if A_Data (A_Index).Channel = Sync then
             A_Time := A_Data (A_Index).Time_Tag;
             Found := False;
             while not Found and then B_Index < B_Data.Last_Index loop
-               Found := B_Data (B_Index).Channel = Sync and then (B_Data (B_Index).Time_Tag - A_Time) <= Time_Slot;
+               Found := B_Data (B_Index).Channel = Sync and then
+                B_Data (B_Index).Time_Tag - A_Time <= Time_Slot;
                if Found then
+                  --  Put_Line (Routine_Name & "Time diff: " &
+                  --   Double_Positive'Image (B_Data (B_Index).Time_Tag - A_Time));
                   Item.A_Index := A_Index;
                   Item.B_Index := B_Index;
                   Synch_Pairs.Append (Item);
@@ -171,6 +180,9 @@ package body Process_Data is
          end if;
       end loop;
 
+      Put_Line (Routine_Name & "Number of synch matches: " &
+       Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
+       Double_Positive'Image (Time_Slot));
       --  Print_Match_List ("Synch_Pairs", Synch_Pairs, 1000, 1006);
       --  Print_NIST_Data_List ("A_Data", A_Data, 1000, 1006);
       --  Print_NIST_Data_List ("B_Data", B_Data, 1000, 1006);
