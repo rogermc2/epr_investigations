@@ -36,8 +36,8 @@ procedure Statistical_Analysis is
    Mean_AB_01    : Float;
    Mean_AB_10    : Float;
    Mean_AB_11    : Float;
-   --  Valid_Data    : Sample_Data_List;
-   --  False_Count   : Natural;
+   Valid_Data    : Sample_Data_List;
+   False_Count   : Natural;
 begin
    --  Print_Sample_Data_List ("Detections_00", Detections_00, 1, 10);
    Print_Sample_Data_List ("Detections_01", Detections_01, 1, 10);
@@ -67,23 +67,23 @@ begin
    Put_Line ("- a.b,  b = a + 45 deg.: " & Float'Image (-Cos (Pi / 4.0)));
    New_Line;
 
-   --  Put_Line ("Number of AB00 detections: " &
-   --              Integer'Image (Integer (Length (Detections_00))));
-   --  Put_Line ("Number of AB01 detections: " &
-   --              Integer'Image (Integer (Length (Detections_01))));
-   --  Put_Line ("Number of AB10 detections: " &
-   --              Integer'Image (Integer (Length (Detections_10))));
-   --  Put_Line ("Number of AB11 detections: " &
-   --              Integer'Image (Integer (Length (Detections_11))));
+   Put_Line ("Number of AB00 detections: " &
+               Integer'Image (Integer (Detections_00.Length)));
+   Put_Line ("Number of AB01 detections: " &
+               Integer'Image (Integer (Detections_01.Length)));
+   Put_Line ("Number of AB10 detections: " &
+               Integer'Image (Integer (Detections_10.Length)));
+   Put_Line ("Number of AB11 detections: " &
+               Integer'Image (Integer (Detections_11.Length)));
    --  New_Line;
 
-   --  Valid_Data := False_Positives (OEM_00, False_Count);
-   --  Put_Line ("AB_00 false positives: " & Integer'Image (False_Count));
-   --  Valid_Data := False_Positives (OEM_01, False_Count);
-   --  Put_Line ("AB_01 false positives: " & Integer'Image (False_Count));
-   --  Valid_Data := False_Positives (OEM_10, False_Count);
-   --  Put_Line ("AB_10 false positives: " & Integer'Image (False_Count));
-   --  Valid_Data := False_Positives (OEM_11, False_Count);
-   --  Put_Line ("AB_11 false positives: " & Integer'Image (False_Count));
+   Valid_Data := False_Positives (AB_Dir, File_00, False_Count);
+   Put_Line ("00 false positives: " & Integer'Image (False_Count));
+   Valid_Data := False_Positives (AB_Dir, File_01, False_Count);
+   Put_Line ("01 false positives: " & Integer'Image (False_Count));
+   Valid_Data := False_Positives (AB_Dir, File_10, False_Count);
+   Put_Line ("10 false positives: " & Integer'Image (False_Count));
+   Valid_Data := False_Positives (AB_Dir, File_11, False_Count);
+   Put_Line ("11 false positives: " & Integer'Image (False_Count));
 
 end Statistical_Analysis;

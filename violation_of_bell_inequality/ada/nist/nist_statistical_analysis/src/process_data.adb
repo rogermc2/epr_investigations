@@ -1,8 +1,8 @@
 
 with Ada.Numerics;
-with Ada.Strings;
-with Ada.Strings.Fixed;
-with Ada.Strings.Maps;
+--  with Ada.Strings;
+--  with Ada.Strings.Fixed;
+--  with Ada.Strings.Maps;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Process_Data is
@@ -12,7 +12,7 @@ package body Process_Data is
    function Check
      (OEM_ID                  : File_Type; Eq  : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
-      aLine            : String_8;
+      aLine            : String_5;
       A_Result         : String_2;
       B_Result         : String_2;
       Sample           : Sample_Data_Record;
@@ -57,28 +57,28 @@ package body Process_Data is
       return 2.0 * theta / Pi - 1.0;
    end Statistical_EAB;
 
-   function False_Positives (OEM_File : String;  False_Count : out Natural)
-                             return Sample_Data_List is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
-      use Ada.Strings.Maps;
+   function False_Positives
+    (Dir, OEM_File : String;  False_Count : out Natural)
+      return Sample_Data_List is
+      --  use Ada.Strings;
+      --  use Ada.Strings.Fixed;
+      --  use Ada.Strings.Maps;
       Routine_Name     : constant String := "Process_Data.False_Positives ";
       OEM_ID           : File_Type;
-      First            : Positive;
-      Last             : Natural;
+      --  First            : Positive;
+      --  Last             : Natural;
       --  Header           : String_11;
       True_Count       : Natural;
       Valid_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);
-      Find_Token (OEM_File, To_Set ("OEM"), Inside, First, Last);
-      if OEM_File (Last + 2 .. Last + 3) = "aa" then
+      if OEM_File = Dir & "aa.csv" then
          Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
-      elsif OEM_File (Last + 2 .. Last + 3) = "ab" then
+      elsif OEM_File = Dir &  "ab.csv" then
          Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
-      elsif OEM_File (Last + 2 .. Last + 3) = "ba" then
+      elsif OEM_File  = Dir &  "ba.csv" then
          Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
-      elsif OEM_File (Last + 2 .. Last + 3) = "bb" then
+      elsif OEM_File = Dir &  "bb.csv" then
          Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
       else
          Put_Line (Routine_Name & "invalid file: " & OEM_File);
