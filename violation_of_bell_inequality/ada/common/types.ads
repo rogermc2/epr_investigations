@@ -32,6 +32,8 @@ package Types is
    subtype String_9  is String (1 .. 9);
    subtype String_11 is String (1 .. 11);
    subtype String_12 is String (1 .. 12);
+   subtype String_14 is String (1 .. 14);
+   subtype String_15 is String (1 .. 15);
    subtype String_16 is String (1 .. 16);
    subtype String_18 is String (1 .. 18);
    subtype String_19 is String (1 .. 19);

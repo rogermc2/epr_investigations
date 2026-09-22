@@ -39,7 +39,7 @@ procedure Statistical_Analysis is
    False_Count   : Natural;
 begin
    --  Print_Sample_Data_List ("Detections_00", Detections_00, 1, 10);
-   Print_Sample_Data_List ("Detections_01", Detections_01, 1, 10);
+   --  Print_Sample_Data_List ("Detections_01", Detections_01, 1, 10);
    Sample_Means (Detections_00, Mean_A_00, Mean_B_00, Mean_AB_00);
    Sample_Means (Detections_01, Mean_A_01, Mean_B_01, Mean_AB_01);
    Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);

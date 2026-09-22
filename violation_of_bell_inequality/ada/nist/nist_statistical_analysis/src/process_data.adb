@@ -92,20 +92,21 @@ package body Process_Data is
 
    function Get_Detections (Detection_Data : String)
       return Sample_Data_List is
-      --  Routine_Name : constant String := "Process_Data.Get_Detections ";
+      Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
-      aLine        : String_5;
       A_Result     : String_2;
       B_Result     : String_2;
       Sample       : Sample_Data_Record;
       Detections   : Sample_Data_List;
    begin
       Open (Data_ID, In_File, Detection_Data);
-
       while not End_Of_File (Data_ID) loop
-         aLine := Get_Line (Data_ID);
-         A_Result := aLine (1 .. 2);
-         B_Result := aLine (4 .. 5);
+         declare
+            aLine : constant String := Get_Line (Data_ID);
+         begin
+            A_Result := aLine (1 .. 2);
+            B_Result := aLine (4 .. 5);
+         end;
          Sample.A_Detection := Sample_Val (A_Result);
          Sample.B_Detection := Sample_Val (B_Result);
          Sample.AB := Sample.A_Detection * Sample.B_Detection;
