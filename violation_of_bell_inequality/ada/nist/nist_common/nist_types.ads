@@ -42,6 +42,7 @@ package NIST_Types is
    subtype Setting_Time_Vector is Setting_Time_Package.Vector;
 
    type NIST_Event_Record is record
+      Time_Tag     : Double_Positive;
       A_Setting    : Channel_Type;
       B_Setting    : Channel_Type;
       A_Click_Mask : Interfaces.Unsigned_16;

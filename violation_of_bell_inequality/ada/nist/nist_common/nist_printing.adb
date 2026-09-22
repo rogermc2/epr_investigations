@@ -99,7 +99,11 @@ package body NIST_Printing is
             for Index in Start_Idx .. Last loop
                Item := Data (Index);
                Put (Double_Positive'Image (Index) & " ");
-               Put (" A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
+               if Index < 10 then
+                  Put (" ");
+               end if;
+               Put ("Time_Tag:" & Double_Positive'Image (Item.Time_Tag));
+               Put (", A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
                Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
                Put (";  B Click Mask:" & Unsigned_16'Image (Item.B_Click_Mask));
                Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));

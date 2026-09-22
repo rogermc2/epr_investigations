@@ -107,6 +107,7 @@ package body Process_Data is
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
       Found           : Boolean := False;
+      Num_11          : Natural := 0;
    begin
       while Match_Package.Has_Element (Sync_Pairs_Curs) and then
          Match_Package.To_Index (Sync_Pairs_Curs) + 2 <=
@@ -115,22 +116,32 @@ package body Process_Data is
          Synch_Pair := Match_Package.Element (Sync_Pairs_Curs);
 
          Found := A_Data (Synch_Pair.A_Index + 2).Channel = Click;
+         anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
+         anEvent.Time_Tag := A_Data (Synch_Pair.A_Index).Time_Tag;
          if Found then
             anEvent.A_Click_Mask := 1;
          else
             anEvent.A_Click_Mask := 0;
          end if;
-         anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
 
          if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
+            if not Found then
+               anEvent.Time_Tag := B_Data (Synch_Pair.B_Index).Time_Tag;
+            else
+               Num_11 := Num_11 + 1;
+               if Num_11 < 7 then
+                  Put_Line (Routine_Name & "11 event: " & Integer'Image (Count) &
+                     Double_Positive'Image (anEvent.Time_Tag));
+               end if;
+            end if;
             Found := True;
             anEvent.B_Click_Mask := 1;
          else
             anEvent.B_Click_Mask := 0;
          end if;
-         anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
 
          if Found then
+            anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
             Events.Append (anEvent);
          end if;
 
@@ -139,7 +150,9 @@ package body Process_Data is
 
       Put_Line (Routine_Name & "Number of events: " &
        Integer'Image (Integer (Events.Length)));
-      --  Print_NIST_Event_List ("Events", Events, 1, 11);
+      Print_NIST_Event_List ("Events", Events, 890, 897);
+      Put_Line (Routine_Name & "Number of 11 events: " &
+         Integer'Image (Integer (Num_11)));
 
       return Events;
 
@@ -226,22 +239,27 @@ package body Process_Data is
          else
              Click_B := -1;
          end if;
+
          case Rec.A_Setting is
             when Pol_0 =>
                if Rec.B_Setting = Pol_0 then
-                  Put_Line (AA_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B));
+                  Put (AA_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B) & ",");
+                  Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
                else
-                  Put_Line (AB_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B));
+                  Put (AB_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B) & ",");
+                  Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
                end if;
             when Pol_45 =>
                if Rec.B_Setting = Pol_0 then
-                  Put_Line (BA_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B));
+                  Put(BA_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B) & ",");
+                  Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
                else
-                  Put_Line (BB_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B));
+                  Put (BB_ID, Integer'Image (Click_A)
+                     & "," & Integer'Image (Click_B) & ",");
+                  Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
                end if;
 
             when others => null;
