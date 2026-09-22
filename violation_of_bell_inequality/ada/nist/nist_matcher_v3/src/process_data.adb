@@ -7,8 +7,8 @@ with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Interfaces;
---  with NIST_Printing; use NIST_Printing;
---  with Printing; use Printing;
+with NIST_Printing; use NIST_Printing;
+with Printing; use Printing;
 with Types; use Types;
 
 package body Process_Data is
@@ -23,9 +23,10 @@ package body Process_Data is
       Routine_Name : constant String := "Process_Data.Build_Event_List ";
       Sync_Pairs   : Match_List;
    begin
-      --  Print_NIST_Data_List ("Build_Event_List A_Data", A_Data, 86, Finish => 94);
-      --  Print_NIST_Data_List ("Build_Event_List B_Data", B_Data, 86, Finish => 94);
       Sync_Pairs := Match_Syncs (A_Data, B_Data);
+      Print_NIST_Data_List ("Sync_Pairs A_Data", A_Data, 84, Finish => 94);
+      Print_NIST_Data_List ("Sync_Pairs B_Data", B_Data, 80, Finish => 90);
+      Print_Match_List ("Sync_Pairs", Sync_Pairs, 40, Finish => 50);
       Events := Match_Events (A_Data, B_Data, Sync_Pairs);
 
    exception
@@ -105,29 +106,34 @@ package body Process_Data is
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
+      Found           : Boolean := False;
    begin
       while Match_Package.Has_Element (Sync_Pairs_Curs) and then
          Match_Package.To_Index (Sync_Pairs_Curs) + 2 <=
           Sync_Pairs.Last_Index loop
          Count := Count + 1;
          Synch_Pair := Match_Package.Element (Sync_Pairs_Curs);
-         if A_Data (Synch_Pair.A_Index + 2).Channel = Click or else
-            B_Data (Synch_Pair.B_Index + 2).Channel = Click then
-            if A_Data (Synch_Pair.A_Index + 2).Channel = Click then
-               anEvent.A_Click_Mask := 1;
-            else
-               anEvent.A_Click_Mask := 0;
-            end if;
-            anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
 
-            if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
-               anEvent.B_Click_Mask := 1;
-            else
-               anEvent.B_Click_Mask := 0;
-            end if;
-            anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
+         Found := A_Data (Synch_Pair.A_Index + 2).Channel = Click;
+         if Found then
+            anEvent.A_Click_Mask := 1;
+         else
+            anEvent.A_Click_Mask := 0;
+         end if;
+         anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
+
+         if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
+            Found := True;
+            anEvent.B_Click_Mask := 1;
+         else
+            anEvent.B_Click_Mask := 0;
+         end if;
+         anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
+
+         if Found then
             Events.Append (anEvent);
          end if;
+
          Match_Package.Next (Sync_Pairs_Curs);
       end loop;
 
@@ -169,8 +175,6 @@ package body Process_Data is
                Found := B_Data (B_Index).Channel = Sync and then
                 B_Data (B_Index).Time_Tag - A_Time <= Time_Slot;
                if Found then
-                  --  Put_Line (Routine_Name & "Time diff: " &
-                  --   Double_Positive'Image (B_Data (B_Index).Time_Tag - A_Time));
                   Item.A_Index := A_Index;
                   Item.B_Index := B_Index;
                   Synch_Pairs.Append (Item);
