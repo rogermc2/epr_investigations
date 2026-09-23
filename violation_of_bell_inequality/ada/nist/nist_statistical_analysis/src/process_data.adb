@@ -12,7 +12,6 @@ package body Process_Data is
    function Check
      (OEM_ID                  : File_Type; Eq  : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
-      aLine            : String_5;
       A_Result         : String_2;
       B_Result         : String_2;
       Sample           : Sample_Data_Record;
@@ -21,9 +20,13 @@ package body Process_Data is
       False_Count := 0;
       True_Count := 0;
       while not End_Of_File (OEM_ID) loop
-         aLine := Get_Line (OEM_ID);
-         A_Result := aLine (1 .. 2);
-         B_Result := aLine (4 .. 5);
+         declare
+            aLine : constant String := Get_Line (OEM_ID);
+         begin
+            A_Result := aLine (1 .. 2);
+            B_Result := aLine (4 .. 5);
+         end;
+
          if Eq then
             if A_Result = B_Result then
                True_Count := True_Count + 1;
