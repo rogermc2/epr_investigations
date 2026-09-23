@@ -1,4 +1,5 @@
 
+with Interfaces;
 --  with Ada.Assertions; use Ada.Assertions;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
@@ -6,9 +7,8 @@ with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Interfaces;
 with NIST_Printing; use NIST_Printing;
-with Printing; use Printing;
+--  with Printing; use Printing;
 with Types; use Types;
 
 package body Process_Data is
@@ -24,9 +24,6 @@ package body Process_Data is
       Sync_Pairs   : Match_List;
    begin
       Sync_Pairs := Match_Syncs (A_Data, B_Data);
-      Print_NIST_Data_List ("Sync_Pairs A_Data", A_Data, 84, Finish => 94);
-      Print_NIST_Data_List ("Sync_Pairs B_Data", B_Data, 80, Finish => 90);
-      Print_Match_List ("Sync_Pairs", Sync_Pairs, 40, Finish => 50);
       Events := Match_Events (A_Data, B_Data, Sync_Pairs);
 
    exception
@@ -51,9 +48,6 @@ package body Process_Data is
       Put_Line (Routine_Name & Source_File & " length: " &
          Double_Natural'Image (Source_Size));
       New_Line;
-      --  Put_Line (Routine_Name &
-      --   Source_File (Source_File'First + 19 .. Source_File'Last) & " size: " &
-      --                 Double_Natural'Image (Source_Size));
       Open (Source_ID, In_File, Source_File);
 
       while not End_Of_File (Source_ID) loop
@@ -71,8 +65,6 @@ package body Process_Data is
                Data.Time_Tag :=
                   Double_Positive'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
                Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
-               --  Assert (Data.Time_Tag > 0, "Data.Time_Tag invalid: " &
-               --  Double_Positive'Image (Data.Time_Tag));
             else
                Put_Line (Routine_Name & "aline'First, Pos_1: " &
                Integer'Image (aline'First) & "," & Integer'Image (Pos_1));
@@ -99,48 +91,44 @@ package body Process_Data is
 
    function Match_Events (A_Data, B_Data : Nist_Data_List;
     Sync_Pairs : Match_List) return Nist_Event_List  is
+      use Interfaces;
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Events ";
       Sync_Pairs_Curs : Match_Package.Cursor := Sync_Pairs.First;
       Synch_Pair      : Index_Record;
+      Click_Delay     : Double_Positive;
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
-      Found           : Boolean := False;
-      Num_11          : Natural := 0;
    begin
       while Match_Package.Has_Element (Sync_Pairs_Curs) and then
          Match_Package.To_Index (Sync_Pairs_Curs) + 2 <=
           Sync_Pairs.Last_Index loop
          Count := Count + 1;
          Synch_Pair := Match_Package.Element (Sync_Pairs_Curs);
-
-         Found := A_Data (Synch_Pair.A_Index + 2).Channel = Click;
-         anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
-         anEvent.Time_Tag := A_Data (Synch_Pair.A_Index).Time_Tag;
-         if Found then
-            anEvent.A_Click_Mask := 1;
-         else
-            anEvent.A_Click_Mask := 0;
-         end if;
-
-         if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
-            if not Found then
-               anEvent.Time_Tag := B_Data (Synch_Pair.B_Index).Time_Tag;
+         if A_Data (Synch_Pair.A_Index + 2).Channel = Click or else
+            B_Data (Synch_Pair.B_Index + 2).Channel = Click then
+            if A_Data (Synch_Pair.A_Index + 2).Channel = Click then
+               Click_Delay := A_Data (Synch_Pair.A_Index + 2).Time_Tag -
+                              A_Data (Synch_Pair.A_Index).Time_Tag;
+               --  if Click_Delay > A_Max_Click_Delay then
+               --     A_Max_Click_Delay := Click_Delay;
+               --  end if;
+               anEvent.A_Click_Mask :=
+                  Shift_Left (unsigned_16 (1), Natural (Click_Delay / 8064));
             else
-               Num_11 := Num_11 + 1;
-               if Num_11 < 7 then
-                  Put_Line (Routine_Name & "11 event: " & Integer'Image (Count) &
-                     Double_Positive'Image (anEvent.Time_Tag));
-               end if;
+               anEvent.A_Click_Mask := 0;
             end if;
-            Found := True;
-            anEvent.B_Click_Mask := 1;
-         else
-            anEvent.B_Click_Mask := 0;
-         end if;
+            anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
 
-         if Found then
+            if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
+               Click_Delay := B_Data (Synch_Pair.B_Index + 2).Time_Tag -
+                              B_Data (Synch_Pair.B_Index).Time_Tag;
+               anEvent.B_Click_Mask :=
+                  Shift_Left (unsigned_16 (1), Natural (Click_Delay / 8064));
+            else
+               anEvent.B_Click_Mask := 0;
+            end if;
             anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
             Events.Append (anEvent);
          end if;
@@ -148,11 +136,11 @@ package body Process_Data is
          Match_Package.Next (Sync_Pairs_Curs);
       end loop;
 
-      Put_Line (Routine_Name & "Number of events: " &
-       Integer'Image (Integer (Events.Length)));
-      Print_NIST_Event_List ("Events", Events, 890, 897);
-      Put_Line (Routine_Name & "Number of 11 events: " &
-         Integer'Image (Integer (Num_11)));
+      --  Put_Line (Routine_Name & "Max Click_Delay" &
+      --     Double_Positive'Image (Max_Click_Delay));
+      --  Put_Line (Routine_Name & "Max Click_Delay / 16:" &
+      --     Double_Positive'Image (Max_Click_Delay / 16));
+      Print_NIST_Event_List ("Events", Events, 1, 11);
 
       return Events;
 
