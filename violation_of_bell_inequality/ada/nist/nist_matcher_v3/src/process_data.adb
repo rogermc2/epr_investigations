@@ -94,6 +94,7 @@ package body Process_Data is
       use Interfaces;
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Events ";
+      Pulse_Interval  : constant Double_Positive := 8064;
       Sync_Pairs_Curs : Match_Package.Cursor := Sync_Pairs.First;
       Synch_Pair      : Index_Record;
       Click_Delay     : Double_Positive;
@@ -115,7 +116,7 @@ package body Process_Data is
                --     A_Max_Click_Delay := Click_Delay;
                --  end if;
                anEvent.A_Click_Mask :=
-                  Shift_Left (unsigned_16 (1), Natural (Click_Delay / 8064));
+                  Shift_Left (unsigned_16 (1), Natural (Click_Delay / Pulse_Interval));
             else
                anEvent.A_Click_Mask := 0;
             end if;
