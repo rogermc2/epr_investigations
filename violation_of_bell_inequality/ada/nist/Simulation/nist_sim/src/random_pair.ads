@@ -1,7 +1,7 @@
 
-package Random_Pair is
+with Types; use Types;
 
-   type Vector_3D is array (1 .. 3) of Float;
+package Random_Pair is
 
    procedure Random_Perpendicular_Unit_Vectors
      (U, V : out Vector_3D);

@@ -1,5 +1,6 @@
 
 with Random_Pair; use Random_Pair;
+with Types; use Types;
 
 procedure Simulate is
    U : Vector_3D;
