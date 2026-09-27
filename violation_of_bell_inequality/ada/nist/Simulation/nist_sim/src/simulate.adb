@@ -1,11 +1,14 @@
 
 with Random_Pair; use Random_Pair;
+with Station; use Station;
 with Types; use Types;
 
 procedure Simulate is
-   U : Vector_3D;
-   V : Vector_3D;
+   Photon_A : Vector_3D;
+   Photon_B : Vector_3D;
 begin
-   Random_Perpendicular_Unit_Vectors (U, V);
+   Generate_Source_Data (Photon_A, Photon_B);
+   Process_Photon (Photon_A);
+   Process_Photon (Photon_B);
 
 end Simulate;

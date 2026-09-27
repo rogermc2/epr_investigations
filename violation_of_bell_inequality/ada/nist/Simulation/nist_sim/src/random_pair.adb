@@ -8,9 +8,9 @@ package body Random_Pair is
 
    Gen : FR.Generator;
 
-   procedure Random_Perpendicular_Unit_Vectors
-     (U, V : out Vector_3D)
-   is
+   procedure Generate_Source_Data
+      (U, V : out Vector_3D)
+      is
       Pi : constant Float := Ada.Numerics.Pi;
       Z, Phi : Float;
       Rxy    : Float;
@@ -67,7 +67,7 @@ package body Random_Pair is
 
          3 => EF.Cos (Alpha) * E1 (3) +
               EF.Sin (Alpha) * E2 (3));
-   end Random_Perpendicular_Unit_Vectors;
+   end Generate_Source_Data;
 
 begin
    FR.Reset (Gen);
