@@ -131,7 +131,11 @@ package body Process_Data is
                anEvent.B_Click_Mask := 0;
             end if;
             anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
-            Events.Append (anEvent);
+
+            if A_Data (Synch_Pair.A_Index + 2).Channel /= Overflow and then
+               B_Data (Synch_Pair.B_Index + 2).Channel /= Overflow then
+               Events.Append (anEvent);
+            end if;
          end if;
 
          Match_Package.Next (Sync_Pairs_Curs);
