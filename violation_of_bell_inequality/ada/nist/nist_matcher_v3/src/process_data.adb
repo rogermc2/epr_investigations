@@ -201,6 +201,7 @@ package body Process_Data is
       use Interfaces;
       use Nist_Event_Package;
       Routine_Name : constant String := "Process_Data.Save_Events ";
+      Max_Click_Delay : constant Unsigned_16 := 16000;
       AA_ID        : File_Type;
       BA_ID        : File_Type;
       AB_ID        : File_Type;
@@ -217,42 +218,45 @@ package body Process_Data is
 
       while Has_Element (Events_Curs) loop
          Rec :=  Element (Events_Curs);
-         if Rec.A_Click_Mask > 0 then
-            Click_A := 1;
-         else
-             Click_A := -1;
+         if Rec.A_Click_Mask < Max_Click_Delay and then
+          Rec.B_Click_Mask < Max_Click_Delay then
+            if Rec.A_Click_Mask > 0 then
+               Click_A := 1;
+            else
+               Click_A := -1;
+            end if;
+
+            if Rec.B_Click_Mask > 0 then
+               Click_B := 1;
+            else
+               Click_B := -1;
+            end if;
+
+            case Rec.A_Setting is
+               when Pol_0 =>
+                  if Rec.B_Setting = Pol_0 then
+                     Put (AA_ID, Integer'Image (Click_A)
+                        & "," & Integer'Image (Click_B) & ",");
+                     Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
+                  else
+                     Put (AB_ID, Integer'Image (Click_A)
+                        & "," & Integer'Image (Click_B) & ",");
+                     Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
+                  end if;
+               when Pol_45 =>
+                  if Rec.B_Setting = Pol_0 then
+                     Put(BA_ID, Integer'Image (Click_A)
+                        & "," & Integer'Image (Click_B) & ",");
+                     Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
+                  else
+                     Put (BB_ID, Integer'Image (Click_A)
+                        & "," & Integer'Image (Click_B) & ",");
+                     Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
+                  end if;
+
+               when others => null;
+            end case;
          end if;
-
-         if Rec.B_Click_Mask > 0 then
-            Click_B := 1;
-         else
-             Click_B := -1;
-         end if;
-
-         case Rec.A_Setting is
-            when Pol_0 =>
-               if Rec.B_Setting = Pol_0 then
-                  Put (AA_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
-               else
-                  Put (AB_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
-               end if;
-            when Pol_45 =>
-               if Rec.B_Setting = Pol_0 then
-                  Put(BA_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
-               else
-                  Put (BB_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
-               end if;
-
-            when others => null;
-         end case;
          Next (Events_Curs);
       end loop;
 
