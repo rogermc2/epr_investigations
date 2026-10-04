@@ -1,0 +1,655 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Harness the Science of Bernoulli Trials for Better Outcomes
+\end_layout
+
+\begin_layout Standard
+Welcome to this step-by-step tutorial on the Bernoulli Trials.
+ Whether you’re a student new to probability theory or someone looking to refresh their understanding,
+ you’ve come to the right place.
+ 
+\end_layout
+
+\begin_layout Standard
+In this guide,
+ we’ll break down the Bernoulli Trials,
+ explore their significance and provide practical examples to make this concept crystal clear.
+\end_layout
+
+\begin_layout Section
+What Are Bernoulli Trials?
+\end_layout
+
+\begin_layout Standard
+Bernoulli Trials are a fundamental concept in probability theory.
+ 
+\end_layout
+
+\begin_layout Standard
+At their core,
+ they represent a series of experiments with only two possible outcomes:
+ success and failure.
+ These trials are named after the Swiss mathematician Jacob Bernoulli who made significant contributions to the field of probability.
+\end_layout
+
+\begin_layout Standard
+Imagine flipping a coin:
+\end_layout
+
+\begin_layout Standard
+it can land either heads (success) or tails (failure).
+\end_layout
+
+\begin_layout Standard
+Each flip is a Bernoulli Trial making this concept applicable in various real-life scenarios from medical tests to quality control in manufacturing.
+\end_layout
+
+\begin_layout Section
+Probability of Success and Failure
+\end_layout
+
+\begin_layout Standard
+In a Bernoulli Trial,
+ two probabilities are defined:
+\end_layout
+
+\begin_layout Itemize
+Probability of Success:
+ This is the likelihood of a desired outcome (success) occurring in a single trial.
+\end_layout
+
+\begin_layout Itemize
+Probability of Failure:
+ This is the likelihood of the undesired outcome (failure) occurring in a single trial.
+ It is calculated as .
+\end_layout
+
+\begin_layout Standard
+These two probabilities sum to 1 meaning that in a Bernoulli Trial there are only two possible outcomes and one of them is certain to happen.
+\end_layout
+
+\begin_layout Section
+The Binomial Experiment
+\end_layout
+
+\begin_layout Standard
+While a single Bernoulli Trial is informative,
+ real-world scenarios often involve multiple trials which is where the binomial distribution comes into play.
+ 
+\end_layout
+
+\begin_layout Standard
+A binomial experiment consists of a fixed number of independent Bernoulli Trials,
+ each having the same probability of success .
+\end_layout
+
+\begin_layout Standard
+For example,
+ suppose you are conducting a quality check on a production line and you want to know how many defective items you’ll encounter in a batch.
+ 
+\end_layout
+
+\begin_layout Standard
+Each item’s inspection is a Bernoulli Trial and the batch’s overall quality check is a binomial experiment.
+\end_layout
+
+\begin_layout Section
+Binomial Probability Formula
+\end_layout
+
+\begin_layout Standard
+The key to understanding the binomial distribution is the binomial probability formula:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(X=k\right) & = & \,_{n}C_{k}\times p^{k}\times q^{n-k}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here’s what each component means:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $P\left(X=k\right)$
+\end_inset
+
+ represents the probability of getting exactly k successes in n trials.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\,_{n}C_{k}$
+\end_inset
+
+ is the binomial coefficient,
+ calculated as 
+\begin_inset Formula $\frac{n!}{k!\left(n-k\right)!}$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $p^{k}$
+\end_inset
+
+ denotes the probability of successes.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $q^{n-k}$
+\end_inset
+
+ is the probability of 
+\begin_inset Formula $n-k$
+\end_inset
+
+ failures.
+\end_layout
+
+\begin_layout Section
+Step-by-Step Bernoulli Trials Tutorial
+\end_layout
+
+\begin_layout Standard
+Understanding and working with the Bernoulli Trials.
+\end_layout
+
+\begin_layout Subsection
+Setting Up a Bernoulli Trial
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Define An Experiment
+\series default
+:
+\begin_inset Newline newline
+\end_inset
+
+Start by clearly defining an experiment and what constitutes a success and a failure.
+ For instance,
+ in a medical test a positive result might indicate success (presence of a disease),
+ while a negative result is a failure (no disease).
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Determine the Probability of Success
+\series default
+:
+\begin_inset Newline newline
+\end_inset
+
+ Calculate or determine the probability of success p in a single trial.
+ This might be based on historical data or theoretical estimates.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Find the Probability of Failure
+\series default
+:
+\begin_inset Newline newline
+\end_inset
+
+ Calculate the probability of failure q using 
+\begin_inset Formula $q=1-p$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Calculating Probabilities
+\end_layout
+
+\begin_layout Standard
+Once a Bernoulli Trial is set up calculate some probabilities.
+\end_layout
+
+\begin_layout Subsubsection
+Example 1:
+ Coin Toss
+\end_layout
+
+\begin_layout Standard
+Consider flipping a fair coin 
+\begin_inset Formula $p=0.5$
+\end_inset
+
+ three times.
+ What’s the probability of getting exactly two heads (successes)?
+\end_layout
+
+\begin_layout Standard
+Using the binomial probability formula:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(X=2\right) & = & \,_{3}C_{2}\times0.5^{2}\times0.5^{3-2}\\
+ & = & 3\times0.25\times0.5\\
+ & = & 0.375
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So,
+ there’s a 
+\begin_inset Formula $37.5\%$
+\end_inset
+
+ chance of getting exactly two heads in three coin flips.
+\end_layout
+
+\begin_layout Subsubsection
+Example 2:
+ Medical Test
+\end_layout
+
+\begin_layout Standard
+In a medical test for a rare disease the probability of a false positive (failure) is 
+\begin_inset Formula $0.1\left(q=0.1\right)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+If the test is taken five times what’s the probability of getting at least one false positive result?
+\end_layout
+
+\begin_layout Itemize
+Using the complement rule 1 - the probability of no false positives:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(X>=1\right) & = & 1-P\left(X=0\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Calculate 
+\begin_inset Formula $P\left(X=0\right)$
+\end_inset
+
+ using the binomial probability formula:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(X=0\right) & = & \,_{5}C_{0}\times0.1^{0}\times0.9^{5}\\
+ & = & 0.9^{5}\\
+ & \approx & 0.59049
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Now,
+ calculate 
+\begin_inset Formula $P\left(X>=1\right)$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(X>=1\right) & = & 1-0.59049\\
+ & \approx & 0.40951
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So,
+ there’s approximately a 
+\begin_inset Formula $40.95\%$
+\end_inset
+
+ chance of getting at least one false positive result in five tests.
+\end_layout
+
+\begin_layout Section
+Cumulative Probabilities
+\end_layout
+
+\begin_layout Standard
+Cumulative probabilities are essential in statistical analysis.
+ They help answer questions like,
+ “What’s the probability of getting two or more successes in five trials?”
+\end_layout
+
+\begin_layout Standard
+To find cumulative probabilitiesx calculate the probability of each possible outcome and add them together.
+\end_layout
+
+\begin_layout Section
+Real-Life Applications
+\end_layout
+
+\begin_layout Subsection
+Applications in Healthcare
+\end_layout
+
+\begin_layout Standard
+Bernoulli Trials are commonly used in healthcare for diagnostic tests.
+ They help assess the accuracy of medical tests and estimate the likelihood of false positives and false negatives.
+ Understanding the Bernoulli Trials is crucial for healthcare professionals and statisticians working on medical research.
+\end_layout
+
+\begin_layout Subsection
+Quality Control in Manufacturing
+\end_layout
+
+\begin_layout Standard
+In manufacturing Bernoulli Trials are used to check the quality of products.
+ 
+\end_layout
+
+\begin_layout Standard
+For instance,
+ a quality control inspector might use the Bernoulli Trials to determine the likelihood of finding defective items in a batch.
+ This helps maintain product quality and minimize defects.
+\end_layout
+
+\begin_layout Section
+Common Pitfalls and Errors
+\end_layout
+
+\begin_layout Subsection
+Misinterpretation of Probabilities
+\end_layout
+
+\begin_layout Standard
+One common pitfall is misinterpreting probabilities.
+ It’s essential to understand that the probability of a single trial might not apply directly to a series of trials.
+ Each trial is independent,
+ and the overall probability can vary.
+\end_layout
+
+\begin_layout Subsection
+Sample Size Considerations
+\end_layout
+
+\begin_layout Standard
+Sample size matters.
+ A larger sample size leads to more accurate results.
+ When working with Bernoulli Trials,
+ consider whether your sample size is sufficient to draw meaningful conclusions.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Bernoulli Trials are a fundamental tool in probability theory and understanding them opens doors to solving a wide range of problems.
+ 
+\end_layout
+
+\begin_layout Standard
+Remember,
+ practice makes perfect,
+ so keep experimenting with Bernoulli Trials to master this concept fully.
+\end_layout
+
+\begin_layout Section
+Additional Resources
+\end_layout
+
+\begin_layout Standard
+A Bernoulli Trial is an experiment in which the outcome is either a SUCCESS or a FAILURE.
+ 
+\end_layout
+
+\begin_layout Standard
+SUCCESS means that you are getting the result that you’re counting but it does not necessarily mean the traditional meaning of triumph or prosperity.
+\end_layout
+
+\begin_layout Standard
+The probability of each outcome is independent of the results of the previous trial.
+ The probability of each possible outcome is the same for each trial.
+ 
+\end_layout
+
+\begin_layout Standard
+One example of a Bernoulli trial is the coin-tossing experiment which results in either head or tail.
+\end_layout
+
+\begin_layout Standard
+The Bernoulli trials,
+ named by Jacques (Jacob) Bernoulli,
+ born in Switzerland,
+ is one of the simplest yet most important random processes in probability.
+\end_layout
+
+\begin_layout Standard
+A sequence of Bernoulli Trials satisfies the following assumptions:
+\end_layout
+
+\begin_layout Itemize
+Each trial has two possible outcomes called SUCCESS or FAILURE.
+\end_layout
+
+\begin_layout Itemize
+The trials are independent meaning that they do not influence each other.
+\end_layout
+
+\begin_layout Itemize
+On each trial the probability of success is x and the probability of failure is 1 - x.
+\end_layout
+
+\begin_layout Section
+Example Cases
+\end_layout
+
+\begin_layout Standard
+Determine which can be defined as a Bernoulli trial.
+\end_layout
+
+\begin_layout Subsection*
+Case 1
+\end_layout
+
+\begin_layout Standard
+Roll a die and record the number that comes up.
+\end_layout
+
+\begin_layout Standard
+No,
+ the outcome is 1,
+ 2,
+ 3,
+ 4,
+ 5 or 6.
+\end_layout
+
+\begin_layout Subsection*
+Case 2
+\end_layout
+
+\begin_layout Standard
+Roll a die five times and recor the number of 3s that come up.
+\end_layout
+
+\begin_layout Standard
+Yes,
+ because the outcome is either 3 or not 3.
+\end_layout
+
+\begin_layout Subsection*
+Case 3
+\end_layout
+
+\begin_layout Standard
+Spi a spinner numbered 1 to 8 and record the obtained number.
+\end_layout
+
+\begin_layout Standard
+No,
+ because the outcome is more than two.
+\end_layout
+
+\begin_layout Subsection*
+Case 4
+\end_layout
+
+\begin_layout Standard
+Toss a coin seven times and record the number of heads obtained.
+\end_layout
+
+\begin_layout Standard
+Yes,
+ the outcome is either a head or a tail.
+\end_layout
+
+\begin_layout Subsection*
+Case 5
+\end_layout
+
+\begin_layout Standard
+Draw a card five times from a fair deck without replacement and record the number of red cards.
+\end_layout
+
+\begin_layout Standard
+No,
+ the outcome is dependent because each trial’s probabilities are different.
+\end_layout
+
+\begin_layout Subsection*
+Case 6
+\end_layout
+
+\begin_layout Standard
+Draw a card five times from a fair deck with replacement and record the number of black cards.
+\end_layout
+
+\begin_layout Standard
+Yes,
+ the outcome is independent and is either red or black.
+\end_layout
+
+\end_body
+\end_document
