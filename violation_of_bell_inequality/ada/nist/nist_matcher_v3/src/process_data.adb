@@ -121,6 +121,7 @@ package body Process_Data is
                anEvent.A_Click_Mask := 0;
             end if;
             anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
+            anEvent.Time_Tag := A_Data (Synch_Pair.A_Index + 1).Time_Tag;
 
             if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
                Click_Delay := B_Data (Synch_Pair.B_Index + 2).Time_Tag -
@@ -131,6 +132,7 @@ package body Process_Data is
                anEvent.B_Click_Mask := 0;
             end if;
             anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
+            anEvent.Time_Tag := B_Data (Synch_Pair.B_Index + 1).Time_Tag;
 
             if A_Data (Synch_Pair.A_Index + 2).Channel /= Overflow and then
                B_Data (Synch_Pair.B_Index + 2).Channel /= Overflow then
