@@ -4,8 +4,9 @@ with Types; use Types;
 package Process_Data is
 
    function Statistical_EAB (theta : float) return Float;
-   function False_Positives (Dir, OEM_File : String; False_Count : out Natural)
-                             return Sample_Data_List;
+   function False_Positives
+      (Dir, OEM_File : String; False_Count, True_Count : out Natural)
+       return Sample_Data_List;
    function Get_Detections (Detection_Data : String) return Sample_Data_List;
    procedure Sample_Means (Data : Sample_Data_List;
                            Mean_A, Mean_B, Mean_AB : out Float);

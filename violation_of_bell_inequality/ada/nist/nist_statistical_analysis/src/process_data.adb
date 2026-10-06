@@ -61,7 +61,7 @@ package body Process_Data is
    end Statistical_EAB;
 
    function False_Positives
-    (Dir, OEM_File : String;  False_Count : out Natural)
+    (Dir, OEM_File : String;  False_Count, True_Count : out Natural)
       return Sample_Data_List is
       --  use Ada.Strings;
       --  use Ada.Strings.Fixed;
@@ -71,7 +71,6 @@ package body Process_Data is
       --  First            : Positive;
       --  Last             : Natural;
       --  Header           : String_11;
-      True_Count       : Natural;
       Valid_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);

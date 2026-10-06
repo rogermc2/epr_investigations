@@ -46,9 +46,8 @@ package body Printing is
    procedure Print_Float (Message : String; Data : Float;
     Aft : Natural := 3; Exp : Integer := 0) is
    begin
-      Put (Message & ": ");
+      Put (Message);
       Ada.Float_Text_IO.Put (Data, Aft => Aft, Exp => Exp);
-      New_Line;
 
    end Print_Float;
 
