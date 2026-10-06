@@ -10,6 +10,8 @@ package Printing is
    procedure Print_Float_2 (Message_1 : String; Data_1 : Float;
       Message_2 : String; Data_2 : Float;
       Aft : Natural := 3; Exp : Integer := 0);
+   procedure Print_Float_Line (Message : String; Data : Float;
+    Aft : Natural := 3; Exp : Integer := 0);
    --  procedure Print_Hex_Byte_Array (Name  : String; Data : Types.Byte_Array;
    --     Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Integer_List

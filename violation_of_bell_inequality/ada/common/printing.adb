@@ -67,6 +67,16 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Float_Line (Message : String; Data : Float;
+    Aft : Natural := 3; Exp : Integer := 0) is
+   begin
+      Print_Float (Message, Data, Aft, Exp);
+      New_Line;
+
+   end Print_Float_Line;
+
+   --  ------------------------------------------------------------------------
+
    --  procedure Print_Hex_Byte_Array (Name  : String; Data : Byte_Array;
    --     Start : Positive := 1; Finish : Natural := 0) is
    --     Last  : Positive;
