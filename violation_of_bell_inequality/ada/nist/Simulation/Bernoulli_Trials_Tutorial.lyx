@@ -184,8 +184,7 @@ While a single Bernoulli Trial is informative,
 \end_layout
 
 \begin_layout Standard
-A binomial experiment consists of a fixed number of independent Bernoulli Trials,
- each having the same probability of success .
+A binomial experiment consists of a fixed number of independent Bernoulli Trials each having the same probability of success.
 \end_layout
 
 \begin_layout Standard

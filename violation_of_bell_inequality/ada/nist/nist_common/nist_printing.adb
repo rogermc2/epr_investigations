@@ -124,6 +124,25 @@ package body NIST_Printing is
 
    end Print_NIST_Event_List;
 
+   procedure Print_NIST_Event_Record
+      (Name : String; Data : Nist_Event_Record) is
+      use Interfaces;
+      use Nist_Event_Package;
+   begin
+         Put (Name & ": ");
+         Put ("Time_Tag:" & Double_Positive'Image (Data.Time_Tag));
+         Put (", A Click Mask:" & Unsigned_16'Image (Data.A_Click_Mask));
+         Put (",  A_Setting: " & Channel_Type'Image (Data.A_Setting));
+         Put (";  B Click Mask:" & Unsigned_16'Image (Data.B_Click_Mask));
+         Put_Line (",  B_Setting: " & Channel_Type'Image (Data.B_Setting));
+
+   exception
+      when Error : others =>
+         Put_Line ("Print_NIST_Event_Record " & Exception_Information (Error));
+         raise;
+
+   end Print_NIST_Event_Record;
+
    procedure Print_Raw_Data (Raw_Data : Raw_Data_Record) is
    begin
       Put_Line ("Raw Data:");

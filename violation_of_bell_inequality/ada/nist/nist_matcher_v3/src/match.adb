@@ -37,6 +37,6 @@ begin
    --  Print_NIST_Data_List ("Aligned A_Data", A_Data, 88, Finish => 92);
    --  Print_NIST_Data_List ("Aligned B_Data", B_Data, 88, Finish => 92);
    Build_Event_List (A_Data, B_Data, Events);
-   Save_Events (aa, ab, ba, bb, Events);
+   Save_Events_2 (aa, ab, ba, bb, Events);
 
 end Match;
