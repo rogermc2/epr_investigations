@@ -1,4 +1,5 @@
 
+with Ada.Assertions; use Ada.Assertions;
 with Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -9,34 +10,46 @@ package body Process_Data is
    function Sample_Val (Result : Character) return UV;
 
    function Check
-     (OEM_ID                  : File_Type; Eq : Boolean;
+     (OEM_ID                  : File_Type; A_Eq_B : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
       A_Result         : Character;
       B_Result         : Character;
       Sample           : Sample_Data_Record;
       Valid_Detections : Sample_Data_List;
+      Count            : Natural := 0;
    begin
       False_Count := 0;
       True_Count := 0;
       while not End_Of_File (OEM_ID) loop
+         Count := Count + 1;
          declare
             aLine : constant String := Get_Line (OEM_ID);
          begin
+            if Count < 10 then
+               Put_Line ("Check: aLine, False_Count: " & aLine &
+                ", " & Natural'Image (False_Count));
+            end if;
             A_Result := aLine (1);
             B_Result := aLine (3);
          end;
 
-         if Eq then
+         if A_Eq_B then
             if A_Result = B_Result then
                True_Count := True_Count + 1;
                Sample.A_Detection := Sample_Val (A_Result);
+               Assert (Sample.A_Detection = 1 or Sample.A_Detection = -1,
+                "Check: invalid A value: " &
+                  Integer'Image (Integer (Sample.A_Detection)));
                Sample.B_Detection := Sample_Val (B_Result);
+               Assert (Sample.B_Detection = 1 or Sample.B_Detection = -1,
+                "Check: invalid B value: " &
+                  Integer'Image (Integer (Sample.B_Detection)));
                Sample.AB := Sample.A_Detection * Sample.B_Detection;
                Valid_Detections.Append (Sample);
             else
                False_Count := False_Count + 1;
             end if;
-         else  -- not Eq
+         else  -- not A_Eq_B
             if A_Result /= B_Result then
                True_Count := True_Count + 1;
                Sample.A_Detection := Sample_Val (A_Result);
@@ -68,13 +81,13 @@ package body Process_Data is
    begin
       Open (OEM_ID, In_File, OEM_File);
       if OEM_File = Dir & "aa.csv" then
-         Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
+         Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
       elsif OEM_File = Dir &  "ab.csv" then
-         Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
-      elsif OEM_File  = Dir &  "ba.csv" then
-         Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
-      elsif OEM_File = Dir &  "bb.csv" then
          Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
+      elsif OEM_File  = Dir &  "ba.csv" then
+         Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
+      elsif OEM_File = Dir &  "bb.csv" then
+         Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
       else
          Put_Line (Routine_Name & "invalid file: " & OEM_File);
       end if;
@@ -87,7 +100,7 @@ package body Process_Data is
 
    function Get_Detections (Detection_Data : String)
       return Sample_Data_List is
-      Routine_Name : constant String := "Process_Data.Get_Detections ";
+      --  Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
       A_Result     : Character;
       B_Result     : Character;
@@ -130,7 +143,12 @@ package body Process_Data is
          Item := Element (Curs);
          Count := Count + 1;
          A := Item.A_Detection;
+         Assert (A = 1 or A = -1, "Sample_Means: invalid A value: " &
+          Integer'Image (Integer (A)));
+
          B := Item.B_Detection;
+         Assert (B = 1 or B = -1, "Sample_Means: invalid B value: " &
+          Integer'Image (Integer (B)));
          Sum_A := Sum_A + A;
          Sum_B := Sum_B + B;
          Sum_AB := Sum_AB + A * B;
@@ -144,6 +162,7 @@ package body Process_Data is
    end Sample_Means;
 
    function Sample_Val (Result : Character) return UV is
+      Routine_Name : constant String := "Process_Data.Sample_Val";
       Val : UV;
    begin
       if Result = '+' then
@@ -151,7 +170,7 @@ package body Process_Data is
       elsif Result = '0' then
          Val := -1;
       else
-         Put_Line ("Process_Data.Sample_Val, invalid data: " & Result);
+         Put_Line (Routine_Name & "invalid data: " & Result);
       end if;
 
       return Val;
