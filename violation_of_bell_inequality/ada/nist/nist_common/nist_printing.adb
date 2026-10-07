@@ -127,7 +127,6 @@ package body NIST_Printing is
    procedure Print_NIST_Event_Record
       (Name : String; Data : Nist_Event_Record) is
       use Interfaces;
-      use Nist_Event_Package;
    begin
          Put (Name & ": ");
          Put ("Time_Tag:" & Double_Positive'Image (Data.Time_Tag));

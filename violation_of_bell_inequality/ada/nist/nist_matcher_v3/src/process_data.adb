@@ -20,6 +20,7 @@ package body Process_Data is
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
+   function Set_Outcome (Click_A, Click_B : Integer) return String_3;
 
    procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
       Events : out Nist_Event_List) is
@@ -279,8 +280,8 @@ package body Process_Data is
       Rec          : NIST_Event_Record;
       Click_A      : Integer;
       Click_B      : Integer;
-      Outcome      : String_2 := "??";
-      Count        : Natural := 0;
+      Outcome      : String_3 := "?,?";
+      --  Count        : Natural := 0;
    begin
       Create (AA_ID, Out_File, AA_File_Name);
       Create (AB_ID, Out_File, AB_File_Name);
@@ -291,25 +292,10 @@ package body Process_Data is
       --  write the click information to the appropriate file
       --  based on the settings of A and B.
       while Has_Element (Events_Curs) loop
-         Count := Count + 1;
+         --  Count := Count + 1;
          Rec :=  Element (Events_Curs);
-         if Count <  10 then
-            Print_NIST_Event_Record (Integer'Image (Count), Rec);
-         end if;
          Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
-         if Click_A = 1 then
-            if Click_B = 1 then
-               Outcome := "++";
-            else
-               Outcome := "+0";
-            end if;
-         elsif Click_A = 0 then
-            if Click_B = 1 then
-               Outcome := "0+";
-            else
-               Outcome := "00";
-            end if;
-         end if;
+         Outcome := Set_Outcome (Click_A, Click_B);
 
          case Rec.A_Setting is
             when Pol_0 =>
@@ -364,7 +350,44 @@ package body Process_Data is
       else
          Click_B := -1;
       end if;
-      
+
    end Set_AB_Clicks;
+
+   function Set_Outcome (Click_A, Click_B : Integer) return String_3 is
+      Outcome : String_3 := "?,?";
+   begin
+      case Click_A is
+         when 1 =>
+            case Click_B is
+               when 1 =>
+                  Outcome := "+,+";
+               when -1 =>
+                  Outcome := "+,0";
+               when others =>
+                  Outcome := "+,?";
+            end case;
+         when -1 =>
+            case Click_B is
+               when 1 =>
+                  Outcome := "0,+";
+               when -1 =>
+                  Outcome := "0,0";
+               when others =>
+                  Outcome := "0,?";
+            end case;
+         when others =>
+            case Click_B is
+               when 1 =>
+                  Outcome := "?,+";
+               when -1 =>
+                  Outcome := "?,0";
+               when others =>
+                  Outcome := "?,?";
+            end case;
+      end case;
+
+      return Outcome;
+
+   end Set_Outcome;
 
 end Process_Data;

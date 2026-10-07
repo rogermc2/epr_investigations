@@ -3,7 +3,7 @@
 
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
-with NIST_Printing; use NIST_Printing;
+--  with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
 with Process_Data; use Process_Data;
 --  with Types; use Types;
