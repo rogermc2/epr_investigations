@@ -1,19 +1,18 @@
 
 with Ada.Numerics;
---  with Ada.Strings;
---  with Ada.Strings.Fixed;
---  with Ada.Strings.Maps;
 with Ada.Text_IO; use Ada.Text_IO;
+
+with Printing; use Printing;
 
 package body Process_Data is
 
-   function Sample_Val (Result : String_2) return UV;
+   function Sample_Val (Result : Character) return UV;
 
    function Check
-     (OEM_ID                  : File_Type; Eq  : Boolean;
+     (OEM_ID                  : File_Type; Eq : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
-      A_Result         : String_2;
-      B_Result         : String_2;
+      A_Result         : Character;
+      B_Result         : Character;
       Sample           : Sample_Data_Record;
       Valid_Detections : Sample_Data_List;
    begin
@@ -23,8 +22,8 @@ package body Process_Data is
          declare
             aLine : constant String := Get_Line (OEM_ID);
          begin
-            A_Result := aLine (1 .. 2);
-            B_Result := aLine (4 .. 5);
+            A_Result := aLine (1);
+            B_Result := aLine (3);
          end;
 
          if Eq then
@@ -63,14 +62,8 @@ package body Process_Data is
    function False_Positives
     (Dir, OEM_File : String;  False_Count, True_Count : out Natural)
       return Sample_Data_List is
-      --  use Ada.Strings;
-      --  use Ada.Strings.Fixed;
-      --  use Ada.Strings.Maps;
       Routine_Name     : constant String := "Process_Data.False_Positives ";
       OEM_ID           : File_Type;
-      --  First            : Positive;
-      --  Last             : Natural;
-      --  Header           : String_11;
       Valid_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);
@@ -96,8 +89,8 @@ package body Process_Data is
       return Sample_Data_List is
       Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
-      A_Result     : String_2;
-      B_Result     : String_2;
+      A_Result     : Character;
+      B_Result     : Character;
       Sample       : Sample_Data_Record;
       Detections   : Sample_Data_List;
    begin
@@ -106,8 +99,8 @@ package body Process_Data is
          declare
             aLine : constant String := Get_Line (Data_ID);
          begin
-            A_Result := aLine (1 .. 2);
-            B_Result := aLine (4 .. 5);
+            A_Result := aLine (1);
+            B_Result := aLine (3);
          end;
          Sample.A_Detection := Sample_Val (A_Result);
          Sample.B_Detection := Sample_Val (B_Result);
@@ -132,6 +125,7 @@ package body Process_Data is
       Curs   : Cursor := Data.First;
       Item   : Sample_Data_Record;
    begin
+      Print_Sample_Data_List ("Sample_Means, Data", Data, 1, 5);
       while Has_Element (Curs) loop
          Item := Element (Curs);
          Count := Count + 1;
@@ -149,12 +143,12 @@ package body Process_Data is
 
    end Sample_Means;
 
-   function Sample_Val (Result : String_2) return UV is
+   function Sample_Val (Result : Character) return UV is
       Val : UV;
    begin
-      if Result = "+1" or else Result = " 1" then
+      if Result = '+' then
          Val := 1;
-      elsif Result = "-1" then
+      elsif Result = '0' then
          Val := -1;
       else
          Put_Line ("Process_Data.Sample_Val, invalid data: " & Result);
