@@ -1,0 +1,552 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Null Hypothesis
+\end_layout
+
+\begin_layout Standard
+To test empirical results against a rigorous baseline,
+ a formal statistical Null Hypothesis (
+\begin_inset Formula $H_{0}$
+\end_inset
+
+) must be established.
+\end_layout
+
+\begin_layout Standard
+In quantum foundations a Null Hypothesis must represent a world governed strictly by local realistic,
+ classical probability laws without any unmeasured parameters or rotational mismatches.
+ 
+\end_layout
+
+\begin_layout Standard
+Because your framework tracks the data directly at the level of discrete,
+ binary clicks (
+\begin_inset Formula $\pm1$
+\end_inset
+
+),
+ your Null Hypothesis can be built cleanly using strict,
+ symmetric Kolmogorov expectation values.
+\end_layout
+
+\begin_layout Section
+The Local Realistic Null Hypothesis (
+\begin_inset Formula $H_{0}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+For an ideal,
+ noise-free local realistic system the expected joint correlation value 
+\begin_inset Formula $E(AB)$
+\end_inset
+
+ between measurement 
+\begin_inset Formula $A$
+\end_inset
+
+ and measurement 
+\begin_inset Formula $B$
+\end_inset
+
+ is a function of their relative angle difference 
+\begin_inset Formula $\theta=\lvert a-b\rvert$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Under local realism,
+ the standard linear boundary condition dictates that the expectation value drops linearly from perfect anti-correlation to zero following a "sawtooth" triangle wave function rather than a smooth quantum cosine wave.
+\end_layout
+
+\begin_layout Standard
+Specific,
+ precise numerical values for a Null Hypothesis across the standard test nodes written in the exact scientific notation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement document
+alignment document
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features borderColor="default" oddRowsColor="default" evenRowsColor="default" tabularvalignment="middle">
+<column alignment="center" valignment="top" color="default">
+<column alignment="center" valignment="top" color="default">
+<column alignment="center" valignment="top" color="default">
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Relative Alignment Node
+\begin_inset Newline newline
+\end_inset
+
+ (
+\begin_inset Formula $\theta=\lvert a-b\rvert$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Null Hypothesis Expected Value
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $E(AB)_{H_{0}}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Physical Meaning of the Boundary
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $b=a$
+\end_inset
+
+ (Perfect Alignment)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-1.00000E+00$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Perfect anti-correlation (singlet state parity)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta=\pi/8$
+\end_inset
+
+ (
+\begin_inset Formula $22.5^{\circ}$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-5.00000E-01$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Linear classical step limit
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta=\pi/4$
+\end_inset
+
+ (
+\begin_inset Formula $45.0^{\circ}$
+\end_inset
+
+) 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.00000E+00$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Complete local statistical independence
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta=3\pi/8$
+\end_inset
+
+ (
+\begin_inset Formula $67.5^{\circ}$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $5.00000E-01$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Linear classical step limit 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\theta=\pi/2$
+\end_inset
+
+ (
+\begin_inset Formula $90.0^{\circ}$
+\end_inset
+
+) 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.00000E+00$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Perfect parallel correlation 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Running Debug Printouts Against the Null Hypothesis
+\end_layout
+
+\begin_layout Standard
+When you run your ClassicalRNGXOR control dataset through your Ada matrix counters,
+ if your information-loss thesis holds true your debug console should print :
+\end_layout
+
+\begin_layout Enumerate
+At Perfect Alignment ($b = a$):
+ Both classical logic,
+ quantum mechanics,
+ and your binary model perfectly agree.
+ Your debug printout for this configuration should converge precisely on -1.00000E+00.
+\end_layout
+
+\begin_layout Enumerate
+At the Intermediary Nodes (
+\begin_inset Formula $\pi/8$
+\end_inset
+
+ and 
+\begin_inset Formula $3\pi/8$
+\end_inset
+
+):
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+The Standard Quantum Prediction expects a non-linear curvature resulting in values like 
+\begin_inset Formula $\pm\cos(\pi/4)\approx\pm0.707$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+The Classical Null Hypothesis expects a strict linear value of 
+\begin_inset Formula $\pm5.00000E-01$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+The ClassicalRNGXOR Verification:
+ 
+\begin_inset Newline newline
+\end_inset
+
+Because this specific NIST dataset is a classical control run using a pseudorandom number generator sequence empirical Ada printouts for the intermediary angles should land squarely on the Null Hypothesis values (
+\begin_inset Formula $\pm0.500$
+\end_inset
+
+) rather than the quantum values (
+\begin_inset Formula $\pm0.707$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+If your data hits these exact linear thresholds,
+ you have successfully produced an empirical,
+ physical proof that the system behaves perfectly under classical Kolmogorov rules when quantum random selection is omitted!
+\end_layout
+
+\begin_layout Standard
+Whenever you want to look at the Ada logic to calculate these exact discrepancies,
+ let me know.
+\end_layout
+
+\begin_layout Standard
+How are your current joint probability count registers (N_Plus_Plus,
+ N_Plus_Minus,
+ etc.) rendering for the perfect alignment trials?
+\end_layout
+
+\begin_layout Standard
+To help refine your debug printouts,
+ let me know:
+\end_layout
+
+\begin_layout Standard
+* What sample size / total trial count is your Ada code currently processing per angle configuration?
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document
