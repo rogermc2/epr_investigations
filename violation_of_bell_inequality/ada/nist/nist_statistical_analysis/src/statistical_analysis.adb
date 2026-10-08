@@ -55,11 +55,13 @@ begin
    Print_Statistics ("11", Mean_A_11, Mean_B_11, Mean_AB_11,
                      Detections_11, Det_A, Det_B);
    New_Line;
+
    Print_Float ("Overall A Sample_Mean: ",
     (Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0);
    Print_Float ("Overall B Sample_Mean: ",
     (Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0);
    New_Line;
+   
    Put_Line ("E(AB) b = a: " & Float'Image (Statistical_EAB (0.0)));
    Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (Statistical_EAB (Pi / 4.0)));
    New_Line;

@@ -35,7 +35,6 @@ package body Process_Data is
          Count := Count + 1;
          declare
             aLine : constant String := Get_Line (OEM_ID);
-            --  Pos   : Natural := Index (Source => aLine, Pattern => ",");
          begin
             A_Result := aLine (1);
             B_Result := aLine (3);
