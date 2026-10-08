@@ -298,6 +298,7 @@ package body Process_Data is
             Put_Line (Routine_Name);
             Print_NIST_Event_Record ("Event " & Integer'Image (Count), Rec);
          end if;
+         
          Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
          if Count < 3 then
             Put_Line ("Click_A, Click_B " &
