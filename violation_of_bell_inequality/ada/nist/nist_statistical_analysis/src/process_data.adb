@@ -10,7 +10,8 @@ package body Process_Data is
    function Sample_Val (Result : Character) return UV;
 
    function Check_For_False_Positives
-     (OEM_ID                  : File_Type; False_If_A_Eq_B : Boolean;
+     (OEM_ID          : File_Type; File_Name : String;
+      False_If_A_Eq_B : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
       A_Result         : Character;
       B_Result         : Character;
@@ -18,11 +19,11 @@ package body Process_Data is
       False_Detections : Sample_Data_List;
       Count            : Natural := 0;
    begin
-      Put ("False Positives ");
+      Put ("False Positives For: " & File_Name & ", false if ");
       if False_If_A_Eq_B then
-         Put_Line ("if A not equal B:");
+         Put_Line ("A not equal B:");
       else
-         Put_Line ("if A equal B:");
+         Put_Line ("A equal B:");
       end if;
 
       False_Count := 0;
@@ -90,13 +91,13 @@ package body Process_Data is
    begin
       Open (OEM_ID, In_File, OEM_File);
       if OEM_File = Dir & "aa.csv" then
-         False_Detections := Check_For_False_Positives (OEM_ID, False, False_Count, True_Count);
-      elsif OEM_File = Dir &  "ab.csv" then
-         Detections := Check_For_False_Positives (OEM_ID, True, False_Count, True_Count);
-      elsif OEM_File  = Dir &  "ba.csv" then
-         Detections := Check_For_False_Positives (OEM_ID, True, False_Count, True_Count);
-      elsif OEM_File = Dir &  "bb.csv" then
-         Detections := Check_For_False_Positives (OEM_ID, False, False_Count, True_Count);
+         False_Detections := Check_For_False_Positives (OEM_ID, "aa.csv",False, False_Count, True_Count);
+      elsif OEM_File = Dir & "ab.csv" then
+         Detections := Check_For_False_Positives (OEM_ID, "ab.csv", True, False_Count, True_Count);
+      elsif OEM_File  = Dir & "ba.csv" then
+         Detections := Check_For_False_Positives (OEM_ID, "ba.csv", True, False_Count, True_Count);
+      elsif OEM_File = Dir & "bb.csv" then
+         Detections := Check_For_False_Positives (OEM_ID, "bb.csv", False, False_Count, True_Count);
       else
          Put_Line (Routine_Name & "invalid file: " & OEM_File);
       end if;

@@ -75,7 +75,6 @@ begin
                Integer'Image (Integer (Detections_10.Length)));
    Put_Line ("Number of AB11 detections: " &
                Integer'Image (Integer (Detections_11.Length)));
-   --  New_Line;
 
    False_Data := False_Positives (AB_Dir, File_00, False_Count, True_Count);
    Put ("00 false positives: " & Integer'Image (False_Count) & " (");
