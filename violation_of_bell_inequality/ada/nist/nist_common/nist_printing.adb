@@ -128,12 +128,12 @@ package body NIST_Printing is
       (Name : String; Data : Nist_Event_Record) is
       use Interfaces;
    begin
-         Put (Name & ": ");
-         Put ("Time_Tag:" & Double_Positive'Image (Data.Time_Tag));
-         Put (", A Click Mask:" & Unsigned_16'Image (Data.A_Click_Mask));
-         Put (",  A_Setting: " & Channel_Type'Image (Data.A_Setting));
-         Put (";  B Click Mask:" & Unsigned_16'Image (Data.B_Click_Mask));
-         Put_Line (",  B_Setting: " & Channel_Type'Image (Data.B_Setting));
+      Put (Name & ": ");
+      Put_Line ("Time_Tag:" & Double_Positive'Image (Data.Time_Tag));
+      Put ("A Click Mask:" & Unsigned_16'Image (Data.A_Click_Mask));
+      Put_Line (",  A_Setting: " & Channel_Type'Image (Data.A_Setting));
+      Put ("B Click Mask:" & Unsigned_16'Image (Data.B_Click_Mask));
+      Put_Line (",  B_Setting: " & Channel_Type'Image (Data.B_Setting));
 
    exception
       when Error : others =>

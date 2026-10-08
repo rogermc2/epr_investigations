@@ -203,75 +203,75 @@ package body Process_Data is
 
    end Match_Syncs;
 
-   procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
-    BB_File_Name  : String; Events : Nist_Event_List) is
-      use Interfaces;
-      use Nist_Event_Package;
-      Routine_Name : constant String := "Process_Data.Save_Events ";
-      Max_Click_Delay : constant Unsigned_16 := 16000;
-      AA_ID        : File_Type;
-      BA_ID        : File_Type;
-      AB_ID        : File_Type;
-      BB_ID        : File_Type;
-      Events_Curs  : Cursor := First (Events);
-      Rec          : NIST_Event_Record;
-      Click_A      : Integer;
-      Click_B      : Integer;
-   begin
-      Create (AA_ID, Out_File, AA_File_Name);
-      Create (AB_ID, Out_File, AB_File_Name);
-      Create (BA_ID, Out_File, BA_File_Name);
-      Create (BB_ID, Out_File, BB_File_Name);
+   --  procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
+   --   BB_File_Name  : String; Events : Nist_Event_List) is
+   --     use Interfaces;
+   --     use Nist_Event_Package;
+   --     Routine_Name : constant String := "Process_Data.Save_Events ";
+   --     Max_Click_Delay : constant Unsigned_16 := 32768;
+   --     AA_ID        : File_Type;
+   --     BA_ID        : File_Type;
+   --     AB_ID        : File_Type;
+   --     BB_ID        : File_Type;
+   --     Events_Curs  : Cursor := First (Events);
+   --     Rec          : NIST_Event_Record;
+   --     Click_A      : Integer;
+   --     Click_B      : Integer;
+   --  begin
+   --     Create (AA_ID, Out_File, AA_File_Name);
+   --     Create (AB_ID, Out_File, AB_File_Name);
+   --     Create (BA_ID, Out_File, BA_File_Name);
+   --     Create (BB_ID, Out_File, BB_File_Name);
 
-      while Has_Element (Events_Curs) loop
-         Rec :=  Element (Events_Curs);
-         Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
+   --     while Has_Element (Events_Curs) loop
+   --        Rec :=  Element (Events_Curs);
+   --        Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
 
-         case Rec.A_Setting is
-            when Pol_0 =>
-               if Rec.B_Setting = Pol_0 then
-                  Put (AA_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
-               else
-                  Put (AB_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
-               end if;
-            when Pol_45 =>
-               if Rec.B_Setting = Pol_0 then
-                  Put(BA_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
-               else
-                  Put (BB_ID, Integer'Image (Click_A)
-                     & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
-               end if;
+   --        case Rec.A_Setting is
+   --           when Pol_0 =>
+   --              if Rec.B_Setting = Pol_0 then
+   --                 Put (AA_ID, Integer'Image (Click_A)
+   --                    & "," & Integer'Image (Click_B) & ",");
+   --                 Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
+   --              else
+   --                 Put (AB_ID, Integer'Image (Click_A)
+   --                    & "," & Integer'Image (Click_B) & ",");
+   --                 Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
+   --              end if;
+   --           when Pol_45 =>
+   --              if Rec.B_Setting = Pol_0 then
+   --                 Put(BA_ID, Integer'Image (Click_A)
+   --                    & "," & Integer'Image (Click_B) & ",");
+   --                 Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
+   --              else
+   --                 Put (BB_ID, Integer'Image (Click_A)
+   --                    & "," & Integer'Image (Click_B) & ",");
+   --                 Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
+   --              end if;
 
-            when others => null;
-         end case;
+   --           when others => null;
+   --        end case;
 
-         Next (Events_Curs);
-      end loop;
+   --        Next (Events_Curs);
+   --     end loop;
 
-      Close (AA_ID);
-      Close (AB_ID);
-      Close (BA_ID);
-      Close (BB_ID);
-      Put_Line (Routine_Name & "AA Events written to " & AA_File_Name);
-      Put_Line (Routine_Name & "AB Events written to " & AB_File_Name);
-      Put_Line (Routine_Name & "BA Events written to " & BA_File_Name);
-      Put_Line (Routine_Name & "BB Events written to " & BB_File_Name);
+   --     Close (AA_ID);
+   --     Close (AB_ID);
+   --     Close (BA_ID);
+   --     Close (BB_ID);
+   --     Put_Line (Routine_Name & "AA Events written to " & AA_File_Name);
+   --     Put_Line (Routine_Name & "AB Events written to " & AB_File_Name);
+   --     Put_Line (Routine_Name & "BA Events written to " & BA_File_Name);
+   --     Put_Line (Routine_Name & "BB Events written to " & BB_File_Name);
 
-   end Save_Events;
+   --  end Save_Events;
 
    procedure Save_Events_2 (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name : String; Events : Nist_Event_List) is
       use Interfaces;
       use Nist_Event_Package;
       Routine_Name : constant String := "Process_Data.Save_Events_2 ";
-      Max_Click_Delay : constant Unsigned_16 := 16000;
+      Max_Click_Delay : constant Unsigned_16 := 32768;
       AA_ID        : File_Type;
       BA_ID        : File_Type;
       AB_ID        : File_Type;
@@ -281,7 +281,7 @@ package body Process_Data is
       Click_A      : Integer;
       Click_B      : Integer;
       Outcome      : String_3 := "?,?";
-      --  Count        : Natural := 0;
+      Count        : Natural := 0;
    begin
       Create (AA_ID, Out_File, AA_File_Name);
       Create (AB_ID, Out_File, AB_File_Name);
@@ -292,9 +292,19 @@ package body Process_Data is
       --  write the click information to the appropriate file
       --  based on the settings of A and B.
       while Has_Element (Events_Curs) loop
-         --  Count := Count + 1;
+         Count := Count + 1;
          Rec :=  Element (Events_Curs);
+         if Count < 3 then
+            Put_Line (Routine_Name);
+            Print_NIST_Event_Record ("Event " & Integer'Image (Count), Rec);
+         end if;
          Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
+         if Count < 3 then
+            Put_Line ("Click_A, Click_B " &
+             Integer'Image (Click_A) & ", " &
+             Integer'Image (Click_B));
+             New_Line;
+         end if;
          Outcome := Set_Outcome (Click_A, Click_B);
 
          case Rec.A_Setting is
@@ -325,6 +335,7 @@ package body Process_Data is
       Close (AB_ID);
       Close (BA_ID);
       Close (BB_ID);
+      New_Line;
       Put_Line (Routine_Name & "AA Events written to " & AA_File_Name);
       Put_Line (Routine_Name & "AB Events written to " & AB_File_Name);
       Put_Line (Routine_Name & "BA Events written to " & BA_File_Name);
