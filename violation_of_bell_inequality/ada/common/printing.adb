@@ -288,12 +288,13 @@ procedure Print_Sample_Data_List (Name : String; Data : Sample_Data_List;
       end if;
 
       Put_Line (Name & ": ");
-      Put_Line (" A   B  AB");
+      Put_Line (" A   B  AB   Time Stamp");
       if Start >= Data.First_Index and then Last <= Data.Last_index then
          for Index in Start .. Last loop
             Item := Data (Index);
             Put_Line (UV'Image (Item.A_Detection) & "  " &
-               UV'Image (Item.B_Detection) & "  " & UV'Image (Item.AB));
+               UV'Image (Item.B_Detection) & "  " & UV'Image (Item.AB) &
+               ", " & Double_Positive'Image (Item.AB_Time));
          end loop;
       else
          Put_Line

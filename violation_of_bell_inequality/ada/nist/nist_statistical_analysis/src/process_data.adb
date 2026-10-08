@@ -1,8 +1,8 @@
 
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Numerics;
-with Ada.Strings;
-with Ada.Strings.Fixed;
+--  with Ada.Strings;
+--  with Ada.Strings.Fixed;
 --  with Ada.Strings.Maps;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -16,8 +16,6 @@ package body Process_Data is
      (OEM_ID          : File_Type; File_Name : String;
       False_If_A_Eq_B : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
       A_Result         : Character;
       B_Result         : Character;
       Sample           : Sample_Data_Record;
@@ -37,7 +35,7 @@ package body Process_Data is
          Count := Count + 1;
          declare
             aLine : constant String := Get_Line (OEM_ID);
-            Pos   : Natural := Index (Source => aLine, Pattern => ",");
+            --  Pos   : Natural := Index (Source => aLine, Pattern => ",");
          begin
             A_Result := aLine (1);
             B_Result := aLine (3);
@@ -45,7 +43,7 @@ package body Process_Data is
             Sample.B_Detection := Sample_Val (B_Result);
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
             Sample.AB_Time :=
-            Double_Positive'Value (aLine (Pos + 1 .. aLine'Last));
+               Double_Positive'Value (aLine (5 .. aLine'Last));
          end;
 
          if not False_If_A_Eq_B then
