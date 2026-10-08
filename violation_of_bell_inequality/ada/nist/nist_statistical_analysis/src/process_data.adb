@@ -173,7 +173,7 @@ package body Process_Data is
    end Sample_Means;
 
    function Sample_Val (Result : Character) return UV is
-      Routine_Name : constant String := "Process_Data.Sample_Val";
+      Routine_Name : constant String := "Process_Data.Sample_Val ";
       Val : UV;
    begin
       if Result = '+' then
@@ -181,7 +181,7 @@ package body Process_Data is
       elsif Result = '0' then
          Val := -1;
       else
-         Put_Line (Routine_Name & "invalid data: " & Result);
+         Put_Line (Routine_Name & "invalid data: '" & Result & "'");
       end if;
 
       return Val;
