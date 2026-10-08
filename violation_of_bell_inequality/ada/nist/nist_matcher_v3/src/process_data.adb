@@ -277,7 +277,7 @@ package body Process_Data is
       AB_ID        : File_Type;
       BB_ID        : File_Type;
       Events_Curs  : Cursor := First (Events);
-      Rec          : NIST_Event_Record;
+      anEvent      : NIST_Event_Record;
       Click_A      : Integer;
       Click_B      : Integer;
       Outcome      : String_3 := "?,?";
@@ -293,37 +293,47 @@ package body Process_Data is
       --  based on the settings of A and B.
       while Has_Element (Events_Curs) loop
          Count := Count + 1;
-         Rec :=  Element (Events_Curs);
+         anEvent := Element (Events_Curs);
          if Count < 3 then
             Put_Line (Routine_Name);
-            Print_NIST_Event_Record ("Event " & Integer'Image (Count), Rec);
+            Print_NIST_Event_Record
+             ("Event " & Integer'Image (Count), anEvent);
          end if;
-         
-         Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
+
+         --  Set_AB_Clicks sets Click_A to 1 if a click was detected for A,
+         --  otherwise Click_A is set to -1
+         --  Similarly for Click_B.
+         Set_AB_Clicks (anEvent, Click_A, Click_B, Max_Click_Delay);
          if Count < 3 then
             Put_Line ("Click_A, Click_B " &
              Integer'Image (Click_A) & ", " &
              Integer'Image (Click_B));
              New_Line;
          end if;
+         --  Set_Outcome returns a string representation of the click outcome
+         --  based on the values of Click_A and Click_B.
+         --  Click_A = 1, Click_B = 1, Outcome: "+,+"
+         --  Click_A = 1, Click_B = -1, Outcome: "+,0"
+         --  Click_A = -1, Click_B = 1, Outcome: "0,+"
+         --  Click_A = -1, Click_B = -1, Outcome: "0,0"
          Outcome := Set_Outcome (Click_A, Click_B);
 
-         case Rec.A_Setting is
+         case anEvent.A_Setting is
             when Pol_0 =>
-               if Rec.B_Setting = Pol_0 then
+               if anEvent.B_Setting = Pol_0 then
                   Put (AA_ID, Outcome & ",");
-                  Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
-               else
+                  Put_Line (AA_ID, Double_Positive'Image (anEvent.Time_Tag));
+               else  --  anEvent.B_Setting = Pol_45
                   Put (AB_ID, Outcome & ",");
-                  Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
+                  Put_Line (AB_ID, Double_Positive'Image (anEvent.Time_Tag));
                end if;
             when Pol_45 =>
-               if Rec.B_Setting = Pol_0 then
+               if anEvent.B_Setting = Pol_0 then
                   Put(BA_ID, Outcome & ",");
-                  Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
-               else
+                  Put_Line (BA_ID, Double_Positive'Image (anEvent.Time_Tag));
+               else  --  anEvent.B_Setting = Pol_45
                   Put (BB_ID, Outcome & ",");
-                  Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
+                  Put_Line (BB_ID, Double_Positive'Image (anEvent.Time_Tag));
                end if;
 
             when others => null;
