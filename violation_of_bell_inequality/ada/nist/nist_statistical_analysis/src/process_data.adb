@@ -9,15 +9,22 @@ package body Process_Data is
 
    function Sample_Val (Result : Character) return UV;
 
-   function Check
-     (OEM_ID                  : File_Type; A_Eq_B : Boolean;
+   function Check_For_False_Positives
+     (OEM_ID                  : File_Type; False_If_A_Eq_B : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
       A_Result         : Character;
       B_Result         : Character;
       Sample           : Sample_Data_Record;
-      Valid_Detections : Sample_Data_List;
+      False_Detections : Sample_Data_List;
       Count            : Natural := 0;
    begin
+      Put ("False Positives ");
+      if False_If_A_Eq_B then
+         Put_Line ("if A not equal B:");
+      else
+         Put_Line ("if A equal B:");
+      end if;
+
       False_Count := 0;
       True_Count := 0;
       while not End_Of_File (OEM_ID) loop
@@ -26,45 +33,46 @@ package body Process_Data is
             aLine : constant String := Get_Line (OEM_ID);
          begin
             if Count < 10 then
-               Put_Line ("Check: aLine, False_Count: " & aLine &
+               Put_Line ("aLine, False_Count: " & aLine &
                 ", " & Natural'Image (False_Count));
             end if;
             A_Result := aLine (1);
             B_Result := aLine (3);
+            Sample.A_Detection := Sample_Val (A_Result);
+            Sample.B_Detection := Sample_Val (B_Result);
+            Sample.AB := Sample.A_Detection * Sample.B_Detection;
          end;
 
-         if A_Eq_B then
+         if not False_If_A_Eq_B then
             if A_Result = B_Result then
-               True_Count := True_Count + 1;
-               Sample.A_Detection := Sample_Val (A_Result);
+               False_Count := False_Count + 1;
                Assert (Sample.A_Detection = 1 or Sample.A_Detection = -1,
-                "Check: invalid A value: " &
+                "Check False: invalid A value: " &
                   Integer'Image (Integer (Sample.A_Detection)));
-               Sample.B_Detection := Sample_Val (B_Result);
                Assert (Sample.B_Detection = 1 or Sample.B_Detection = -1,
-                "Check: invalid B value: " &
+                "Check False: invalid B value: " &
                   Integer'Image (Integer (Sample.B_Detection)));
-               Sample.AB := Sample.A_Detection * Sample.B_Detection;
-               Valid_Detections.Append (Sample);
+               False_Detections.Append (Sample);
             else
-               False_Count := False_Count + 1;
-            end if;
-         else  -- not A_Eq_B
-            if A_Result /= B_Result then
                True_Count := True_Count + 1;
+
+            end if;
+         else  -- not False_If_A_Eq_B
+            if A_Result /= B_Result then
+               False_Count := False_Count + 1;
                Sample.A_Detection := Sample_Val (A_Result);
                Sample.B_Detection := Sample_Val (B_Result);
                Sample.AB := Sample.A_Detection * Sample.B_Detection;
-               Valid_Detections.Append (Sample);
+               False_Detections.Append (Sample);
             else
-               False_Count := False_Count + 1;
+               True_Count := True_Count + 1;
             end if;
          end if;
       end loop;
 
-      return Valid_Detections;
+      return False_Detections;
 
-   end Check;
+   end Check_For_False_Positives;
 
    function Statistical_EAB (theta : Float) return Float is
       use Ada.Numerics;
@@ -77,24 +85,25 @@ package body Process_Data is
       return Sample_Data_List is
       Routine_Name     : constant String := "Process_Data.False_Positives ";
       OEM_ID           : File_Type;
-      Valid_Detections : Sample_Data_List;
+      Detections       : Sample_Data_List;
+      False_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);
       if OEM_File = Dir & "aa.csv" then
-         Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
+         False_Detections := Check_For_False_Positives (OEM_ID, False, False_Count, True_Count);
       elsif OEM_File = Dir &  "ab.csv" then
-         Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
+         Detections := Check_For_False_Positives (OEM_ID, True, False_Count, True_Count);
       elsif OEM_File  = Dir &  "ba.csv" then
-         Valid_Detections := Check (OEM_ID, True, False_Count, True_Count);
+         Detections := Check_For_False_Positives (OEM_ID, True, False_Count, True_Count);
       elsif OEM_File = Dir &  "bb.csv" then
-         Valid_Detections := Check (OEM_ID, False, False_Count, True_Count);
+         Detections := Check_For_False_Positives (OEM_ID, False, False_Count, True_Count);
       else
          Put_Line (Routine_Name & "invalid file: " & OEM_File);
       end if;
 
       Close (OEM_ID);
 
-      return Valid_Detections;
+      return Detections;
 
    end False_Positives;
 

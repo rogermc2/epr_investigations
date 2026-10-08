@@ -35,7 +35,7 @@ procedure Statistical_Analysis is
    Mean_AB_01    : Float;
    Mean_AB_10    : Float;
    Mean_AB_11    : Float;
-   Valid_Data    : Sample_Data_List;
+   False_Data    : Sample_Data_List;
    False_Count   : Natural;
    True_Count    : Natural;
 begin
@@ -77,15 +77,15 @@ begin
                Integer'Image (Integer (Detections_11.Length)));
    --  New_Line;
 
-   Valid_Data := False_Positives (AB_Dir, File_00, False_Count, True_Count);
+   False_Data := False_Positives (AB_Dir, File_00, False_Count, True_Count);
    Put ("00 false positives: " & Integer'Image (False_Count) & " (");
    Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
    Put_Line ("% )");
-   --  Valid_Data := False_Positives (AB_Dir, File_01, False_Count, True_Count);
+   --  False_Data := False_Positives (AB_Dir, File_01, False_Count, True_Count);
    --  Put_Line ("01 false positives: " & Integer'Image (False_Count));
-   --  Valid_Data := False_Positives (AB_Dir, File_10, False_Count, True_Count);
+   --  False_Data := False_Positives (AB_Dir, File_10, False_Count, True_Count);
    --  Put_Line ("10 false positives: " & Integer'Image (False_Count));
-   Valid_Data := False_Positives (AB_Dir, File_11, False_Count, True_Count);
+   False_Data := False_Positives (AB_Dir, File_11, False_Count, True_Count);
    Put ("11 false positives: " & Integer'Image (False_Count) & " (");
    Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
    Put_Line ("% )");
