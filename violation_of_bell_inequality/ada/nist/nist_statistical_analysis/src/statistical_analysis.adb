@@ -80,6 +80,7 @@ begin
    Put ("00 false positives: " & Integer'Image (False_Count) & " (");
    Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
    Put_Line ("% )");
+   Print_Sample_Data_List ("00 False_Data", False_Data, 1, 10);
    --  False_Data := False_Positives (AB_Dir, File_01, False_Count, True_Count);
    --  Put_Line ("01 false positives: " & Integer'Image (False_Count));
    --  False_Data := False_Positives (AB_Dir, File_10, False_Count, True_Count);
@@ -88,5 +89,6 @@ begin
    Put ("11 false positives: " & Integer'Image (False_Count) & " (");
    Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
    Put_Line ("% )");
+   Print_Sample_Data_List ("11 False_Data", False_Data, 1, 10);
 
 end Statistical_Analysis;

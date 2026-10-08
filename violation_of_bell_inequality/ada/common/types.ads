@@ -110,6 +110,7 @@ package Types is
       A_Detection : UV;
       B_Detection : UV;
       AB          : UV;
+      AB_Time     : Double_Positive;
    end record;
 
    package Sample_Data_Package is new

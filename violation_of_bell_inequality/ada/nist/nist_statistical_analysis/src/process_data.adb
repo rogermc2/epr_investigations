@@ -1,6 +1,9 @@
 
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Numerics;
+with Ada.Strings;
+with Ada.Strings.Fixed;
+--  with Ada.Strings.Maps;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Printing; use Printing;
@@ -13,6 +16,8 @@ package body Process_Data is
      (OEM_ID          : File_Type; File_Name : String;
       False_If_A_Eq_B : Boolean;
       True_Count, False_Count : out Natural) return Sample_Data_List is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
       A_Result         : Character;
       B_Result         : Character;
       Sample           : Sample_Data_Record;
@@ -32,16 +37,15 @@ package body Process_Data is
          Count := Count + 1;
          declare
             aLine : constant String := Get_Line (OEM_ID);
+            Pos   : Natural := Index (Source => aLine, Pattern => ",");
          begin
-            if Count < 10 then
-               Put_Line ("aLine, False_Count: " & aLine &
-                ", " & Natural'Image (False_Count));
-            end if;
             A_Result := aLine (1);
             B_Result := aLine (3);
             Sample.A_Detection := Sample_Val (A_Result);
             Sample.B_Detection := Sample_Val (B_Result);
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
+            Sample.AB_Time :=
+            Double_Positive'Value (aLine (Pos + 1 .. aLine'Last));
          end;
 
          if not False_If_A_Eq_B then
@@ -86,25 +90,24 @@ package body Process_Data is
       return Sample_Data_List is
       Routine_Name     : constant String := "Process_Data.False_Positives ";
       OEM_ID           : File_Type;
-      Detections       : Sample_Data_List;
       False_Detections : Sample_Data_List;
    begin
       Open (OEM_ID, In_File, OEM_File);
       if OEM_File = Dir & "aa.csv" then
          False_Detections := Check_For_False_Positives (OEM_ID, "aa.csv",False, False_Count, True_Count);
       elsif OEM_File = Dir & "ab.csv" then
-         Detections := Check_For_False_Positives (OEM_ID, "ab.csv", True, False_Count, True_Count);
+         False_Detections := Check_For_False_Positives (OEM_ID, "ab.csv", True, False_Count, True_Count);
       elsif OEM_File  = Dir & "ba.csv" then
-         Detections := Check_For_False_Positives (OEM_ID, "ba.csv", True, False_Count, True_Count);
+         False_Detections := Check_For_False_Positives (OEM_ID, "ba.csv", True, False_Count, True_Count);
       elsif OEM_File = Dir & "bb.csv" then
-         Detections := Check_For_False_Positives (OEM_ID, "bb.csv", False, False_Count, True_Count);
+         False_Detections := Check_For_False_Positives (OEM_ID, "bb.csv", False, False_Count, True_Count);
       else
          Put_Line (Routine_Name & "invalid file: " & OEM_File);
       end if;
 
       Close (OEM_ID);
 
-      return Detections;
+      return False_Detections;
 
    end False_Positives;
 
