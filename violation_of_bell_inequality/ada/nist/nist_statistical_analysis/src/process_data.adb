@@ -22,12 +22,6 @@ package body Process_Data is
       Count            : Natural := 0;
    begin
       Put_Line ("False Positives For: " & File_Name);
-      --  if File_Name = "aa.csv" or File_Name = "bb.csv" then
-      --     Put_Line (" A not equal B:");
-      --  else
-      --     Put_Line (" A equal B:");
-      --  end if;
-
       False_Count := 0;
       True_Count := 0;
       while not End_Of_File (OEM_ID) loop
