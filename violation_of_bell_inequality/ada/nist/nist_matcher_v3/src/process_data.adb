@@ -148,7 +148,7 @@ package body Process_Data is
       --     Double_Positive'Image (Max_Click_Delay));
       --  Put_Line (Routine_Name & "Max Click_Delay / 16:" &
       --     Double_Positive'Image (Max_Click_Delay / 16));
-      Print_NIST_Event_List ("Events", Events, 1, 11);
+      Print_NIST_Event_List ("Events", Events, 61, 81);
 
       return Events;
 
@@ -304,12 +304,6 @@ package body Process_Data is
          --  otherwise Click_A is set to -1
          --  Similarly for Click_B.
          Set_AB_Clicks (anEvent, Click_A, Click_B, Max_Click_Delay);
-         if Count < 3 then
-            Put_Line ("Click_A, Click_B " &
-             Integer'Image (Click_A) & ", " &
-             Integer'Image (Click_B));
-             New_Line;
-         end if;
          --  Set_Outcome returns a string representation of the click outcome
          --  based on the values of Click_A and Click_B.
          --  Click_A = 1, Click_B = 1, Outcome: "+,+"
@@ -317,6 +311,12 @@ package body Process_Data is
          --  Click_A = -1, Click_B = 1, Outcome: "0,+"
          --  Click_A = -1, Click_B = -1, Outcome: "0,0"
          Outcome := Set_Outcome (Click_A, Click_B);
+
+         if Count < 3 then
+            Put_Line ("Click_A, Click_B " & Integer'Image (Click_A) & ", " &
+             Integer'Image (Click_B) & ", Outcome: " & Outcome);
+             New_Line;
+         end if;
 
          case anEvent.A_Setting is
             when Pol_0 =>
