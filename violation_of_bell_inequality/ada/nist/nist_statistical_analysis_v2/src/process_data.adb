@@ -10,13 +10,13 @@ with Printing; use Printing;
 
 package body Process_Data is
 
-   function Sample_Val (Result : Character) return UV;
+   function Sample_Val (Result : String_2) return UV;
 
    function Check_For_False_Positives
      (OEM_ID          : File_Type; File_Name : String;
       True_Count, False_Count : out Natural) return Sample_Data_List is
-      A_Result         : Character;
-      B_Result         : Character;
+      A_Result         : String_2;
+      B_Result         : String_2;
       Sample           : Sample_Data_Record;
       False_Detections : Sample_Data_List;
       Count            : Natural := 0;
@@ -29,13 +29,13 @@ package body Process_Data is
          declare
             aLine : constant String := Get_Line (OEM_ID);
          begin
-            A_Result := aLine (1);
-            B_Result := aLine (3);
+            A_Result := aLine (1 .. 2);
+            B_Result := aLine (4 .. 5);
             Sample.A_Detection := Sample_Val (A_Result);
             Sample.B_Detection := Sample_Val (B_Result);
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
             Sample.AB_Time :=
-               Double_Positive'Value (aLine (5 .. aLine'Last));
+               Double_Positive'Value (aLine (7 .. aLine'Last));
          end;
 
          if File_Name = "aa.csv" or File_Name = "bb.csv" then
@@ -113,10 +113,10 @@ package body Process_Data is
          declare
             aLine : constant String := Get_Line (Data_ID);
          begin
-            Sample.A_Detection := Sample_Val (aLine (1));
-            Sample.B_Detection := Sample_Val (aLine (3));
+            Sample.A_Detection := Sample_Val (aLine (1 .. 2));
+            Sample.B_Detection := Sample_Val (aLine (4 .. 5));
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
-            Sample.AB_Time := Double_Positive'Value (aLine (5 .. aLine'Last));
+            Sample.AB_Time := Double_Positive'Value (aLine (7 .. aLine'Last));
          end;
          Detections.Append (Sample);
       end loop;
@@ -161,13 +161,13 @@ package body Process_Data is
 
    end Sample_Means;
 
-   function Sample_Val (Result : Character) return UV is
+   function Sample_Val (Result : String_2) return UV is
       Routine_Name : constant String := "Process_Data.Sample_Val ";
       Val : UV;
    begin
-      if Result = '+' then
+      if Result = " 1" or else Result = "+1" then
          Val := 1;
-      elsif Result = '0' then
+      elsif Result = "-1" then
          Val := -1;
       else
          Put_Line (Routine_Name & "invalid data: '" & Result & "'");
