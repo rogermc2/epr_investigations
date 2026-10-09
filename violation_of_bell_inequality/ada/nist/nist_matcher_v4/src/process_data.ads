@@ -10,5 +10,5 @@ package Process_Data is
    procedure Save_Events (AA_File_Name, AB_File_Name,
     BA_File_Name, BB_File_Name : String;
     Events : Nist_Event_List);
-    
+
 end Process_Data;

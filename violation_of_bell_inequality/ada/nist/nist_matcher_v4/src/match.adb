@@ -14,6 +14,8 @@ procedure Match is
    Directory     : constant String := "../generated_nist_data/";
    A_Source      : constant String := Directory & "A.csv";
    B_Source      : constant String := Directory & "B.csv";
+   A_Aligned      : constant String := Directory & "A_Aligned.csv";
+   B_Aligned      : constant String := Directory & "B_Aligned.csv";
    aa            : constant String := Directory & "aa.csv";
    ab            : constant String := Directory & "ab.csv";
    ba            : constant String := Directory & "ba.csv";
@@ -34,6 +36,8 @@ begin
    Load_NIST_Data (B_Source, B_Data);
 
    Align_Data (A_Data, B_Data);
+   Save_Aligned_Data (A_Aligned, A_Data);
+   Save_Aligned_Data (B_Aligned, B_Data);
    Print_NIST_Data_List ("Aligned A_Data", A_Data, 88, Finish => 95);
    Print_NIST_Data_List ("Aligned B_Data", B_Data, 88, Finish => 95);
    Build_Event_List (A_Data, B_Data, Events);

@@ -1,6 +1,6 @@
 
 --  with Ada.Assertions; use Ada.Assertions;
---  with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
 --  with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
@@ -39,7 +39,6 @@ package body  NIST_Utilities is
 
       procedure Apply_Offset (Data : in out Nist_Data_List;
        Offset : Double_Natural) is
-         --  use Nist_Data_Package;
          Curs : Cursor := Data.First;
          Item : Data_Record;
       begin
@@ -104,5 +103,24 @@ package body  NIST_Utilities is
       --  Print_Setting_Time_Vector ("Align_Det_Data B_Data", B_Det_Data, 1, 1);
 
    end Align_Data;
+
+   procedure Save_Aligned_Data (File_Name : String; Data : Nist_Data_List) is
+      use Nist_Data_Package;
+      File_ID : File_Type;
+   begin
+      Create (File_ID, Ada.Text_IO.Out_File, File_Name);
+      Put_Line (File_ID, "Channel,Time_Tag,Transfer_ID");
+      for Curs in Data.Iterate loop
+         declare
+            Item : constant Data_Record := Element (Curs);
+         begin
+            Put_Line (File_ID, Channel_Type'Image (Item.Channel) & "," &
+             Double_Positive'Image (Item.Time_Tag) & "," &
+             Integer'Image (Item.Transfer_ID));
+         end;
+      end loop;
+      Close (File_ID);
+
+   end Save_Aligned_Data;
 
 end NIST_Utilities;
