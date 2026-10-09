@@ -1,0 +1,8 @@
+match
+/obj/
+/bin/
+/alire/
+/config/
+./match_sync_times
+
+
