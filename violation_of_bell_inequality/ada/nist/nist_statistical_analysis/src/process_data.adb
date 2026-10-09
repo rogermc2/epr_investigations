@@ -112,8 +112,6 @@ package body Process_Data is
       return Sample_Data_List is
       --  Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
-      A_Result     : Character;
-      B_Result     : Character;
       Sample       : Sample_Data_Record;
       Detections   : Sample_Data_List;
    begin
@@ -122,12 +120,11 @@ package body Process_Data is
          declare
             aLine : constant String := Get_Line (Data_ID);
          begin
-            A_Result := aLine (1);
-            B_Result := aLine (3);
+            Sample.A_Detection := Sample_Val (aLine (1));
+            Sample.B_Detection := Sample_Val (aLine (3));
+            Sample.AB := Sample.A_Detection * Sample.B_Detection;
+            Sample.AB_Time := Double_Positive'Value (aLine (5 .. aLine'Last));
          end;
-         Sample.A_Detection := Sample_Val (A_Result);
-         Sample.B_Detection := Sample_Val (B_Result);
-         Sample.AB := Sample.A_Detection * Sample.B_Detection;
          Detections.Append (Sample);
       end loop;
       Close (Data_ID);
