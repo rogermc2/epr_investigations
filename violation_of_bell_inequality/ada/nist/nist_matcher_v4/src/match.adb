@@ -39,8 +39,8 @@ begin
    Align_Data (A_Data, B_Data);
    Save_Aligned_Data (A_Aligned, A_Data);
    Save_Aligned_Data (B_Aligned, B_Data);
-   --  Print_NIST_Data_List ("Aligned A_Data", A_Data, 88, Finish => 95);
-   --  Print_NIST_Data_List ("Aligned B_Data", B_Data, 88, Finish => 95);
+   Print_NIST_Data_List ("Aligned A_Data", A_Data, 17, 25);
+   Print_NIST_Data_List ("Aligned B_Data", B_Data, 17, 25);
    Build_Event_List (A_Data, B_Data, Events);
    Save_Events (aa, ab, ba, bb, Events);
 

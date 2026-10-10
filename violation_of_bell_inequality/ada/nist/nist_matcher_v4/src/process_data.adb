@@ -193,17 +193,12 @@ package body Process_Data is
             while not Found and then B_Index < B_Data.Last_Index loop
                Found := B_Data (B_Index).Channel = Sync;
                if Found then
-                  if abs (B_Data (B_Index).Time_Tag - A_Time) <= Time_Slot then
-                     Item.A_Index := A_Index;
-                     Item.B_Index := B_Index;
-                  elsif A_Time < B_Data (B_Index).Time_Tag  then
-                     A_Index := A_Index + 1;
-                  else
-                     B_Index := B_Index + 1;
-                  end if;
+                  Item.A_Index := A_Index;
+                  Item.B_Index := B_Index;
                   Synch_Pairs.Append (Item);
+               else
+                   B_Index := B_Index + 1;
                end if;
-               B_Index := B_Index + 1;
             end loop;
          end if;
          A_Index := A_Index + 1;
@@ -213,9 +208,9 @@ package body Process_Data is
       Put_Line (Routine_Name & "Number of synch matches: " &
        Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
        Double_Positive'Image (Time_Slot));
-      Print_Match_List ("Synch_Pairs", Synch_Pairs, 195, 200);
-      Print_NIST_Data_List ("A_Data", A_Data, 95, 100);
-      Print_NIST_Data_List ("B_Data", B_Data, 95, 100);
+      Print_Match_List ("Synch_Pairs", Synch_Pairs);
+      --  Print_NIST_Data_List ("A_Data", A_Data, 95, 100);
+      --  Print_NIST_Data_List ("B_Data", B_Data, 95, 100);
       return Synch_Pairs;
 
    exception

@@ -13,7 +13,7 @@ package body  NIST_Utilities is
     (A_Data, B_Data: in out Nist_Data_List) is
       use Nist_Data_Package;
       --  Routine_Name : constant String := "NIST_Utilities.Align_Data ";
-      AgtB         : constant Boolean := A_Data.First_Element.Time_Tag >
+      First_AgtB   : constant Boolean := A_Data.First_Element.Time_Tag >
                         B_Data.First_Element.Time_Tag;
       Delta_Time   : Double_Positive;
       A_Offset     : Double_Natural;
@@ -77,7 +77,7 @@ package body  NIST_Utilities is
       --  Put_Line (Routine_Name & "Delta_Time: " &
       --              Double_Natural'Image (Delta_Time));
       --  Adjust A and B times to start at the same time
-      if AgtB then
+      if First_AgtB then
          Apply_Delta_Time (A_Data, Delta_Time);
       else
          Apply_Delta_Time (B_Data, Delta_Time);
@@ -88,19 +88,11 @@ package body  NIST_Utilities is
       --  Print_Setting_Time_Vector ("Align_Data A_Det_Data", A_Det_Data, 1, 1);
       --  Print_Setting_Time_Vector ("Align_Data B_Det_Data", B_Det_Data, 1, 1);
 
+      --  Adjust A and B times to both start at 0
       A_Offset := Double_Natural (A_Data.First_Element.Time_Tag) - 1;
       B_Offset := Double_Natural (B_Data.First_Element.Time_Tag) - 1;
-
-      --  Adjust A and B times to both start at 0.
       Apply_Offset (A_Data, A_Offset);
       Apply_Offset (B_Data, B_Offset);
-
-      --  Put_Line ("A_Offset:" & Double_Natural'Image (A_Offset));
-      --  Print_Double_Natural_Vector ("Align_Sync_Data A_Data", A_Sync_Data, 1, 1);
-      --  Print_Double_Natural_Vector ("Align_Sync_Data B_Data", B_Sync_Data, 1, 1);
-      --  New_Line;
-      --  Print_Setting_Time_Vector ("Align_Det_Data A_Data", A_Det_Data, 1, 1);
-      --  Print_Setting_Time_Vector ("Align_Det_Data B_Data", B_Det_Data, 1, 1);
 
    end Align_Data;
 
