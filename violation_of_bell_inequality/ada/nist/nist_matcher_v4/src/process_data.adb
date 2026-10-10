@@ -36,24 +36,32 @@ package body Process_Data is
    end Build_Event_List;
 
    procedure Load_NIST_Data (Source_File : String;
-    NIST_Data : out Nist_Data_List) is
+    NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0) is
       use Ada.Strings;
       use Ada.Strings.Fixed;
       use Nist_Data_Package;
       Routine_Name : constant String  := "Process_Data.Load_NIST_Data ";
       Source_Size  : constant Double_Natural :=
          Double_Natural (Ada.Directories.Size (Source_File));
+      Max_Lines    : Double_Natural;
       Source_ID    : File_Type;
       Data         : Data_Record;
       Line_Num     : Double_Natural := 0;
    begin
+      if Num_Lines > 0 then
+         Max_Lines := Double_Natural (Num_Lines);
+      else
+         Max_Lines := Source_Size;
+      end if;
+
       Put_Line (Routine_Name & "Source File: " & Source_File);
       Put_Line (Routine_Name & Source_File & " length: " &
          Double_Natural'Image (Source_Size));
       New_Line;
       Open (Source_ID, In_File, Source_File);
 
-      while not End_Of_File (Source_ID) loop
+      while not End_Of_File (Source_ID) and then
+       Line_Num < Max_Lines loop
         Line_Num := Line_Num + 1;
          declare
             aline : constant String := Get_Line (Source_ID);

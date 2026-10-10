@@ -1,0 +1,821 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Aligning NIST Data
+\end_layout
+
+\begin_layout Standard
+The term "window" means the time delay between a single local SYNC pulse and its associated local CLICK.
+\end_layout
+
+\begin_layout Standard
+To clear up any confusion and help prune false positives during the cross-matching step break down how the local window operates versus how the joint alignment operates:
+\end_layout
+
+\begin_layout Section
+The Local Time Window (The Filter)
+\end_layout
+
+\begin_layout Standard
+A local "window" is the strictly bounded time delay between a SYNC pulse (Channel 6) and a CLICK (Channel 0) within A's own data stream (and separately,
+ within B's stream).
+\end_layout
+
+\begin_layout Standard
+As your histogram verified earlier (3503,
+ 6013,
+ 3516...),
+ a real,
+ physically valid photon click always happens within a very tight number of ticks immediately following its corresponding local reference clock pulse.
+\end_layout
+
+\begin_layout Section
+How it prunes False Positives:
+\end_layout
+
+\begin_layout Standard
+In the printout for A look at item 91 (CLICK at 5486605) following item 89 (SYNC at 5422382).
+ The difference is exactly 64,223 ticks.
+\end_layout
+
+\begin_layout Standard
+If the local window check says a valid click must arrive within 65,000 ticks of a sync then item 91 is a valid local event.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+If a click arrives 120,000 ticks after a sync then it falls outside the window and it should beinstantly discarded as background noise or a false positive.
+\end_layout
+
+\begin_layout Section
+The Joint Time Alignment (The Cross-Match)
+\end_layout
+
+\begin_layout Standard
+The cross-matching step does not look at the time between an A click and a B click.
+ 
+\end_layout
+
+\begin_layout Standard
+Because A's and B's individual laser pulses are emitted simultaneously from the same central source,
+ A and B should be matched by aligning their identical global SYNC time-tags.
+\end_layout
+
+\begin_layout Standard
+Looking at the printouts,
+ we can see why the "other thread's" sorting algorithm broke the synchronization.
+\end_layout
+
+\begin_layout Standard
+Looking at the raw Time_Tag values,
+ A's items and B's items are completely misaligned by index number:
+\end_layout
+
+\begin_layout Itemize
+Alice's Item 89 is a SYNC at 5422382.
+\end_layout
+
+\begin_layout Itemize
+Bob's Item 90 is a SYNC at 5680591.
+\end_layout
+
+\begin_layout Standard
+These two records do not represent the same physical trial!
+\end_layout
+
+\begin_layout Standard
+B's clock has drifted roughly 258,209 ticks ahead of A's item 89.
+ 
+\end_layout
+
+\begin_layout Standard
+If cross-matching code blindly links A's Item 89 to B's Item 89 because their list indices match it will pair completely unrelated trials creating a massive wave of false positives.
+\end_layout
+
+\begin_layout Section
+The Correct Way to Align Your Data Lists
+\end_layout
+
+\begin_layout Standard
+Starting again with a small sample size is a brilliant strategy.
+ It allows you to step through the records row-by-row to ensure the pointer logic holds before processing millions of events.
+\end_layout
+
+\begin_layout Standard
+To completely eliminate the cross-matching false positives in a small sample the loop should match records purely by their absolute Time_Tag values not by their list indices.
+\end_layout
+
+\begin_layout Standard
+For example,
+ A's Item 92 (SYNC at 5551487) and B's Item 88 (POL_0 at 5551837).
+\end_layout
+
+\begin_layout Standard
+Those timestamps are incredibly close (only 350 ticks apart) which tells us that A's Item 92 and B's Item 88 belong to the same physical trial sequence.
+\end_layout
+
+\begin_layout Standard
+When you write the matching loop in Ada,
+ use a "sliding pointer" method to keep the global clocks locked together:
+\end_layout
+
+\begin_layout Subsection
+Conceptual logic to align the asynchronous lists cleanly
+\end_layout
+
+\begin_layout LyX-Code
+if Abs (A_Data(A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < Global_Sync_Tolerance then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+-- This is a confirmed synchronized global trial.
+\end_layout
+
+\begin_layout LyX-Code
+-- Check the local SYNC-to-CLICK windows for A and B separately.
+\end_layout
+
+\begin_layout LyX-Code
+Process_CHSH_Matrix (A_Data (A_Index),
+ B_Data (B_Index));
+\end_layout
+
+\begin_layout LyX-Code
+A_Index := A_Index + 1;
+\end_layout
+
+\begin_layout LyX-Code
+B_Index := B_Index + 1;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+-- A's clock is lagging behind B's list pointer so advance the A pointer to catch up
+\end_layout
+
+\begin_layout LyX-Code
+A_Index := A_Index + 1;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+else  --  B's clock is lagging behind A's list pointer so advance he B pointer to catch up
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+B_Index := B_Index + 1;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout Standard
+By enforcing this absolute timestamp check the pointers will dynamically slide past the "empty" syncs where no clicks occurred,
+ perfectly locking A's and B's genuine concurrent trials together.
+\end_layout
+
+\begin_layout Standard
+How is the small sample size looking when you compare the absolute timestamps between Alice and Bob's files manually on your screen?
+ Let's get these clocks perfectly synchronized!
+\end_layout
+
+\begin_layout Standard
+To help tailor the exact sliding check for your loop,
+ let me know:
+\end_layout
+
+\begin_layout Standard
+* Approximately how many time-tag ticks separate an Alice SYNC pulse from a Bob SYNC pulse when they represent the exact same trial?
+\end_layout
+
+\begin_layout Standard
+* What variable type (e.g.,
+ Duration,
+ Long_Float,
+ or custom integer) is your Double_Positive time-tag based on?
+\end_layout
+
+\begin_layout Section
+Process_CHSH_Matrix routine
+\end_layout
+
+\begin_layout Standard
+To handle your synchronized event pairs,
+ your Process_CHSH_Matrix routine needs to evaluate the active measurement channels for both sides and sort them into a standard 4x4 matrix array.
+\end_layout
+
+\begin_layout Standard
+Because your Data_Record lists contain sequentially listed events,
+ the routine must look backward or forward slightly from the matched SYNC markers to see which polarization channel (POL_0 or POL_45) was active,
+ and whether a valid local CLICK arrived within your successful time-of-flight window.
+\end_layout
+
+\begin_layout Standard
+Here is a structurally complete,
+ strictly typed Ada example for your matrix processor using native types that easily drop into your VS Code project.
+\end_layout
+
+\begin_layout Subsection
+Matrix and Array Definitions
+\end_layout
+
+\begin_layout Standard
+First,
+ define a clean,
+ bounded index type for the settings and outcomes so your matrix tracking registers are robustly constrained:
+\end_layout
+
+\begin_layout LyX-Code
+type Setting_Type is (Setting_0,
+ Setting_45,
+ Unknown_Setting);
+\end_layout
+
+\begin_layout LyX-Code
+type Outcome_Type is (Hit,
+ No_Hit);
+\end_layout
+
+\begin_layout LyX-Code
+-- A 4x4 matrix representation tracking:
+ [Alice_Setting,
+ Bob_Setting,
+ Alice_Outcome,
+ Bob_Outcome]
+\end_layout
+
+\begin_layout LyX-Code
+type CHSH_Matrix_Array is array (Setting_Type range Setting_0 ..
+ Setting_45,
+\end_layout
+
+\begin_layout LyX-Code
+Setting_Type range Setting_0 ..
+ Setting_45,
+\end_layout
+
+\begin_layout LyX-Code
+Outcome_Type,
+\end_layout
+
+\begin_layout LyX-Code
+Outcome_Type) of Long_Integer;
+\end_layout
+
+\begin_layout LyX-Code
+-- Global or package-level counter matrix initialized cleanly to zero
+\end_layout
+
+\begin_layout LyX-Code
+CHSH_Matrix :
+ CHSH_Matrix_Array := (others => (others => (others => (others => 0))));
+\end_layout
+
+\begin_layout Subsection
+The Process_CHSH_Matrix Routine
+\end_layout
+
+\begin_layout Standard
+This routine takes Alice and Bob's matched SYNC list indices from your main alignment tracker,
+ looks at the neighboring records to extract the parameters,
+ and increments the matching cell in your CHSH_Matrix register:
+\end_layout
+
+\begin_layout LyX-Code
+procedure Process_CHSH_Matrix (
+\end_layout
+
+\begin_layout LyX-Code
+A_List :
+ in Data_List_Type;
+ -- Your generated array/vector of Data_Record
+\end_layout
+
+\begin_layout LyX-Code
+A_Index :
+ in Integer;
+ -- Current Alice SYNC list item index
+\end_layout
+
+\begin_layout LyX-Code
+B_List :
+ in Data_List_Type;
+ -- Your generated array/vector of Data_Record
+\end_layout
+
+\begin_layout LyX-Code
+B_Index :
+ in Integer;
+ -- Current Bob SYNC list item index
+\end_layout
+
+\begin_layout LyX-Code
+Window :
+ in Double_Positive -- Your local maximum SYNC-to-CLICK threshold
+\end_layout
+
+\begin_layout LyX-Code
+) is
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Alice_Setting     :
+ Setting_Type := Unknown_Setting;
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Setting      :
+ Setting_Type := Unknown_Setting;
+\end_layout
+
+\begin_layout LyX-Code
+Alice_Outcome :
+ Outcome_Type := No_Hit;
+\end_layout
+
+\begin_layout LyX-Code
+Bob_Outcome   :
+ Outcome_Type := No_Hit;
+\end_layout
+
+\begin_layout LyX-Code
+-- Timing references
+\end_layout
+
+\begin_layout LyX-Code
+A_Sync_Time   :
+ constant Double_Positive := A_List(A_Index).Time_Tag;
+\end_layout
+
+\begin_layout LyX-Code
+B_Sync_Time   :
+ constant Double_Positive := B_List(B_Index).Time_Tag;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+begin
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+---------------------------------------------------------------------------
+\end_layout
+
+\begin_layout LyX-Code
+-- 1.
+ EXTRACT ALICE'S PARAMETERS FOR THIS TRIAL
+\end_layout
+
+\begin_layout LyX-Code
+---------------------------------------------------------------------------
+\end_layout
+
+\begin_layout LyX-Code
+-- Evaluate neighboring records to identify which polarizer fired for this Sync
+\end_layout
+
+\begin_layout LyX-Code
+if A_Index + 1 <= A_List'Last then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+if A_List(A_Index + 1).Channel = POL_0 then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Alice_Setting := Setting_0;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+elsif A_List(A_Index + 1).Channel = POL_45 then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Alice_Setting := Setting_45;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+-- Check if a CLICK exists within the tight time-of-flight window boundary
+\end_layout
+
+\begin_layout LyX-Code
+if A_Index + 2 <= A_List'Last and then A_List(A_Index + 2).Channel = CLICK then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+if A_List(A_Index + 2).Time_Tag - A_Sync_Time <= Window then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Alice_Outcome := Hit;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+---------------------------------------------------------------------------
+\end_layout
+
+\begin_layout LyX-Code
+-- 2.
+ EXTRACT BOB'S PARAMETERS FOR THIS TRIAL
+\end_layout
+
+\begin_layout LyX-Code
+---------------------------------------------------------------------------
+\end_layout
+
+\begin_layout LyX-Code
+-- Evaluate neighboring records to identify which polarizer fired for this Sync
+\end_layout
+
+\begin_layout LyX-Code
+if B_Index + 1 <= B_List'Last then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+if B_List(B_Index + 1).Channel = POL_0 then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Bob_Setting := Setting_0;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+elsif B_List(B_Index + 1).Channel = POL_45 then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Bob_Setting := Setting_45;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+-- Check if a CLICK exists within the tight time-of-flight window boundary
+\end_layout
+
+\begin_layout LyX-Code
+if B_Index + 2 <= B_List'Last and then B_List(B_Index + 2).Channel = CLICK then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+if B_List(B_Index + 2).Time_Tag - B_Sync_Time <= Window then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+Bob_Outcome := Hit;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+---------------------------------------------------------------------------
+\end_layout
+
+\begin_layout LyX-Code
+-- 3.
+ SORT AND INCREMENT THE MATCHING MATRIX CELL
+\end_layout
+
+\begin_layout LyX-Code
+---------------------------------------------------------------------------
+\end_layout
+
+\begin_layout LyX-Code
+-- Only increment if settings were successfully extracted on both sides
+\end_layout
+
+\begin_layout LyX-Code
+if Alice_Setting /= Unknown_Setting and Bob_Setting /= Unknown_Setting then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+CHSH_Matrix(Alice_Setting,
+ Bob_Setting,
+ Alice_Outcome,
+ Bob_Outcome) :=
+\end_layout
+
+\begin_layout LyX-Code
+CHSH_Matrix(Alice_Setting,
+ Bob_Setting,
+ Alice_Outcome,
+ Bob_Outcome) + 1;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end Process_CHSH_Matrix;
+\end_layout
+
+\begin_layout Subsection
+How to Calculate Your Final E(AB) Values
+\end_layout
+
+\begin_layout Standard
+Once the sample loops finish running cleanly parse this 4x4 matrix to compute the actual binary expectation values.
+\end_layout
+
+\begin_layout Standard
+To extract the final E(AB) value for a specific setting pair (e.g.,
+ Alice at POL_0 and Bob at POL_0) using your strict Kolmogorov-type discrete count formula,
+ use this format:
+\end_layout
+
+\begin_layout LyX-Code
+function Calculate_Expectation (A_Set :
+ Setting_Type;
+ B_Set :
+ Setting_Type) return Long_Float is
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+N_Plus_Plus :
+ Long_Integer;
+ -- Both recorded a photon hit
+\end_layout
+
+\begin_layout LyX-Code
+N_Minus_Minus :
+ Long_Integer;
+ -- Neither recorded a photon hit (empty trials)
+\end_layout
+
+\begin_layout LyX-Code
+N_Plus_Minus :
+ Long_Integer;
+ -- Alice hit,
+ Bob missed
+\end_layout
+
+\begin_layout LyX-Code
+N_Minus_Plus :
+ Long_Integer;
+ -- Alice missed,
+ Bob hit
+\end_layout
+
+\begin_layout LyX-Code
+Total_Trials :
+ Long_Integer;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+begin
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+N_Plus_Plus := CHSH_Matrix(A_Set,
+ B_Set,
+ Hit,
+ Hit);
+\end_layout
+
+\begin_layout LyX-Code
+N_Minus_Minus := CHSH_Matrix(A_Set,
+ B_Set,
+ No_Hit,
+ No_Hit);
+\end_layout
+
+\begin_layout LyX-Code
+N_Plus_Minus := CHSH_Matrix(A_Set,
+ B_Set,
+ Hit,
+ No_Hit);
+\end_layout
+
+\begin_layout LyX-Code
+N_Minus_Plus := CHSH_Matrix(A_Set,
+ B_Set,
+ No_Hit,
+ Hit);
+\end_layout
+
+\begin_layout LyX-Code
+Total_Trials := N_Plus_Plus + N_Minus_Minus + N_Plus_Minus + N_Minus_Plus;
+\end_layout
+
+\begin_layout LyX-Code
+if Total_Trials = 0 then
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+return 0.0;
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end if;
+\end_layout
+
+\begin_layout LyX-Code
+--  Discrete binary expectation formula:
+ (Parity Matches - Parity Mismatches) / Total
+\end_layout
+
+\begin_layout LyX-Code
+return Long_Float(N_Plus_Plus + N_Minus_Minus - N_Plus_Minus - N_Minus_Plus) / Long_Float(Total_Trials);
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+end Calculate_Expectation;
+\end_layout
+
+\begin_layout Standard
+Dropping this logic structure into your code lets you verify exactly how your counts distribute.
+ 
+\end_layout
+
+\begin_layout Standard
+On the ClassicalRNGXOR dataset when you print these variables the values should neatly track your linear Null Hypothesis baselines (-1.00000E+00 at perfect alignment).
+\end_layout
+
+\begin_layout Standard
+Let me know:
+\end_layout
+
+\begin_layout Standard
+* Do the POL and CLICK records always follow the exact sequential row order (Sync -> Polarizer -> Click) in your aligned arrays?
+\end_layout
+
+\begin_layout Standard
+* What time difference threshold (tolerance value) did you choose to identify a synchronized pair of SYNC time-tags between Alice and Bob?
+\end_layout
+
+\end_body
+\end_document
