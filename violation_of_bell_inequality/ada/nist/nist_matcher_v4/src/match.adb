@@ -23,7 +23,7 @@ procedure Match is
    A_Data        : Nist_Data_List;
    B_Data        : Nist_Data_List;
    Events        : Nist_Event_List;
-   Data_Size     : constant Natural := 500;
+   Data_Size     : constant Natural := 100;
    --  Num_Found           : Natural;
    --  A_Counts            : xxCounts;
    --  B_Counts            : xxCounts;
@@ -39,8 +39,8 @@ begin
    Align_Data (A_Data, B_Data);
    Save_Aligned_Data (A_Aligned, A_Data);
    Save_Aligned_Data (B_Aligned, B_Data);
-   Print_NIST_Data_List ("Aligned A_Data", A_Data, 88, Finish => 95);
-   Print_NIST_Data_List ("Aligned B_Data", B_Data, 88, Finish => 95);
+   --  Print_NIST_Data_List ("Aligned A_Data", A_Data, 88, Finish => 95);
+   --  Print_NIST_Data_List ("Aligned B_Data", B_Data, 88, Finish => 95);
    Build_Event_List (A_Data, B_Data, Events);
    Save_Events (aa, ab, ba, bb, Events);
 

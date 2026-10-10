@@ -8,7 +8,7 @@ with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with NIST_Printing; use NIST_Printing;
---  with Printing; use Printing;
+with Printing; use Printing;
 with Types; use Types;
 
 package body Process_Data is
@@ -172,7 +172,66 @@ package body Process_Data is
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Syncs ";
       --  Time difference between first two A syncs: 129104
-      Time_Slot       : constant Double_Positive := 10;
+      Time_Slot       : constant Double_Positive := 20;
+      A_Index         : Double_Positive := A_Data.First_Index;
+      B_Index         : Double_Positive := B_Data.First_Index;
+      A_Time          : Double_Positive;
+      Item            : Index_Record;
+      Synch_Pairs     : Match_List;
+      Found           : Boolean := False;
+   begin
+      Put_Line (Routine_Name & "A_Data size: " &
+       Integer'Image (Integer (A_Data.Length)));
+      Put_Line (Routine_Name & "B_Data size: " &
+       Integer'Image (Integer (B_Data.Length)));
+
+      while A_Index < A_Data.Last_Index and then
+       B_Index < B_Data.Last_Index loop
+         if A_Data (A_Index).Channel = Sync then
+            A_Time := A_Data (A_Index).Time_Tag;
+            Found := False;
+            while not Found and then B_Index < B_Data.Last_Index loop
+               Found := B_Data (B_Index).Channel = Sync;
+               if Found then
+                  if abs (B_Data (B_Index).Time_Tag - A_Time) <= Time_Slot then
+                     Item.A_Index := A_Index;
+                     Item.B_Index := B_Index;
+                  elsif A_Time < B_Data (B_Index).Time_Tag  then
+                     A_Index := A_Index + 1;
+                  else
+                     B_Index := B_Index + 1;
+                  end if;
+                  Synch_Pairs.Append (Item);
+               end if;
+               B_Index := B_Index + 1;
+            end loop;
+         end if;
+         A_Index := A_Index + 1;
+         B_Index := B_Index + 1;
+      end loop;
+
+      Put_Line (Routine_Name & "Number of synch matches: " &
+       Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
+       Double_Positive'Image (Time_Slot));
+      Print_Match_List ("Synch_Pairs", Synch_Pairs, 195, 200);
+      Print_NIST_Data_List ("A_Data", A_Data, 95, 100);
+      Print_NIST_Data_List ("B_Data", B_Data, 95, 100);
+      return Synch_Pairs;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+
+   end Match_Syncs;
+
+   function Match_Syncs_1 (A_Data, B_Data : Nist_Data_List)
+       return Match_List  is
+      use Match_Package;
+      use Nist_Data_Package;
+      Routine_Name    : constant String := "Process_Data.Match_Syncs ";
+      --  Time difference between first two A syncs: 129104
+      Time_Slot       : constant Double_Positive := 1000;
       A_Time          : Double_Positive;
       B_Index         : Double_Positive := B_Data.First_Index;
       Item            : Index_Record;
@@ -183,6 +242,7 @@ package body Process_Data is
        Integer'Image (Integer (A_Data.Length)));
       Put_Line (Routine_Name & "B_Data size: " &
        Integer'Image (Integer (B_Data.Length)));
+
       for A_Index in A_Data.First_Index .. A_Data.Last_Index loop
          if A_Data (A_Index).Channel = Sync then
             A_Time := A_Data (A_Index).Time_Tag;
@@ -203,12 +263,12 @@ package body Process_Data is
       Put_Line (Routine_Name & "Number of synch matches: " &
        Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
        Double_Positive'Image (Time_Slot));
-      --  Print_Match_List ("Synch_Pairs", Synch_Pairs, 1000, 1006);
-      --  Print_NIST_Data_List ("A_Data", A_Data, 1000, 1006);
-      --  Print_NIST_Data_List ("B_Data", B_Data, 1000, 1006);
+      Print_Match_List ("Synch_Pairs", Synch_Pairs, 195, 200);
+      Print_NIST_Data_List ("A_Data", A_Data, 195, 200);
+      Print_NIST_Data_List ("B_Data", B_Data, 195, 200);
       return Synch_Pairs;
 
-   end Match_Syncs;
+   end Match_Syncs_1;
 
    procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name  : String; Events : Nist_Event_List) is
