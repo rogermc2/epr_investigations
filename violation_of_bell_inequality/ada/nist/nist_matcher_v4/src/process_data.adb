@@ -164,6 +164,7 @@ package body Process_Data is
             else
                B_Index := B_Index + 2;
             end if;
+            Events.Append (anEvent);
          else
             A_Index := A_Index + 1;
             B_Index := B_Index + 1;
