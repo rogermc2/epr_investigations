@@ -133,20 +133,21 @@ package body Process_Data is
       --     Time_Tag    : Double_Positive;
       --     Transfer_ID : Integer := 0;
       --  end record;
-      while A_Index < A_Data.Last_Index and then
-       B_Index < B_Data.Last_Index loop
+      while A_Index <= A_Data.Last_Index - 2 and then
+       B_Index < B_Data.Last_Index - 2 loop
          Count := Count + 1;
          A := A_Data (A_Index);
          B := B_Data (B_Index);
          if A_Data (A_Index + 2).Channel = Click or else
           B_Data (B_Index + 2).Channel = Click then
+               anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+               anEvent.Time_Tag := A_Data (A_Index).Time_Tag;
+               anEvent.B_Setting := B_Data (B_Index + 1).Channel;
             if A.Channel = Click then
                Click_Delay := A_Data (A_Index + 2).Time_Tag -
                               A_Data (A_Index).Time_Tag;  --  Sync Time_Tag
-               anEvent.A_Click_Mask :=
-                  Shift_Left (unsigned_16 (1), Natural (Click_Delay / Pulse_Interval));
-               anEvent.A_Setting := A_Data (A_Index + 1).Channel;
-               anEvent.Time_Tag := A_Data (A_Index).Time_Tag;
+               anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
+                   Natural (Click_Delay / Pulse_Interval));
                A_Index := A_Index + 3;
             else
                anEvent.A_Click_Mask := 0;
@@ -156,12 +157,10 @@ package body Process_Data is
             if B.Channel = Click then
                Click_Delay := B_Data (B_Index + 2).Time_Tag -
                               B_Data (B_Index).Time_Tag;  --  Sync Time_Tag
-               anEvent.B_Click_Mask :=
-                  Shift_Left (unsigned_16 (1), Natural (Click_Delay / Pulse_Interval));
-               anEvent.B_Setting := B_Data (B_Index + 1).Channel;
-               anEvent.Time_Tag := B_Data (B_Index).Time_Tag;
+               anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
+                   Natural (Click_Delay / Pulse_Interval));
 
-               A_Index := A_Index + 3;
+               B_Index := B_Index + 3;
             else
                B_Index := B_Index + 2;
             end if;
