@@ -119,10 +119,8 @@ package body Process_Data is
       use Nist_Data_Package;
       Routine_Name    : constant String := "Process_Data.Match_Events ";
       Pulse_Interval  : constant Double_Positive := 8064;
-      A_Curs          : Cursor := A_Data.First;
-      B_Curs          : Cursor := B_Data.First;
-      A_Index         : Double_Positive;
-      B_Index         : Double_Positive;
+      A_Index         : Double_Positive := A_Data.First_Index;
+      B_Index         : Double_Positive := B_Data.First_Index;
       A               : Data_Record;
       B               : Data_Record;
       Click_Delay     : Double_Positive;
@@ -135,38 +133,43 @@ package body Process_Data is
       --     Time_Tag    : Double_Positive;
       --     Transfer_ID : Integer := 0;
       --  end record;
-      while Has_Element (A_Curs) and then Has_Element (B_Curs) loop
+      while A_Index < A_Data.Last_Index and then
+       B_Index < B_Data.Last_Index loop
          Count := Count + 1;
-         A := Element (A_Curs);
-         B := Element (B_Curs);
-         if A.Channel = Click or else B.Channel = Click then
+         A := A_Data (A_Index);
+         B := B_Data (B_Index);
+         if A_Data (A_Index + 2).Channel = Click or else
+          B_Data (B_Index + 2).Channel = Click then
             if A.Channel = Click then
-               A_Index := To_Index (A_Curs);
-               Click_Delay := A_Data (A_Index).Time_Tag -
-                              A_Data (A_Index - 2).Time_Tag;  --  Sync Time_Tag
+               Click_Delay := A_Data (A_Index + 2).Time_Tag -
+                              A_Data (A_Index).Time_Tag;  --  Sync Time_Tag
                anEvent.A_Click_Mask :=
                   Shift_Left (unsigned_16 (1), Natural (Click_Delay / Pulse_Interval));
-               anEvent.A_Setting := A_Data (A_Index - 1).Channel;
-               anEvent.Time_Tag := A_Data (A_Index - 2).Time_Tag;
+               anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+               anEvent.Time_Tag := A_Data (A_Index).Time_Tag;
+               A_Index := A_Index + 3;
             else
                anEvent.A_Click_Mask := 0;
+               A_Index := A_Index + 2;
             end if;
 
             if B.Channel = Click then
-               B_Index := To_Index (B_Curs);
-               Click_Delay := B_Data (B_Index).Time_Tag -
-                              B_Data (B_Index - 2).Time_Tag;  --  Sync Time_Tag
+               Click_Delay := B_Data (B_Index + 2).Time_Tag -
+                              B_Data (B_Index).Time_Tag;  --  Sync Time_Tag
                anEvent.B_Click_Mask :=
                   Shift_Left (unsigned_16 (1), Natural (Click_Delay / Pulse_Interval));
-               anEvent.B_Setting := B_Data (B_Index - 1).Channel;
-               anEvent.Time_Tag := B_Data (B_Index - 2).Time_Tag;
+               anEvent.B_Setting := B_Data (B_Index + 1).Channel;
+               anEvent.Time_Tag := B_Data (B_Index).Time_Tag;
+
+               A_Index := A_Index + 3;
             else
-               anEvent.B_Click_Mask := 0;
+               B_Index := B_Index + 2;
             end if;
+         else
+            A_Index := A_Index + 1;
+            B_Index := B_Index + 1;
          end if;
 
-         Next (A_Curs);
-         Next (B_Curs);
       end loop;
 
       --  Put_Line (Routine_Name & "Max Click_Delay" &
