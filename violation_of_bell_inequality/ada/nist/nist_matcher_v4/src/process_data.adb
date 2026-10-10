@@ -15,8 +15,8 @@ package body Process_Data is
 
    function Match_Events (A_Data, B_Data : Nist_Data_List)
     return Nist_Event_List;
-   function Match_Syncs (A_Data, B_Data : Nist_Data_List)
-       return Match_List;
+   --  function Match_Syncs (A_Data, B_Data : Nist_Data_List)
+   --      return Match_List;
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
@@ -24,8 +24,7 @@ package body Process_Data is
    procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
       Events : out Nist_Event_List) is
       Routine_Name : constant String := "Process_Data.Build_Event_List ";
-      --  Sync_Pairs   : constant Match_List := Match_Syncs (A_Data, B_Data);
-   begin
+    begin
       Events := Match_Events (A_Data, B_Data);
       Print_NIST_Event_List (Routine_Name & "Events", Events, 1, 8);
 
@@ -34,19 +33,6 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Build_Event_List;
-
-   --  procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
-   --     Events : out Nist_Event_List) is
-   --     Routine_Name : constant String := "Process_Data.Build_Event_List ";
-   --     Sync_Pairs   : constant Match_List := Match_Syncs (A_Data, B_Data);
-   --  begin
-   --     Events := Match_Events (A_Data, B_Data, Sync_Pairs);
-
-   --  exception
-   --     when Error : others =>
-   --        Put_Line (Routine_Name & Exception_Information (Error));
-   --        raise;
-   --  end Build_Event_List;
 
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0) is
@@ -176,7 +162,7 @@ package body Process_Data is
       --     Double_Positive'Image (Max_Click_Delay));
       --  Put_Line (Routine_Name & "Max Click_Delay / 16:" &
       --     Double_Positive'Image (Max_Click_Delay / 16));
-      Print_NIST_Event_List ("Events", Events, 1, 8);
+      --  Print_NIST_Event_List ("Events", Events, 1, 8);
 
       return Events;
 
@@ -187,170 +173,59 @@ package body Process_Data is
 
    end Match_Events;
 
-   --  function Match_Events (A_Data, B_Data : Nist_Data_List;
-   --   Sync_Pairs : Match_List) return Nist_Event_List  is
-   --     use Interfaces;
+   --  function Match_Syncs (A_Data, B_Data : Nist_Data_List)
+   --      return Match_List  is
+   --     use Match_Package;
    --     use Nist_Data_Package;
-   --     Routine_Name    : constant String := "Process_Data.Match_Events ";
-   --     Pulse_Interval  : constant Double_Positive := 8064;
-   --     Sync_Pairs_Curs : Match_Package.Cursor := Sync_Pairs.First;
-   --     Synch_Pair      : Index_Record;
-   --     Click_Delay     : Double_Positive;
-   --     Count           : Natural := 0;
-   --     anEvent         : NIST_Event_Record;
-   --     Events          : Nist_Event_List;
+   --     Routine_Name    : constant String := "Process_Data.Match_Syncs ";
+   --     --  Time difference between first two A syncs: 129104
+   --     Time_Slot       : constant Double_Positive := 20;
+   --     A_Index         : Double_Positive := A_Data.First_Index;
+   --     B_Index         : Double_Positive := B_Data.First_Index;
+   --     A_Time          : Double_Positive;
+   --     Item            : Index_Record;
+   --     Synch_Pairs     : Match_List;
+   --     Found           : Boolean := False;
    --  begin
-   --     while Match_Package.Has_Element (Sync_Pairs_Curs) and then
-   --        Match_Package.To_Index (Sync_Pairs_Curs) + 2 <=
-   --         Sync_Pairs.Last_Index loop
-   --        Count := Count + 1;
-   --        Synch_Pair := Match_Package.Element (Sync_Pairs_Curs);
-   --        if A_Data (Synch_Pair.A_Index + 2).Channel = Click or else
-   --           B_Data (Synch_Pair.B_Index + 2).Channel = Click then
-   --           if A_Data (Synch_Pair.A_Index + 2).Channel = Click then
-   --              Click_Delay := A_Data (Synch_Pair.A_Index + 2).Time_Tag -
-   --                             A_Data (Synch_Pair.A_Index).Time_Tag;
-   --              anEvent.A_Click_Mask :=
-   --                 Shift_Left (unsigned_16 (1), Natural (Click_Delay / Pulse_Interval));
-   --           else
-   --              anEvent.A_Click_Mask := 0;
-   --           end if;
-   --           anEvent.A_Setting := A_Data (Synch_Pair.A_Index + 1).Channel;
-   --           anEvent.Time_Tag := A_Data (Synch_Pair.A_Index + 1).Time_Tag;
+   --     Put_Line (Routine_Name & "A_Data size: " &
+   --      Integer'Image (Integer (A_Data.Length)));
+   --     Put_Line (Routine_Name & "B_Data size: " &
+   --      Integer'Image (Integer (B_Data.Length)));
 
-   --           if B_Data (Synch_Pair.B_Index + 2).Channel = Click then
-   --              Click_Delay := B_Data (Synch_Pair.B_Index + 2).Time_Tag -
-   --                             B_Data (Synch_Pair.B_Index).Time_Tag;
-   --              anEvent.B_Click_Mask :=
-   --                 Shift_Left (unsigned_16 (1), Natural (Click_Delay / 8064));
-   --           else
-   --              anEvent.B_Click_Mask := 0;
-   --           end if;
-   --           anEvent.B_Setting := B_Data (Synch_Pair.B_Index + 1).Channel;
-   --           anEvent.Time_Tag := B_Data (Synch_Pair.B_Index + 1).Time_Tag;
-
-   --           if A_Data (Synch_Pair.A_Index + 2).Channel /= Overflow and then
-   --              B_Data (Synch_Pair.B_Index + 2).Channel /= Overflow then
-   --              Events.Append (anEvent);
-   --           end if;
+   --     while A_Index < A_Data.Last_Index and then
+   --      B_Index < B_Data.Last_Index loop
+   --        if A_Data (A_Index).Channel = Sync then
+   --           A_Time := A_Data (A_Index).Time_Tag;
+   --           Found := False;
+   --           while not Found and then B_Index < B_Data.Last_Index loop
+   --              Found := B_Data (B_Index).Channel = Sync;
+   --              if Found then
+   --                 Item.A_Index := A_Index;
+   --                 Item.B_Index := B_Index;
+   --                 Synch_Pairs.Append (Item);
+   --              else
+   --                  B_Index := B_Index + 1;
+   --              end if;
+   --           end loop;
    --        end if;
-
-   --        Match_Package.Next (Sync_Pairs_Curs);
+   --        A_Index := A_Index + 1;
+   --        B_Index := B_Index + 1;
    --     end loop;
 
-   --     --  Put_Line (Routine_Name & "Max Click_Delay" &
-   --     --     Double_Positive'Image (Max_Click_Delay));
-   --     --  Put_Line (Routine_Name & "Max Click_Delay / 16:" &
-   --     --     Double_Positive'Image (Max_Click_Delay / 16));
-   --     Print_NIST_Event_List ("Events", Events, 61, 81);
-
-   --     return Events;
+   --     Put_Line (Routine_Name & "Number of synch matches: " &
+   --      Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
+   --      Double_Positive'Image (Time_Slot));
+   --     Print_Match_List ("Synch_Pairs", Synch_Pairs);
+   --     --  Print_NIST_Data_List ("A_Data", A_Data, 95, 100);
+   --     --  Print_NIST_Data_List ("B_Data", B_Data, 95, 100);
+   --     return Synch_Pairs;
 
    --  exception
    --     when Error : others =>
    --        Put_Line (Routine_Name & Exception_Information (Error));
    --        raise;
 
-   --  end Match_Events;
-
-   function Match_Syncs (A_Data, B_Data : Nist_Data_List)
-       return Match_List  is
-      use Match_Package;
-      use Nist_Data_Package;
-      Routine_Name    : constant String := "Process_Data.Match_Syncs ";
-      --  Time difference between first two A syncs: 129104
-      Time_Slot       : constant Double_Positive := 20;
-      A_Index         : Double_Positive := A_Data.First_Index;
-      B_Index         : Double_Positive := B_Data.First_Index;
-      A_Time          : Double_Positive;
-      Item            : Index_Record;
-      Synch_Pairs     : Match_List;
-      Found           : Boolean := False;
-   begin
-      Put_Line (Routine_Name & "A_Data size: " &
-       Integer'Image (Integer (A_Data.Length)));
-      Put_Line (Routine_Name & "B_Data size: " &
-       Integer'Image (Integer (B_Data.Length)));
-
-      while A_Index < A_Data.Last_Index and then
-       B_Index < B_Data.Last_Index loop
-         if A_Data (A_Index).Channel = Sync then
-            A_Time := A_Data (A_Index).Time_Tag;
-            Found := False;
-            while not Found and then B_Index < B_Data.Last_Index loop
-               Found := B_Data (B_Index).Channel = Sync;
-               if Found then
-                  Item.A_Index := A_Index;
-                  Item.B_Index := B_Index;
-                  Synch_Pairs.Append (Item);
-               else
-                   B_Index := B_Index + 1;
-               end if;
-            end loop;
-         end if;
-         A_Index := A_Index + 1;
-         B_Index := B_Index + 1;
-      end loop;
-
-      Put_Line (Routine_Name & "Number of synch matches: " &
-       Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
-       Double_Positive'Image (Time_Slot));
-      Print_Match_List ("Synch_Pairs", Synch_Pairs);
-      --  Print_NIST_Data_List ("A_Data", A_Data, 95, 100);
-      --  Print_NIST_Data_List ("B_Data", B_Data, 95, 100);
-      return Synch_Pairs;
-
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         raise;
-
-   end Match_Syncs;
-
-   function Match_Syncs_1 (A_Data, B_Data : Nist_Data_List)
-       return Match_List  is
-      use Match_Package;
-      use Nist_Data_Package;
-      Routine_Name    : constant String := "Process_Data.Match_Syncs ";
-      --  Time difference between first two A syncs: 129104
-      Time_Slot       : constant Double_Positive := 1000;
-      A_Time          : Double_Positive;
-      B_Index         : Double_Positive := B_Data.First_Index;
-      Item            : Index_Record;
-      Synch_Pairs     : Match_List;
-      Found           : Boolean := False;
-   begin
-      Put_Line (Routine_Name & "A_Data size: " &
-       Integer'Image (Integer (A_Data.Length)));
-      Put_Line (Routine_Name & "B_Data size: " &
-       Integer'Image (Integer (B_Data.Length)));
-
-      for A_Index in A_Data.First_Index .. A_Data.Last_Index loop
-         if A_Data (A_Index).Channel = Sync then
-            A_Time := A_Data (A_Index).Time_Tag;
-            Found := False;
-            while not Found and then B_Index < B_Data.Last_Index loop
-               Found := B_Data (B_Index).Channel = Sync and then
-                B_Data (B_Index).Time_Tag - A_Time <= Time_Slot;
-               if Found then
-                  Item.A_Index := A_Index;
-                  Item.B_Index := B_Index;
-                  Synch_Pairs.Append (Item);
-               end if;
-               B_Index := B_Index + 1;
-            end loop;
-         end if;
-      end loop;
-
-      Put_Line (Routine_Name & "Number of synch matches: " &
-       Integer'Image (Integer (Synch_Pairs.Length)) & ",  Time Slot:" &
-       Double_Positive'Image (Time_Slot));
-      Print_Match_List ("Synch_Pairs", Synch_Pairs, 195, 200);
-      Print_NIST_Data_List ("A_Data", A_Data, 195, 200);
-      Print_NIST_Data_List ("B_Data", B_Data, 195, 200);
-      return Synch_Pairs;
-
-   end Match_Syncs_1;
+   --  end Match_Syncs;
 
    procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name  : String; Events : Nist_Event_List) is
@@ -435,42 +310,5 @@ package body Process_Data is
       end if;
 
    end Set_AB_Clicks;
-
-   --  function Set_Outcome (Click_A, Click_B : Integer) return String_3 is
-   --     Outcome : String_3 := "?,?";
-   --  begin
-   --     case Click_A is
-   --        when 1 =>
-   --           case Click_B is
-   --              when 1 =>
-   --                 Outcome := "+,+";
-   --              when -1 =>
-   --                 Outcome := "+,0";
-   --              when others =>
-   --                 Outcome := "+,?";
-   --           end case;
-   --        when -1 =>
-   --           case Click_B is
-   --              when 1 =>
-   --                 Outcome := "0,+";
-   --              when -1 =>
-   --                 Outcome := "0,0";
-   --              when others =>
-   --                 Outcome := "0,?";
-   --           end case;
-   --        when others =>
-   --           case Click_B is
-   --              when 1 =>
-   --                 Outcome := "?,+";
-   --              when -1 =>
-   --                 Outcome := "?,0";
-   --              when others =>
-   --                 Outcome := "?,?";
-   --           end case;
-   --     end case;
-
-   --     return Outcome;
-
-   --  end Set_Outcome;
 
 end Process_Data;
