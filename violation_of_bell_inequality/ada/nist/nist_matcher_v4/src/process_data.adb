@@ -45,9 +45,9 @@ package body Process_Data is
          B := B_Data (B_Index);
          if A_Data (A_Index + 2).Channel = Click or else
           B_Data (B_Index + 2).Channel = Click then
-            Put_Line (Routine_Name & "A and B line numbers: " &
-             Integer'Image (Integer (A_Index + 1)) & ", B_Index: " &
-             Integer'Image (Integer (B_Index + 1)));
+            --  Put_Line (Routine_Name & "A and B line numbers: " &
+            --   Integer'Image (Integer (A_Index + 1)) & ", B_Index: " &
+            --   Integer'Image (Integer (B_Index + 1)));
 
             Assert (A.Channel = Sync and then B.Channel = Sync,
                Routine_Name & "A.Channel:" &

@@ -6,8 +6,6 @@ with NIST_Utilities; use NIST_Utilities;
 with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
 with Process_Data; use Process_Data;
---  with Types; use Types;
---  with Utils; use Utils;
 
 procedure Match is
    --  Routine_Name      : constant String := "Match ";
@@ -23,7 +21,7 @@ procedure Match is
    A_Data        : Nist_Data_List;
    B_Data        : Nist_Data_List;
    Events        : Nist_Event_List;
-   Data_Size     : constant Natural := 350;
+   Data_Size     : constant Natural := 25000;
    --  Num_Found           : Natural;
    --  A_Counts            : xxCounts;
    --  B_Counts            : xxCounts;
