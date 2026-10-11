@@ -53,12 +53,12 @@ begin
                      Detections_11, Det_A, Det_B);
    New_Line;
 
-   Print_Float ("Overall A Sample_Mean: ",
+   Print_Float_Line ("Overall A Sample_Mean: ",
     (Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0);
-   Print_Float ("Overall B Sample_Mean: ",
+   Print_Float_Line ("Overall B Sample_Mean: ",
     (Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0);
    New_Line;
-   
+
    Put_Line ("E(AB) b = a: " & Float'Image (Statistical_EAB (0.0)));
    Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (Statistical_EAB (Pi / 4.0)));
    New_Line;
@@ -76,18 +76,23 @@ begin
                Integer'Image (Integer (Detections_11.Length)));
 
    False_Data := False_Positives (AB_Dir, File_00, False_Count, True_Count);
-   Put ("00 false positives: " & Integer'Image (False_Count) & " (");
-   Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
-   Put_Line ("% )");
-   Print_Sample_Data_List ("00 False_Data", False_Data, 1, 10);
-   --  False_Data := False_Positives (AB_Dir, File_01, False_Count, True_Count);
-   --  Put_Line ("01 false positives: " & Integer'Image (False_Count));
-   --  False_Data := False_Positives (AB_Dir, File_10, False_Count, True_Count);
-   --  Put_Line ("10 false positives: " & Integer'Image (False_Count));
+   if False_Count > 0 then
+      Put ("00 false positives: " & Integer'Image (False_Count) & " (");
+      Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
+      Put_Line ("% )");
+      Print_Sample_Data_List ("00 False_Data", False_Data, 1, 10);
+   else
+      Put_Line ("00 false positives: 0");
+   end if;
    False_Data := False_Positives (AB_Dir, File_11, False_Count, True_Count);
-   Put ("11 false positives: " & Integer'Image (False_Count) & " (");
-   Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
-   Put_Line ("% )");
+   if False_Count > 0 then
+      Put ("00 false positives: " & Integer'Image (False_Count) & " (");
+      Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
+      Put_Line ("% )");
+      Print_Sample_Data_List ("00 False_Data", False_Data, 1, 10);
+   else
+      Put_Line ("00 false positives: 0");
+   end if;
    Print_Sample_Data_List ("11 False_Data", False_Data, 1, 10);
 
 end Statistical_Analysis;

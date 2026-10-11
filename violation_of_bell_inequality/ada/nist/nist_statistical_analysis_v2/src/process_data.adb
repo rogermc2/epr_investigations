@@ -82,20 +82,25 @@ package body Process_Data is
       OEM_ID           : File_Type;
       False_Detections : Sample_Data_List;
    begin
-      Open (OEM_ID, In_File, OEM_File);
-      if OEM_File = Dir & "aa.csv" then
-         False_Detections := Check_For_False_Positives (OEM_ID, "aa.csv", False_Count, True_Count);
-      elsif OEM_File = Dir & "ab.csv" then
-         False_Detections := Check_For_False_Positives (OEM_ID, "ab.csv", False_Count, True_Count);
-      elsif OEM_File  = Dir & "ba.csv" then
-         False_Detections := Check_For_False_Positives (OEM_ID, "ba.csv", False_Count, True_Count);
-      elsif OEM_File = Dir & "bb.csv" then
-         False_Detections := Check_For_False_Positives (OEM_ID, "bb.csv", False_Count, True_Count);
+      if OEM_File'Length < 2 then
+         Put_Line (Routine_Name & OEM_File & " is empty");
       else
-         Put_Line (Routine_Name & "invalid file: " & OEM_File);
-      end if;
+         Open (OEM_ID, In_File, OEM_File);
+         Skip_Line (OEM_ID);  -- skip header line
+         if OEM_File = Dir & "aa.csv" then
+            False_Detections := Check_For_False_Positives (OEM_ID, "aa.csv", False_Count, True_Count);
+         elsif OEM_File = Dir & "ab.csv" then
+            False_Detections := Check_For_False_Positives (OEM_ID, "ab.csv", False_Count, True_Count);
+         elsif OEM_File  = Dir & "ba.csv" then
+            False_Detections := Check_For_False_Positives (OEM_ID, "ba.csv", False_Count, True_Count);
+         elsif OEM_File = Dir & "bb.csv" then
+            False_Detections := Check_For_False_Positives (OEM_ID, "bb.csv", False_Count, True_Count);
+         else
+            Put_Line (Routine_Name & "invalid file: " & OEM_File);
+         end if;
 
-      Close (OEM_ID);
+         Close (OEM_ID);
+      end if;
 
       return False_Detections;
 
@@ -103,12 +108,16 @@ package body Process_Data is
 
    function Get_Detections (Detection_Data : String)
       return Sample_Data_List is
-      --  Routine_Name : constant String := "Process_Data.Get_Detections ";
+      Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
       Sample       : Sample_Data_Record;
       Detections   : Sample_Data_List;
    begin
+      if Detection_Data'Length < 2 then
+         Put_Line (Routine_Name & Detection_Data & " is empty");
+      else
       Open (Data_ID, In_File, Detection_Data);
+      Skip_Line (Data_ID);  -- skip header line
       while not End_Of_File (Data_ID) loop
          declare
             aLine : constant String := Get_Line (Data_ID);
@@ -121,6 +130,7 @@ package body Process_Data is
          Detections.Append (Sample);
       end loop;
       Close (Data_ID);
+      end if;
 
       return Detections;
 
@@ -155,6 +165,9 @@ package body Process_Data is
          Curs := Next (Curs);
       end loop;
 
+      if Count = 0 then
+         Count := 1;  -- avoid divide by zero
+      end if;
       Mean_A := Float (Sum_A) / Float (Count);
       Mean_B := Float (Sum_B) / Float (Count);
       Mean_AB := Float (Sum_AB) / Float (Count);
