@@ -102,8 +102,9 @@ package body NIST_Printing is
                if Index < 10 then
                   Put (" ");
                end if;
-               Put ("A Time_Tag:" & Double_Positive'Image (Item.A_Time_Tag));
-               Put (", A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
+               Put ("Time_Tags: A" & Double_Positive'Image (Item.A_Time_Tag));
+               Put (" B:" & Double_Positive'Image (Item.B_Time_Tag));
+               Put ("; A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
                Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
                Put (";  B Click Mask:" & Unsigned_16'Image (Item.B_Click_Mask));
                Put_Line (",  B_Setting: " & Channel_Type'Image (Item.B_Setting));

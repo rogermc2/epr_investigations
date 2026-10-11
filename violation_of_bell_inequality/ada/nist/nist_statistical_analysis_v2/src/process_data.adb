@@ -14,14 +14,14 @@ package body Process_Data is
 
    function Check_For_False_Positives
      (OEM_ID          : File_Type; File_Name : String;
-      True_Count, False_Count : out Natural) return Sample_Data_List is
+      False_Count, True_Count : out Natural) return Sample_Data_List is
       A_Result         : String_2;
       B_Result         : String_2;
       Sample           : Sample_Data_Record;
       False_Detections : Sample_Data_List;
       Count            : Natural := 0;
    begin
-      Put_Line ("False Positives For: " & File_Name);
+      --  Put_Line ("False Positives For: " & File_Name);
       False_Count := 0;
       True_Count := 0;
       while not End_Of_File (OEM_ID) loop
@@ -52,15 +52,16 @@ package body Process_Data is
                True_Count := True_Count + 1;
 
             end if;
-         else  -- not False_If_A_Eq_B
+
+         else  -- not aa.csv or bb.csv
             if A_Result /= B_Result then
-               False_Count := False_Count + 1;
+               True_Count := True_Count + 1;
                Sample.A_Detection := Sample_Val (A_Result);
                Sample.B_Detection := Sample_Val (B_Result);
                Sample.AB := Sample.A_Detection * Sample.B_Detection;
                False_Detections.Append (Sample);
             else
-               True_Count := True_Count + 1;
+               False_Count := False_Count + 1;
             end if;
          end if;
       end loop;
