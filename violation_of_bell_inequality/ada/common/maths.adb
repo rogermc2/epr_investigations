@@ -18,7 +18,7 @@ package body Maths is
       Curs       : Cursor := Data.First;
       Dev_Sq     : Float;
       Sum_Dev_Sq : Float := 0.0;
-      Var        : Float;
+      Var        : Float := 0.0;
 
    begin
       while Has_Element (Curs) loop
@@ -28,7 +28,9 @@ package body Maths is
          Curs := Next (Curs);
       end loop;
 
-      Var := Sum_Dev_Sq / Float (Count - 1);
+      if Count > 1 then
+         Var := Sum_Dev_Sq / Float (Count - 1);
+      end if;
 
       return Sqrt (Var);
 

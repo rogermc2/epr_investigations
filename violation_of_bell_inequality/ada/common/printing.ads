@@ -27,7 +27,6 @@ package Printing is
                               Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Sample_Data_List (Name : String; Data : Sample_Data_List;
                                Start : Positive := 1; Finish : Natural := 0);
-
    procedure Print_StringD19_Vector
        (Name  : String; Data : StringD19_Vector;
         Start : Double_Positive := 1; Finish : Double_Natural := 0);
