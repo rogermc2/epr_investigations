@@ -53,7 +53,7 @@ package body NIST_Printing is
          for Index in Start_Idx .. Last loop
             Item := Data (Index);
             Put (Double_Positive'Image (Index) & " Channel: " & Channel_Type'Image (Item.Channel));
-            Put (",  Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
+            Put (",  A Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
             Put_Line (",  Transfer_ID: " & Integer'Image (Item.Transfer_ID));
          end loop;
       else
@@ -102,7 +102,7 @@ package body NIST_Printing is
                if Index < 10 then
                   Put (" ");
                end if;
-               Put ("Time_Tag:" & Double_Positive'Image (Item.Time_Tag));
+               Put ("A Time_Tag:" & Double_Positive'Image (Item.A_Time_Tag));
                Put (", A Click Mask:" & Unsigned_16'Image (Item.A_Click_Mask));
                Put (",  A_Setting: " & Channel_Type'Image (Item.A_Setting));
                Put (";  B Click Mask:" & Unsigned_16'Image (Item.B_Click_Mask));
@@ -129,9 +129,10 @@ package body NIST_Printing is
       use Interfaces;
    begin
       Put (Name & ": ");
-      Put_Line ("Time_Tag:" & Double_Positive'Image (Data.Time_Tag));
+      Put_Line ("A Time_Tag:" & Double_Positive'Image (Data.A_Time_Tag));
       Put ("A Click Mask:" & Unsigned_16'Image (Data.A_Click_Mask));
       Put_Line (",  A_Setting: " & Channel_Type'Image (Data.A_Setting));
+      Put_Line ("B Time_Tag:" & Double_Positive'Image (Data.B_Time_Tag));
       Put ("B Click Mask:" & Unsigned_16'Image (Data.B_Click_Mask));
       Put_Line (",  B_Setting: " & Channel_Type'Image (Data.B_Setting));
 

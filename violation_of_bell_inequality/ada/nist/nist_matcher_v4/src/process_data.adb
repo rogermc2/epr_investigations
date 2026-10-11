@@ -1,6 +1,6 @@
 
 with Interfaces;
---  with Ada.Assertions; use Ada.Assertions;
+with Ada.Assertions; use Ada.Assertions;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings;
@@ -15,8 +15,6 @@ package body Process_Data is
 
    function Match_Events (A_Data, B_Data : Nist_Data_List)
     return Nist_Event_List;
-   --  function Match_Syncs (A_Data, B_Data : Nist_Data_List)
-   --      return Match_List;
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
@@ -126,10 +124,22 @@ package body Process_Data is
          B := B_Data (B_Index);
          if A_Data (A_Index + 2).Channel = Click or else
           B_Data (B_Index + 2).Channel = Click then
-               anEvent.A_Setting := A_Data (A_Index + 1).Channel;
-               anEvent.Time_Tag := A_Data (A_Index).Time_Tag;
-               anEvent.B_Setting := B_Data (B_Index + 1).Channel;
-            if A.Channel = Click then
+            --  Put_Line (Routine_Name & "A and B Indices: " &
+            --   Integer'Image (Integer (A_Index)) & ", B_Index: " &
+            --   Integer'Image (Integer (B_Index)));
+
+            Assert (A.Channel = Sync and then B.Channel = Sync,
+            Routine_Name & "Non-Sync data:" & "A.Channel:" &
+            Channel_Type'Image (A.Channel) & " at index " &
+            Integer'Image (Integer (A_Index)) &
+            "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
+            Integer'Image (Integer (B_Index)));
+            anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+            anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+            anEvent.B_Setting := B_Data (B_Index + 1).Channel;
+            anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+
+            if A_Data (A_Index + 2).Channel = Click then
                Click_Delay := A_Data (A_Index + 2).Time_Tag -
                               A_Data (A_Index).Time_Tag;  --  Sync Time_Tag
                anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
@@ -140,7 +150,7 @@ package body Process_Data is
                A_Index := A_Index + 2;
             end if;
 
-            if B.Channel = Click then
+            if B_Data (B_Index + 2).Channel = Click then
                Click_Delay := B_Data (B_Index + 2).Time_Tag -
                               B_Data (B_Index).Time_Tag;  --  Sync Time_Tag
                anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
@@ -256,21 +266,21 @@ package body Process_Data is
                if Rec.B_Setting = Pol_0 then
                   Put (AA_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AA_ID, Double_Positive'Image (Rec.Time_Tag));
+                  Put_Line (AA_ID, Double_Positive'Image (Rec.A_Time_Tag));
                else
                   Put (AB_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AB_ID, Double_Positive'Image (Rec.Time_Tag));
+                  Put_Line (AB_ID, Double_Positive'Image (Rec.A_Time_Tag));
                end if;
             when Pol_45 =>
                if Rec.B_Setting = Pol_0 then
                   Put(BA_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BA_ID, Double_Positive'Image (Rec.Time_Tag));
+                  Put_Line (BA_ID, Double_Positive'Image (Rec.A_Time_Tag));
                else
                   Put (BB_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BB_ID, Double_Positive'Image (Rec.Time_Tag));
+                  Put_Line (BB_ID, Double_Positive'Image (Rec.B_Time_Tag));
                end if;
 
             when others => null;
