@@ -33,12 +33,14 @@ package body Process_Data is
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
 
-      function Is_POL (Data : Nist_Data_List; Index : Double_Positive)
+      function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
        return Boolean is
       begin
-         return Data (Index).Channel = Pol_0 or else
-          Data (Index).Channel = Pol_45;
-      end Is_POL;
+         return Data (Index + 2).Channel = Click and then
+          (Data (Index).Channel = Pol_0 or else
+          Data (Index + 1).Channel = Pol_45) and then
+          Data (Index).Channel = Sync;
+      end Is_Click_Frame;
 
    begin
       --  type Data_Record is record
@@ -51,10 +53,8 @@ package body Process_Data is
          Count := Count + 1;
          A := A_Data (A_Index);
          B := B_Data (B_Index);
-         if (A_Data (A_Index + 2).Channel = Click and then
-               Is_POL (A_Data, A_Index + 1)) or else
-            (B_Data (B_Index + 2).Channel = Click and then
-               Is_POL (B_Data, B_Index + 1)) then
+         if Is_Click_Frame (A_Data, A_Index) or else
+            Is_Click_Frame (B_Data, B_Index) then
             --  Put_Line (Routine_Name & "A and B line numbers: " &
             --   Integer'Image (Integer (A_Index + 1)) & ", B_Index: " &
             --   Integer'Image (Integer (B_Index + 1)));
