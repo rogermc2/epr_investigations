@@ -75,8 +75,6 @@ package body Process_Data is
                    Double_Positive'Image (Click_Delay) & ", A.Click_Mask: " &
                    Unsigned_16'Image (anEvent.A_Click_Mask));
                end if;
-               A_Index := A_Index + 3;
-               Get_Next_Sync_Index (A_Data, A_Index);
             else
                anEvent.A_Click_Mask := 0;
                A_Index := A_Index + 2;
@@ -87,22 +85,20 @@ package body Process_Data is
                   B_Data (B_Index + 2).Time_Tag - B_Data (B_Index).Time_Tag;
                anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
                    Natural (Click_Delay / Pulse_Interval));
-               B_Index := B_Index + 3;
-               Get_Next_Sync_Index (B_Data, B_Index);
             else
                anEvent.B_Click_Mask := 0;
-               B_Index := B_Index + 2;
             end if;
 
             if anEvent.A_Click_Mask <= Max_Click_Delay and then
              anEvent.B_Click_Mask <= Max_Click_Delay then
                Events.Append (anEvent);
             end if;
-         else
-            A_Index := A_Index + 1;
-            B_Index := B_Index + 1;
          end if;
 
+         A_Index := A_Index + 1;
+         B_Index := B_Index + 1;
+         Get_Next_Sync_Index (A_Data, A_Index);
+         Get_Next_Sync_Index (B_Data, B_Index);
       end loop;
 
       return Events;
