@@ -32,6 +32,14 @@ package body Process_Data is
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
+
+      function Is_POL (Data : Nist_Data_List; Index : Double_Positive)
+       return Boolean is
+      begin
+         return Data (Index).Channel = Pol_0 or else
+          Data (Index).Channel = Pol_45;
+      end Is_POL;
+
    begin
       --  type Data_Record is record
       --     Channel     : Channel_Type;
@@ -43,18 +51,20 @@ package body Process_Data is
          Count := Count + 1;
          A := A_Data (A_Index);
          B := B_Data (B_Index);
-         if A_Data (A_Index + 2).Channel = Click or else
-          B_Data (B_Index + 2).Channel = Click then
+         if (A_Data (A_Index + 2).Channel = Click and then
+               Is_POL (A_Data, A_Index + 1)) or else
+            (B_Data (B_Index + 2).Channel = Click and then
+               Is_POL (B_Data, B_Index + 1)) then
             --  Put_Line (Routine_Name & "A and B line numbers: " &
             --   Integer'Image (Integer (A_Index + 1)) & ", B_Index: " &
             --   Integer'Image (Integer (B_Index + 1)));
 
-            Assert (A.Channel = Sync and then B.Channel = Sync,
-               Routine_Name & "A.Channel:" &
-               Channel_Type'Image (A.Channel) & " at index " &
-               Integer'Image (Integer (A_Index)) &
-               "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
-               Integer'Image (Integer (B_Index)));
+            --  Assert (A.Channel = Sync and then B.Channel = Sync,
+            --     Routine_Name & "A.Channel:" &
+            --     Channel_Type'Image (A.Channel) & " at index " &
+            --     Integer'Image (Integer (A_Index)) &
+            --     "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
+            --     Integer'Image (Integer (B_Index)));
             anEvent.A_Setting := A_Data (A_Index + 1).Channel;
             anEvent.A_Time_Tag := A.Time_Tag;
             anEvent.B_Setting := B_Data (B_Index + 1).Channel;
@@ -64,6 +74,11 @@ package body Process_Data is
                Click_Delay := A_Data (A_Index + 2).Time_Tag - A.Time_Tag;
                anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
                    Natural (Click_Delay / Pulse_Interval));
+               if anEvent.A_Click_Mask = 0 then
+                  Put_Line (Routine_Name & "A Click Delay: " &
+                   Double_Positive'Image (Click_Delay) &
+                   ", A.Click_Mask: " & Unsigned_16'Image (anEvent.A_Click_Mask));
+               end if;
                A_Index := A_Index + 3;
                Get_Next_Sync_Index (A_Data, A_Index);
             else
