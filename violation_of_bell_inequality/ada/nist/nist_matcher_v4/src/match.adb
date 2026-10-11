@@ -21,7 +21,7 @@ procedure Match is
    A_Data        : Nist_Data_List;
    B_Data        : Nist_Data_List;
    Events        : Nist_Event_List;
-   Data_Size     : constant Natural := 25000;
+   Data_Size     : constant Natural := 30000;
    --  Num_Found           : Natural;
    --  A_Counts            : xxCounts;
    --  B_Counts            : xxCounts;
