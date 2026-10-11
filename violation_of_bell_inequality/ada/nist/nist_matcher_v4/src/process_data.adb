@@ -13,23 +13,88 @@ with Types; use Types;
 
 package body Process_Data is
 
-   function Match_Events (A_Data, B_Data : Nist_Data_List)
-    return Nist_Event_List;
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
 
-   procedure Build_Event_List (A_Data, B_Data : in out Nist_Data_List;
-      Events : out Nist_Event_List) is
-      Routine_Name : constant String := "Process_Data.Build_Event_List ";
-    begin
-      Events := Match_Events (A_Data, B_Data);
-      Print_NIST_Event_List (Routine_Name & "Events", Events, 1, 8);
+   function Build_Event_List (A_Data, B_Data : Nist_Data_List)
+    return Nist_Event_List is
+      use Interfaces;
+      use Nist_Data_Package;
+      Routine_Name    : constant String := "Process_Data.Build_Event_List ";
+      Pulse_Interval  : constant Double_Positive := 8064;
+      A_Index         : Double_Positive := A_Data.First_Index;
+      B_Index         : Double_Positive := B_Data.First_Index;
+      A               : Data_Record;
+      B               : Data_Record;
+      Click_Delay     : Double_Positive;
+      Count           : Natural := 0;
+      anEvent         : NIST_Event_Record;
+      Events          : Nist_Event_List;
+   begin
+      --  type Data_Record is record
+      --     Channel     : Channel_Type;
+      --     Time_Tag    : Double_Positive;
+      --     Transfer_ID : Integer := 0;
+      --  end record;
+      while A_Index <= A_Data.Last_Index - 2 and then
+       B_Index < B_Data.Last_Index - 2 loop
+         Count := Count + 1;
+         A := A_Data (A_Index);
+         B := B_Data (B_Index);
+         if A_Data (A_Index + 2).Channel = Click or else
+          B_Data (B_Index + 2).Channel = Click then
+            --  Put_Line (Routine_Name & "A and B Indices: " &
+            --   Integer'Image (Integer (A_Index)) & ", B_Index: " &
+            --   Integer'Image (Integer (B_Index)));
+
+            Assert (A.Channel = Sync and then B.Channel = Sync,
+            Routine_Name & "A.Channel:" &
+            Channel_Type'Image (A.Channel) & " at index " &
+            Integer'Image (Integer (A_Index)) &
+            "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
+            Integer'Image (Integer (B_Index)));
+            anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+            anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+            anEvent.B_Setting := B_Data (B_Index + 1).Channel;
+            anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+
+            if A_Data (A_Index + 2).Channel = Click then
+               Click_Delay := A_Data (A_Index + 2).Time_Tag -
+                              A_Data (A_Index).Time_Tag;  --  Sync Time_Tag
+               anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
+                   Natural (Click_Delay / Pulse_Interval));
+               A_Index := A_Index + 3;
+            else
+               anEvent.A_Click_Mask := 0;
+               A_Index := A_Index + 2;
+            end if;
+
+            if B_Data (B_Index + 2).Channel = Click then
+               Click_Delay := B_Data (B_Index + 2).Time_Tag -
+                              B_Data (B_Index).Time_Tag;  --  Sync Time_Tag
+               anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
+                   Natural (Click_Delay / Pulse_Interval));
+
+               B_Index := B_Index + 3;
+            else
+               B_Index := B_Index + 2;
+            end if;
+            Events.Append (anEvent);
+         else
+            A_Index := A_Index + 1;
+            B_Index := B_Index + 1;
+         end if;
+
+      end loop;
+
+      return Events;
 
    exception
       when Error : others =>
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
+
    end Build_Event_List;
 
    procedure Load_NIST_Data (Source_File : String;
@@ -96,92 +161,6 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Load_NIST_Data;
-
-   function Match_Events (A_Data, B_Data : Nist_Data_List)
-    return Nist_Event_List is
-      use Interfaces;
-      use Nist_Data_Package;
-      Routine_Name    : constant String := "Process_Data.Match_Events ";
-      Pulse_Interval  : constant Double_Positive := 8064;
-      A_Index         : Double_Positive := A_Data.First_Index;
-      B_Index         : Double_Positive := B_Data.First_Index;
-      A               : Data_Record;
-      B               : Data_Record;
-      Click_Delay     : Double_Positive;
-      Count           : Natural := 0;
-      anEvent         : NIST_Event_Record;
-      Events          : Nist_Event_List;
-   begin
-      --  type Data_Record is record
-      --     Channel     : Channel_Type;
-      --     Time_Tag    : Double_Positive;
-      --     Transfer_ID : Integer := 0;
-      --  end record;
-      while A_Index <= A_Data.Last_Index - 2 and then
-       B_Index < B_Data.Last_Index - 2 loop
-         Count := Count + 1;
-         A := A_Data (A_Index);
-         B := B_Data (B_Index);
-         if A_Data (A_Index + 2).Channel = Click or else
-          B_Data (B_Index + 2).Channel = Click then
-            --  Put_Line (Routine_Name & "A and B Indices: " &
-            --   Integer'Image (Integer (A_Index)) & ", B_Index: " &
-            --   Integer'Image (Integer (B_Index)));
-
-            Assert (A.Channel = Sync and then B.Channel = Sync,
-            Routine_Name & "Non-Sync data:" & "A.Channel:" &
-            Channel_Type'Image (A.Channel) & " at index " &
-            Integer'Image (Integer (A_Index)) &
-            "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
-            Integer'Image (Integer (B_Index)));
-            anEvent.A_Setting := A_Data (A_Index + 1).Channel;
-            anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
-            anEvent.B_Setting := B_Data (B_Index + 1).Channel;
-            anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
-
-            if A_Data (A_Index + 2).Channel = Click then
-               Click_Delay := A_Data (A_Index + 2).Time_Tag -
-                              A_Data (A_Index).Time_Tag;  --  Sync Time_Tag
-               anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
-                   Natural (Click_Delay / Pulse_Interval));
-               A_Index := A_Index + 3;
-            else
-               anEvent.A_Click_Mask := 0;
-               A_Index := A_Index + 2;
-            end if;
-
-            if B_Data (B_Index + 2).Channel = Click then
-               Click_Delay := B_Data (B_Index + 2).Time_Tag -
-                              B_Data (B_Index).Time_Tag;  --  Sync Time_Tag
-               anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
-                   Natural (Click_Delay / Pulse_Interval));
-
-               B_Index := B_Index + 3;
-            else
-               B_Index := B_Index + 2;
-            end if;
-            Events.Append (anEvent);
-         else
-            A_Index := A_Index + 1;
-            B_Index := B_Index + 1;
-         end if;
-
-      end loop;
-
-      --  Put_Line (Routine_Name & "Max Click_Delay" &
-      --     Double_Positive'Image (Max_Click_Delay));
-      --  Put_Line (Routine_Name & "Max Click_Delay / 16:" &
-      --     Double_Positive'Image (Max_Click_Delay / 16));
-      --  Print_NIST_Event_List ("Events", Events, 1, 8);
-
-      return Events;
-
-   exception
-      when Error : others =>
-         Put_Line (Routine_Name & Exception_Information (Error));
-         raise;
-
-   end Match_Events;
 
    --  function Match_Syncs (A_Data, B_Data : Nist_Data_List)
    --      return Match_List  is
