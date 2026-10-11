@@ -13,6 +13,7 @@ with Types; use Types;
 
 package body Process_Data is
 
+   procedure Get_Next_Sync_Index (Data : Nist_Data_List; Index : in out Double_Positive);
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
@@ -44,40 +45,40 @@ package body Process_Data is
          B := B_Data (B_Index);
          if A_Data (A_Index + 2).Channel = Click or else
           B_Data (B_Index + 2).Channel = Click then
-            --  Put_Line (Routine_Name & "A and B Indices: " &
-            --   Integer'Image (Integer (A_Index)) & ", B_Index: " &
-            --   Integer'Image (Integer (B_Index)));
+            Put_Line (Routine_Name & "A and B line numbers: " &
+             Integer'Image (Integer (A_Index + 1)) & ", B_Index: " &
+             Integer'Image (Integer (B_Index + 1)));
 
             Assert (A.Channel = Sync and then B.Channel = Sync,
-            Routine_Name & "A.Channel:" &
-            Channel_Type'Image (A.Channel) & " at index " &
-            Integer'Image (Integer (A_Index)) &
-            "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
-            Integer'Image (Integer (B_Index)));
+               Routine_Name & "A.Channel:" &
+               Channel_Type'Image (A.Channel) & " at index " &
+               Integer'Image (Integer (A_Index)) &
+               "; B.Channel:" & Channel_Type'Image (B.Channel) & " at index " &
+               Integer'Image (Integer (B_Index)));
             anEvent.A_Setting := A_Data (A_Index + 1).Channel;
-            anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+            anEvent.A_Time_Tag := A.Time_Tag;
             anEvent.B_Setting := B_Data (B_Index + 1).Channel;
-            anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+            anEvent.B_Time_Tag := B.Time_Tag;
 
             if A_Data (A_Index + 2).Channel = Click then
-               Click_Delay := A_Data (A_Index + 2).Time_Tag -
-                              A_Data (A_Index).Time_Tag;  --  Sync Time_Tag
+               Click_Delay := A_Data (A_Index + 2).Time_Tag - A.Time_Tag;
                anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
                    Natural (Click_Delay / Pulse_Interval));
                A_Index := A_Index + 3;
+               Get_Next_Sync_Index (A_Data, A_Index);
             else
                anEvent.A_Click_Mask := 0;
                A_Index := A_Index + 2;
             end if;
 
             if B_Data (B_Index + 2).Channel = Click then
-               Click_Delay := B_Data (B_Index + 2).Time_Tag -
-                              B_Data (B_Index).Time_Tag;  --  Sync Time_Tag
+               Click_Delay := B_Data (B_Index + 2).Time_Tag - B.Time_Tag;
                anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
                    Natural (Click_Delay / Pulse_Interval));
-
                B_Index := B_Index + 3;
+               Get_Next_Sync_Index (B_Data, B_Index);
             else
+               anEvent.B_Click_Mask := 0;
                B_Index := B_Index + 2;
             end if;
             Events.Append (anEvent);
@@ -96,6 +97,20 @@ package body Process_Data is
          raise;
 
    end Build_Event_List;
+
+   procedure Get_Next_Sync_Index (Data : Nist_Data_List; Index : in out Double_Positive) is
+      use Nist_Data_Package;
+      --  Routine_Name : constant String := "Process_Data.Get_Next_Sync_Index ";
+   begin
+      while Index <= Data.Last_Index - 2 and then
+       Data (Index).Channel /= Sync loop
+         Index := Index + 1;
+      end loop;
+
+      --  if Index > Data.Last_Index then
+      --     Put_Line (Routine_Name & "No more syncs found in data list");
+      --  end if;
+      end Get_Next_Sync_Index;
 
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0) is
