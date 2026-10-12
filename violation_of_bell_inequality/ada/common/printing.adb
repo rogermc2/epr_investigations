@@ -294,7 +294,8 @@ procedure Print_Sample_Data_List (Name : String; Data : Sample_Data_List;
             Item := Data (Index);
             Put_Line (UV'Image (Item.A_Detection) & "  " &
                UV'Image (Item.B_Detection) & "  " & UV'Image (Item.AB) &
-               ", " & Double_Positive'Image (Item.AB_Time));
+               ", " & Double_Positive'Image (Item.A_Time) &
+               ", " & Double_Positive'Image (Item.B_Time));
          end loop;
       else
          Put_Line

@@ -1,12 +1,12 @@
 
 with Ada.Assertions; use Ada.Assertions;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Numerics;
---  with Ada.Strings;
---  with Ada.Strings.Fixed;
---  with Ada.Strings.Maps;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Printing; use Printing;
+--  with Printing; use Printing;
 
 package body Process_Data is
 
@@ -15,10 +15,15 @@ package body Process_Data is
    function Check_For_False_Positives
      (OEM_ID          : File_Type; File_Name : String;
       False_Count, True_Count : out Natural) return Sample_Data_List is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      Routine_Name     : constant String :=
+       "Process_Data.Check_For_False_Positives ";
       A_Result         : String_2;
       B_Result         : String_2;
       Sample           : Sample_Data_Record;
       False_Detections : Sample_Data_List;
+      Pos              : Natural := 0;
       Count            : Natural := 0;
    begin
       --  Put_Line ("False Positives For: " & File_Name);
@@ -33,9 +38,12 @@ package body Process_Data is
             B_Result := aLine (4 .. 5);
             Sample.A_Detection := Sample_Val (A_Result);
             Sample.B_Detection := Sample_Val (B_Result);
+            Pos := Index (aLine, ",", 7);
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
-            Sample.AB_Time :=
-               Double_Positive'Value (aLine (7 .. aLine'Last));
+            Sample.A_Time :=
+               Double_Positive'Value (aLine (7 .. Pos - 1));
+            Sample.B_Time :=
+               Double_Positive'Value (aLine (Pos + 1 .. aLine'Last));
          end;
 
          if File_Name = "aa.csv" or File_Name = "bb.csv" then
@@ -67,6 +75,11 @@ package body Process_Data is
       end loop;
 
       return False_Detections;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
 
    end Check_For_False_Positives;
 
@@ -105,13 +118,21 @@ package body Process_Data is
 
       return False_Detections;
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+
    end False_Positives;
 
    function Get_Detections (Detection_Data : String)
       return Sample_Data_List is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
       Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
       Sample       : Sample_Data_Record;
+      Pos          : Natural := 0;
       Detections   : Sample_Data_List;
    begin
       if Detection_Data'Length < 2 then
@@ -126,7 +147,10 @@ package body Process_Data is
             Sample.A_Detection := Sample_Val (aLine (1 .. 2));
             Sample.B_Detection := Sample_Val (aLine (4 .. 5));
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
-            Sample.AB_Time := Double_Positive'Value (aLine (7 .. aLine'Last));
+            Pos := Index (aLine, ",", 7);
+            Sample.A_Time := Double_Positive'Value (aLine (7 .. Pos - 1));
+            Sample.B_Time :=
+            Double_Positive'Value (aLine (Pos + 1 .. aLine'Last));
          end;
          Detections.Append (Sample);
       end loop;
@@ -135,11 +159,16 @@ package body Process_Data is
 
       return Detections;
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
    end Get_Detections;
 
    procedure Sample_Means (Data                    : Sample_Data_List;
                            Mean_A, Mean_B, Mean_AB : out Float) is
       use Sample_Data_Package;
+      Routine_Name : constant String := "Process_Data.Sample_Means ";
       A      : UV;
       B      : UV;
       Sum_A  : Integer := 0;
@@ -149,7 +178,7 @@ package body Process_Data is
       Curs   : Cursor := Data.First;
       Item   : Sample_Data_Record;
    begin
-      Print_Sample_Data_List ("Sample_Means, Data", Data, 1, 5);
+      --  Print_Sample_Data_List ("Sample_Means, Data", Data, 1, 5);
       while Has_Element (Curs) loop
          Item := Element (Curs);
          Count := Count + 1;
@@ -173,6 +202,10 @@ package body Process_Data is
       Mean_B := Float (Sum_B) / Float (Count);
       Mean_AB := Float (Sum_AB) / Float (Count);
 
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
    end Sample_Means;
 
    function Sample_Val (Result : String_2) return UV is

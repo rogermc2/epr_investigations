@@ -7,13 +7,14 @@ with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with NIST_Printing; use NIST_Printing;
-with Printing; use Printing;
+--  with NIST_Printing; use NIST_Printing;
+--  with Printing; use Printing;
 with Types; use Types;
 
 package body Process_Data is
 
-   Max_Click_Delay : constant Interfaces.Unsigned_16 := 32768;
+   --  Max Unsigned_16 is 65,535
+   Max_Click_Delay : constant Interfaces.Unsigned_16 := 16000;
 
    procedure Get_Next_Sync_Index (Data : Nist_Data_List; Index : in out Double_Positive);
    procedure Set_AB_Clicks
@@ -70,11 +71,12 @@ package body Process_Data is
                   A_Data (A_Index + 2).Time_Tag - A_Data (A_Index).Time_Tag;
                anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
                    Natural (Click_Delay / Pulse_Interval));
-               if anEvent.A_Click_Mask = 0 then
-                  Put_Line (Routine_Name & "A Click Delay: " &
-                   Double_Positive'Image (Click_Delay) & ", A.Click_Mask: " &
-                   Unsigned_16'Image (anEvent.A_Click_Mask));
-               end if;
+               --  if anEvent.A_Click_Mask = 0 then
+               --     Put_Line (Routine_Name & "A Click Delay: " &
+               --      Double_Positive'Image (Click_Delay) & ", A.Click_Mask: " &
+               --      Unsigned_16'Image (anEvent.A_Click_Mask));
+               --  end if;
+               A_Index := A_Index + 3;
             else
                anEvent.A_Click_Mask := 0;
                A_Index := A_Index + 2;
@@ -191,7 +193,6 @@ package body Process_Data is
 
    procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name  : String; Events : Nist_Event_List) is
-      use Interfaces;
       use Nist_Event_Package;
       Routine_Name : constant String := "Process_Data.Save_Events ";
       AA_ID        : File_Type;
@@ -199,7 +200,7 @@ package body Process_Data is
       AB_ID        : File_Type;
       BB_ID        : File_Type;
       Events_Curs  : Cursor := First (Events);
-      Rec          : NIST_Event_Record;
+      anEvent      : NIST_Event_Record;
       Click_A      : Integer;
       Click_B      : Integer;
    begin
@@ -209,29 +210,33 @@ package body Process_Data is
       Create (BB_ID, Out_File, BB_File_Name);
 
       while Has_Element (Events_Curs) loop
-         Rec :=  Element (Events_Curs);
-         Set_AB_Clicks (Rec, Click_A, Click_B, Max_Click_Delay);
+         anEvent :=  Element (Events_Curs);
+         Set_AB_Clicks (anEvent, Click_A, Click_B, Max_Click_Delay);
 
-         case Rec.A_Setting is
+         case anEvent.A_Setting is
             when Pol_0 =>
-               if Rec.B_Setting = Pol_0 then
+               if anEvent.B_Setting = Pol_0 then
                   Put (AA_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AA_ID, Double_Positive'Image (Rec.A_Time_Tag));
+                  Put_Line (AA_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
+                   "," & Double_Positive'Image (anEvent.B_Time_Tag));
                else
                   Put (AB_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (AB_ID, Double_Positive'Image (Rec.A_Time_Tag));
+                  Put_Line (AB_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
+                   "," & Double_Positive'Image (anEvent.B_Time_Tag));
                end if;
             when Pol_45 =>
-               if Rec.B_Setting = Pol_0 then
+               if anEvent.B_Setting = Pol_0 then
                   Put(BA_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BA_ID, Double_Positive'Image (Rec.A_Time_Tag));
+                  Put_Line (BA_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
+                   "," & Double_Positive'Image (anEvent.B_Time_Tag));
                else
                   Put (BB_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
-                  Put_Line (BB_ID, Double_Positive'Image (Rec.B_Time_Tag));
+                  Put_Line (BB_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
+                   "," & Double_Positive'Image (anEvent.B_Time_Tag));
                end if;
 
             when others => null;

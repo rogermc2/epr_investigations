@@ -1,10 +1,7 @@
 
---  with Ada.Text_IO; use Ada.Text_IO;
-
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
-with NIST_Printing; use NIST_Printing;
---  with Printing; use Printing;
+--  with NIST_Printing; use NIST_Printing;
 with Process_Data; use Process_Data;
 
 procedure Match is
@@ -12,8 +9,8 @@ procedure Match is
    Directory     : constant String := "../generated_nist_data/";
    A_Source      : constant String := Directory & "A.csv";
    B_Source      : constant String := Directory & "B.csv";
-   A_Aligned      : constant String := Directory & "A_Aligned.csv";
-   B_Aligned      : constant String := Directory & "B_Aligned.csv";
+   A_Aligned     : constant String := Directory & "A_Aligned.csv";
+   B_Aligned     : constant String := Directory & "B_Aligned.csv";
    aa            : constant String := Directory & "aa.csv";
    ab            : constant String := Directory & "ab.csv";
    ba            : constant String := Directory & "ba.csv";
@@ -21,15 +18,7 @@ procedure Match is
    A_Data        : Nist_Data_List;
    B_Data        : Nist_Data_List;
    Events        : Nist_Event_List;
-   Data_Size     : constant Natural := 800;
-   --  Num_Found           : Natural;
-   --  A_Counts            : xxCounts;
-   --  B_Counts            : xxCounts;
-   --  Num_Matches         : Natural;
-   --  Num_aa_Matches      : Natural;
-   --  Num_ab_Matches      : Natural;
-   --  Num_ba_Matches      : Natural;
-   --  Num_bb_Matches      : Natural;
+   Data_Size     : constant Natural := 1310;
 begin
    Load_NIST_Data (A_Source, A_Data, Data_Size);
    Load_NIST_Data (B_Source, B_Data, Data_Size);
