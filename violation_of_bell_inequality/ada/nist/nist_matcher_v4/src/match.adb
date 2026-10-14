@@ -1,7 +1,6 @@
 
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
---  with NIST_Printing; use NIST_Printing;
 with Process_Data; use Process_Data;
 
 procedure Match is
@@ -18,7 +17,7 @@ procedure Match is
    A_Data        : Nist_Data_List;
    B_Data        : Nist_Data_List;
    Events        : Nist_Event_List;
-   Data_Size     : constant Natural := 1310;
+   Data_Size     : constant Natural := 0;
 begin
    Load_NIST_Data (A_Source, A_Data, Data_Size);
    Load_NIST_Data (B_Source, B_Data, Data_Size);
@@ -26,8 +25,6 @@ begin
    Align_Data (A_Data, B_Data);
    Save_Aligned_Data (A_Aligned, A_Data);
    Save_Aligned_Data (B_Aligned, B_Data);
-   --  Print_NIST_Data_List ("Aligned A_Data", A_Data, 15, 24);
-   --  Print_NIST_Data_List ("Aligned B_Data", B_Data, 15, 24);
    Events := Build_Event_List (A_Data, B_Data);
    Save_Events (aa, ab, ba, bb, Events);
 

@@ -13,8 +13,8 @@ with Types; use Types;
 
 package body Process_Data is
 
-   --  Max Unsigned_16 is 65,535
-   Max_Click_Delay : constant Interfaces.Unsigned_16 := 16000;
+   --  Max Unsigned_16 is 65535
+   Max_Click_Delay : constant Interfaces.Unsigned_16 := 65535;
 
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
       anEvent : out NIST_Event_Record;
@@ -27,12 +27,12 @@ package body Process_Data is
    function Build_Event_List (A_Data, B_Data : Nist_Data_List)
     return Nist_Event_List is
       use Nist_Data_Package;
-      Routine_Name    : constant String := "Process_Data.Build_Event_List ";
-      A_Index         : Double_Positive := A_Data.First_Index;
-      B_Index         : Double_Positive := B_Data.First_Index;
-      Count           : Natural := 0;
-      anEvent         : NIST_Event_Record;
-      Events          : Nist_Event_List;
+      Routine_Name : constant String := "Process_Data.Build_Event_List ";
+      A_Index      : Double_Positive := A_Data.First_Index;
+      B_Index      : Double_Positive := B_Data.First_Index;
+      Count        : Natural := 0;
+      anEvent      : NIST_Event_Record;
+      Events       : Nist_Event_List;
    begin
       while A_Index <= A_Data.Last_Index - 2 and then
        B_Index < B_Data.Last_Index - 2 loop
@@ -131,9 +131,9 @@ package body Process_Data is
       Events : in out Nist_Event_List) is
       use Interfaces;
       use Nist_Event_Package;
-      Routine_Name : constant String := "Process_Data.Process_Event ";
-      Pulse_Interval  : constant Double_Positive := 8064;
-      Click_Delay     : Double_Positive;
+      Routine_Name   : constant String := "Process_Data.Process_Event ";
+      Pulse_Interval : constant Double_Positive := 8064;
+      Click_Delay    : Double_Positive;
 
       function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
        return Boolean is
@@ -144,56 +144,56 @@ package body Process_Data is
           Data (Index).Channel = Sync;
       end Is_Click_Frame;
 
-      begin
-         if Is_Click_Frame (A_Data, A_Index) or else
-            Is_Click_Frame (B_Data, B_Index) then
-            anEvent.A_Setting := A_Data (A_Index + 1).Channel;
-            anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
-            anEvent.B_Setting := B_Data (B_Index + 1).Channel;
-            anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+   begin
+      if Is_Click_Frame (A_Data, A_Index) or else
+         Is_Click_Frame (B_Data, B_Index) then
+         anEvent.A_Setting := A_Data (A_Index + 1).Channel;
+         anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+         anEvent.B_Setting := B_Data (B_Index + 1).Channel;
+         anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
 
-            if A_Data (A_Index + 2).Channel = Click then
-            Assert (A_Data (A_Index).Channel = Sync,
-               Routine_Name & "A.Channel:" &
-               Channel_Type'Image (A_Data (A_Index).Channel) & " at index " &
-               Integer'Image (Integer (A_Index)) &
-               "; B.Channel:" & Channel_Type'Image (B_Data (B_Index).Channel) &
-                " at index " & Integer'Image (Integer (B_Index)));
-               Click_Delay :=
-                  A_Data (A_Index + 2).Time_Tag - A_Data (A_Index).Time_Tag;
-               anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
-                   Natural (Click_Delay / Pulse_Interval));
-               A_Index := A_Index + 3;
-            else
-               anEvent.A_Click_Mask := 0;
-               A_Index := A_Index + 2;
-            end if;
-
-            if B_Data (B_Index + 2).Channel = Click then
-            Assert (B_Data (B_Index).Channel = Sync,
-               Routine_Name & "B.Channel:" &
-               Channel_Type'Image (B_Data (B_Index).Channel) &
-                " at index " & Integer'Image (Integer (B_Index)));
-               Click_Delay :=
-                  B_Data (B_Index + 2).Time_Tag - B_Data (B_Index).Time_Tag;
-               anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
-                   Natural (Click_Delay / Pulse_Interval));
-            else
-               anEvent.B_Click_Mask := 0;
-               B_Index := B_Index + 2;
-            end if;
-
-            if anEvent.A_Click_Mask <= Max_Click_Delay and then
-             anEvent.B_Click_Mask <= Max_Click_Delay then
-               Events.Append (anEvent);
-            end if;
+         if A_Data (A_Index + 2).Channel = Click then
+         Assert (A_Data (A_Index).Channel = Sync,
+            Routine_Name & "A.Channel:" &
+            Channel_Type'Image (A_Data (A_Index).Channel) & " at index " &
+            Integer'Image (Integer (A_Index)) &
+            "; B.Channel:" & Channel_Type'Image (B_Data (B_Index).Channel) &
+               " at index " & Integer'Image (Integer (B_Index)));
+            Click_Delay :=
+               A_Data (A_Index + 2).Time_Tag - A_Data (A_Index).Time_Tag;
+            anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
+                  Natural (Click_Delay / Pulse_Interval));
+            A_Index := A_Index + 3;
+         else
+            anEvent.A_Click_Mask := 0;
+            A_Index := A_Index + 2;
          end if;
 
-      exception
-         when Error : others =>
-            Put_Line (Routine_Name & Exception_Information (Error));
-            raise;
-      end Process_Event;
+         if B_Data (B_Index + 2).Channel = Click then
+         Assert (B_Data (B_Index).Channel = Sync,
+            Routine_Name & "B.Channel:" &
+            Channel_Type'Image (B_Data (B_Index).Channel) &
+               " at index " & Integer'Image (Integer (B_Index)));
+            Click_Delay :=
+               B_Data (B_Index + 2).Time_Tag - B_Data (B_Index).Time_Tag;
+            anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
+                  Natural (Click_Delay / Pulse_Interval));
+         else
+            anEvent.B_Click_Mask := 0;
+            B_Index := B_Index + 2;
+         end if;
+
+         if anEvent.A_Click_Mask <= Max_Click_Delay and then
+            anEvent.B_Click_Mask <= Max_Click_Delay then
+            Events.Append (anEvent);
+         end if;
+      end if;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+   end Process_Event;
 
    procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name  : String; Events : Nist_Event_List) is
