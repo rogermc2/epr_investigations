@@ -53,6 +53,9 @@ begin
                      Detections_11, Det_A, Det_B);
    New_Line;
 
+   Print_Float_Line ("CHSH parameter S: ",
+      Mean_AB_00 - Mean_AB_01 + Mean_AB_10 + Mean_AB_11);
+
    Print_Float_Line ("Overall A Sample_Mean: ",
     (Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0);
    Print_Float_Line ("Overall B Sample_Mean: ",
