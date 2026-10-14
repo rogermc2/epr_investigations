@@ -114,9 +114,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="7">
+<lyxtabular version="3" rows="5" columns="6">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -180,27 +179,6 @@ Mean
 
 \begin_layout Plain Layout
 B
-\begin_inset Newline newline
-\end_inset
-
-Sample
-\begin_inset Newline newline
-\end_inset
-
-Mean
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Expected
-\begin_inset Newline newline
-\end_inset
-
-A & B
 \begin_inset Newline newline
 \end_inset
 
@@ -293,19 +271,7 @@ Mean
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-0.10$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $0.00$
+\begin_inset Formula $-0.11$
 \end_inset
 
 
@@ -391,18 +357,6 @@ Mean
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $0.00$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 \begin_inset Formula $-0.96$
 \end_inset
 
@@ -453,7 +407,7 @@ Mean
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $0.15$
+\begin_inset Formula $0.17$
 \end_inset
 
 
@@ -465,19 +419,7 @@ Mean
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-0.09$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $0.00$
+\begin_inset Formula $-0.12$
 \end_inset
 
 
@@ -551,19 +493,7 @@ Mean
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $-0.09$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $0.00$
+\begin_inset Formula $-0.08$
 \end_inset
 
 

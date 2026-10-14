@@ -1,14 +1,11 @@
 
 with Interfaces;
-with Ada.Assertions; use Ada.Assertions;
 with Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with NIST_Printing; use NIST_Printing;
---  with Printing; use Printing;
 with Types; use Types;
 
 package body Process_Data is
@@ -17,7 +14,6 @@ package body Process_Data is
    Max_Click_Delay : constant Interfaces.Unsigned_16 := 65535;
 
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
-      anEvent : out NIST_Event_Record;
       A_Index, B_Index : in out Double_Positive;
       Events : in out Nist_Event_List);
    procedure Set_AB_Clicks
@@ -31,7 +27,6 @@ package body Process_Data is
       A_Index      : Double_Positive := A_Data.First_Index;
       B_Index      : Double_Positive := B_Data.First_Index;
       Count        : Natural := 0;
-      anEvent      : NIST_Event_Record;
       Events       : Nist_Event_List;
    begin
       while A_Index <= A_Data.Last_Index - 2 and then
@@ -40,7 +35,7 @@ package body Process_Data is
          if abs (A_Data (A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < 20 then
             --  This is a confirmed global trial.
             --  Check local SYNC-to-CLICK windows for both A and B separately.
-            Process_Event (A_Data, B_Data, anEvent, A_Index, B_Index, Events);
+            Process_Event (A_Data, B_Data, A_Index, B_Index, Events);
          A_Index := A_Index + 1;
          B_Index := B_Index + 1;
          elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
@@ -125,15 +120,15 @@ package body Process_Data is
          raise;
    end Load_NIST_Data;
 
-   procedure Process_Event
-    (A_Data, B_Data : Nist_Data_List; anEvent : out NIST_Event_Record;
-     A_Index, B_Index : in out Double_Positive;
+   procedure Process_Event (A_Data, B_Data : Nist_Data_List;
+      A_Index, B_Index : in out Double_Positive;
       Events : in out Nist_Event_List) is
       use Interfaces;
       use Nist_Event_Package;
       Routine_Name   : constant String := "Process_Data.Process_Event ";
       Pulse_Interval : constant Double_Positive := 8064;
       Click_Delay    : Double_Positive;
+      anEvent        : NIST_Event_Record;
 
       function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
        return Boolean is
@@ -153,12 +148,6 @@ package body Process_Data is
          anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
 
          if A_Data (A_Index + 2).Channel = Click then
-         Assert (A_Data (A_Index).Channel = Sync,
-            Routine_Name & "A.Channel:" &
-            Channel_Type'Image (A_Data (A_Index).Channel) & " at index " &
-            Integer'Image (Integer (A_Index)) &
-            "; B.Channel:" & Channel_Type'Image (B_Data (B_Index).Channel) &
-               " at index " & Integer'Image (Integer (B_Index)));
             Click_Delay :=
                A_Data (A_Index + 2).Time_Tag - A_Data (A_Index).Time_Tag;
             anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
@@ -170,10 +159,6 @@ package body Process_Data is
          end if;
 
          if B_Data (B_Index + 2).Channel = Click then
-         Assert (B_Data (B_Index).Channel = Sync,
-            Routine_Name & "B.Channel:" &
-            Channel_Type'Image (B_Data (B_Index).Channel) &
-               " at index " & Integer'Image (Integer (B_Index)));
             Click_Delay :=
                B_Data (B_Index + 2).Time_Tag - B_Data (B_Index).Time_Tag;
             anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
@@ -224,7 +209,7 @@ package body Process_Data is
                      & "," & Integer'Image (Click_B) & ",");
                   Put_Line (AA_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
                    "," & Double_Positive'Image (anEvent.B_Time_Tag));
-               else
+               else  --  B_Setting = Pol_45
                   Put (AB_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
                   Put_Line (AB_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
@@ -236,7 +221,7 @@ package body Process_Data is
                      & "," & Integer'Image (Click_B) & ",");
                   Put_Line (BA_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
                    "," & Double_Positive'Image (anEvent.B_Time_Tag));
-               else
+               else  --  B_Setting = Pol_45
                   Put (BB_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
                   Put_Line (BB_ID, Double_Positive'Image (anEvent.A_Time_Tag) &
