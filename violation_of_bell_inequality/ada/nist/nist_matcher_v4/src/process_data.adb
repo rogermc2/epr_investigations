@@ -33,14 +33,22 @@ package body Process_Data is
       Count           : Natural := 0;
       anEvent         : NIST_Event_Record;
       Events          : Nist_Event_List;
-
    begin
       while A_Index <= A_Data.Last_Index - 2 and then
        B_Index < B_Data.Last_Index - 2 loop
          Count := Count + 1;
-         Process_Event (A_Data, B_Data, anEvent, A_Index, B_Index, Events);
+         if abs (A_Data (A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < 20 then
+            --  This is a confirmed global trial.
+            --  Check local SYNC-to-CLICK windows for both A and B separately.
+            Process_Event (A_Data, B_Data, anEvent, A_Index, B_Index, Events);
          A_Index := A_Index + 1;
          B_Index := B_Index + 1;
+         elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
+            --  A's clock is lagging B's clock.
+            A_Index := A_Index + 1;
+         else  --  B's clock is lagging than A's clock.
+            B_Index := B_Index + 1;
+         end if;
       end loop;
 
       return Events;
