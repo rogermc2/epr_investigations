@@ -16,12 +16,15 @@ package body Process_Data is
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
       A_Index, B_Index : in out Double_Positive;
       Events : in out Nist_Event_List);
+   procedure Process_Event_2 (A_Data, B_Data : Nist_Data_List;
+      A_Index, B_Index : in out Double_Positive;
+      Events : in out Nist_Event_List);
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
 
-   function Build_Event_List (A_Data, B_Data : Nist_Data_List)
-    return Nist_Event_List is
+   function Build_Event_List (A_Data, B_Data : Nist_Data_List;
+       Events_Kind : Events_Type) return Nist_Event_List is
       use Nist_Data_Package;
       Routine_Name : constant String := "Process_Data.Build_Event_List ";
       A_Index      : Double_Positive := A_Data.First_Index;
@@ -35,7 +38,11 @@ package body Process_Data is
          if abs (A_Data (A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < 20 then
             --  This is a confirmed global trial.
             --  Check local SYNC-to-CLICK windows for both A and B separately.
-            Process_Event (A_Data, B_Data, A_Index, B_Index, Events);
+            if Events_Kind = Events_1 then
+               Process_Event (A_Data, B_Data, A_Index, B_Index, Events);
+            else
+               Process_Event_2 (A_Data, B_Data, A_Index, B_Index, Events);
+            end if;
          A_Index := A_Index + 1;
          B_Index := B_Index + 1;
          elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
@@ -45,6 +52,8 @@ package body Process_Data is
             B_Index := B_Index + 1;
          end if;
       end loop;
+
+      Put_Line (Routine_Name & "Count:" & Integer'Image (Count));
 
       return Events;
 
@@ -93,9 +102,14 @@ package body Process_Data is
             if Pos_1 - aline'First > 1 then
                Data.Channel :=
                Channel_Type'Value (aline (aline'First .. Pos_1 - 1));
+               if Pos_2 > 0 then
                Data.Time_Tag :=
                   Double_Positive'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
                Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
+               else
+                  Data.Time_Tag :=
+                     Double_Positive'Value (aline (Pos_1 + 1 .. aLine'Last));
+               end if;
             else
                Put_Line (Routine_Name & "aline'First, Pos_1: " &
                Integer'Image (aline'First) & "," & Integer'Image (Pos_1));
@@ -170,8 +184,14 @@ package body Process_Data is
 
          if anEvent.A_Click_Mask <= Max_Click_Delay and then
             anEvent.B_Click_Mask <= Max_Click_Delay then
+            Put_Line (Routine_Name & "Appending Event ");
             Events.Append (anEvent);
+         else
+            Put_Line (Routine_Name & "A, B Click_Masks: " & ", " &
+             Unsigned_16'Image (anEvent.B_Click_Mask));
          end if;
+      else
+         Put_Line (Routine_Name & "not a click");
       end if;
 
    exception
@@ -179,6 +199,71 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Process_Event;
+
+   procedure Process_Event_2 (A_Data, B_Data : Nist_Data_List;
+      A_Index, B_Index : in out Double_Positive;
+      Events : in out Nist_Event_List) is
+      use Interfaces;
+      use Nist_Event_Package;
+      Routine_Name   : constant String := "Process_Data.Process_Event_2 ";
+      Pulse_Interval : constant Double_Positive := 8064;
+      Click_Delay    : Double_Positive;
+      anEvent        : NIST_Event_Record;
+
+      function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
+       return Boolean is
+      begin
+         return Data (Index + 1).Channel = Click and then
+          (Data (Index + 2).Channel = Pol_0 or else
+          Data (Index + 2).Channel = Pol_45) and then
+          Data (Index).Channel = Sync;
+      end Is_Click_Frame;
+
+   begin
+      if Is_Click_Frame (A_Data, A_Index) or else
+         Is_Click_Frame (B_Data, B_Index) then
+         anEvent.A_Setting := A_Data (A_Index + 2).Channel;
+         anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+         anEvent.B_Setting := B_Data (B_Index + 2).Channel;
+         anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+
+         if A_Data (A_Index + 2).Channel = Click then
+            Click_Delay :=
+               A_Data (A_Index + 1).Time_Tag - A_Data (A_Index).Time_Tag;
+            anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
+                  Natural (Click_Delay / Pulse_Interval));
+            A_Index := A_Index + 3;
+         else
+            anEvent.A_Click_Mask := 0;
+            A_Index := A_Index + 2;
+         end if;
+
+         if B_Data (B_Index + 2).Channel = Click then
+            Click_Delay :=
+               B_Data (B_Index + 1).Time_Tag - B_Data (B_Index).Time_Tag;
+            anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
+                  Natural (Click_Delay / Pulse_Interval));
+         else
+            anEvent.B_Click_Mask := 0;
+            B_Index := B_Index + 2;
+         end if;
+
+         if anEvent.A_Click_Mask <= Max_Click_Delay and then
+            anEvent.B_Click_Mask <= Max_Click_Delay then
+            Events.Append (anEvent);
+         else
+            Put_Line (Routine_Name & "Event not added for A, B Click_Masks: " &
+               ", " & Unsigned_16'Image (anEvent.B_Click_Mask));
+         end if;
+      --  else
+      --     Put_Line (Routine_Name & "not a click");
+      end if;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+   end Process_Event_2;
 
    procedure Save_Events (AA_File_Name, AB_File_Name, BA_File_Name,
     BB_File_Name  : String; Events : Nist_Event_List) is

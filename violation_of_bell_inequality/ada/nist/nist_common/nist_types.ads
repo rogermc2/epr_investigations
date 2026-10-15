@@ -10,6 +10,7 @@ package NIST_Types is
    type Unsigned_2_Byte is mod 2**16;
    type Unsigned_8_Byte is mod 2**64;
 
+   type Events_Type is (Events_1, Events_2);
    type Channel_Type is (Click, Pol_0, Pol_45,
                          GPS_Pps, Sync, Overflow, Ch_Error);
    for Channel_Type use (Click => 0, Pol_0 => 2, Pol_45 => 3,

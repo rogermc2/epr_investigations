@@ -1,4 +1,5 @@
 
+with NIST_Printing; use NIST_Printing;
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
 with Process_Data; use Process_Data;
@@ -25,7 +26,8 @@ begin
    Align_Data (A_Data, B_Data);
    Save_Aligned_Data (A_Aligned, A_Data);
    Save_Aligned_Data (B_Aligned, B_Data);
-   Events := Build_Event_List (A_Data, B_Data);
+   Events := Build_Event_List (A_Data, B_Data, Events_2);
+   Print_NIST_Event_List ("Events", Events, 1, 6);
    Save_Events (aa, ab, ba, bb, Events);
 
 end Match;
