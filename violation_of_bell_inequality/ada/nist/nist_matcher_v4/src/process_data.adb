@@ -203,12 +203,9 @@ package body Process_Data is
    procedure Process_Event_2 (A_Data, B_Data : Nist_Data_List;
       A_Index, B_Index : in out Double_Positive;
       Events : in out Nist_Event_List) is
-      use Interfaces;
       use Nist_Event_Package;
-      Routine_Name   : constant String := "Process_Data.Process_Event_2 ";
-      Pulse_Interval : constant Double_Positive := 8064;
-      Click_Delay    : Double_Natural;
-      anEvent        : NIST_Event_Record;
+      Routine_Name : constant String := "Process_Data.Process_Event_2 ";
+      anEvent      : NIST_Event_Record;
 
       function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
        return Boolean is
@@ -228,14 +225,7 @@ package body Process_Data is
          anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
 
          if A_Data (A_Index + 1).Channel = Click then
-            Put_Line (Routine_Name & "A_Index: " &
-                Double_Positive'Image (A_Index));
-            Put_Line (Routine_Name & "A_Data (A_Index).Time_Tag: " &
-                Double_Positive'Image (A_Data (A_Index).Time_Tag));
-            Click_Delay := Types.Double_Natural
-                (A_Data (A_Index + 1).Time_Tag - A_Data (A_Index).Time_Tag);
-            anEvent.A_Click_Mask := Shift_Left (unsigned_16 (1),
-                  Natural (Click_Delay / Double_Natural (Pulse_Interval)));
+            anEvent.A_Click_Mask := 1;
             A_Index := A_Index + 3;
          else
             anEvent.A_Click_Mask := 0;
@@ -243,23 +233,13 @@ package body Process_Data is
          end if;
 
          if B_Data (B_Index + 1).Channel = Click then
-            Click_Delay :=
-               Double_Natural
-                (B_Data (B_Index + 1).Time_Tag - B_Data (B_Index).Time_Tag);
-            anEvent.B_Click_Mask := Shift_Left (unsigned_16 (1),
-                  Natural (Click_Delay / Double_Natural (Pulse_Interval)));
+            anEvent.B_Click_Mask := 1;
          else
             anEvent.B_Click_Mask := 0;
             B_Index := B_Index + 2;
          end if;
 
-         if anEvent.A_Click_Mask <= Max_Click_Delay and then
-            anEvent.B_Click_Mask <= Max_Click_Delay then
-            Events.Append (anEvent);
-         else
-            Put_Line (Routine_Name & "Event not added for A, B Click_Masks: " &
-               ", " & Unsigned_16'Image (anEvent.B_Click_Mask));
-         end if;
+         Events.Append (anEvent);
       end if;
 
    exception
