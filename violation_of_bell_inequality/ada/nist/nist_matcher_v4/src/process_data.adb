@@ -229,14 +229,14 @@ package body Process_Data is
             A_Index := A_Index + 3;
          else
             anEvent.A_Click_Mask := 0;
-            A_Index := A_Index + 2;
+            A_Index := A_Index + 1;
          end if;
 
          if B_Data (B_Index + 1).Channel = Click then
             anEvent.B_Click_Mask := 1;
          else
             anEvent.B_Click_Mask := 0;
-            B_Index := B_Index + 2;
+            B_Index := B_Index + 1;
          end if;
 
          Events.Append (anEvent);

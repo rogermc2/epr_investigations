@@ -127,7 +127,6 @@ package body Process_Data is
       Pol_Setting     : String (1 .. 2);
       Clicked         : Boolean;
       Sync_Pulse      : Boolean;
-      --  Current_Time    : Unsigned_64 := 0;
       Last_Sync_Time  : Unsigned_64 := 0;
       Line_Num        : Double_Natural := 0;
       Num_Clicks      : Natural := 0;

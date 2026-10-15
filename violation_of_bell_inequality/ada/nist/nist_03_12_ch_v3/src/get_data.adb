@@ -4,7 +4,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Process_Data; use Process_Data;
 with Types;
---  with Utils; use Utils;
 
 procedure Get_Data is
    Routine_Name  : constant String := "Get_Data ";
@@ -18,7 +17,7 @@ procedure Get_Data is
    --  B_Source      : constant String := B_Directory &
    --  "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
    B_Source      : constant String := A_Directory &
-    "02_54_CH_pockel_100kHz.run4.afterTimingfix2.alice.dat";
+    "02_54_CH_pockel_100kHz.run4.afterTimingfix2.bob.dat";
    A_Target      : constant String := Target_Dir & "A.csv";
    B_Target      : constant String := Target_Dir & "B.csv";
    Num_Rows      : constant Types.Double_Natural := 100000;
