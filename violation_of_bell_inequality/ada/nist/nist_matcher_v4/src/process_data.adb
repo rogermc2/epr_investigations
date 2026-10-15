@@ -260,8 +260,6 @@ package body Process_Data is
             Put_Line (Routine_Name & "Event not added for A, B Click_Masks: " &
                ", " & Unsigned_16'Image (anEvent.B_Click_Mask));
          end if;
-      --  else
-      --     Put_Line (Routine_Name & "not a click");
       end if;
 
    exception
