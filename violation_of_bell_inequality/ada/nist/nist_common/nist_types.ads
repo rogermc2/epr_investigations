@@ -22,10 +22,20 @@ package NIST_Types is
       Transfer_ID : Unsigned_2_Byte;
    end record;
 
+   type Raw_16_Byte_Data_Record is record
+      Channel     : Interfaces.Unsigned_64;
+      Time_Tag    : Interfaces.Unsigned_64;
+   end record;
+
    type Data_Record is record
       Channel     : Channel_Type;
       Time_Tag    : Double_Positive;
       Transfer_ID : Integer := 0;
+   end record;
+
+   type Data_Record_16_Byte is record
+      Channel     : Channel_Type;
+      Time_Tag    : Interfaces.Unsigned_64;
    end record;
 
    package Nist_Data_Package is new

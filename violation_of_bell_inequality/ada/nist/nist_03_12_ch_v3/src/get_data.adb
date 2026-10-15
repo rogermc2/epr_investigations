@@ -11,16 +11,20 @@ procedure Get_Data is
    A_Directory   : constant String := "../../../../nist_data/";
    B_Directory   : constant String := A_Directory;
    Target_Dir    : constant String := "../generated_nist_data/";
+   --  A_Source      : constant String := A_Directory &
+   --   "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
    A_Source      : constant String := A_Directory &
-    "03_12_CH_pockel_100kHz.run.Blind_2.alice.dat.compressed";
-   B_Source      : constant String := B_Directory &
-   "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
+    "02_54_CH_pockel_100kHz.run4.afterTimingfix2.alice.dat";
+   --  B_Source      : constant String := B_Directory &
+   --  "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
+   B_Source      : constant String := A_Directory &
+    "02_54_CH_pockel_100kHz.run4.afterTimingfix2.alice.dat";
    A_Target      : constant String := Target_Dir & "A.csv";
    B_Target      : constant String := Target_Dir & "B.csv";
    Num_Rows      : constant Types.Double_Natural := 100000;
 begin
-   Load_NIST_Data (A_Source, A_Target, Num_Rows);
-   Load_NIST_Data (B_Source, B_Target, Num_Rows);
+   Load_NIST_Data_2 (A_Source, A_Target, Num_Rows);
+   Load_NIST_Data_2 (B_Source, B_Target, Num_Rows);
    New_Line;
 
 exception
