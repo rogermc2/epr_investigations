@@ -9,13 +9,15 @@ with Types; use Types;
 with Utils; use Utils;
 
 procedure Process is
-   Routine_Name    : constant String := "Process ";
-   Pairs_Directory : constant String := "../generated_nist_data/";
+   Routine_Name        : constant String := "Process ";
+   Directory           : constant String := "../generated_nist_data/";
    --  Det_Pairs_In    : constant String := Pairs_Directory & "combined_det.csv";
-   Sync_Pairs_In   : constant String := Pairs_Directory & "combined_sync.csv";
-   Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
-   Matched_Det_Pairs : constant String :=
-    Pairs_Directory & "matched_det_pairs.csv";
+   A_Source            : constant String := Directory & "A.csv";
+   B_Source            : constant String := Directory & "B.csv";
+   --  Sync_Pairs_In       : constant String := Pairs_Directory & "combined_sync.csv";
+       Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
+   --  Matched_Det_Pairs : constant String :=
+   --   Pairs_Directory & "matched_det_pairs.csv";
    Width               : constant Natural := 50000;
    Delta_Val           : Double_Natural;
    Num_Found           : Natural;
@@ -24,7 +26,7 @@ procedure Process is
 begin
    --  Put_Line (Routine_Name & "Sync_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Sync_Pairs_In)) & " lines");
-   Match_Syncs (Sync_Pairs_In, Matched_Sync, Width, Num_Found,
+   Match_Syncs (A_Source, B_Source, Matched_Sync, Width, Num_Found,
                Selected_Sync_Pairs, Delta_Val);
    if Num_Found > 0 then
       Put_Line (Routine_Name & "matched sync pairs found:" &

@@ -11,23 +11,26 @@ package body Process_Sync_Data is
 
    procedure Save_Match_List (File_Name : String; Index_Pairs : Match_List);
 
-   procedure Load_Sync_Data (CSV_Data : String;
+   procedure Load_Sync_Data (A_Source, B_Source : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
       Routine_Name : constant String := "Process_Sync_Data.Load_Sync_Data ";
-      File_ID      : File_Type;
-      Header       : String_23;
+      A_ID         : File_Type;
+      B_ID         : File_Type;
       A_String     : String_19;
       B_String     : String_19;
-      aLine        : String_40;
+      A_Line       : String_40;
+      B_Line       : String_40;
       Item         : Setting_Time_Record;
    begin
-      Open (File_ID, In_File, CSV_Data);
-      Header := Get_Line (File_ID);        -- Skip header
+      Open (A_ID, In_File, A_Source);
+      Open (B_ID, In_File, B_Source);
       Item.Setting := Sync;
-      while not End_Of_File (File_ID) loop
-         aLine := Get_Line (File_ID);
-         A_String := aLine (aLine'First .. aLine'First + 18);
-         B_String := aLine (aLine'First + 21 .. aLine'Last);
+      while not End_Of_File (A_ID) and then
+         not End_Of_File (B_ID) loop
+         A_Line := Get_Line (A_ID);
+         B_Line := Get_Line (B_ID);
+         A_String := A_Line (aLine'First .. aLine'First + 18);
+         B_String := B_Line (aLine'First + 21 .. aLine'Last);
          Item.Time := Double_Natural'Value (A_String (1 .. 19));
          Sync_Data_A.Append (Item);
          Item.Time := Double_Natural'Value (B_String (1 .. 19));
@@ -48,7 +51,7 @@ package body Process_Sync_Data is
    end Load_Sync_Data;
 
    procedure Match_Syncs
-     (Sync_Pairs_CSV, Matched_Sync_CSV : String; Width : Natural;
+     (A_Source, B_Source, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
       Offset    : out Double_Natural) is
       use Histogram;
@@ -115,7 +118,7 @@ package body Process_Sync_Data is
       Num_Found := 0;
       Put_Line (Routine_Name &
                 "Source file, Sync_Pairs_CSV: " & Sync_Pairs_CSV);
-      Load_Sync_Data (Sync_Pairs_CSV, A_Data, B_Data);
+      Load_Sync_Data (A_Source, B_Source, A_Data, B_Data);
 
       --  If Align_Timing_Data is not called for Sync data, Draw_Histagram will
       --  exhibit a Bin index out of range error.
