@@ -1,6 +1,8 @@
 
 --  with Ada.Directories;
 with Ada.Exceptions;  use Ada.Exceptions;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
@@ -13,39 +15,42 @@ package body Process_Sync_Data is
 
    procedure Load_Sync_Data (A_Source, B_Source : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
       Routine_Name : constant String := "Process_Sync_Data.Load_Sync_Data ";
       A_ID         : File_Type;
       B_ID         : File_Type;
-      A_String     : String_19;
-      B_String     : String_19;
-      A_Line       : String_40;
-      B_Line       : String_40;
       Item         : Setting_Time_Record;
    begin
       Open (A_ID, In_File, A_Source);
       Open (B_ID, In_File, B_Source);
+
       Item.Setting := Sync;
       while not End_Of_File (A_ID) and then
          not End_Of_File (B_ID) loop
-         A_Line := Get_Line (A_ID);
-         B_Line := Get_Line (B_ID);
-         A_String := A_Line (aLine'First .. aLine'First + 18);
-         B_String := B_Line (aLine'First + 21 .. aLine'Last);
-         Item.Time := Double_Natural'Value (A_String (1 .. 19));
-         Sync_Data_A.Append (Item);
-         Item.Time := Double_Natural'Value (B_String (1 .. 19));
-         Sync_Data_B.Append (Item);
+         declare
+            A_Line : constant String := Get_Line (A_ID);
+            B_Line : constant String := Get_Line (B_ID);
+            Pos_A  : constant Natural := Index (A_Line, ",", 1);
+            Pos_B  : constant Natural := Index (B_Line, ",", 1);
+         begin
+            Item.Time := Double_Natural'Value (A_Line (Pos_A + 1 .. A_Line'Last));
+            Sync_Data_A.Append (Item);
+            Item.Time := Double_Natural'Value (B_Line (Pos_B + 1 .. B_Line'Last));
+            Sync_Data_B.Append (Item);
+         end;
       end loop;
-      Put_Line (Routine_Name & "Sync_Data_B loaded");
+      Put_Line (Routine_Name & "Sync_Data loaded from");
+      Put_Line (A_Source & " and " & B_Source);
       New_Line;
 
-      Close (File_ID);
+      Close (A_ID);
+      Close (B_ID);
 
    exception
       when Error : others =>
          New_Line;
          Put_Line (Routine_Name & Exception_Information (Error));
-         Put_Line ("aLine: " & aLine);
          raise;
 
    end Load_Sync_Data;
@@ -97,11 +102,11 @@ package body Process_Sync_Data is
                      Item := (To_Index (A_Curs), To_Index (B_Curs));
                      Selected_Pairs.Append (Item);
                      Num_Found := Num_Found + 1;
-                     if Num_Found < 6 then
-                        Put_Line (Routine_Name & "Match, A, B index:" &
-                        Double_Positive'Image (To_Index (A_Curs)) & ",  " &
-                                    Double_Positive'Image (To_Index (B_Curs)));
-                     end if;
+                     --  if Num_Found < 6 then
+                     --     Put_Line (Routine_Name & "Match, A, B index:" &
+                     --     Double_Positive'Image (To_Index (A_Curs)) & ",  " &
+                     --                 Double_Positive'Image (To_Index (B_Curs)));
+                     --  end if;
                   end if;
                end if;
             end if;
@@ -116,8 +121,8 @@ package body Process_Sync_Data is
 
    begin
       Num_Found := 0;
-      Put_Line (Routine_Name &
-                "Source file, Sync_Pairs_CSV: " & Sync_Pairs_CSV);
+      --  Put_Line (Routine_Name &
+      --            "Source file, Sync_Pairs_CSV: " & Sync_Pairs_CSV);
       Load_Sync_Data (A_Source, B_Source, A_Data, B_Data);
 
       --  If Align_Timing_Data is not called for Sync data, Draw_Histagram will
@@ -132,11 +137,8 @@ package body Process_Sync_Data is
       Next (B_Curs);  --  Skip header
       A_Data.Iterate (Find_Match'Access);
       New_Line;
-      --  Put_Line (Routine_Name & "Selected_Pairs length:" &
-      --              Integer'Image (Integer (Selected_Pairs.Length)));
 
       Save_Match_List (Matched_Sync_CSV, Selected_Pairs);
-      --  New_Line;
 
    exception
       when Error : others =>

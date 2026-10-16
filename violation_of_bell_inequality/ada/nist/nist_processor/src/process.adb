@@ -6,7 +6,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Process_Sync_Data; use Process_Sync_Data;
 with Printing; use Printing;
 with Types; use Types;
-with Utils; use Utils;
+--  with Utils; use Utils;
 
 procedure Process is
    Routine_Name        : constant String := "Process ";
@@ -15,7 +15,7 @@ procedure Process is
    A_Source            : constant String := Directory & "A.csv";
    B_Source            : constant String := Directory & "B.csv";
    --  Sync_Pairs_In       : constant String := Pairs_Directory & "combined_sync.csv";
-       Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
+       Matched_Sync    : constant String := Directory & "matched_sync.csv";
    --  Matched_Det_Pairs : constant String :=
    --   Pairs_Directory & "matched_det_pairs.csv";
    Width               : constant Natural := 50000;
@@ -46,8 +46,8 @@ begin
       Put_Line (Routine_Name & "No matched detection pairs found!");
    end if;
 
-   Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
-        Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");
+   --  Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
+   --       Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");
    Put_Line (Routine_Name & "Selected_Det_Pairs length " & integer'Image
           (integer (Match_Package.Length (Selected_Det_Pairs))));
 
