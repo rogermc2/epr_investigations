@@ -24,22 +24,19 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
    Bin_Size       : constant Double_Integer := 1;
    Num_Bins       : constant Positive := 18;
    --  Define tight time-of-flight boundaries in clock ticks
-   Min_Valid_Bin : constant Positive := 1;
+   --  Min_Valid_Bin : constant Double_Natural := 1;
    --  Cap right before the Bin 16 zero-point
-   Max_Valid_Bin : constant Positive := 15;
+   Max_Valid_Bin : constant Double_Natural := 15;
    Index_B        : Double_Positive := B_Data.First_Index;
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
    Bins           : Bin_Array (1 .. Num_Bins) := (others => 0);
    Bin_Index      : Positive;
-   Current_Value  : Double_Natural;
+   Current_Value  : Double_Natural := 0;
    Total_Records  : Double_Natural := 0;
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
    Best_Delta     : Double_Natural := 0;
-   --  Define tight time-of-flight boundaries in clock ticks
-   Min_Valid_Bin : constant Positive := 1;
-   Max_Valid_Bin : constant Positive := 15; -- Capping right before the Bin 16 zero-point
 
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
@@ -93,9 +90,13 @@ begin
    end loop;
 
    Curs_Delta := Delta_Data.First;
-   while Has_Element (Curs_Delta) loop
+   while Has_Element (Curs_Delta) and then
+      Total_Records <= Max_Valid_Bin loop
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
+      Put_Line (Routine_Name & "Total_Records, Current_Value: " &
+          Double_Natural'Image (Total_Records) &
+          Double_Natural'Image (Current_Value));
 
       Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
