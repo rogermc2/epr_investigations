@@ -43,8 +43,8 @@ package body Process_Data is
             else
                Process_Event_2 (A_Data, B_Data, A_Index, B_Index, Events);
             end if;
-         A_Index := A_Index + 1;
-         B_Index := B_Index + 1;
+            A_Index := A_Index + 1;
+            B_Index := B_Index + 1;
          elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
             --  A's clock is lagging B's clock.
             A_Index := A_Index + 1;

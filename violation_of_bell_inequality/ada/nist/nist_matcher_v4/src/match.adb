@@ -26,6 +26,8 @@ begin
    Align_Data (A_Data, B_Data);
    Save_Aligned_Data (A_Aligned, A_Data);
    Save_Aligned_Data (B_Aligned, B_Data);
+   Print_NIST_Data_List ("A_Aligned", A_Data, 9, 17);
+   Print_NIST_Data_List ("B_Aligned", B_Data, 9, 17);
    Events := Build_Event_List (A_Data, B_Data, Events_2);
    Print_NIST_Event_List ("Events", Events, 1, 6);
    Save_Events (aa, ab, ba, bb, Events);
