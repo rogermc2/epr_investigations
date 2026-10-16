@@ -22,7 +22,11 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
    Bin_Size       : constant Double_Integer := 1;
-   Num_Bins       : constant Positive := 10;
+   Num_Bins       : constant Positive := 18;
+   --  Define tight time-of-flight boundaries in clock ticks
+   Min_Valid_Bin : constant Positive := 1;
+   --  Cap right before the Bin 16 zero-point
+   Max_Valid_Bin : constant Positive := 15;
    Index_B        : Double_Positive := B_Data.First_Index;
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
@@ -33,6 +37,10 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
    Best_Delta     : Double_Natural := 0;
+   --  Define tight time-of-flight boundaries in clock ticks
+   Min_Valid_Bin : constant Positive := 1;
+   Max_Valid_Bin : constant Positive := 15; -- Capping right before the Bin 16 zero-point
+
    function Find_Nearest
        (Index_A : Double_Positive; Index_B : in out Double_Positive)
         return Double_Natural is
@@ -148,7 +156,8 @@ procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer) is
 begin
    Put_Line ("--- Data Distribution Histogram ---");
    Put_Line ("Bin size: " & Double_Integer'Image (Bin_Size));
-   Put_Line ("Bin Range (dt) | Frequency | Bar Chart");
+   Put_Line ("Bin Range (dt) | Frequency |");
+   --  Put_Line ("Bin Range (dt) | Frequency | Bar Chart");
    Put_Line ("------------------------------------");
 
    for I in Bins'Range loop
