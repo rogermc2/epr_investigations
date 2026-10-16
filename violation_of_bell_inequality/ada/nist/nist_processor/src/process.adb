@@ -1,6 +1,9 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Data_Selection; use Data_Selection;
+--  with Histogram; use Histogram;
+with Process_Sync_Data; use Process_Sync_Data;
 with Printing; use Printing;
 with Types; use Types;
 with Utils; use Utils;
@@ -8,23 +11,23 @@ with Utils; use Utils;
 procedure Process is
    Routine_Name    : constant String := "Match_Times ";
    Pairs_Directory : constant String := "../generated_nist_data/";
-   Det_Pairs_In    : constant String := Pairs_Directory & "combined_det.csv";
+   --  Det_Pairs_In    : constant String := Pairs_Directory & "combined_det.csv";
    Sync_Pairs_In   : constant String := Pairs_Directory & "combined_sync.csv";
    Matched_Sync    : constant String := Pairs_Directory & "matched_sync.csv";
    Matched_Det_Pairs : constant String :=
     Pairs_Directory & "matched_det_pairs.csv";
-   Det_aa              : constant String := Pairs_Directory & "aa.csv";
-   Det_ab              : constant String := Pairs_Directory & "ab.csv";
-   Det_ba              : constant String := Pairs_Directory & "ba.csv";
-   Det_bb              : constant String := Pairs_Directory & "bb.csv";
+   --  Det_aa              : constant String := Pairs_Directory & "aa.csv";
+   --  Det_ab              : constant String := Pairs_Directory & "ab.csv";
+   --  Det_ba              : constant String := Pairs_Directory & "ba.csv";
+   --  Det_bb              : constant String := Pairs_Directory & "bb.csv";
    Width               : constant Natural := 50000;
    Delta_Val           : Double_Natural;
    Num_Found           : Natural;
-   A_Counts            : xxCounts;
-   B_Counts            : xxCounts;
+   --  A_Counts            : xxCounts;
+   --  B_Counts            : xxCounts;
    --  Min_Width       : Float;
    --  Max_Width       : Float;
-   Num_Matches         : Natural;
+   --  Num_Matches         : Natural;
    --  Num_aa_Matches      : Natural;
    --  Num_ab_Matches      : Natural;
    --  Num_ba_Matches      : Natural;
@@ -49,9 +52,9 @@ begin
    Delta_Val := 55000;  --  max 23 at 55000, width 50000
    --  Match_Detection_Times (Det_Pairs_In, Matched_Det_Pairs, Width, Delta_Val,
    --  Num_Matches, Selected_Det_Pairs);
-   if Num_Matches > 0 then
+   if Num_Found > 0 then
       Put_Line (Routine_Name & "matched detection pairs found:" &
-       Integer'Image (Num_Matches));
+       Integer'Image (Num_Found));
    else
       Put_Line (Routine_Name & "No matched detection pairs found!");
    end if;
@@ -62,8 +65,9 @@ begin
           (integer (Match_Package.Length (Selected_Det_Pairs))));
    --  Num_Matches := Number_Of_Matches (Matched_Det);
 
-   Select_Data (Matched_Det_Pairs, Det_aa, Det_ab, Det_ba, Det_bb,
-        A_Counts, B_Counts, Selected_Det_Pairs);
+   --  Select_Data
+   --    (OEM_A, OEM_B,, Det_aa, Det_ab, Det_ba, Det_bb,
+   --     A_Counts, B_Counts, Selected_Det_Pairs
 
    --  Num_aa_Matches := Number_Of_Matches (Det_aa);
    --  Num_ab_Matches := Number_Of_Matches (Det_ab);

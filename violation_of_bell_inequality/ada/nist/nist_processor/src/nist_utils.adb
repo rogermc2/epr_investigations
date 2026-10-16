@@ -1,7 +1,9 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Printing; use Printing;
+with NIST_Printing; use NIST_Printing;
+--  with Printing; use Printing;
+with Types; use Types;
 
 package body  NIST_Utils is
 

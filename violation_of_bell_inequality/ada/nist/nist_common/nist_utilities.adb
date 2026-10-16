@@ -1,10 +1,9 @@
 
---  with Ada.Assertions; use Ada.Assertions;
+with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with NIST_Printing; use NIST_Printing;
+with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
---  with Ada.Text_IO;
 with Types; use Types;
 
 package body  NIST_Utilities is
@@ -12,7 +11,7 @@ package body  NIST_Utilities is
    procedure Align_Data
     (A_Data, B_Data: in out Nist_Data_List) is
       use Nist_Data_Package;
-      --  Routine_Name : constant String := "NIST_Utilities.Align_Data ";
+      Routine_Name : constant String := "NIST_Utilities.Align_Data ";
       First_AgtB   : constant Boolean := A_Data.First_Element.Time_Tag >
                         B_Data.First_Element.Time_Tag;
       Delta_Time   : Double_Positive;
@@ -66,16 +65,16 @@ package body  NIST_Utilities is
       end Min_Time;
 
    begin
-      --  Assert (A_Data.First_Element.Time_Tag > 0,
-      --  "A_Data.First_Element.Time_Tag invalid: " &
-      --  Double_Positive'Image (A_Data.First_Element.Time_Tag));
+      Assert (A_Data.First_Element.Time_Tag > 0,
+      "A_Data.First_Element.Time_Tag invalid: " &
+      Double_Positive'Image (A_Data.First_Element.Time_Tag));
       Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
        B_Data.First_Element.Time_Tag);
       if Delta_Time > 1 then
          Delta_Time := Delta_Time - 1;
       end if;
-      --  Put_Line (Routine_Name & "Delta_Time: " &
-      --              Double_Natural'Image (Delta_Time));
+      Put_Line (Routine_Name & "Delta_Time: " &
+                  Double_Positive'Image (Delta_Time));
       --  Adjust A and B times to start at the same time
       if First_AgtB then
          Apply_Delta_Time (A_Data, Delta_Time);
@@ -87,6 +86,8 @@ package body  NIST_Utilities is
       --  Print_Double_Natural_Vector ("Align_Data B_Sync_Data", B_Sync_Data, 1, 1);
       --  Print_Setting_Time_Vector ("Align_Data A_Det_Data", A_Det_Data, 1, 1);
       --  Print_Setting_Time_Vector ("Align_Data B_Det_Data", B_Det_Data, 1, 1);
+      Print_NIST_Data_List ("Align_Data A_Data before align", A_Data, 9, 17);
+      Print_NIST_Data_List ("Align_Data B_Data before align", B_Data, 9, 17);
 
       --  Adjust A and B times to both start at 0
       A_Offset := Double_Natural (A_Data.First_Element.Time_Tag) - 1;

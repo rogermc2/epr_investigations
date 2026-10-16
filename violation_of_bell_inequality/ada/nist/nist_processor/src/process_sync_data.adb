@@ -4,6 +4,7 @@ with Ada.Exceptions;  use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Histogram;
+with NIST_Types; use NIST_Types;
 with NIST_Utils; use NIST_Utils;
 
 package body Process_Sync_Data is
@@ -12,7 +13,6 @@ package body Process_Sync_Data is
 
    procedure Load_Sync_Data (CSV_Data : String;
                   Sync_Data_A, Sync_Data_B : in out Setting_Time_Vector) is
-      use Types.Setting_Time_Package;
       Routine_Name : constant String := "Process_Sync_Data.Load_Sync_Data ";
       File_ID      : File_Type;
       Header       : String_23;
@@ -50,7 +50,7 @@ package body Process_Sync_Data is
    procedure Match_Syncs
      (Sync_Pairs_CSV, Matched_Sync_CSV : String; Width : Natural;
       Num_Found : out Natural; Selected_Pairs : out Match_List;
-      Offset : out Double_Natural) is
+      Offset    : out Double_Natural) is
       use Histogram;
       use Match_Package;
       use Setting_Time_Package;

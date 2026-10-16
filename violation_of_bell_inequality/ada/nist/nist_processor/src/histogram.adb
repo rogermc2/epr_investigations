@@ -1,7 +1,7 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Strings;
-with Ada.Strings.Fixed;
+--  with Ada.Strings;
+--  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Histogram is
@@ -14,11 +14,10 @@ type Bin_Array is array (Positive range <>) of Integer;
 --  they were started at different times but they are counting at
 --  the same rate and are synchronized by the 10MHz external reference.
 procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
-procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
+--  procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
 
 function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
                            return Double_Natural is
-   use Setting_Time_Package;
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
@@ -185,24 +184,24 @@ begin
          raise;
    end Print_Histogram;
 
-   procedure Save_Data (Data_File : String; Data : Double_Natural_Vector) is
-   use Ada.Strings;
-   use Ada.Strings.Fixed;
-      use Double_Natural_Package;
-      Routine_Name : constant String := "Histogram.Save_Data ";
-      Curs         : Cursor := Data.First;
-      Out_ID       : File_Type;
-   begin
-      Create (Out_ID, Out_File, Data_File);
+   --  procedure Save_Data (Data_File : String; Data : Double_Natural_Vector) is
+   --  use Ada.Strings;
+   --  use Ada.Strings.Fixed;
+   --     use Double_Natural_Package;
+   --     Routine_Name : constant String := "Histogram.Save_Data ";
+   --     Curs         : Cursor := Data.First;
+   --     Out_ID       : File_Type;
+   --  begin
+   --     Create (Out_ID, Out_File, Data_File);
 
-      while Has_Element (Curs) loop
-         Put_Line (Out_ID, Trim (Double_Natural'Image (Element (Curs)), Both));
-         Next (Curs);
-      end loop;
+   --     while Has_Element (Curs) loop
+   --        Put_Line (Out_ID, Trim (Double_Natural'Image (Element (Curs)), Both));
+   --        Next (Curs);
+   --     end loop;
 
-      Close (Out_ID);
-      Put_Line (Routine_Name & "Data file written to " & Data_File);
+   --     Close (Out_ID);
+   --     Put_Line (Routine_Name & "Data file written to " & Data_File);
 
-   end Save_Data;
+   --  end Save_Data;
 
 end Histogram;

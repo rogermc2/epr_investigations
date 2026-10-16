@@ -35,8 +35,8 @@ package NIST_Types is
    end record;
 
    type Data_Record_16_Byte is record
-      Channel     : Channel_Type;
-      Time_Tag    : Interfaces.Unsigned_64;
+      Channel  : Channel_Type;
+      Time_Tag : Interfaces.Unsigned_64;
    end record;
 
    package Nist_Data_Package is new
