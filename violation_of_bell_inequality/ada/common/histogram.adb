@@ -3,6 +3,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 --  with Ada.Strings;
 --  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
+with Printing;
 
 package body Histogram is
 
@@ -92,6 +93,8 @@ begin
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
 
+      --  Put_Line (Routine_Name & "Current_Value, Bin_Size" &
+      --  Double_Natural'Image (Current_Value) & Double_Integer'Image (Bin_Size));
       Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then
@@ -142,6 +145,7 @@ begin
          raise;
 
 end Draw_Histogram;
+
 function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
                            return Double_Natural is
    use Double_Natural_Package;
@@ -209,14 +213,19 @@ begin
    --  For each A, store shortest time difference between A time and B time
    for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
+
+      Put_Line (Routine_Name & "Index_A, Index_B" &
+      Double_Positive'Image (Index_A) & Double_Positive'Image (Index_B));
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
+   --  Printing.Print_Double_Natural_Vector (Routine_Name & "Delta_Data", Delta_Data);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
-
+      Put_Line (Routine_Name & "Current_Value, Bin_Size" &
+      Double_Natural'Image (Current_Value) & Double_Integer'Image (Bin_Size));
       Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then

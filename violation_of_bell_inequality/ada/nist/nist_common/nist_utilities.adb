@@ -2,6 +2,7 @@
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Histogram;
 with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
 with Types; use Types;
@@ -11,6 +12,7 @@ package body  NIST_Utilities is
    procedure Align_Data
     (A_Data, B_Data: in out Nist_Data_List) is
       use Nist_Data_Package;
+      use Histogram;
       Routine_Name : constant String := "NIST_Utilities.Align_Data ";
       First_AgtB   : constant Boolean := A_Data.First_Element.Time_Tag >
                         B_Data.First_Element.Time_Tag;
@@ -68,8 +70,11 @@ package body  NIST_Utilities is
       Assert (A_Data.First_Element.Time_Tag > 0,
       "A_Data.First_Element.Time_Tag invalid: " &
       Double_Positive'Image (A_Data.First_Element.Time_Tag));
-      Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
-       B_Data.First_Element.Time_Tag);
+      --  Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
+      --   B_Data.First_Element.Time_Tag);
+      Print_NIST_Data_List (Routine_Name & "A_Data", A_Data, 1, 4);
+      Print_NIST_Data_List (Routine_Name & "B_Data", B_Data, 1, 4);
+      Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
       if Delta_Time > 1 then
          Delta_Time := Delta_Time - 1;
       end if;

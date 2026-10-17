@@ -4,5 +4,7 @@
 /alire/
 /config/
 ./process
+process
+../nist_processor/process
 
 

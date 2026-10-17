@@ -105,9 +105,7 @@
 \begin_body
 
 \begin_layout Standard
-It is an excellent decision to pivot your Ada pipeline back to a dataset where the parameters dynamically rotate,
- Roger.
- The 1998 Gregor Weihs dataset was groundbreaking for its time,
+The 1998 Gregor Weihs dataset was groundbreaking for its time,
  but the three celebrated 2015 "loophole-free" Bell tests are much cleaner because they simultaneously closed the locality and detection loopholes without forcing fair-sampling assumptions.
  [1] (https://encyclopedia.pub/entry/36569)
 \end_layout
@@ -238,10 +236,6 @@ Let me know:
 
 \begin_layout Standard
 • I can help you translate the new file headers into your existing Data_Record stream parser!
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \end_body
