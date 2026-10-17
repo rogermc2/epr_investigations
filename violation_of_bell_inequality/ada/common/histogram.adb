@@ -3,7 +3,8 @@ with Ada.Exceptions; use Ada.Exceptions;
 --  with Ada.Strings;
 --  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
-with Printing;
+with NIST_Printing; use NIST_Printing;
+--  with Printing; use NIST_Printing;
 
 package body Histogram is
 
@@ -186,6 +187,7 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
          --  B_Data (Index_B).Time < A_Time
          B_Time := B_Data (Index_B).Time_Tag;
          Delta_Time := Double_Integer (A_Time - B_Time);
+         Put_Line (Routine_Name & "B_Time" & Double_Positive'Image (B_Time));
 
          if Index_B > 1 and then abs (Delta_Time) >
             abs (Double_Integer (A_Time - B_Data (Index_B + 1).Time_Tag)) then
@@ -211,11 +213,9 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
 begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  For each A, store shortest time difference between A time and B time
+   Print_NIST_Data_List (Routine_Name & "B_Data", B_Data);
    for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
       --  Store shortest time difference between A time and B time
-
-      Put_Line (Routine_Name & "Index_A, Index_B" &
-      Double_Positive'Image (Index_A) & Double_Positive'Image (Index_B));
       Delta_Data.Append (Find_Nearest (Index_A, Index_B));
    end loop;
    --  Printing.Print_Double_Natural_Vector (Routine_Name & "Delta_Data", Delta_Data);

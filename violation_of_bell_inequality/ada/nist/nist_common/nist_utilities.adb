@@ -72,14 +72,14 @@ package body  NIST_Utilities is
       Double_Positive'Image (A_Data.First_Element.Time_Tag));
       --  Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
       --   B_Data.First_Element.Time_Tag);
-      Print_NIST_Data_List (Routine_Name & "A_Data", A_Data, 1, 4);
-      Print_NIST_Data_List (Routine_Name & "B_Data", B_Data, 1, 4);
+      --  Print_NIST_Data_List (Routine_Name & "A_Data", A_Data, 1, 8);
+      --  Print_NIST_Data_List (Routine_Name & "B_Data", B_Data, 1, 8);
       Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
       if Delta_Time > 1 then
          Delta_Time := Delta_Time - 1;
       end if;
       Put_Line (Routine_Name & "Delta_Time: " &
-                  Double_Positive'Image (Delta_Time));
+         Double_Positive'Image (Delta_Time));
       --  Adjust A and B times to start at the same time
       if First_AgtB then
          Apply_Delta_Time (A_Data, Delta_Time);
