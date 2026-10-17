@@ -1,8 +1,10 @@
 
+with Histogram; use Histogram;
 with NIST_Printing; use NIST_Printing;
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
 with Process_Data; use Process_Data;
+with Types; use Types;
 
 procedure Match is
    --  Routine_Name      : constant String := "Match ";
@@ -17,6 +19,7 @@ procedure Match is
    bb            : constant String := Directory & "bb.csv";
    A_Data        : Nist_Data_List;
    B_Data        : Nist_Data_List;
+   Offset        : Double_Natural;
    Events        : Nist_Event_List;
    Data_Size     : constant Natural := 0;
 begin
@@ -28,6 +31,7 @@ begin
    Save_Aligned_Data (B_Aligned, B_Data);
    Print_NIST_Data_List ("A_Aligned", A_Data, 9, 17);
    Print_NIST_Data_List ("B_Aligned", B_Data, 9, 17);
+   Offset := Draw_Histogram  (A_Data, B_Data);
    Events := Build_Event_List (A_Data, B_Data, Events_2);
    Print_NIST_Event_List ("Events", Events, 1, 6);
    Save_Events (aa, ab, ba, bb, Events);
