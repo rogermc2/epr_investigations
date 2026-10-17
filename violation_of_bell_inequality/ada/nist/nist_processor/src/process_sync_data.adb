@@ -132,9 +132,11 @@ package body Process_Sync_Data is
       --  The histogram is drawn to verify the alignment.
       Align_Timing_Data (A_Data, B_Data);
       Offset := Draw_Histogram  (A_Data, B_Data);
+      Put_Line (Routine_Name &
+                "Offset: " & Double_Natural'Image (Offset));
 
       B_Curs := First (B_Data);
-      Next (B_Curs);  --  Skip header
+      --  Next (B_Curs);  --  Skip header
       A_Data.Iterate (Find_Match'Access);
       New_Line;
 

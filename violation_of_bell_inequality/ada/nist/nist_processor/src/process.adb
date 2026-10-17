@@ -11,13 +11,9 @@ with Types; use Types;
 procedure Process is
    Routine_Name        : constant String := "Process ";
    Directory           : constant String := "../generated_nist_data/";
-   --  Det_Pairs_In    : constant String := Pairs_Directory & "combined_det.csv";
    A_Source            : constant String := Directory & "A.csv";
    B_Source            : constant String := Directory & "B.csv";
-   --  Sync_Pairs_In       : constant String := Pairs_Directory & "combined_sync.csv";
-       Matched_Sync    : constant String := Directory & "matched_sync.csv";
-   --  Matched_Det_Pairs : constant String :=
-   --   Pairs_Directory & "matched_det_pairs.csv";
+   Matched_Sync        : constant String := Directory & "matched_sync.csv";
    Width               : constant Natural := 50000;
    Delta_Val           : Double_Natural;
    Num_Found           : Natural;
@@ -48,8 +44,8 @@ begin
 
    --  Put_Line (Routine_Name & "Matched_Det_Pairs file size:" &
    --       Integer'Image (Count_Text_File_Lines (Matched_Det_Pairs)) & " lines");
-   Put_Line (Routine_Name & "Selected_Det_Pairs length " & integer'Image
-          (integer (Match_Package.Length (Selected_Det_Pairs))));
+   --  Put_Line (Routine_Name & "Selected_Det_Pairs length " & integer'Image
+   --         (integer (Match_Package.Length (Selected_Det_Pairs))));
 
    --  Select_Data
    --    (OEM_A, OEM_B,, Det_aa, Det_ab, Det_ba, Det_bb,
