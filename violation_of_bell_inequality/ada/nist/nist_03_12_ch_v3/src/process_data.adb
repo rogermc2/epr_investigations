@@ -153,7 +153,6 @@ package body Process_Data is
          Line_Num <= Num_Rows loop
          Line_Num := Line_Num + 1;
          Unsigned_64'Read (Data_Stream, Raw_First_Word);
-         --  Raw_16_Byte_Data_Record'Read (Data_Stream, Raw_Data);
          Raw_Data.Channel := Raw_First_Word;
          if Raw_First_Word = 0 then
             Data.Channel := CLICK;
@@ -161,7 +160,7 @@ package body Process_Data is
             Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
                Interfaces.Unsigned_64'Image (Data.Time_Tag));
 
-         else
+         else  -- not click
             Unsigned_64'Read (Data_Stream, Raw_Second_Word);
             if Raw_Second_Word = 0 then
                Data.Channel := CLICK;
