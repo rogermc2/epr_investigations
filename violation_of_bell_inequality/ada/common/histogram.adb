@@ -13,7 +13,8 @@ type Bin_Array is array (Positive range <>) of Integer;
 --  The absolute timestamps at alice and bob are different because
 --  they were started at different times but they are counting at
 --  the same rate and are synchronized by the 10MHz external reference.
-procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer);
+procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
+   Max_Valid_Bin : Positive);
 --  procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
 
 function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
@@ -26,7 +27,7 @@ function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
    --  Define tight time-of-flight boundaries in clock ticks
    --  Min_Valid_Bin : constant Double_Natural := 1;
    --  Cap right before the Bin 16 zero-point
-   Max_Valid_Bin : constant Double_Natural := 15;
+   Max_Valid_Bin  : constant Positive := 17;
    Index_B        : Double_Positive := B_Data.First_Index;
    Delta_Data     : Double_Natural_Vector;
    Curs_Delta     : Double_Natural_Package.Cursor := Delta_Data.First;
@@ -90,13 +91,13 @@ begin
    end loop;
 
    Curs_Delta := Delta_Data.First;
-   while Has_Element (Curs_Delta) and then
-      Total_Records <= Max_Valid_Bin loop
+   --  while Has_Element (Curs_Delta) loop
+   while Has_Element (Curs_Delta) loop
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
-      Put_Line (Routine_Name & "Total_Records, Current_Value: " &
-          Double_Natural'Image (Total_Records) &
-          Double_Natural'Image (Current_Value));
+      --  Put_Line (Routine_Name & "Total_Records, Current_Value: " &
+      --      Double_Natural'Image (Total_Records) &
+      --      Double_Natural'Image (Current_Value));
 
       Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
@@ -115,7 +116,7 @@ begin
       Next  (Curs_Delta) ;
    end loop;
 
-   Print_Histogram (Bins, Bin_Size);
+   Print_Histogram (Bins, Bin_Size, Max_Valid_Bin);
 
    Best_Delta :=
       Double_Natural (Bins (Max_Freq_Index)) * Double_Natural (Bin_Size);
@@ -148,7 +149,8 @@ begin
 
 end Draw_Histogram;
 
-procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer) is
+procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
+   Max_Valid_Bin : Positive) is
    Routine_Name   : constant String := "Histogram.Print_Histogram ";
    Max_Bar_Length : constant Positive := 30000;
    Bar_Length     : Natural;
@@ -161,7 +163,8 @@ begin
    --  Put_Line ("Bin Range (dt) | Frequency | Bar Chart");
    Put_Line ("------------------------------------");
 
-   for I in Bins'Range loop
+   --  for I in Bins'Range loop
+   for I in 1 .. Max_Valid_Bin loop
       Lower_Bound := Double_Integer (I - 1) * Bin_Size;
       Upper_Bound := Double_Integer (I) * Bin_Size - 1;
       --  Print Bin range labels
@@ -175,8 +178,8 @@ begin
       end if;
 
       --  Print total counts per interval (frequency)
-      Put (Integer'Image (Bins (I)) & "    | ");
-      Bar_Length := Bins (I);
+      Put (Integer'Image (Bins (Positive (I))) & "    | ");
+      Bar_Length := Bins (Positive (I));
       if Bar_Length > Max_Bar_Length then
          Bar_Length := Max_Bar_Length;
       end if;
