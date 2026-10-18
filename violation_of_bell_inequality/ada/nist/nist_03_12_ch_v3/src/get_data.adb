@@ -23,7 +23,7 @@ procedure Get_Data is
    Num_Rows      : constant Types.Double_Natural := 100000;
 begin
    --  Use Load_NIST_Data for 03_12_CH_pockel_100kHz.run.Blind_2
-   --  Use Load_NIST_Data for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
+   --  Use Load_NIST_Data_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
    Load_NIST_Data (A_Source, A_Target, Num_Rows);
    Load_NIST_Data (B_Source, B_Target, Num_Rows);
    New_Line;
