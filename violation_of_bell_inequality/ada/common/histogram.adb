@@ -190,7 +190,7 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
          end if;
 
          --  B_Data (Index_B).Time < A_Time
-         B_Time := B_Data (Index_B - 1).Time_Tag;
+         B_Time := B_Data (Index_B).Time_Tag;
          --  if Count2 < 13 then
          --     Count2 := Count2 + 1;
          --     Put_Line ("Find_Nearest ``A_Time, B_Time: " &

@@ -89,7 +89,6 @@ package body  NIST_Utilities is
       B_Offset := Double_Natural (B_Data.First_Element.Time_Tag) - 1;
       Apply_Offset (A_Data, A_Offset);
       Apply_Offset (B_Data, B_Offset);
-      Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
 
    end Align_Data;
 

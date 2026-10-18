@@ -6,6 +6,7 @@ with Ada.Strings;
 with Ada.Strings.Fixed ;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with NIST_Printing;
 with Types; use Types;
 
 package body Process_Data is
@@ -260,6 +261,7 @@ package body Process_Data is
       anEvent      : NIST_Event_Record;
       Click_A      : Integer;
       Click_B      : Integer;
+      Count        : Natural := 0;
    begin
       Create (AA_ID, Out_File, AA_File_Name);
       Create (AB_ID, Out_File, AB_File_Name);
@@ -267,11 +269,18 @@ package body Process_Data is
       Create (BB_ID, Out_File, BB_File_Name);
 
       while Has_Element (Events_Curs) loop
+         Count := Count + 1;
          anEvent :=  Element (Events_Curs);
          Set_AB_Clicks (anEvent, Click_A, Click_B, Max_Click_Delay);
-
+         if Count < 3 then
+            NIST_Printing.Print_NIST_Event_Record
+            (Routine_Name & "anEvent", anEvent);
+            New_Line;
+         end if;
          case anEvent.A_Setting is
             when Pol_0 =>
+               Put_Line (Routine_Name & " writing to AA or AB");
+               New_Line;
                if anEvent.B_Setting = Pol_0 then
                   Put (AA_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
@@ -284,6 +293,8 @@ package body Process_Data is
                    "," & Double_Positive'Image (anEvent.B_Time_Tag));
                end if;
             when Pol_45 =>
+               Put_Line (Routine_Name & " writing to BA or BB");
+               New_Line;
                if anEvent.B_Setting = Pol_0 then
                   Put(BA_ID, Integer'Image (Click_A)
                      & "," & Integer'Image (Click_B) & ",");
@@ -296,7 +307,8 @@ package body Process_Data is
                    "," & Double_Positive'Image (anEvent.B_Time_Tag));
                end if;
 
-            when others => null;
+            when others =>
+               Put_Line (Routine_Name & "No valid data");             
          end case;
 
          Next (Events_Curs);
