@@ -166,6 +166,7 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
    Max_Freq_Index : Positive;
    Best_Delta     : Double_Natural := 0;
    Count          : Natural := 0;
+   Count2         : Natural := 0;
 
    function Find_Nearest
        (Element_A : Data_Record; Index_B : in out Double_Positive)
@@ -174,14 +175,17 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
       B_Time     : Double_Positive;
       Delta_Time : Double_Integer := 0;
    begin
-      --  NIST_Printing.Print_NIST_Data_List (Routine_Name & "A_Data", A_Data, 1, 2);
-      --  NIST_Printing.Print_NIST_Data_List (Routine_Name & "B_Data", B_Data, 1, 2);
       if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
          while Index_B < B_Data.Last_Index and then
             B_Data (Index_B).Time_Tag < A_Time loop
             Index_B := Index_B + 1;
          end loop;
+         if Count2 < 6 then
+            Count2 := Count2 + 1;
+            Put_Line ("Find_Nearest Index_B" &
+             Double_Positive'Image (Index_B));
+         end if;
 
          if Index_B > 1 then
             Index_B := Index_B - 1;
@@ -189,6 +193,10 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
 
          --  B_Data (Index_B).Time < A_Time
          B_Time := B_Data (Index_B).Time_Tag;
+         if Count2 < 6 then
+            Put_Line ("Find_Nearest ``A_Time, B_Time: " &
+             Double_Positive'Image (A_Time) & Double_Positive'Image (B_Time));
+         end if;
          Delta_Time := Double_Integer (B_Time - A_Time);
 
          if Index_B > 1 and then abs (Delta_Time) >
