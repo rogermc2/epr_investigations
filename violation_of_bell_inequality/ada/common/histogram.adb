@@ -4,7 +4,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 --  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with NIST_Printing; use NIST_Printing;
---  with Printing; use NIST_Printing;
+with Printing; use Printing;
 
 package body Histogram is
 
@@ -165,14 +165,17 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
    Best_Delta     : Double_Natural := 0;
+   Count          : Natural := 0;
 
    function Find_Nearest
-       (Index_A : Double_Positive; Index_B : in out Double_Positive)
+       (Element_A : Data_Record; Index_B : in out Double_Positive)
         return Double_Natural is
-      A_Time     : constant Double_Positive := A_Data (Index_A).Time_Tag;
+      A_Time     : constant Double_Positive := Element_A.Time_Tag;
       B_Time     : Double_Positive;
       Delta_Time : Double_Integer := 0;
    begin
+      --  NIST_Printing.Print_NIST_Data_List (Routine_Name & "A_Data", A_Data, 1, 2);
+      --  NIST_Printing.Print_NIST_Data_List (Routine_Name & "B_Data", B_Data, 1, 2);
       if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
          while Index_B < B_Data.Last_Index and then
@@ -186,8 +189,7 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
 
          --  B_Data (Index_B).Time < A_Time
          B_Time := B_Data (Index_B).Time_Tag;
-         Delta_Time := Double_Integer (A_Time - B_Time);
-         Put_Line (Routine_Name & "B_Time" & Double_Positive'Image (B_Time));
+         Delta_Time := Double_Integer (B_Time - A_Time);
 
          if Index_B > 1 and then abs (Delta_Time) >
             abs (Double_Integer (A_Time - B_Data (Index_B + 1).Time_Tag)) then
@@ -197,7 +199,7 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
             end if;
 
       else  --  Index_B = B_Data.Last_Index
-        Delta_Time := Double_Integer (A_Time - B_Data (Index_B).Time_Tag);
+        Delta_Time := Double_Integer (B_Data (Index_B).Time_Tag - A_Time);
       end if;
 
       return Double_Natural (abs (Delta_Time));
@@ -213,12 +215,15 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
 begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  For each A, store shortest time difference between A time and B time
-   Print_NIST_Data_List (Routine_Name & "B_Data", B_Data);
-   for Index_A in A_Data.First_Index .. A_Data.Last_Index loop
+   for Element_A of A_Data loop
+      if Count < 10 then
+         Count := Count + 1;
+         Print_NIST_Data_Record (Routine_Name & "Element_A", Element_A);
+      end if;
       --  Store shortest time difference between A time and B time
-      Delta_Data.Append (Find_Nearest (Index_A, Index_B));
+      Delta_Data.Append (Find_Nearest (Element_A, Index_B));
    end loop;
-   --  Printing.Print_Double_Natural_Vector (Routine_Name & "Delta_Data", Delta_Data);
+   Print_Double_Natural_Vector (Routine_Name & "Delta_Data", Delta_Data, 1, 10);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
