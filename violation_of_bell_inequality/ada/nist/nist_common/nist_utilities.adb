@@ -19,6 +19,7 @@ package body  NIST_Utilities is
       Delta_Time   : Double_Positive;
       A_Offset     : Double_Natural;
       B_Offset     : Double_Natural;
+      Hist_Offset  : Positive;
 
       procedure Apply_Delta_Time
        (Data : in out Nist_Data_List; Delta_Time : Double_Positive) is
@@ -89,6 +90,9 @@ package body  NIST_Utilities is
       B_Offset := Double_Natural (B_Data.First_Element.Time_Tag) - 1;
       Apply_Offset (A_Data, A_Offset);
       Apply_Offset (B_Data, B_Offset);
+
+      Hist_Offset := Draw_Histogram  (A_Data, B_Data);
+      Apply_Offset (B_Data, Double_Natural (Hist_Offset));
 
    end Align_Data;
 
