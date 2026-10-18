@@ -54,17 +54,17 @@ package body  NIST_Utilities is
 
       end Apply_Offset;
 
-      function Min_Time (A_Time, B_Time : Double_Positive)
-       return Double_Positive is
-         Min : Double_Positive := A_Time;
-       begin
-         if B_Time < Min then
-            Min := A_Time;
-         end if;
+      --  function Min_Time (A_Time, B_Time : Double_Positive)
+      --   return Double_Positive is
+      --     Min : Double_Positive := A_Time;
+      --   begin
+      --     if B_Time < Min then
+      --        Min := A_Time;
+      --     end if;
 
-         return Min;
+      --     return Min;
 
-      end Min_Time;
+      --  end Min_Time;
 
    begin
       Assert (A_Data.First_Element.Time_Tag > 0,
@@ -72,9 +72,7 @@ package body  NIST_Utilities is
       Double_Positive'Image (A_Data.First_Element.Time_Tag));
       --  Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
       --   B_Data.First_Element.Time_Tag);
-      --  Print_NIST_Data_List (Routine_Name & "A_Data", A_Data, 1, 8);
-      --  Print_NIST_Data_List (Routine_Name & "B_Data", B_Data, 1, 8);
-      Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
+       Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
       if Delta_Time > 1 then
          Delta_Time := Delta_Time - 1;
       end if;
@@ -86,11 +84,6 @@ package body  NIST_Utilities is
       else
          Apply_Delta_Time (B_Data, Delta_Time);
       end if;
-
-      --  Print_Double_Natural_Vector ("Align_Data A_Sync_Data after delta", A_Sync_Data, 1, 1);
-      --  Print_Double_Natural_Vector ("Align_Data B_Sync_Data", B_Sync_Data, 1, 1);
-      --  Print_Setting_Time_Vector ("Align_Data A_Det_Data", A_Det_Data, 1, 1);
-      --  Print_Setting_Time_Vector ("Align_Data B_Det_Data", B_Det_Data, 1, 1);
       Print_NIST_Data_List ("Align_Data A_Data before align", A_Data, 9, 17);
       Print_NIST_Data_List ("Align_Data B_Data before align", B_Data, 9, 17);
 

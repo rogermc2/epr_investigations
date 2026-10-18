@@ -179,8 +179,16 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
          while Index_B < B_Data.Last_Index and then
             B_Data (Index_B).Time_Tag < A_Time loop
+         if Count2 < 6 then
+            Count2 := Count2 + 1;
+            Put_Line ("Find_Nearest A_Time, B_Time, B_Time - A_Time:" &
+             Double_Positive'Image (A_Time) & ", " &
+             Double_Positive'Image (B_Data (Index_B).Time_Tag)  & ", " &
+             Double_Positive'Image (B_Data (Index_B).Time_Tag - A_Time));
+         end if;
             Index_B := Index_B + 1;
          end loop;
+
          if Count2 < 6 then
             Count2 := Count2 + 1;
             Put_Line ("Find_Nearest Index_B" &
@@ -224,9 +232,10 @@ begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  For each A, store shortest time difference between A time and B time
    for Element_A of A_Data loop
-      if Count < 10 then
+      if Count < 4 then
          Count := Count + 1;
          Print_NIST_Data_Record (Routine_Name & "Element_A", Element_A);
+         Put_Line (Routine_Name & "Index_B" & Double_Positive'Image (Index_B));
       end if;
       --  Store shortest time difference between A time and B time
       Delta_Data.Append (Find_Nearest (Element_A, Index_B));
