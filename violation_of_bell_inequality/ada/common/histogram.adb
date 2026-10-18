@@ -119,12 +119,12 @@ begin
           Double_Natural'Image (Best_Delta));
 
    Put_Line (Routine_Name & "Max_Freq_Index " &
-             Integer'Image (Max_Freq_Index));
+             Integer'Image (Max_Freq_Index - 1));  --  Print out starts at 0
 
-   Put_Line (Routine_Name & "bin:" & Integer'Image (Max_Freq_Index) &
+   Put_Line (Routine_Name & "bin:" & Integer'Image (Max_Freq_Index - 1) &
        ", max frequency " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "best delta_t = " & Double_Natural'Image (Best_Delta) &
-      " ps, frequency = " & Double_Natural'Image (Max_Frequency));
+      " ps, frequency = " & Double_Natural'Image (Max_Frequency - 1));
    Put_Line (Routine_Name & "processed " &
       Double_Natural'Image (Total_Records) & " records");
 
@@ -162,8 +162,6 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
    Best_Delta     : Double_Natural := 0;
-   --  Count          : Natural := 0;
-   --  Count2         : Natural := 0;
 
    function Find_Nearest
        (Element_A : Data_Record; Index_B : in out Double_Positive)
@@ -179,23 +177,12 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
             Index_B := Index_B + 1;
          end loop;
 
-         --  if Count2 < 10 then
-         --     Count2 := Count2 + 1;
-         --     Put_Line ("Find_Nearest Index_B" &
-         --      Double_Positive'Image (Index_B));
-         --  end if;
-
          if Index_B > 1 then
             Index_B := Index_B - 1;
          end if;
 
          --  B_Data (Index_B).Time < A_Time
          B_Time := B_Data (Index_B).Time_Tag;
-         --  if Count2 < 13 then
-         --     Count2 := Count2 + 1;
-         --     Put_Line ("Find_Nearest ``A_Time, B_Time: " &
-         --      Double_Positive'Image (A_Time) & Double_Positive'Image (B_Time));
-         --  end if;
          Delta_Time := Double_Integer (B_Time - A_Time);
 
          if Index_B > 1 and then abs (Delta_Time) >
@@ -223,11 +210,6 @@ begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  For each A, store shortest time difference between A time and B time
    for Element_A of A_Data loop
-      --  if Count < 4 then
-      --     Count := Count + 1;
-      --     Print_NIST_Data_Record (Routine_Name & "Element_A", Element_A);
-      --     Put_Line (Routine_Name & "Index_B" & Double_Positive'Image (Index_B));
-      --  end if;
       --  Store shortest time difference between A time and B time
       Delta_Data.Append (Find_Nearest (Element_A, Index_B));
    end loop;
@@ -263,9 +245,10 @@ begin
           Double_Natural'Image (Best_Delta));
 
    Put_Line (Routine_Name & "Max_Freq_Index " &
-             Integer'Image (Max_Freq_Index));
+             Integer'Image (Max_Freq_Index - 1));
 
-   Put_Line (Routine_Name & "bin:" & Integer'Image (Max_Freq_Index) &
+   --  Print out starts at 0
+   Put_Line (Routine_Name & "bin:" & Integer'Image (Max_Freq_Index - 1) &
        ", max frequency " & Double_Natural'Image (Max_Frequency));
    Put_Line (Routine_Name & "best delta_t = " & Double_Natural'Image (Best_Delta) &
       " ps, frequency = " & Double_Natural'Image (Max_Frequency));
@@ -302,7 +285,6 @@ begin
    --  Put_Line ("Bin Range (dt) | Frequency | Bar Chart");
    Put_Line ("------------------------------------");
 
-   --  for I in Bins'Range loop
    for I in 1 .. Max_Valid_Bin loop
       Lower_Bound := Double_Integer (I - 1) * Bin_Size;
       Upper_Bound := Double_Integer (I) * Bin_Size - 1;
