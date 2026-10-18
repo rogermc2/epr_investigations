@@ -27,8 +27,6 @@ package body  NIST_Utilities is
       begin
          while Has_Element (Curs) loop
             Item := Element (Curs);
-            --  Ada.Text_IO.Put_Line ("Apply_Delta_Time Item.Time_Tag, Delta_Time" &
-            --  Double_Positive'Image (Item.Time_Tag) & ", " & Double_Positive'Image (Delta_Time));
             if Delta_Time > Item.Time_Tag then
                Item.Time_Tag := Item.Time_Tag - Delta_Time;
                Data.Replace_Element (Curs, Item);
@@ -54,25 +52,24 @@ package body  NIST_Utilities is
 
       end Apply_Offset;
 
-      --  function Min_Time (A_Time, B_Time : Double_Positive)
-      --   return Double_Positive is
-      --     Min : Double_Positive := A_Time;
-      --   begin
-      --     if B_Time < Min then
-      --        Min := A_Time;
-      --     end if;
+      function Min_Time (A_Time, B_Time : Double_Positive)
+       return Double_Positive is
+         Min : Double_Positive := A_Time;
+       begin
+         if B_Time < Min then
+            Min := A_Time;
+         end if;
 
-      --     return Min;
+         return Min;
 
-      --  end Min_Time;
+      end Min_Time;
 
    begin
       Assert (A_Data.First_Element.Time_Tag > 0,
       "A_Data.First_Element.Time_Tag invalid: " &
       Double_Positive'Image (A_Data.First_Element.Time_Tag));
-      --  Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
-      --   B_Data.First_Element.Time_Tag);
-       Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
+      Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
+       B_Data.First_Element.Time_Tag);
       if Delta_Time > 1 then
          Delta_Time := Delta_Time - 1;
       end if;
@@ -92,6 +89,7 @@ package body  NIST_Utilities is
       B_Offset := Double_Natural (B_Data.First_Element.Time_Tag) - 1;
       Apply_Offset (A_Data, A_Offset);
       Apply_Offset (B_Data, B_Offset);
+      Delta_Time := Types.Double_Positive (Draw_Histogram (A_Data, B_Data));
 
    end Align_Data;
 

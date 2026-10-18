@@ -3,8 +3,8 @@ with Ada.Exceptions; use Ada.Exceptions;
 --  with Ada.Strings;
 --  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
-with NIST_Printing; use NIST_Printing;
-with Printing; use Printing;
+--  with NIST_Printing; use NIST_Printing;
+--  with Printing; use Printing;
 
 package body Histogram is
 
@@ -93,9 +93,6 @@ begin
    while Has_Element (Curs_Delta) loop
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
-
-      --  Put_Line (Routine_Name & "Current_Value, Bin_Size" &
-      --  Double_Natural'Image (Current_Value) & Double_Integer'Image (Bin_Size));
       Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then
@@ -165,8 +162,8 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
    Max_Frequency  : Double_Natural := 0;
    Max_Freq_Index : Positive;
    Best_Delta     : Double_Natural := 0;
-   Count          : Natural := 0;
-   Count2         : Natural := 0;
+   --  Count          : Natural := 0;
+   --  Count2         : Natural := 0;
 
    function Find_Nearest
        (Element_A : Data_Record; Index_B : in out Double_Positive)
@@ -177,34 +174,28 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
    begin
       if Index_B < B_Data.Last_Index then
          --  Skip Index_B until B_Data (Index_B).Time >= A_Time
-         while Index_B < B_Data.Last_Index and then
+         while Index_B < B_Data.Last_Index - 3 and then
             B_Data (Index_B).Time_Tag < A_Time loop
-         if Count2 < 6 then
-            Count2 := Count2 + 1;
-            Put_Line ("Find_Nearest A_Time, B_Time, B_Time - A_Time:" &
-             Double_Positive'Image (A_Time) & ", " &
-             Double_Positive'Image (B_Data (Index_B).Time_Tag)  & ", " &
-             Double_Positive'Image (B_Data (Index_B).Time_Tag - A_Time));
-         end if;
             Index_B := Index_B + 1;
          end loop;
 
-         if Count2 < 6 then
-            Count2 := Count2 + 1;
-            Put_Line ("Find_Nearest Index_B" &
-             Double_Positive'Image (Index_B));
-         end if;
+         --  if Count2 < 10 then
+         --     Count2 := Count2 + 1;
+         --     Put_Line ("Find_Nearest Index_B" &
+         --      Double_Positive'Image (Index_B));
+         --  end if;
 
          if Index_B > 1 then
             Index_B := Index_B - 1;
          end if;
 
          --  B_Data (Index_B).Time < A_Time
-         B_Time := B_Data (Index_B).Time_Tag;
-         if Count2 < 6 then
-            Put_Line ("Find_Nearest ``A_Time, B_Time: " &
-             Double_Positive'Image (A_Time) & Double_Positive'Image (B_Time));
-         end if;
+         B_Time := B_Data (Index_B - 1).Time_Tag;
+         --  if Count2 < 13 then
+         --     Count2 := Count2 + 1;
+         --     Put_Line ("Find_Nearest ``A_Time, B_Time: " &
+         --      Double_Positive'Image (A_Time) & Double_Positive'Image (B_Time));
+         --  end if;
          Delta_Time := Double_Integer (B_Time - A_Time);
 
          if Index_B > 1 and then abs (Delta_Time) >
@@ -222,7 +213,7 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
 
    exception
       when Error : others =>
-         Put_Line (Routine_Name & "Find_Nearest" &
+         Put_Line (Routine_Name & "Find_Nearest " &
           Exception_Information (Error));
       return Double_Natural (abs (Delta_Time));
 
@@ -232,22 +223,20 @@ begin
    --  Histogram Delta_t = B (j) - A_(i)  for B (j) near A_(i)
    --  For each A, store shortest time difference between A time and B time
    for Element_A of A_Data loop
-      if Count < 4 then
-         Count := Count + 1;
-         Print_NIST_Data_Record (Routine_Name & "Element_A", Element_A);
-         Put_Line (Routine_Name & "Index_B" & Double_Positive'Image (Index_B));
-      end if;
+      --  if Count < 4 then
+      --     Count := Count + 1;
+      --     Print_NIST_Data_Record (Routine_Name & "Element_A", Element_A);
+      --     Put_Line (Routine_Name & "Index_B" & Double_Positive'Image (Index_B));
+      --  end if;
       --  Store shortest time difference between A time and B time
       Delta_Data.Append (Find_Nearest (Element_A, Index_B));
    end loop;
-   Print_Double_Natural_Vector (Routine_Name & "Delta_Data", Delta_Data, 1, 10);
+   --  Print_Double_Natural_Vector (Routine_Name & "Delta_Data", Delta_Data, 1, 10);
 
    Curs_Delta := Delta_Data.First;
    while Has_Element (Curs_Delta) loop
       Current_Value := Element  (Curs_Delta);
       Total_Records := Total_Records + 1;
-      Put_Line (Routine_Name & "Current_Value, Bin_Size" &
-      Double_Natural'Image (Current_Value) & Double_Integer'Image (Bin_Size));
       Bin_Index := Positive ((Current_Value / Double_Natural (Bin_Size)) + 1);
       --  Bound checking for updating bins
       if Bin_Index < 1 then
