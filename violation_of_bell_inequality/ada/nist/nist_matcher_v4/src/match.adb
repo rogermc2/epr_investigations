@@ -39,7 +39,7 @@ begin
 
    --  Use Events_1 for 03_12_CH_pockel_100kHz.run.Blind_2
    --  Use Events_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
-   Events := Build_Event_List (A_Data, B_Data, Events_1);
+   Events := Build_Event_List (A_Data, B_Data, Events_2);
    Print_NIST_Event_List ("Events", Events, 1, 6);
    Save_Events (aa, ab, ba, bb, Events);
 
