@@ -20,7 +20,7 @@ procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
 --  procedure Save_Data (Data_File : String; Data : Double_Natural_Vector);
 
 function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
-                           return Double_Natural is
+                           return Positive is
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
@@ -134,7 +134,7 @@ begin
           Double_Natural'Image (Best_Delta));
    New_Line;
 
-   return Best_Delta;
+   return Max_Freq_Index;
 
    exception
       when Error : others =>
@@ -145,7 +145,7 @@ begin
 end Draw_Histogram;
 
 function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
-                           return Double_Natural is
+                           return Positive is
    use Double_Natural_Package;
    Routine_Name : constant String := "Histogram.Draw_Histogram ";
    --  Define histogram structure constants
@@ -261,7 +261,7 @@ begin
           Double_Natural'Image (Best_Delta));
    New_Line;
 
-   return Best_Delta;
+   return Max_Freq_Index;
 
    exception
       when Error : others =>

@@ -5,8 +5,8 @@ with Types; use Types;
 package Histogram is
 
 function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
-                           return Double_Natural;
+                           return Positive;
 function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
-                           return Double_Natural;
+                           return Positive;
 
 end Histogram;
