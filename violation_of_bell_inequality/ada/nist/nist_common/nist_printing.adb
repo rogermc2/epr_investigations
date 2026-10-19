@@ -53,7 +53,7 @@ package body NIST_Printing is
          for Index in Start_Idx .. Last loop
             Item := Data (Index);
             Put (Double_Positive'Image (Index) & " Channel: " & Channel_Type'Image (Item.Channel));
-            Put (",  Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
+            Put (",  Time_Tag: " & Double_Natural'Image (Item.Time_Tag));
             Put_Line (",  Transfer_ID: " & Integer'Image (Item.Transfer_ID));
          end loop;
       else
@@ -68,7 +68,7 @@ package body NIST_Printing is
    begin
       Put_Line (Name & ": ");
       Put ("Channel: " & Channel_Type'Image (Item.Channel));
-      Put (",  Time_Tag: " & Double_Positive'Image (Item.Time_Tag));
+      Put (",  Time_Tag: " & Double_Natural'Image (Item.Time_Tag));
       Put_Line (",  Transfer_ID: " & Integer'Image (Item.Transfer_ID));
       New_Line;
 
@@ -157,7 +157,7 @@ package body NIST_Printing is
    begin
       Put_Line ("Processed Data:");
       Put_Line ("Channel: " & Channel_Type'Image (Data.Channel));
-      Put_Line ("Time_Tag: " & Double_Positive'Image (Data.Time_Tag));
+      Put_Line ("Time_Tag: " & Double_Natural'Image (Data.Time_Tag));
       Put_Line ("Transfer_ID: " & Integer'Image (Data.Transfer_ID));
       New_Line;
    end Print_Processed_Data;

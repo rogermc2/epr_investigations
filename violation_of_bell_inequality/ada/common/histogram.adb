@@ -5,6 +5,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 --  with NIST_Printing; use NIST_Printing;
 --  with Printing; use Printing;
+with Types; use Types;
 
 package body Histogram is
 
@@ -22,7 +23,7 @@ procedure Print_Histogram (Bins : Bin_Array; Bin_Size : Double_Integer;
 function Draw_Histogram (A_Data, B_Data : Setting_Time_Vector)
                            return Positive is
    use Double_Natural_Package;
-   Routine_Name : constant String := "Histogram.Draw_Histogram ";
+   Routine_Name : constant String := "Histogram.Draw_Histogram Setting_Time_Vector ";
    --  Define histogram structure constants
    Bin_Size       : constant Double_Integer := 1;
    Num_Bins       : constant Positive := 18;
@@ -147,7 +148,7 @@ end Draw_Histogram;
 function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
                            return Positive is
    use Double_Natural_Package;
-   Routine_Name : constant String := "Histogram.Draw_Histogram ";
+   Routine_Name : constant String := "Histogram.Draw_Histogram Nist_Data_List ";
    --  Define histogram structure constants
    Bin_Size       : constant Double_Integer := 1;
    Num_Bins       : constant Positive := 18;
@@ -166,8 +167,8 @@ function Draw_Histogram (A_Data, B_Data : Nist_Data_List)
    function Find_Nearest
        (Element_A : Data_Record; Index_B : in out Double_Positive)
         return Double_Natural is
-      A_Time     : constant Double_Positive := Element_A.Time_Tag;
-      B_Time     : Double_Positive;
+      A_Time     : constant Double_Natural := Element_A.Time_Tag;
+      B_Time     : Double_Natural;
       Delta_Time : Double_Integer := 0;
    begin
       if Index_B < B_Data.Last_Index then

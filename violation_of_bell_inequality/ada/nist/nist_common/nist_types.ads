@@ -59,13 +59,19 @@ package NIST_Types is
      Ada.Containers.Vectors (Double_Positive, Setting_Time_Record);
    subtype Setting_Time_Vector is Setting_Time_Package.Vector;
 
+   type NIST_Data_Record is record
+      Channel_ID : Interfaces.Unsigned_64;
+      Time_Tag   : Interfaces.Unsigned_64;
+      Data_Word  : Interfaces.Unsigned_64;
+   end record;
+
    type NIST_Event_Record is record
+      A_Click_Mask : Unsigned_16;
+      B_Click_Mask : Unsigned_16;
       A_Time_Tag   : Double_Positive;
       B_Time_Tag   : Double_Positive;
       A_Setting    : Channel_Type;
       B_Setting    : Channel_Type;
-      A_Click_Mask : Unsigned_16;
-      B_Click_Mask : Unsigned_16;
    end record;
 
    package Nist_Event_Package is new
