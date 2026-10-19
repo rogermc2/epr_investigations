@@ -105,11 +105,11 @@ package body Process_Data is
                Channel_Type'Value (aline (aline'First .. Pos_1 - 1));
                if Pos_2 > 0 then
                Data.Time_Tag :=
-                  Double_Positive'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
+                  Double_Natural'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
                Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
                else
                   Data.Time_Tag :=
-                     Double_Positive'Value (aline (Pos_1 + 1 .. aLine'Last));
+                     Double_Natural'Value (aline (Pos_1 + 1 .. aLine'Last));
                end if;
             else
                Put_Line (Routine_Name & "aline'First, Pos_1: " &
@@ -141,8 +141,8 @@ package body Process_Data is
       use Interfaces;
       use Nist_Event_Package;
       Routine_Name   : constant String := "Process_Data.Process_Event ";
-      Pulse_Interval : constant Double_Positive := 8064;
-      Click_Delay    : Double_Positive;
+      Pulse_Interval : constant Double_Natural := 8064;
+      Click_Delay    : Double_Natural;
       anEvent        : NIST_Event_Record;
 
       function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
@@ -158,9 +158,9 @@ package body Process_Data is
       if Is_Click_Frame (A_Data, A_Index) or else
          Is_Click_Frame (B_Data, B_Index) then
          anEvent.A_Setting := A_Data (A_Index + 1).Channel;
-         anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+         anEvent.A_Time_Tag := Double_Positive (A_Data (A_Index).Time_Tag);
          anEvent.B_Setting := B_Data (B_Index + 1).Channel;
-         anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+         anEvent.B_Time_Tag := Double_Positive (B_Data (B_Index).Time_Tag);
 
          if A_Data (A_Index + 2).Channel = Click then
             Click_Delay :=
@@ -221,9 +221,9 @@ package body Process_Data is
       if Is_Click_Frame (A_Data, A_Index) or else
          Is_Click_Frame (B_Data, B_Index) then
          anEvent.A_Setting := A_Data (A_Index + 2).Channel;
-         anEvent.A_Time_Tag := A_Data (A_Index).Time_Tag;
+         anEvent.A_Time_Tag := Double_Positive (A_Data (A_Index).Time_Tag);
          anEvent.B_Setting := B_Data (B_Index + 2).Channel;
-         anEvent.B_Time_Tag := B_Data (B_Index).Time_Tag;
+         anEvent.B_Time_Tag := Double_Positive (B_Data (B_Index).Time_Tag);
 
          if A_Data (A_Index + 1).Channel = Click then
             anEvent.A_Click_Mask := 1;

@@ -16,13 +16,13 @@ package body  NIST_Utilities is
       Routine_Name : constant String := "NIST_Utilities.Align_Data ";
       First_AgtB   : constant Boolean := A_Data.First_Element.Time_Tag >
                         B_Data.First_Element.Time_Tag;
-      Delta_Time   : Double_Positive;
+      Delta_Time   : Double_Natural;
       A_Offset     : Double_Natural;
       B_Offset     : Double_Natural;
       Hist_Offset  : Positive;
 
       procedure Apply_Delta_Time
-       (Data : in out Nist_Data_List; Delta_Time : Double_Positive) is
+       (Data : in out Nist_Data_List; Delta_Time : Double_Natural) is
          Curs :  Nist_Data_Package.Cursor := Data.First;
          Item : Data_Record;
       begin
@@ -44,8 +44,8 @@ package body  NIST_Utilities is
       begin
          while Has_Element (Curs) loop
             Item := Element (Curs);
-            if Item.Time_Tag > Double_Positive (Offset) then
-               Item.Time_Tag := Item.Time_Tag - Double_Positive (Offset);
+            if Item.Time_Tag > Offset then
+               Item.Time_Tag := Item.Time_Tag - Offset;
                Data.Replace_Element (Curs, Item);
             end if;
             Next (Curs);
@@ -53,9 +53,9 @@ package body  NIST_Utilities is
 
       end Apply_Offset;
 
-      function Min_Time (A_Time, B_Time : Double_Positive)
-       return Double_Positive is
-         Min : Double_Positive := A_Time;
+      function Min_Time (A_Time, B_Time : Double_Natural)
+       return Double_Natural is
+         Min : Double_Natural := A_Time;
        begin
          if B_Time < Min then
             Min := A_Time;
@@ -68,14 +68,14 @@ package body  NIST_Utilities is
    begin
       Assert (A_Data.First_Element.Time_Tag > 0,
       "A_Data.First_Element.Time_Tag invalid: " &
-      Double_Positive'Image (A_Data.First_Element.Time_Tag));
+      Double_Natural'Image (A_Data.First_Element.Time_Tag));
       Delta_Time := Min_Time (A_Data.First_Element.Time_Tag,
        B_Data.First_Element.Time_Tag);
       if Delta_Time > 1 then
          Delta_Time := Delta_Time - 1;
       end if;
       Put_Line (Routine_Name & "Delta_Time: " &
-         Double_Positive'Image (Delta_Time));
+         Double_Natural'Image (Delta_Time));
       --  Adjust A and B times to start at the same time
       if First_AgtB then
          Apply_Delta_Time (A_Data, Delta_Time);
@@ -86,8 +86,8 @@ package body  NIST_Utilities is
       Print_NIST_Data_List ("Align_Data B_Data before align", B_Data, 9, 17);
 
       --  Adjust A and B times to both start at 0
-      A_Offset := Double_Natural (A_Data.First_Element.Time_Tag) - 1;
-      B_Offset := Double_Natural (B_Data.First_Element.Time_Tag) - 1;
+      A_Offset := A_Data.First_Element.Time_Tag - 1;
+      B_Offset := B_Data.First_Element.Time_Tag - 1;
       Apply_Offset (A_Data, A_Offset);
       Apply_Offset (B_Data, B_Offset);
 
@@ -107,7 +107,7 @@ package body  NIST_Utilities is
             Item : constant Data_Record := Element (Curs);
          begin
             Put_Line (File_ID, Channel_Type'Image (Item.Channel) & "," &
-             Double_Positive'Image (Item.Time_Tag) & "," &
+             Double_Natural'Image (Item.Time_Tag) & "," &
              Integer'Image (Item.Transfer_ID));
          end;
       end loop;
