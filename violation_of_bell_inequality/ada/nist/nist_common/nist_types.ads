@@ -1,5 +1,5 @@
 
-with Interfaces;
+with Interfaces; use Interfaces;
 with Ada.Containers.Vectors;
 
 with Types; use Types;
@@ -24,9 +24,16 @@ package NIST_Types is
    end record;
 
    type Raw_16_Byte_Data_Record is record
-      Channel     : Interfaces.Unsigned_64;
-      Time_Tag    : Interfaces.Unsigned_64;
+      Channel     : Unsigned_64;
+      Time_Tag    : Unsigned_64;
    end record;
+
+   type Raw_Data_Packet is record
+      Channel  : Unsigned_64;
+      Time_Tag : Unsigned_64;
+      Other    : Unsigned_64;
+   end record;
+
 
    type Data_Record is record
       Channel     : Channel_Type;
@@ -36,7 +43,7 @@ package NIST_Types is
 
    type Data_Record_16_Byte is record
       Channel  : Channel_Type;
-      Time_Tag : Interfaces.Unsigned_64;
+      Time_Tag : Unsigned_64;
    end record;
 
    package Nist_Data_Package is new
@@ -57,8 +64,8 @@ package NIST_Types is
       B_Time_Tag   : Double_Positive;
       A_Setting    : Channel_Type;
       B_Setting    : Channel_Type;
-      A_Click_Mask : Interfaces.Unsigned_16;
-      B_Click_Mask : Interfaces.Unsigned_16;
+      A_Click_Mask : Unsigned_16;
+      B_Click_Mask : Unsigned_16;
    end record;
 
    package Nist_Event_Package is new

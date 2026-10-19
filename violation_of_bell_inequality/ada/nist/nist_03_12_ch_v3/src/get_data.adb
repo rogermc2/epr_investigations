@@ -16,12 +16,21 @@ procedure Get_Data is
     "02_54_CH_pockel_100kHz.run4.afterTimingfix2.alice.dat";
    --  B_Source      : constant String := B_Directory &
    --  "03_12_CH_pockel_100kHz.run.Blind_2.bob.dat.compressed";
-   B_Source      : constant String := A_Directory &
+   B_Source      : constant String := B_Directory &
     "02_54_CH_pockel_100kHz.run4.afterTimingfix2.bob.dat";
    A_Target      : constant String := Target_Dir & "A.csv";
    B_Target      : constant String := Target_Dir & "B.csv";
    Num_Rows      : constant Types.Double_Natural := 100000;
 begin
+   --  Each file is a timetagged sequence of records. Each record consists of
+   --  three 8-byte unsigned integers.
+   --  The first unsigned integer is the channel number that the
+   --  timetagged event occurred in.
+   --  The second channel number is the 8-byte integer raw timetag.
+   --  Each timetag bin corresponds to 78.125 ps (a 12.8 GHz clock).
+   --  The third 8-byte integer represents how many times the computer
+   --  transferred data from the timetagger buffer in the computer to disk.
+
    --  Use Load_NIST_Data for 03_12_CH_pockel_100kHz.run.Blind_2
    --  Use Load_NIST_Data_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
    Load_NIST_Data_2 (A_Source, A_Target, Num_Rows);

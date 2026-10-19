@@ -7,17 +7,7 @@ with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with NIST_Types; use NIST_Types;
-
 package body Process_Data is
-
-   type Raw_Data_Packet is record
-      Channel  : Unsigned_64;
-      Time_Tag : Unsigned_64;
-      Other    : Unsigned_64;
-   end record;
-
-   procedure Print_Raw_Data_Packet (Data : Raw_Data_Packet);
 
    procedure Load_NIST_Data
     (Source_File, Target_File : String; Num_Rows : Double_Natural := 30) is
@@ -129,9 +119,6 @@ package body Process_Data is
       Target_ID       : Ada.Text_IO.File_Type;
       Raw_Data        : Raw_Data_Packet;
       Data            : Data_Record;
-      --  Pol_Setting     : String (1 .. 2);
-      --  Clicked         : Boolean;
-      --  Sync_Pulse      : Boolean;
       Last_Sync_Time  : Double_Natural := 0;
       Line_Num        : Double_Natural := 0;
       Num_Clicks      : Natural := 0;
@@ -159,16 +146,14 @@ package body Process_Data is
          Line_Num <= Num_Rows loop
          Line_Num := Line_Num + 1;
          Raw_Data_Packet'Read (Data_Stream, Raw_Data);
-         if Count < 4 then
-            Count := Count +1;
-            Print_Raw_Data_Packet (Raw_Data);
-         end if;
+         --  if Count < 4 then
+         --     Count := Count +1;
+         --     Print_Raw_Data_Packet (Raw_Data);
+         --  end if;
          case Raw_Data.Channel is
             when 0 =>
-               if Raw_Data.Time_Tag > 0 then
-                  Data.Channel := Click;
-                  Num_Clicks := Num_Clicks + 1;
-               end if;
+               Data.Channel := Click;
+               Num_Clicks := Num_Clicks + 1;
             when 2 => Data.Channel := POL_0;
             when 4 => Data.Channel := POL_45;
             when 5 => Data.Channel := GPS_PPS;
@@ -189,14 +174,13 @@ package body Process_Data is
                      ", Invalid Channel value: " &
                      Unsigned_64'Image (Raw_Data.Channel));
          end case;
+            Data.Time_Tag := Types.Double_Natural (Raw_Data.Time_Tag);
 
          Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
             Double_Natural'Image (Data.Time_Tag));
          if Line_Num mod 4000000 = 0 then
             Put (".");
          end if;
-         Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
-            Double_Natural'Image (Data.Time_Tag));
       end loop;
       New_Line;
 
