@@ -11,6 +11,14 @@ with NIST_Types; use NIST_Types;
 
 package body Process_Data is
 
+   type Raw_Data_Packet is record
+      Channel  : Unsigned_64;
+      Time_Tag : Unsigned_64;
+      Other    : Unsigned_64;
+   end record;
+
+   procedure Print_Raw_Data_Packet (Data : Raw_Data_Packet);
+
    procedure Load_NIST_Data
     (Source_File, Target_File : String; Num_Rows : Double_Natural := 30) is
        use Ada.Streams;
@@ -52,7 +60,6 @@ package body Process_Data is
         Line_Num := Line_Num + 1;
 
          Raw_Data_Record'Read (Data_Stream, Raw_Data);
-
          case Raw_Data.Channel is
             when 0 => Data.Channel := CLICK;
             when 2 => Data.Channel := POL_0;
@@ -62,13 +69,13 @@ package body Process_Data is
             when 64 => Data.Channel := OVERFLOW;
             when others => Data.Channel := CH_ERROR;
              Num_Invalid := Num_Invalid + 1;
-             Ada.Text_IO.Put_Line (Log_ID, "Line: " &
-                  Double_Natural'Image (Line_Num) & "," &
-                  "Invalid Channel value:" &
+             Ada.Text_IO.Put_Line (Log_ID, "Line:" &
+                  Double_Natural'Image (Line_Num) &
+                  ", Invalid Channel value: " &
                   Unsigned_Byte'Image (Raw_Data.Channel));
          end case;
-         Data.Time_Tag := Double_Positive (Raw_Data.Time_Tag);
-         Data.Transfer_ID := Integer (Raw_Data.Transfer_ID);
+
+         Data.Time_Tag := Double_Natural (Raw_Data.Time_Tag);
 
          Clicked := False;
          Sync_Pulse := False;
@@ -86,7 +93,7 @@ package body Process_Data is
             when Ch_Error => null;
          end case;
          Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
-         Double_Positive'Image (Data.Time_Tag) & "," &
+         Double_Natural'Image (Data.Time_Tag) & "," &
          Integer'Image (Data.Transfer_ID));
 
          if Line_Num mod 4000000 = 0 then
@@ -120,18 +127,17 @@ package body Process_Data is
       Source_ID       : Stream_IO.File_Type;
       Log_ID          : Ada.Text_IO.File_Type;
       Target_ID       : Ada.Text_IO.File_Type;
-      Raw_Data        : Raw_16_Byte_Data_Record;
-      Raw_First_Word  : Unsigned_64;
-      Raw_Second_Word : Unsigned_64;
-      Data            : Data_Record_16_Byte;
-      Pol_Setting     : String (1 .. 2);
-      Clicked         : Boolean;
-      Sync_Pulse      : Boolean;
-      Last_Sync_Time  : Unsigned_64 := 0;
+      Raw_Data        : Raw_Data_Packet;
+      Data            : Data_Record;
+      --  Pol_Setting     : String (1 .. 2);
+      --  Clicked         : Boolean;
+      --  Sync_Pulse      : Boolean;
+      Last_Sync_Time  : Double_Natural := 0;
       Line_Num        : Double_Natural := 0;
       Num_Clicks      : Natural := 0;
       Num_Synchs      : Natural := 0;
       Num_Invalid     : Natural := 0;
+      Count           : Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Source_File);
       Put_Line (Routine_Name & Source_File & " length: " &
@@ -152,66 +158,45 @@ package body Process_Data is
       while not Stream_IO.End_Of_File (Source_ID) and then
          Line_Num <= Num_Rows loop
          Line_Num := Line_Num + 1;
-         Unsigned_64'Read (Data_Stream, Raw_First_Word);
-         Raw_Data.Channel := Raw_First_Word;
-         if Raw_First_Word = 0 then
-            Data.Channel := CLICK;
-            Data.Time_Tag := Last_Sync_Time;
-            Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
-               Interfaces.Unsigned_64'Image (Data.Time_Tag));
-
-         else  -- not click
-            Unsigned_64'Read (Data_Stream, Raw_Second_Word);
-            if Raw_Second_Word = 0 then
-               Data.Channel := CLICK;
-               Data.Time_Tag := Last_Sync_Time;
-            else
-               Data.Time_Tag := Raw_Second_Word;
-               case Raw_Data.Channel is
-                  when 0 => Data.Channel := CLICK;
-                  when 2 => Data.Channel := POL_0;
-                  when 4 => Data.Channel := POL_45;
-                  when 5 => Data.Channel := GPS_PPS;
-                  when 6 => Data.Channel := SYNC;
-                     Last_Sync_Time := Data.Time_Tag;
-                  when 64 => Data.Channel := OVERFLOW;
-                  when others => Data.Channel := CH_ERROR;
-                     Num_Invalid := Num_Invalid + 1;
-                     if Num_Invalid < 4 then
-                        Ada.Text_IO.Put_Line ("Line: " &
-                           Double_Natural'Image (Line_Num) & "," &
-                           "Invalid Channel value:" &
-                           Interfaces.Unsigned_64'Image (Raw_Data.Channel));
-                     end if;
-                     Ada.Text_IO.Put_Line (Log_ID, "Line: " &
-                           Double_Natural'Image (Line_Num) & "," &
-                           "Invalid Channel value:" &
-                           Interfaces.Unsigned_64'Image (Raw_Data.Channel));
-               end case;
-
-               Clicked := False;
-               Sync_Pulse := False;
-               case Data.Channel is
-                  when Click =>
-                     Clicked :=  True;
-                     Num_Clicks := Num_Clicks + 1;
-                  when Pol_0 => Pol_Setting := " 0";
-                  when Pol_45 => Pol_Setting := "45";
-                  when GPS_Pps => null;
-                  when Sync =>
-                     Sync_Pulse :=  True;
-                     Num_Synchs := Num_Synchs + 1;
-                  when Overflow => null;
-                  when Ch_Error => null;
-               end case;
-
-               if Line_Num mod 4000000 = 0 then
-                  Put (".");
-               end if;
-               Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
-                  Interfaces.Unsigned_64'Image (Data.Time_Tag));
-            end if;
+         Raw_Data_Packet'Read (Data_Stream, Raw_Data);
+         if Count < 4 then
+            Count := Count +1;
+            Print_Raw_Data_Packet (Raw_Data);
          end if;
+         case Raw_Data.Channel is
+            when 0 =>
+               if Raw_Data.Time_Tag > 0 then
+                  Data.Channel := Click;
+                  Num_Clicks := Num_Clicks + 1;
+               end if;
+            when 2 => Data.Channel := POL_0;
+            when 4 => Data.Channel := POL_45;
+            when 5 => Data.Channel := GPS_PPS;
+            when 6 => Data.Channel := SYNC;
+               Num_Synchs := Num_Synchs + 1;
+               Last_Sync_Time := Data.Time_Tag;
+            when 64 => Data.Channel := OVERFLOW;
+            when others => Data.Channel := CH_ERROR;
+               Num_Invalid := Num_Invalid + 1;
+               if Num_Invalid < 4 then
+                  Ada.Text_IO.Put_Line ("Line:" &
+                     Double_Natural'Image (Line_Num) &
+                     ", Invalid Channel value: " &
+                     Unsigned_64'Image (Raw_Data.Channel));
+               end if;
+               Ada.Text_IO.Put_Line (Log_ID, "Line:" &
+                     Double_Natural'Image (Line_Num) &
+                     ", Invalid Channel value: " &
+                     Unsigned_64'Image (Raw_Data.Channel));
+         end case;
+
+         Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
+            Double_Natural'Image (Data.Time_Tag));
+         if Line_Num mod 4000000 = 0 then
+            Put (".");
+         end if;
+         Put_Line (Target_ID, Channel_Type'Image (Data.Channel) & "," &
+            Double_Natural'Image (Data.Time_Tag));
       end loop;
       New_Line;
 
@@ -221,7 +206,6 @@ package body Process_Data is
 
       Put_Line (Routine_Name & "number of invalid items: " &
       Integer'Image (Num_Invalid));
-
       New_Line;
 
    exception
@@ -229,5 +213,14 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Load_NIST_Data_2;
+
+   procedure Print_Raw_Data_Packet (Data : Raw_Data_Packet) is
+   begin
+      Put_Line ("Raw_Data_Packet: ");
+      Put_Line ("Data.Channel: " & Unsigned_64'Image (Data.Channel));
+      Put_Line ("Data.Time_Tag: " & Unsigned_64'Image (Data.Time_Tag));
+      Put_Line ("Data.Other: " & Unsigned_64'Image (Data.Other));
+      New_Line;
+   end Print_Raw_Data_Packet;
 
 end Process_Data;
