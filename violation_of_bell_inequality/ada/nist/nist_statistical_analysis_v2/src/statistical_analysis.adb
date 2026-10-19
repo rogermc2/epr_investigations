@@ -98,4 +98,24 @@ begin
       Put_Line ("11 False positives: 0");
    end if;
 
+   False_Data := False_Positives (AB_Dir, File_10, False_Count, True_Count);
+   if False_Count > 0 then
+      Put ("10 False positives: " & Integer'Image (False_Count) & " (");
+      Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
+      Put_Line ("% )");
+      Print_Sample_Data_List ("10 False_Data", False_Data, 1, 10);
+   else
+      Put_Line ("10 False positives: 0");
+   end if;
+
+   False_Data := False_Positives (AB_Dir, File_01, False_Count, True_Count);
+   if False_Count > 0 then
+      Put ("01 False positives: " & Integer'Image (False_Count) & " (");
+      Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
+      Put_Line ("% )");
+      Print_Sample_Data_List ("01 False_Data", False_Data, 1, 10);
+   else
+      Put_Line ("01 False positives: 0");
+   end if;
+
 end Statistical_Analysis;
