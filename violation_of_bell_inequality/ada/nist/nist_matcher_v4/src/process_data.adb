@@ -207,25 +207,37 @@ package body Process_Data is
       use Nist_Event_Package;
       Routine_Name : constant String := "Process_Data.Process_Event_2 ";
       anEvent      : NIST_Event_Record;
+      --  type Data_Record_16_Byte is record
+      --     Channel  : Channel_Type;
+      --     Time_Tag : Unsigned_64;
+      --  end record;
 
+      --  type NIST_Event_Record is record
+      --     A_Click_Mask : Unsigned_16;
+      --     B_Click_Mask : Unsigned_16;
+      --     A_Time_Tag   : Double_Positive;
+      --     B_Time_Tag   : Double_Positive;
+      --     A_Setting    : Channel_Type;
+      --     B_Setting    : Channel_Type;
+      --  end record;
       function Is_Click_Frame (Data : Nist_Data_List; Index : Double_Positive)
        return Boolean is
       begin
-         return Data (Index + 1).Channel = Click and then
-          (Data (Index + 2).Channel = Pol_0 or else
-          Data (Index + 2).Channel = Pol_45) and then
+         return Data (Index + 2).Channel = Click and then
+          (Data (Index + 1).Channel = Pol_0 or else
+          Data (Index + 1).Channel = Pol_45) and then
           Data (Index).Channel = Sync;
       end Is_Click_Frame;
 
    begin
       if Is_Click_Frame (A_Data, A_Index) or else
          Is_Click_Frame (B_Data, B_Index) then
-         anEvent.A_Setting := A_Data (A_Index + 2).Channel;
+         anEvent.A_Setting := A_Data (A_Index + 1).Channel;
          anEvent.A_Time_Tag := Double_Positive (A_Data (A_Index).Time_Tag);
-         anEvent.B_Setting := B_Data (B_Index + 2).Channel;
+         anEvent.B_Setting := B_Data (B_Index + 1).Channel;
          anEvent.B_Time_Tag := Double_Positive (B_Data (B_Index).Time_Tag);
 
-         if A_Data (A_Index + 1).Channel = Click then
+         if A_Data (A_Index + 2).Channel = Click then
             anEvent.A_Click_Mask := 1;
             A_Index := A_Index + 3;
          else
@@ -233,7 +245,7 @@ package body Process_Data is
             A_Index := A_Index + 1;
          end if;
 
-         if B_Data (B_Index + 1).Channel = Click then
+         if B_Data (B_Index + 2).Channel = Click then
             anEvent.B_Click_Mask := 1;
          else
             anEvent.B_Click_Mask := 0;
