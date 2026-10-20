@@ -209,7 +209,7 @@ package body Process_Data is
 
       procedure Find_All_Matches (A_Curs : Nist_Data_Package.Cursor) is
          A_Value   : constant Double_Natural :=
-           Double_Natural'Value (Element (A_Curs)) + Double_Natural (Delta_A);
+           Element (A_Curs).Time_Tag + Double_Natural (Delta_A);
          B_Val_Min : constant Double_Natural := A_Value - D_Width;
          B_Value   : Double_Natural;
          Match     : Boolean := False;
@@ -238,8 +238,8 @@ package body Process_Data is
                   Num_Found := Num_Found + 1;
                   if Num_Found < 6 then
                      Put_Line (Routine_Name & "Match, A, B index:" &
-                                 Integer'Image (To_Index (A_Curs)) & ",  " &
-                                 Integer'Image (To_Index (B_Curs)));
+                                 Double_Positive'Image (To_Index (A_Curs)) & ",  " &
+                                 Double_Positive'Image (To_Index (B_Curs)));
                   end if;
                end if;
             end if;

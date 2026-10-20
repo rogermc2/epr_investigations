@@ -5,22 +5,28 @@ with NIST_Printing; use NIST_Printing;
 with NIST_Types; use NIST_Types;
 with NIST_Utilities; use NIST_Utilities;
 with Process_Data; use Process_Data;
+with Types; use Types;
 
 procedure Match is
    --  Routine_Name  : constant String := "Match ";
-   Directory     : constant String := "../generated_nist_data/";
-   A_Source      : constant String := Directory & "A.csv";
-   B_Source      : constant String := Directory & "B.csv";
-   A_Aligned     : constant String := Directory & "A_Aligned.csv";
-   B_Aligned     : constant String := Directory & "B_Aligned.csv";
-   aa            : constant String := Directory & "aa.csv";
-   ab            : constant String := Directory & "ab.csv";
-   ba            : constant String := Directory & "ba.csv";
-   bb            : constant String := Directory & "bb.csv";
-   A_Data        : Nist_Data_List;
-   B_Data        : Nist_Data_List;
-   Events        : Nist_Event_List;
-   Data_Size     : constant Natural := 0;
+   Directory      : constant String := "../generated_nist_data/";
+   A_Source       : constant String := Directory & "A.csv";
+   B_Source       : constant String := Directory & "B.csv";
+   A_Aligned      : constant String := Directory & "A_Aligned.csv";
+   B_Aligned      : constant String := Directory & "B_Aligned.csv";
+   aa             : constant String := Directory & "aa.csv";
+   ab             : constant String := Directory & "ab.csv";
+   ba             : constant String := Directory & "ba.csv";
+   bb             : constant String := Directory & "bb.csv";
+   Matched        : constant String := Directory & "matched.csv";
+   Width          : constant Float := 20.0;
+   Delta_A        : constant Float := 1.0;
+   Num_Found      : Natural := 0;
+   A_Data         : Nist_Data_List;
+   B_Data         : Nist_Data_List;
+   Selected_Pairs : Match_List;
+   Events         : Nist_Event_List;
+   Data_Size      : constant Natural := 0;
 begin
    Load_NIST_Data (A_Source, A_Data, Data_Size);
    Load_NIST_Data (B_Source, B_Data, Data_Size);
@@ -30,7 +36,8 @@ begin
    Save_Aligned_Data (B_Aligned, B_Data);
    --  Print_NIST_Data_List ("A_Aligned", A_Data, 9, 17);
    --  Print_NIST_Data_List ("B_Aligned", B_Data, 9, 17);
-
+   Match_Sync_Times (A_Aligned, B_Aligned, Matched, Delta_A, Width,
+                     Num_Found, Selected_Pairs);
    --  Use Events_1 for 03_12_CH_pockel_100kHz.run.Blind_2
    --  Use Events_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
    Events := Build_Event_List (A_Data, B_Data, Events_2);
