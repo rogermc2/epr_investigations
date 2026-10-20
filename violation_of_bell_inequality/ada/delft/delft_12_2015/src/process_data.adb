@@ -1,5 +1,5 @@
 
---  with Interfaces;
+   with Interfaces; use Interfaces;
 
 --  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
@@ -19,11 +19,8 @@ package body Process_Data is
    procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
       Source_ID    : File_Type;
-      PT_ID        : File_Type;
       Line_Num     : Natural := 0;
       Raw_Data     : Raw_Result_Record;
-      Data         : Byte_Array (1 .. 8);
-      Number       : Double;
    begin
       Put_Line (Routine_Name & "Source File: " & Source_File);
       New_Line;
@@ -47,8 +44,32 @@ package body Process_Data is
 
    end Get_Data;
 
+   procedure Normalize_Delft_Outcomes (Raw_A_Count, Raw_B_Count : Integer;
+      A_Discrete, B_Discrete : out UV) is
+      --  Under the Delft experimental rules, any raw readout pulse count
+      --  crossing the dark noise floor (> 0) represents a successful
+      --  Spin-Up event.
+      Readout_Threshold : constant Integer := 0;
+   begin
+      if Raw_A_Count > Readout_Threshold then
+         --  Bright State: Fluorescent photons detected -> Spin-Up
+         A_Discrete := 1;
+      else
+         --  Dark State: Zero counts or background noise -> Spin-Down
+         A_Discrete := -1;
+      end if;
+
+      if Raw_B_Count > Readout_Threshold then
+         --  Bright State: Fluorescent photons detected -> Spin-Up
+         B_Discrete := 1;
+      else
+         --  Dark State: Zero counts or background noise -> Spin-Down
+         B_Discrete := -1;
+      end if;
+
+   end Normalize_Delft_Outcomes;
+
    procedure Parse_Delft_CSV_Line (Line : String; Data : out Raw_Result_Record) is
-      First_Comma     : Natural := 0;
       Comma_Count     : Natural := 0;
       Idx             : Positive := Line'First;
       Comma_Positions : Field_Array := (others => 0);

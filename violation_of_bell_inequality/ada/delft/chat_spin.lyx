@@ -1,0 +1,238 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Spin
+\end_layout
+
+\begin_layout Standard
+In quantum physics Spin Value refers to the measured internal angular momentum of a subatomic particle (like an electron or photon) which behaves like a microscopic permanent magnetic needle that can only point in specific discrete directions.
+\end_layout
+
+\begin_layout Standard
+In the specific context of the TU Delft 2015 dataset,
+ "Spin Value" has a very practical meaning related to the physical setup of their experiment.
+\end_layout
+
+\begin_layout Section
+Physical Meaning of Spin Value in the Delft Experiment
+\end_layout
+
+\begin_layout Standard
+The Delft team used nitrogen-vacancy (NV) center electron spins inside a diamond crystal lattice.
+\end_layout
+
+\begin_layout Enumerate
+The Target:
+ 
+\begin_inset Newline newline
+\end_inset
+
+They trapped a single electron inside a microscopic defect in a diamond.
+\end_layout
+
+\begin_layout Enumerate
+The Measurement:
+ 
+\begin_inset Newline newline
+\end_inset
+
+When they ran a trial,
+ they applied a microwave pulse to read out the magnetic orientation of that trapped electron spin.
+\end_layout
+
+\begin_layout Enumerate
+The Discrete Outcomes:
+\begin_inset Newline newline
+\end_inset
+
+ Under the laws of quantum mechanics,
+ when you measure an electron's spin along an axis,
+ it can never be "tilted" or partial.
+ It must instantly snap to one of two discrete geometric configuration
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+• Spin-Up (often coded as +1 or binary 0)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+• Spin-Down (often coded as -1 or binary 1).
+\end_layout
+
+\begin_layout Section
+Why the Numbers CSV File Look Large
+\end_layout
+
+\begin_layout Standard
+You noticed that the raw outcomes in your CSV row look like massive integers (5424324 and 5672427).
+ 
+\end_layout
+
+\begin_layout Standard
+In this master layout file those aren't simple binary codes—
+they are high-resolution raw photon counts emitted during the spin-readout phase.
+\end_layout
+
+\begin_layout Standard
+To determine whether the electron was "Spin-Up" or "Spin-Down" the Delft hardware fires a green laser at the diamond after the microwave pulse:
+\end_layout
+
+\begin_layout Itemize
+If the electron is in the Spin-Up state it becomes optically active and floods the detector with thousands of fluorescent photons triggering a high count register (e.g.,
+ 5424324).
+\end_layout
+
+\begin_layout Itemize
+If the electron is in the Spin-Down state the system remains "dark" and registers significantly fewer counts.
+\end_layout
+
+\begin_layout Standard
+By setting a clear threshold splitting these high and low numbers the data scientists compress those large numbers into the sharp +1 and -1 variables that feed directly into your Kolmogorov-type joint expectation matrix.
+\end_layout
+
+\begin_layout Section
+The Physics of the Condition (The Threshold Rule)
+\end_layout
+
+\begin_layout Standard
+In the 2015 Delft heralding data architecture,
+ the spin-state readout isn't a pre-compiled binary code;
+ it is a raw count value tracking how many fluorescent photon ticks hit the sensor during an assignment window.
+\end_layout
+
+\begin_layout Itemize
+Spin-Up (+1):
+\begin_inset Newline newline
+\end_inset
+
+ The electron state is highly responsive to the optical laser probe,
+ flooding the nanowire registers with raw counts (which is why your row shows massive integers like 5424324 or 5672427).
+\end_layout
+
+\begin_layout Itemize
+Spin-Down (-1):
+\begin_inset Newline newline
+\end_inset
+
+ The electron remains dark or fails to cross the ionization gate,
+ resulting either in exactly 0 or a very low background noise count.
+\end_layout
+
+\begin_layout Standard
+Because a successful herald row in this file means the signal was already physically verified any value greater than zero constitutes a valid fluorescent "Spin-Up" detection.
+\end_layout
+
+\end_body
+\end_document
