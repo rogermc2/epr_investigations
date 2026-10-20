@@ -14,6 +14,8 @@ package body Process_Data is
    --  Max Unsigned_16 is 65535
    Max_Click_Delay : constant Interfaces.Unsigned_16 := 65535;
 
+   procedure Load_Data (CSV_Data : String; Data : out String21_List);
+   procedure Save_Match_List (File_Name : String; Pairs : Match_List);
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
       A_Index, B_Index : in out Double_Positive;
       Events : in out Nist_Event_List);
@@ -134,6 +136,164 @@ package body Process_Data is
          Put_Line (Routine_Name & Exception_Information (Error));
          raise;
    end Load_NIST_Data;
+
+   procedure Find_Raw_Window_Width
+     (CSV_Times_A, CSV_Times_B : String; Delta_A : Float;
+      Min_Width, Max_Width     : out Float) is
+      use String21_Package;
+      --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
+      A_Data       : String21_List;
+      B_Data       : String21_List;
+      B_Index      : Integer := 1;
+
+      procedure Find_Width (A_Curs : String21_Package.Cursor) is
+         A_Value   : constant Double :=
+           Double'Value (Element (A_Curs)) + Double (Delta_A);
+         Width     : Float;
+      begin
+         while B_Index < Integer (B_Data.Length) and then
+           Double'Value (B_Data.Element (B_Index)) < A_Value
+         loop
+            B_Index := B_Index + 1;
+         end loop;
+
+         Width := Float (Double'Value (B_Data.Element (B_Index)) - A_Value);
+         if Width > Max_Width then
+            Max_Width := Width;
+         elsif Width < Min_Width and then Width > 0.0 then
+            --   Width can be < 0.0 at end of files.
+            Min_Width := Width;
+         end if;
+
+      end Find_Width;
+
+   begin
+      Load_Data (CSV_Times_A, A_Data);
+      Load_Data (CSV_Times_B, B_Data);
+      Min_Width := 1.0;
+      Max_Width := 0.0;
+
+      A_Data.Iterate (Find_Width'Access);
+
+   end  Find_Raw_Window_Width;
+
+   procedure Load_Data (CSV_Data : String; Data : out String21_List) is
+      use String21_Package;
+      File_ID : File_Type;
+      aLine   : String_21;
+   begin
+      Open (File_ID, In_File, CSV_Data);
+      while not End_Of_File (File_ID) loop
+         aLine := Get_Line (File_ID);
+         Data.Append (aLine);
+      end loop;
+
+      Close (File_ID);
+
+   end Load_Data;
+
+   procedure Match_Sync_Times
+     (CSV_A, CSV_B, Match : String; Delta_A, Width : Float;
+      Num_Found           : out Natural; Selected_Pairs : out Match_List;
+      Num_Rows            : Natural := 0) is
+      use Match_Package;
+      use String21_Package;
+      Routine_Name : constant String := "Process_Data.Match_Sync_Times ";
+      Use_Num_Rows : constant Boolean := Num_Rows > 0;
+      D_Width         : constant Double := Double (Width);
+      A_Data          : String21_List;
+      B_Data          : String21_List;
+      B_Curs          : String21_Package.Cursor;
+      Matched_Indices : Index_Record;
+      Count           : Natural := 0;
+
+      procedure Find_All_Matches (A_Curs : String21_Package.Cursor) is
+         A_Value   : constant Double :=
+           Double'Value (Element (A_Curs)) + Double (Delta_A);
+         B_Val_Min : constant Double := A_Value - D_Width;
+         B_Value   : Double;
+         Match     : Boolean := False;
+      begin
+         Count := Count + 1;
+         if Use_Num_Rows and Count > Num_Rows then
+            null;
+         elsif Has_Element (B_Curs) then
+            B_Value := Double'Value (Element (B_Curs));
+            --  Move B_Index forward until B_Value is >= (A_Value - Width)
+            while Has_Element (B_Curs) and then B_Value < B_Val_Min loop
+               B_Value := Double'Value (Element (B_Curs));
+               Next (B_Curs);
+            end loop;
+
+            --  Element (B_Curs) is = or > B_Val_Min
+            if Has_Element (B_Curs) then
+               B_Value := Double'Value (Element (B_Curs));
+               Match := Abs (B_Value - A_Value) <= D_Width;
+
+               if Match then
+                  --  Matched times found within window
+                  Matched_Indices := (Double_Positive (To_Index (A_Curs)),
+                     Double_Positive (To_Index (B_Curs)));
+                  Selected_Pairs.Append (Matched_Indices);
+                  Num_Found := Num_Found + 1;
+                  if Num_Found < 6 then
+                     Put_Line (Routine_Name & "Match, A, B index:" &
+                                 Integer'Image (To_Index (A_Curs)) & ",  " &
+                                 Integer'Image (To_Index (B_Curs)));
+                  end if;
+               end if;
+            end if;
+         end if;
+
+      end Find_All_Matches;
+
+   begin
+      Num_Found := 0;
+      Load_Data (CSV_A, A_Data);
+      Load_Data (CSV_B, B_Data);
+      B_Curs := First (B_Data);
+      Next (B_Curs);  --  Skip header
+
+      A_Data.Iterate (Find_All_Matches'Access);
+      New_Line;
+
+      Save_Match_List (Match, Selected_Pairs);
+      Put_Line (Routine_Name & "Selected_Pairs length:" &
+                  Integer'Image (Integer (Selected_Pairs.Length)));
+      New_Line;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+
+   end Match_Sync_Times;
+
+   function Number_Of_Matches (File_Name : String) return Natural is
+      Routine_Name : constant String := "Process_Data.Number_Of_Matches ";
+      File_ID      : File_Type;
+      aLine        : String_8;
+      Num_Matches  : Natural := 0;
+   begin
+      Open (File_ID, In_File, File_Name);
+      Skip_Line (File_ID);   --  Skip header
+      while not End_Of_File (File_ID) loop
+         aLine := Get_Line (File_ID);
+         if aLine (1 .. 2) = aLine (4 .. 5) then
+            Num_Matches := Num_Matches + 1;
+         end if;
+      end loop;
+
+      Close (File_ID);
+
+      return Num_Matches;
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         return Num_Matches;
+
+   end Number_Of_Matches;
 
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
       A_Index, B_Index : in out Double_Positive;
@@ -332,6 +492,26 @@ package body Process_Data is
       Put_Line (Routine_Name & "BB Events written to " & BB_File_Name);
 
    end Save_Events;
+
+   procedure Save_Match_List (File_Name : String; Pairs : Match_List) is
+      use Match_Package;
+      Routine_Name : constant String := "Process_Data.Save_Match_List ";
+      Match_ID     : File_Type;
+      M_Curs       : Cursor := First (Pairs);
+      Rec          : Index_Record;
+   begin
+      Create (Match_ID, Out_File, File_Name);
+      while Has_Element (M_Curs) loop
+         Rec :=  Element (M_Curs);
+         Put_Line (Match_ID, Double_Positive'Image (Rec.A_Index) & ", " &
+          Double_Positive'Image (Rec.B_Index));
+         Next (M_Curs);
+      end loop;
+
+      Close (Match_ID);
+      Put_Line (Routine_Name & "Data written to " & File_Name);
+
+   end Save_Match_List;
 
    procedure Set_AB_Clicks
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
