@@ -34,6 +34,7 @@ begin
    --  Print_NIST_Data_List ("A_Aligned", A_Data, 9, 17);
    --  Print_NIST_Data_List ("B_Aligned", B_Data, 9, 17);
    Match_Sync_Times (A_Aligned, B_Aligned, Num_Found, Selected_Pairs);
+   Print_Match_List ("Selected_Pairs", Selected_Pairs, 1, 6);
    --  Use Events_1 for 03_12_CH_pockel_100kHz.run.Blind_2
    --  Use Events_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
    Events := Build_Event_List (A_Aligned, B_Aligned, Selected_Pairs, Events_2);

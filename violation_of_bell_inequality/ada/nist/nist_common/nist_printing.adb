@@ -4,8 +4,6 @@ with Interfaces;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Types; use Types;
-
 package body NIST_Printing is
 
    procedure Find_Clicks (Message : String; Data : Nist_Data_List;
@@ -63,6 +61,35 @@ package body NIST_Printing is
       New_Line;
 
    end Print_NIST_Data_List;
+
+   procedure Print_Match_List (Name : String; Data : Match_List;
+      Start : Positive := 1; Finish : Natural := 0) is
+      use Match_Package;
+      Start_Idx : constant Positive := Start;
+      Last      : Positive;
+      Item      : Index_Record;
+   begin
+      if Finish > 0 then
+         Last := Positive (Finish);
+      else
+         Last := Positive (Data.Length);
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start_Idx >= Data.First_Index and then
+       Last <= Positive (Data.Last_Index) then
+         for Index in Start_Idx .. Last loop
+            Item := Data (Index);
+            Put (",  A_Index: " & Double_Positive'Image (Item.A_Index));
+            Put_Line (",  B_Index: " & Double_Positive'Image (Item.B_Index));
+         end loop;
+      else
+         Put_Line ("Print_Match_List called with invalid" &
+          " start or finish index.");
+      end if;
+      New_Line;
+
+   end Print_Match_List;
 
    procedure Print_NIST_Data_Record (Name : String; Item : Data_Record) is
    begin

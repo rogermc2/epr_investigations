@@ -1,10 +1,13 @@
 
 with NIST_Types; use NIST_Types;
+with Types; use Types;
 
 package NIST_Printing is
 
    procedure Find_Clicks (Message : String; Data : Nist_Data_List;
     Number : Positive := 5);
+   procedure Print_Match_List (Name : String; Data : Match_List;
+      Start : Positive := 1; Finish : Natural := 0);
    procedure Print_NIST_Data_List
       (Name  : String; Data : Nist_Data_List;
          Start : Positive := 1; Finish : Natural := 0);
