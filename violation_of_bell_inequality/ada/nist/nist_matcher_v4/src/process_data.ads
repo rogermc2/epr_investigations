@@ -4,8 +4,9 @@ with Types; use Types;
 
 package Process_Data is
 
-   function Build_Event_List (A_Data, B_Data : Nist_Data_List;
-       Events_Kind : Events_Type) return Nist_Event_List;
+   function Build_Event_List (CSV_A, CSV_B : String;
+      Selected_Pairs : Match_List; Events_Kind : Events_Type)
+       return Nist_Event_List;
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0);
    procedure Match_Sync_Times

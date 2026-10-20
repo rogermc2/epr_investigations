@@ -23,18 +23,25 @@ package body Process_Data is
       (Rec : NIST_Event_Record; Click_A, Click_B : out Integer;
       Max_Click_Delay : Interfaces.Unsigned_16);
 
-   function Build_Event_List (A_Data, B_Data : Nist_Data_List;
+   function Build_Event_List (CSV_A, CSV_B : String; Selected_Pairs : Match_List;
        Events_Kind : Events_Type) return Nist_Event_List is
-      use Nist_Data_Package;
+      use Match_Package;
       Routine_Name : constant String := "Process_Data.Build_Event_List ";
-      A_Index      : Double_Positive := A_Data.First_Index;
-      B_Index      : Double_Positive := B_Data.First_Index;
+      Curs         : Cursor := Selected_Pairs.First;
+      A_Data       : Nist_Data_List;
+      B_Data       : Nist_Data_List;
+      Indices      : Index_Record;
+      A_Index      : Double_Positive;
+      B_Index      : Double_Positive;
       Count        : Natural := 0;
       Events       : Nist_Event_List;
    begin
-      while A_Index <= A_Data.Last_Index - 2 and then
-       B_Index < B_Data.Last_Index - 2 loop
+      Load_NIST_Data (CSV_A, A_Data);
+      Load_NIST_Data (CSV_B, B_Data);
+      while Has_Element (Curs) loop
          Count := Count + 1;
+         A_Index := Element (Curs).A_Index;
+         B_Index := Element (Curs).B_Index;
          if abs (A_Data (A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < 20 then
             --  This is a confirmed global trial.
             --  Check local SYNC-to-CLICK windows for both A and B separately.
@@ -51,6 +58,7 @@ package body Process_Data is
          else  --  B's clock is lagging than A's clock.
             B_Index := B_Index + 1;
          end if;
+         Next (Curs);
       end loop;
 
       Put_Line (Routine_Name & "Count:" & Integer'Image (Count));
