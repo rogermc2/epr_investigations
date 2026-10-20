@@ -18,7 +18,7 @@ procedure Match is
    ab             : constant String := Directory & "ab.csv";
    ba             : constant String := Directory & "ba.csv";
    bb             : constant String := Directory & "bb.csv";
-   Matched        : constant String := Directory & "matched.csv";
+   --  Matched        : constant String := Directory & "matched.csv";
    Width          : constant Double_Natural := 20;
    Delta_A        : constant Double_Natural := 1;
    Num_Found      : Natural := 0;
@@ -36,7 +36,7 @@ begin
    Save_Aligned_Data (B_Aligned, B_Data);
    --  Print_NIST_Data_List ("A_Aligned", A_Data, 9, 17);
    --  Print_NIST_Data_List ("B_Aligned", B_Data, 9, 17);
-   Match_Sync_Times (A_Aligned, B_Aligned, Matched, Delta_A, Width,
+   Match_Sync_Times (A_Aligned, B_Aligned, Delta_A, Width,
                      Num_Found, Selected_Pairs);
    --  Use Events_1 for 03_12_CH_pockel_100kHz.run.Blind_2
    --  Use Events_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
