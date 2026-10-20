@@ -12,6 +12,7 @@ package body Process_Data is
 
    --  Max Unsigned_16 is 65535
    Max_Click_Delay : constant Interfaces.Unsigned_16 := 65535;
+   Max_Diff        : constant Double_Natural := 20;
 
    procedure Load_Aligned_NIST_Data (Source_File : String;
       NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0);
@@ -44,7 +45,7 @@ package body Process_Data is
          Count := Count + 1;
          A_Index := Element (Curs).A_Index;
          B_Index := Element (Curs).B_Index;
-         if abs (A_Data (A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < 20 then
+         if abs (A_Data (A_Index).Time_Tag - B_Data (B_Index).Time_Tag) < Max_Diff then
             --  This is a confirmed global trial.
             --  Check local SYNC-to-CLICK windows for both A and B separately.
             if Events_Kind = Events_1 then
@@ -52,13 +53,11 @@ package body Process_Data is
             else
                Process_Event_2 (A_Data, B_Data, A_Index, B_Index, Events);
             end if;
-            A_Index := A_Index + 1;
-            B_Index := B_Index + 1;
-         elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
-            --  A's clock is lagging B's clock.
-            A_Index := A_Index + 1;
-         else  --  B's clock is lagging than A's clock.
-            B_Index := B_Index + 1;
+         --  elsif A_Data (A_Index).Time_Tag < B_Data (B_Index).Time_Tag then
+         --     --  A's clock is lagging B's clock.
+         --     A_Index := A_Index + 1;
+         --  else  --  B's clock is lagging than A's clock.
+         --     B_Index := B_Index + 1;
          end if;
          Next (Curs);
       end loop;
@@ -271,10 +270,14 @@ package body Process_Data is
 
       procedure Find_All_Matches (A_Curs : Nist_Data_Package.Cursor) is
          A_Value   : constant Double_Natural := Element (A_Curs).Time_Tag;
-         B_Val_Min : constant Double_Natural := A_Value;
+         B_Val_Min : Double_Natural := 0;
          B_Value   : Double_Natural;
          Match     : Boolean := False;
       begin
+         if A_Value > Max_Diff then
+            B_Val_Min := A_Value - Max_Diff;
+         end if;
+
          Count := Count + 1;
          if Use_Num_Rows and Count > Num_Rows then
             null;
@@ -289,7 +292,7 @@ package body Process_Data is
             --  Element (B_Curs) is = or > B_Val_Min
             if Has_Element (B_Curs) then
                B_Value := Element (B_Curs).Time_Tag;
-               Match := Abs (B_Value - A_Value) <= 20;
+               Match := Abs (B_Value - A_Value) <= Max_Diff;
 
                if Match then
                   --  Matched times found within window
@@ -312,9 +315,7 @@ package body Process_Data is
       Num_Found := 0;
       Load_Aligned_NIST_Data (CSV_A, A_Data);
       Load_Aligned_NIST_Data (CSV_B, B_Data);
-      B_Curs := First (B_Data);
-      Next (B_Curs);  --  Skip header
-
+      B_Curs := B_Data.First;
       A_Data.Iterate (Find_All_Matches'Access);
       New_Line;
 
