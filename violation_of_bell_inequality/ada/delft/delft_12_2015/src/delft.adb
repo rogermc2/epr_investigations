@@ -2,6 +2,7 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Delft_Printing; use Delft_Printing;
 with Delft_Types; use Delft_Types;
 with Process_Data; use Process_Data;
 with Utils; use Utils;
@@ -17,6 +18,7 @@ procedure Delft is
    Data             : Delft_Data_List;
 begin
    Get_Data (Source, Data);
+   Print_Delft_Data_List ("Data", Data, 1, 8);
 
 exception
    when Error : others =>

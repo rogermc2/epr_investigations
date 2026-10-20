@@ -276,7 +276,7 @@ procedure Print_Match_List (Name : String; Data : Match_List;
 
    end Print_Match_List;
 
-procedure Print_Sample_Data_List (Name : String; Data : Sample_Data_List;
+   procedure Print_Sample_Data_List (Name : String; Data : Sample_Data_List;
                                Start : Positive := 1; Finish : Natural := 0) is
       Item  : Sample_Data_Record;
       Last  : Natural;
