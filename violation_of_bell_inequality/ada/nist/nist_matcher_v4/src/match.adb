@@ -18,15 +18,12 @@ procedure Match is
    ab             : constant String := Directory & "ab.csv";
    ba             : constant String := Directory & "ba.csv";
    bb             : constant String := Directory & "bb.csv";
-   --  Matched        : constant String := Directory & "matched.csv";
-   Width          : constant Double_Natural := 20;
-   Delta_A        : constant Double_Natural := 1;
+   Data_Size      : constant Natural := 0;
    Num_Found      : Natural := 0;
    A_Data         : Nist_Data_List;
    B_Data         : Nist_Data_List;
    Selected_Pairs : Match_List;
    Events         : Nist_Event_List;
-   Data_Size      : constant Natural := 0;
 begin
    Load_NIST_Data (A_Source, A_Data, Data_Size);
    Load_NIST_Data (B_Source, B_Data, Data_Size);
@@ -36,8 +33,7 @@ begin
    Save_Aligned_Data (B_Aligned, B_Data);
    --  Print_NIST_Data_List ("A_Aligned", A_Data, 9, 17);
    --  Print_NIST_Data_List ("B_Aligned", B_Data, 9, 17);
-   Match_Sync_Times (A_Aligned, B_Aligned, Delta_A, Width,
-                     Num_Found, Selected_Pairs);
+   Match_Sync_Times (A_Aligned, B_Aligned, Num_Found, Selected_Pairs);
    --  Use Events_1 for 03_12_CH_pockel_100kHz.run.Blind_2
    --  Use Events_2 for 02_54_CH_pockel_100kHz.run4.afterTimingfix2
    Events := Build_Event_List (A_Aligned, B_Aligned, Selected_Pairs, Events_2);

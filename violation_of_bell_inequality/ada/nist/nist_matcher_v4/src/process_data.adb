@@ -139,6 +139,7 @@ package body Process_Data is
          Double_Natural'Image (Source_Size));
       New_Line;
       Open (Source_ID, In_File, Source_File);
+      Skip_Line (Source_ID);  --  Skip header
 
       while not End_Of_File (Source_ID) and then
        Line_Num < Max_Lines loop
@@ -154,9 +155,9 @@ package body Process_Data is
                Data.Channel :=
                Channel_Type'Value (aline (aline'First .. Pos_1 - 1));
                if Pos_2 > 0 then
-               Data.Time_Tag :=
-                  Double_Natural'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
-               Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
+                  Data.Time_Tag :=
+                     Double_Natural'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
+                  Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
                else
                   Data.Time_Tag :=
                      Double_Natural'Value (aline (Pos_1 + 1 .. aLine'Last));
@@ -256,14 +257,12 @@ package body Process_Data is
    end Load_NIST_Data;
 
    procedure Match_Sync_Times
-     (CSV_A, CSV_B : String; Delta_A, Width : Double_Natural;
-      Num_Found    : out Natural; Selected_Pairs : out Match_List;
-      Num_Rows     : Natural := 0) is
+     (CSV_A, CSV_B : String; Num_Found : out Natural;
+      Selected_Pairs : out Match_List; Num_Rows : Natural := 0) is
       use Match_Package;
       use Nist_Data_Package;
-      Routine_Name : constant String := "Process_Data.Match_Sync_Times ";
-      Use_Num_Rows : constant Boolean := Num_Rows > 0;
-      D_Width         : constant Double_Natural := Width;
+      Routine_Name    : constant String := "Process_Data.Match_Sync_Times ";
+      Use_Num_Rows    : constant Boolean := Num_Rows > 0;
       A_Data          : Nist_Data_List;
       B_Data          : Nist_Data_List;
       B_Curs          : Nist_Data_Package.Cursor;
@@ -271,9 +270,8 @@ package body Process_Data is
       Count           : Natural := 0;
 
       procedure Find_All_Matches (A_Curs : Nist_Data_Package.Cursor) is
-         A_Value   : constant Double_Natural :=
-         Element (A_Curs).Time_Tag + Delta_A;
-         B_Val_Min : constant Double_Natural := A_Value - D_Width;
+         A_Value   : constant Double_Natural := Element (A_Curs).Time_Tag;
+         B_Val_Min : constant Double_Natural := A_Value;
          B_Value   : Double_Natural;
          Match     : Boolean := False;
       begin
@@ -291,7 +289,7 @@ package body Process_Data is
             --  Element (B_Curs) is = or > B_Val_Min
             if Has_Element (B_Curs) then
                B_Value := Element (B_Curs).Time_Tag;
-               Match := Abs (B_Value - A_Value) <= D_Width;
+               Match := Abs (B_Value - A_Value) <= 20;
 
                if Match then
                   --  Matched times found within window
@@ -312,8 +310,8 @@ package body Process_Data is
 
    begin
       Num_Found := 0;
-      Load_NIST_Data (CSV_A, A_Data);
-      Load_NIST_Data (CSV_B, B_Data);
+      Load_Aligned_NIST_Data (CSV_A, A_Data);
+      Load_Aligned_NIST_Data (CSV_B, B_Data);
       B_Curs := First (B_Data);
       Next (B_Curs);  --  Skip header
 
