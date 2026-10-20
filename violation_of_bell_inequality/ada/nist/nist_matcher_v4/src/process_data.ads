@@ -9,7 +9,7 @@ package Process_Data is
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0);
    procedure Match_Sync_Times
-     (CSV_A, CSV_B, Match : String; Delta_A, Width : Float;
+     (CSV_A, CSV_B, Match : String; Delta_A, Width : Double_Natural;
       Num_Found           : out Natural; Selected_Pairs : out Match_List;
       Num_Rows            : Natural := 0);
    procedure Save_Events (AA_File_Name, AB_File_Name,

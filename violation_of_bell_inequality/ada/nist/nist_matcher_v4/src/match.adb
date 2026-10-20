@@ -19,8 +19,8 @@ procedure Match is
    ba             : constant String := Directory & "ba.csv";
    bb             : constant String := Directory & "bb.csv";
    Matched        : constant String := Directory & "matched.csv";
-   Width          : constant Float := 20.0;
-   Delta_A        : constant Float := 1.0;
+   Width          : constant Double_Natural := 20;
+   Delta_A        : constant Double_Natural := 1;
    Num_Found      : Natural := 0;
    A_Data         : Nist_Data_List;
    B_Data         : Nist_Data_List;

@@ -13,7 +13,7 @@ package body Process_Data is
    --  Max Unsigned_16 is 65535
    Max_Click_Delay : constant Interfaces.Unsigned_16 := 65535;
 
-   procedure Load_Data (CSV_Data : String; Data : out String21_List);
+   --  procedure Load_Data (CSV_Data : String; Data : out String21_List);
    procedure Save_Match_List (File_Name : String; Pairs : Match_List);
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
       A_Index, B_Index : in out Double_Positive;
@@ -67,59 +67,60 @@ package body Process_Data is
    end Build_Event_List;
 
    procedure Find_Raw_Window_Width
-     (CSV_Times_A, CSV_Times_B : String; Delta_A : Float;
-      Min_Width, Max_Width     : out Float) is
-      use String21_Package;
+     (CSV_Times_A, CSV_Times_B : String; Delta_A : Double_Natural;
+      Min_Width, Max_Width     : out Double_Natural) is
+      use Nist_Data_Package;
       --  Routine_Name : constant String := "Process_Data.Find_Raw_Window_Width ";
-      A_Data       : String21_List;
-      B_Data       : String21_List;
-      B_Index      : Integer := 1;
+      A_Data       : Nist_Data_List;
+      B_Data       : Nist_Data_List;
+      B_Index      : Double_Positive := 1;
 
-      procedure Find_Width (A_Curs : String21_Package.Cursor) is
-         A_Value   : constant Double :=
-           Double'Value (Element (A_Curs)) + Double (Delta_A);
-         Width     : Float;
+      procedure Find_Width (A_Curs : Cursor) is
+         A_Value   : constant Double_Natural :=
+           Element (A_Curs).Time_Tag + Delta_A;
+         Width     : Double_Natural;
       begin
-         while B_Index < Integer (B_Data.Length) and then
-           Double'Value (B_Data.Element (B_Index)) < A_Value
-         loop
+         while B_Index < Double_Positive (B_Data.Length) and then
+           B_Data.Element (B_Index).Time_Tag < A_Value loop
             B_Index := B_Index + 1;
          end loop;
 
-         Width := Float (Double'Value (B_Data.Element (B_Index)) - A_Value);
+         Width := B_Data.Element (B_Index).Time_Tag - A_Value;
          if Width > Max_Width then
             Max_Width := Width;
-         elsif Width < Min_Width and then Width > 0.0 then
-            --   Width can be < 0.0 at end of files.
+         elsif Width < Min_Width and then Width > 0 then
+            --   Width can be < 0 at end of files.
             Min_Width := Width;
          end if;
 
       end Find_Width;
 
    begin
-      Load_Data (CSV_Times_A, A_Data);
-      Load_Data (CSV_Times_B, B_Data);
-      Min_Width := 1.0;
-      Max_Width := 0.0;
+      --  Load_Data (CSV_Times_A, A_Data);
+      --  Load_Data (CSV_Times_B, B_Data);
+      Load_NIST_Data (CSV_Times_A, A_Data);
+      Load_NIST_Data (CSV_Times_B, B_Data);
+      Min_Width := 1;
+      Max_Width := 0;
 
       A_Data.Iterate (Find_Width'Access);
 
    end  Find_Raw_Window_Width;
 
-   procedure Load_Data (CSV_Data : String; Data : out String21_List) is
-      use String21_Package;
-      File_ID : File_Type;
-      aLine   : String_21;
-   begin
-      Open (File_ID, In_File, CSV_Data);
-      while not End_Of_File (File_ID) loop
-         aLine := Get_Line (File_ID);
-         Data.Append (aLine);
-      end loop;
+   --  procedure Load_Data (CSV_Data : String; Data : out String21_List) is
+   --     use String21_Package;
+   --     File_ID : File_Type;
+   --     aLine   : String_21;
+   --  begin
+   --     Open (File_ID, In_File, CSV_Data);
+   --     while not End_Of_File (File_ID) loop
+   --        aLine := Get_Line (File_ID);
+   --        Data.Append (aLine);
+   --     end loop;
 
-      Close (File_ID);
+   --     Close (File_ID);
 
-   end Load_Data;
+   --  end Load_Data;
 
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0) is
@@ -192,7 +193,7 @@ package body Process_Data is
    end Load_NIST_Data;
 
    procedure Match_Sync_Times
-     (CSV_A, CSV_B, Match : String; Delta_A, Width : Float;
+     (CSV_A, CSV_B, Match : String; Delta_A, Width : Double_Natural;
       Num_Found           : out Natural; Selected_Pairs : out Match_List;
       Num_Rows            : Natural := 0) is
       use Match_Package;
@@ -200,7 +201,7 @@ package body Process_Data is
       --  use String21_Package;
       Routine_Name : constant String := "Process_Data.Match_Sync_Times ";
       Use_Num_Rows : constant Boolean := Num_Rows > 0;
-      D_Width         : constant Double_Natural := Double_Natural (Width);
+      D_Width         : constant Double_Natural := Width;
       A_Data          : Nist_Data_List;
       B_Data          : Nist_Data_List;
       B_Curs          : Nist_Data_Package.Cursor;
@@ -209,7 +210,7 @@ package body Process_Data is
 
       procedure Find_All_Matches (A_Curs : Nist_Data_Package.Cursor) is
          A_Value   : constant Double_Natural :=
-           Element (A_Curs).Time_Tag + Double_Natural (Delta_A);
+         Element (A_Curs).Time_Tag + Delta_A;
          B_Val_Min : constant Double_Natural := A_Value - D_Width;
          B_Value   : Double_Natural;
          Match     : Boolean := False;
