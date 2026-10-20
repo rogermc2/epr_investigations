@@ -1,4 +1,5 @@
 
+with Ada.Containers.Vectors;
 package Delft_Types is
 
    type Raw_Result_Record is record
@@ -8,6 +9,8 @@ package Delft_Types is
       B_Result   : Integer;
    end record;
 
-   type Field_Array is array (1 .. 17) of Natural;
+   package Delft_Data_Package is new
+     Ada.Containers.Vectors (Positive, Raw_Result_Record);
+   subtype Delft_Data_List is Delft_Data_Package.Vector;
 
 end Delft_Types;

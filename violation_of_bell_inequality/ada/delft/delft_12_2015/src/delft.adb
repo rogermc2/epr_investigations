@@ -2,6 +2,7 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Delft_Types; use Delft_Types;
 with Process_Data; use Process_Data;
 with Utils; use Utils;
 
@@ -11,12 +12,11 @@ procedure Delft is
    Target_Directory : constant String := "../generated_delft_data/";
    Source           : constant String :=
       Source_Directory & "bell_open_data_2_new_detector.txt";
-   AV_Target        : constant String := "../A_Photon_Times.csv";
-   --  BV_Target     : constant String := "../B_Photon_Times.csv";
    AC_Target        : constant String := "../A_OEM.csv";
    BC_Target        : constant String := "../B_OEM.csv";
+   Data             : Delft_Data_List;
 begin
-   Get_Data (Source, AV_Target);
+   Get_Data (Source, Data);
 
 exception
    when Error : others =>

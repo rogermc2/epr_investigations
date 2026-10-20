@@ -6,16 +6,17 @@ with Ada.Exceptions; use Ada.Exceptions;
 --  with Ada.Strings.Maps;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Delft_Types; use Delft_Types;
 with Types; use Types;
 with Utils; use Utils;
 
 package body Process_Data is
 
+   type Field_Array is array (1 .. 17) of Natural;
+
    procedure Parse_Delft_CSV_Line (Line : String;
       Data : out Raw_Result_Record);
 
-   procedure Get_Data (Source_File, Target_File : String) is
+   procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
       Source_ID    : File_Type;
       PT_ID        : File_Type;
@@ -34,18 +35,11 @@ package body Process_Data is
             aline : constant String := Get_Line (Source_ID);
          begin
             Parse_Delft_CSV_Line (aline, Raw_Data);
+            Target.Append (Raw_Data);
          end;
       end loop;
 
       Close (Source_ID);
-
-      Create (PT_ID, Out_File, Target_File);
-      
-      Close (PT_ID);
-
-      Put_Line (Routine_Name & "Photon times file written to " & Target_File);
-      Put_Line (Routine_Name & "Photon times file length: " &
-           Natural'Image (Count_Text_File_Lines (Target_File)) & " lines");
 
    exception
       when Error : others =>
