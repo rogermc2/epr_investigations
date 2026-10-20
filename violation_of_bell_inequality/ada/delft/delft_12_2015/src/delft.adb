@@ -18,14 +18,6 @@ procedure Delft is
 begin
    Get_Data (Source, AV_Target);
 
-   --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
-   --  Combine (AV_Target, BV_Target, AC_Target, BC_Target, Combined_Data, 30000);
-
-   Put_Line ("Number of A detections: " &
-               Integer'Image (Count_Text_File_Lines (AC_Target)));
-   Put_Line ("Number of B detections: " &
-               Integer'Image (Count_Text_File_Lines (BC_Target)));
-
 exception
    when Error : others =>
       Put_Line (Routine_Name & "Exception information:  " &

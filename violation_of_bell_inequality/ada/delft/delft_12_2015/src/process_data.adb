@@ -27,7 +27,6 @@ package body Process_Data is
       Put_Line (Routine_Name & "Source File: " & Source_File);
       New_Line;
       Open (Source_ID, In_File, Source_File);
-      Create (PT_ID, Out_File, Target_File);
 
       while not End_Of_File (Source_ID) loop
          Line_Num := Line_Num + 1;
@@ -36,15 +35,13 @@ package body Process_Data is
          begin
             Parse_Delft_CSV_Line (aline, Raw_Data);
          end;
-         --  Number := To_IEEE_Double_Big_Endian (Data);
-         --  if Line_Num < 4 then
-         --     Put_Line (Routine_Name & "Number: " & Double'Image (Number));
-         --  end if;
-         Put_Line (PT_ID, Double'Image (Number));
       end loop;
 
-      Close (PT_ID);
       Close (Source_ID);
+
+      Create (PT_ID, Out_File, Target_File);
+      
+      Close (PT_ID);
 
       Put_Line (Routine_Name & "Photon times file written to " & Target_File);
       Put_Line (Routine_Name & "Photon times file length: " &
