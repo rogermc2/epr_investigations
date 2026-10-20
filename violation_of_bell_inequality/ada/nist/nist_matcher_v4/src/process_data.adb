@@ -13,6 +13,8 @@ package body Process_Data is
    --  Max Unsigned_16 is 65535
    Max_Click_Delay : constant Interfaces.Unsigned_16 := 65535;
 
+   procedure Load_Aligned_NIST_Data (Source_File : String;
+      NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0);
    procedure Process_Event (A_Data, B_Data : Nist_Data_List;
       A_Index, B_Index : in out Double_Positive;
       Events : in out Nist_Event_List);
@@ -36,8 +38,8 @@ package body Process_Data is
       Count        : Natural := 0;
       Events       : Nist_Event_List;
    begin
-      Load_NIST_Data (CSV_A, A_Data);
-      Load_NIST_Data (CSV_B, B_Data);
+      Load_Aligned_NIST_Data (CSV_A, A_Data);
+      Load_Aligned_NIST_Data (CSV_B, B_Data);
       while Has_Element (Curs) loop
          Count := Count + 1;
          A_Index := Element (Curs).A_Index;
@@ -112,6 +114,76 @@ package body Process_Data is
    --     A_Data.Iterate (Find_Width'Access);
 
    --  end  Find_Raw_Window_Width;
+
+   procedure Load_Aligned_NIST_Data (Source_File : String;
+    NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use Nist_Data_Package;
+      Routine_Name : constant String := "Process_Data.Load_Aligned_NIST_Data ";
+      Source_Size  : constant Double_Natural :=
+         Double_Natural (Ada.Directories.Size (Source_File));
+      Max_Lines    : Double_Natural;
+      Source_ID    : File_Type;
+      Data         : Data_Record;
+      Line_Num     : Double_Natural := 0;
+   begin
+      if Num_Lines > 0 then
+         Max_Lines := Double_Natural (Num_Lines);
+      else
+         Max_Lines := Source_Size;
+      end if;
+
+      Put_Line (Routine_Name & "Source File: " & Source_File);
+      Put_Line (Routine_Name & Source_File & " length: " &
+         Double_Natural'Image (Source_Size));
+      New_Line;
+      Open (Source_ID, In_File, Source_File);
+
+      while not End_Of_File (Source_ID) and then
+       Line_Num < Max_Lines loop
+        Line_Num := Line_Num + 1;
+         declare
+            aline : constant String := Get_Line (Source_ID);
+            Pos_1 : constant Natural :=
+             Index (aLine (aLine'First .. aLine'Last), ",");
+            Pos_2 : constant Natural :=
+             Index (aLine (Pos_1 + 1 .. aLine'Last), ",");
+         begin
+            if Pos_1 - aline'First > 1 then
+               Data.Channel :=
+               Channel_Type'Value (aline (aline'First .. Pos_1 - 1));
+               if Pos_2 > 0 then
+               Data.Time_Tag :=
+                  Double_Natural'Value (aline (Pos_1 + 1 .. Pos_2 - 1));
+               Data.Transfer_ID := Integer'Value (aline (Pos_2 + 1 .. aLine'Last));
+               else
+                  Data.Time_Tag :=
+                     Double_Natural'Value (aline (Pos_1 + 1 .. aLine'Last));
+               end if;
+            else
+               Put_Line (Routine_Name & "aline'First, Pos_1: " &
+               Integer'Image (aline'First) & "," & Integer'Image (Pos_1));
+            end if;
+        end;
+
+         if Data.Channel /= Overflow then
+            NIST_Data.Append (Data);
+         end if;
+
+         if Line_Num mod 4000000 = 0 then
+            Put (".");
+         end if;
+      end loop;
+      New_Line;
+
+      Close (Source_ID);
+
+   exception
+      when Error : others =>
+         Put_Line (Routine_Name & Exception_Information (Error));
+         raise;
+   end Load_Aligned_NIST_Data;
 
    procedure Load_NIST_Data (Source_File : String;
     NIST_Data : out Nist_Data_List; Num_Lines : Natural := 0) is
