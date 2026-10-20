@@ -468,6 +468,7 @@ package body Process_Data is
 
          if B_Data (B_Index + 2).Channel = Click then
             anEvent.B_Click_Mask := 1;
+            B_Index := B_Index + 3;
          else
             anEvent.B_Click_Mask := 0;
             B_Index := B_Index + 1;
