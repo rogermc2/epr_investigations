@@ -76,13 +76,15 @@ package body NIST_Printing is
       end if;
 
       Put_Line (Name & ": ");
-      if Start_Idx >= Data.First_Index and then
-       Last <= Positive (Data.Last_Index) then
-         for Index in Start_Idx .. Last loop
-            Item := Data (Index);
-            Put (",  A_Index: " & Double_Positive'Image (Item.A_Index));
-            Put_Line (",  B_Index: " & Double_Positive'Image (Item.B_Index));
-         end loop;
+      if Data.Last_Index = No_Index then
+         Put_Line ("Print_Match_List called with empty list." );
+      elsif Start_Idx >= Data.First_Index and then
+            Last <= Positive (Data.Last_Index) then
+            for Index in Start_Idx .. Last loop
+               Item := Data (Index);
+               Put (",  A_Index: " & Double_Positive'Image (Item.A_Index));
+               Put_Line (",  B_Index: " & Double_Positive'Image (Item.B_Index));
+            end loop;
       else
          Put_Line ("Print_Match_List called with invalid" &
           " start or finish index.");
