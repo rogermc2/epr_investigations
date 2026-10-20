@@ -18,7 +18,6 @@ procedure Delft is
 begin
    Get_Data (Source, AV_Target);
 
-   OEM_Data (Source, AC_Target);
    --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
    --  Combine (AV_Target, BV_Target, AC_Target, BC_Target, Combined_Data, 30000);
 
