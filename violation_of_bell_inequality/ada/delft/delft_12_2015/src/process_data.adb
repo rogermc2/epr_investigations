@@ -93,24 +93,10 @@ package body Process_Data is
 
    --  -----------------------------------------------------------------------
 
-   --  Photon arrival times where the "arm" time has already been subtracted.
-   --  IEEE-8bit double precision numbers in "Big Endian"-form naturally
-   --  sorted ascendingly.
-   --  Actual time resolution is 10-10seconds but accuracy is only 0.5 ns.
-   --  Example: 3EC2 25E0 8677 939E => 2.16340508861703e-6
-
-   --  Structure of a Double-Precision Floating-Point Number:
-   --  Sign (1 bit): Determines if the number is positive or negative
-   --  (0 for positive, 1 for negative).
-   --  Exponent (11 bits):
-   --      Represents the power of 2 by which the significand is multiplied.
-   --  Significand (52 bits):
-   --      Represents the fractional part of the number (also called mantissa)
-
-   procedure Photon_Data (Source_File, Target_File : String) is
+   procedure Get_Data (Source_File, Target_File : String) is
       use Ada.Streams;
       use Ada.Text_IO;
-      Routine_Name : constant String := "Process_Data.Photon_Data ";
+      Routine_Name : constant String := "Process_Data.Get_Data ";
       Source_ID    : Stream_IO.File_Type;
       PT_ID        : Ada.Text_IO.File_Type;
       Data_Stream  : Stream_IO.Stream_Access;
@@ -147,6 +133,6 @@ package body Process_Data is
       when Error : others =>
          Put_Line (Routine_Name & Exception_Information (Error));
 
-   end Photon_Data;
+   end Get_Data;
 
 end Process_Data;
