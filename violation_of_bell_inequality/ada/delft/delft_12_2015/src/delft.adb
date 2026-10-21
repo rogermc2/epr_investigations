@@ -5,6 +5,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Delft_Printing; use Delft_Printing;
 with Delft_Types; use Delft_Types;
 with Process_Data; use Process_Data;
+with Utils; use Utils;
 
 procedure Delft is
    Routine_Name     : constant String := "Delft ";
@@ -18,8 +19,10 @@ procedure Delft is
    bb               : constant String := Target_Directory & "bb.csv";
    Data             : Delft_Data_List;
 begin
+   Put_Line (Routine_Name & "Source length: " &
+                  Integer'Image (Count_Text_File_Lines (Source)));
    Get_Data (Source, Data);
-   Print_Delft_Data_List ("Data", Data, 1, 8);
+   Print_Delft_Data_List ("Data", Data, 1, 10);
    Save_Data (aa, ab, ba, bb, Data);
 
 exception

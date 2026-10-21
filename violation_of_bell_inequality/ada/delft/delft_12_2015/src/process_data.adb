@@ -9,8 +9,7 @@ package body Process_Data is
 
    type Field_Array is array (1 .. 17) of Natural;
 
-   procedure Parse_Delft_CSV_Line (Line : String;
-      Data : out Raw_Result_Record);
+   procedure Parse_Line (Line : String; Data : out Raw_Result_Record);
 
    procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
@@ -27,7 +26,7 @@ package body Process_Data is
          declare
             aline : constant String := Get_Line (Source_ID);
          begin
-            Parse_Delft_CSV_Line (aline, Raw_Data);
+            Parse_Line (aline, Raw_Data);
             Target.Append (Raw_Data);
          end;
       end loop;
@@ -40,7 +39,8 @@ package body Process_Data is
 
    end Get_Data;
 
-   procedure Parse_Delft_CSV_Line (Line : String; Data : out Raw_Result_Record) is
+   procedure Parse_Line (Line : String; Data : out Raw_Result_Record) is
+      Routine_Name : constant String := "Process_Data.Parse_Line ";
       Comma_Count     : Natural := 0;
       Idx             : Positive := Line'First;
       Comma_Positions : Field_Array := (others => 0);
@@ -54,20 +54,29 @@ package body Process_Data is
          end if;
          Idx := Idx + 1;
       end loop;
-
+      --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
+      --  Column 5 (A Setting) lives between the 4th and 5th comma
+      --  Put_Line ("between the 2nd and 3rd comma: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
       Data.A_Setting :=
-       Integer'Value (Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
-      --  Column 4 (A Outcome) lives between the 3rd and 4th comma
+       Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions (5) - 1));
+      --  Column 8 (A Outcome) lives between the 7th and 8th comma
       Data.A_Result :=
          Integer'Value (Line(Comma_Positions(7) + 1 .. Comma_Positions(8) - 1));
-      --  Column 5 (B Setting) lives between the 4th and 5th comma
+      --  Column 7 (B Setting) lives between the 6th and 7th comma
       Data.B_Setting :=
-         Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions(5) - 1));
-      --  Column 6 (B Outcome) lives between the 5th and 6th comma
+         Integer'Value (Line(Comma_Positions(6) + 1 .. Comma_Positions(7) - 1));
+      --  Column 9 (B Outcome) lives between the 8th and 9th comma
       Data.B_Result :=
          Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
 
-   end Parse_Delft_CSV_Line;
+   exception
+      when Error : others =>
+         New_Line;
+         Put_Line ("Exception raised in " & Routine_Name);
+         Put_Line (Exception_Name (Error) & ":   " & Exception_Message (Error));
+         Put_Line ("Between commas 2 and 3: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
+         raise;
+   end Parse_Line;
 
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
       use Delft_Data_Package;
