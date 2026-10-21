@@ -36,10 +36,10 @@ procedure Statistical_Analysis is
    False_Count   : Natural;
    True_Count    : Natural;
 begin
-   Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 10);
-   Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 10);
-   Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 10);
-   Print_Delft_Sample_List ("Detections_11", Detections_11, 1, 10);
+   Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
+   Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
+   Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
+   Print_Delft_Sample_List ("Detections_11", Detections_11, 1, 5);
    Sample_Means (Detections_00, Mean_A_00, Mean_B_00, Mean_AB_00);
    Sample_Means (Detections_01, Mean_A_01, Mean_B_01, Mean_AB_01);
    Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);

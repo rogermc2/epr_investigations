@@ -2,8 +2,8 @@
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Numerics;
-with Ada.Strings;
-with Ada.Strings.Fixed;
+--  with Ada.Strings;
+--  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 --  with Printing; use Printing;
@@ -15,15 +15,14 @@ package body Process_Data is
 
    function Check_For_False_Positives (OEM_ID : File_Type; File_Name : String;
       False_Count, True_Count : out Natural) return Delft_Sample_Data_List is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
+      --  use Ada.Strings;
+      --  use Ada.Strings.Fixed;
       Routine_Name     : constant String :=
        "Process_Data.Check_For_False_Positives ";
       A_Result         : String_2;
       B_Result         : String_2;
       Sample           : Delft_Sample_Data_Record;
       False_Detections : Delft_Sample_Data_List;
-      Pos              : Natural := 0;
       Count            : Natural := 0;
    begin
       --  Put_Line ("False Positives For: " & File_Name);
@@ -38,7 +37,6 @@ package body Process_Data is
             B_Result := aLine (4 .. 5);
             Sample.A_Detection := Sample_Val (A_Result);
             Sample.B_Detection := Sample_Val (B_Result);
-            Pos := Index (aLine, ",", 7);
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
          end;
 

@@ -4,7 +4,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Delft_Utils; use Delft_Utils;
 with Maths;
 with Printing; use Printing;
-with Utils; use Utils;
 
 package body Delft_Printing is
 
@@ -56,7 +55,7 @@ package body Delft_Printing is
       end if;
 
       Put_Line (Name & ": ");
-      Put_Line (" A   B  AB   Time Stamp");
+      Put_Line (" A   B  AB");
       if Start >= Data.First_Index and then Last <= Data.Last_index then
          for Index in Start .. Last loop
             Item := Data (Index);
