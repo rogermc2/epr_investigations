@@ -81,7 +81,7 @@ package body Process_Data is
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
       use Delft_Data_Package;
       Routine_Name : constant String := "Process_Data.Save_Data ";
-      Header       : constant String := "A Det,B Det";
+      Header       : constant String := "A, B";
       aa_ID        : Ada.Text_IO.File_Type;
       ab_ID        : Ada.Text_IO.File_Type;
       ba_ID        : Ada.Text_IO.File_Type;
@@ -97,11 +97,14 @@ package body Process_Data is
 
       procedure Write_Data (File : Ada.Text_IO.File_Type) is
       begin
-         if W_Item.AB_Result = " 1" then
-            W_Item.AB_Result := "+1";
+         if W_Item.A_Result = " 0" then
+            W_Item.A_Result := "-1";
          end if;
-         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
-                     W_Item.AB_Result);
+         if W_Item.B_Result = " 0" then
+            W_Item.B_Result := "-1";
+         end if;
+
+         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result);
 
       end Write_Data;
 

@@ -107,8 +107,8 @@ package Types is
    subtype Match_List is Match_Package.Vector;
 
    type Sample_Data_Record is record
-      A_Time      : Double_Positive;
-      B_Time      : Double_Positive;
+      A_Time      : Double_Positive := 1;
+      B_Time      : Double_Positive := 1;
       A_Detection : UV;
       B_Detection : UV;
       AB          : UV;
