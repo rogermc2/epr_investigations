@@ -9,7 +9,8 @@ package body Process_Data is
 
    type Field_Array is array (1 .. 17) of Natural;
 
-   procedure Parse_Line (Line : String; Data : out Raw_Result_Record);
+   function Parse_Line (Line : String; Data : out Raw_Result_Record)
+      return Boolean;
 
    procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
@@ -26,8 +27,9 @@ package body Process_Data is
          declare
             aline : constant String := Get_Line (Source_ID);
          begin
-            Parse_Line (aline, Raw_Data);
-            Target.Append (Raw_Data);
+            if Parse_Line (aline, Raw_Data) then
+               Target.Append (Raw_Data);
+            end if;
          end;
       end loop;
 
@@ -39,11 +41,13 @@ package body Process_Data is
 
    end Get_Data;
 
-   procedure Parse_Line (Line : String; Data : out Raw_Result_Record) is
+   function Parse_Line (Line : String; Data : out Raw_Result_Record)
+      return Boolean is
       Routine_Name : constant String := "Process_Data.Parse_Line ";
       Comma_Count     : Natural := 0;
       Idx             : Positive := Line'First;
       Comma_Positions : Field_Array := (others => 0);
+      Herald_Flag     : Boolean;
    begin
       while Idx <= Line'Last loop
          if Line(Idx) = ',' then
@@ -54,28 +58,37 @@ package body Process_Data is
          end if;
          Idx := Idx + 1;
       end loop;
-      --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
-      --  Column 5 (A Setting) lives between the 4th and 5th comma
-      --  Put_Line ("between the 2nd and 3rd comma: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
-      Data.A_Setting :=
-       Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions (5) - 1));
-      --  Column 8 (A Outcome) lives between the 7th and 8th comma
-      Data.A_Result :=
-         Integer'Value (Line(Comma_Positions(7) + 1 .. Comma_Positions(8) - 1));
-      --  Column 7 (B Setting) lives between the 6th and 7th comma
-      Data.B_Setting :=
-         Integer'Value (Line(Comma_Positions(6) + 1 .. Comma_Positions(7) - 1));
-      --  Column 9 (B Outcome) lives between the 8th and 9th comma
-      Data.B_Result :=
-         Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
+
+      Herald_Flag := Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1)) = 1;
+      if Herald_Flag then
+         --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
+         --  Column 5 (A Setting) lives between the 4th and 5th comma
+         --  Put_Line ("between the 2nd and 3rd comma: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
+         Data.A_Setting :=
+         Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions (5) - 1));
+         --  Column 8 (A Outcome) lives between the 7th and 8th comma
+         Data.A_Result :=
+            Integer'Value (Line(Comma_Positions(7) + 1 .. Comma_Positions(8) - 1));
+         --  Column 7 (B Setting) lives between the 6th and 7th comma
+         Data.B_Setting :=
+            Integer'Value (Line(Comma_Positions(6) + 1 .. Comma_Positions(7) - 1));
+         --  Column 9 (B Outcome) lives between the 8th and 9th comma
+         Data.B_Result :=
+            Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
+            end if;
+
+      return Herald_Flag;
 
    exception
       when Error : others =>
          New_Line;
          Put_Line ("Exception raised in " & Routine_Name);
          Put_Line (Exception_Name (Error) & ":   " & Exception_Message (Error));
-         Put_Line ("Between commas 2 and 3: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
+         Put_Line ("Between commas 2 and 3: " &
+         Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
          raise;
+         return False;
+
    end Parse_Line;
 
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
@@ -155,15 +168,6 @@ package body Process_Data is
       Close (ab_ID);
       Close (ba_ID);
       Close (bb_ID);
-
-      Put_Line (Routine_Name & "aa length: " &
-                  Integer'Image (Count_Text_File_Lines (aa)));
-      Put_Line (Routine_Name & "ab length: " &
-                  Integer'Image (Count_Text_File_Lines (ab)));
-      Put_Line (Routine_Name & "ba length: " &
-                  Integer'Image (Count_Text_File_Lines (ba)));
-      Put_Line (Routine_Name & "aa length: " &
-                  Integer'Image (Count_Text_File_Lines (aa)));
 
       Put_Line (Routine_Name & "Number of coincident aa detections: " &
                   Integer'Image (Num_aa));
