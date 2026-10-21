@@ -1,6 +1,5 @@
 
 with Delft_Types; use Delft_Types;
-with Types; use Types;
 
 package Process_Data is
 

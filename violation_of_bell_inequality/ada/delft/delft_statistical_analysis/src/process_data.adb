@@ -7,22 +7,22 @@ with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 --  with Printing; use Printing;
+with Types; use Types;
 
 package body Process_Data is
 
    function Sample_Val (Result : String_2) return UV;
 
-   function Check_For_False_Positives
-     (OEM_ID          : File_Type; File_Name : String;
-      False_Count, True_Count : out Natural) return Sample_Data_List is
+   function Check_For_False_Positives (OEM_ID : File_Type; File_Name : String;
+      False_Count, True_Count : out Natural) return Delft_Sample_Data_List is
       use Ada.Strings;
       use Ada.Strings.Fixed;
       Routine_Name     : constant String :=
        "Process_Data.Check_For_False_Positives ";
       A_Result         : String_2;
       B_Result         : String_2;
-      Sample           : Sample_Data_Record;
-      False_Detections : Sample_Data_List;
+      Sample           : Delft_Sample_Data_Record;
+      False_Detections : Delft_Sample_Data_List;
       Pos              : Natural := 0;
       Count            : Natural := 0;
    begin
@@ -40,10 +40,6 @@ package body Process_Data is
             Sample.B_Detection := Sample_Val (B_Result);
             Pos := Index (aLine, ",", 7);
             Sample.AB := Sample.A_Detection * Sample.B_Detection;
-            Sample.A_Time :=
-               Double_Positive'Value (aLine (7 .. Pos - 1));
-            Sample.B_Time :=
-               Double_Positive'Value (aLine (Pos + 1 .. aLine'Last));
          end;
 
          if File_Name = "aa.csv" or File_Name = "bb.csv" then
@@ -127,12 +123,12 @@ package body Process_Data is
 
    function Get_Detections (Detection_Data : String)
       return Delft_Sample_Data_List is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
+      --  use Ada.Strings;
+      --  use Ada.Strings.Fixed;
       Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
       Sample       : Delft_Sample_Data_Record;
-      Pos          : Natural := 0;
+      --  Pos          : Natural := 0;
       Detections   : Delft_Sample_Data_List;
    begin
       if Detection_Data'Length < 2 then
@@ -161,9 +157,9 @@ package body Process_Data is
          raise;
    end Get_Detections;
 
-   procedure Sample_Means (Data                    : Sample_Data_List;
+   procedure Sample_Means (Data : Delft_Sample_Data_List;
                            Mean_A, Mean_B, Mean_AB : out Float) is
-      use Sample_Data_Package;
+      use Delft_Sample_Data_Package;
       Routine_Name : constant String := "Process_Data.Sample_Means ";
       A      : UV;
       B      : UV;
@@ -172,7 +168,7 @@ package body Process_Data is
       Sum_AB : Integer := 0;
       Count  : Natural := 0;
       Curs   : Cursor := Data.First;
-      Item   : Sample_Data_Record;
+      Item   : Delft_Sample_Data_Record;
    begin
       --  Print_Sample_Data_List ("Sample_Means, Data", Data, 1, 5);
       while Has_Element (Curs) loop
