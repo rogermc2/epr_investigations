@@ -59,8 +59,12 @@ package body Process_Data is
          Idx := Idx + 1;
       end loop;
 
-      Herald_Flag := Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1)) = 1;
+      Herald_Flag := Integer'Value
+         (Line(Comma_Positions(1) + 1 .. Comma_Positions (2) - 1)) = 6
+            and then Integer'Value
+             (Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1)) = 1;
       if Herald_Flag then
+         --  Put_Line ("Herald_Flag:  " & Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1));
          --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
          --  Column 5 (A Setting) lives between the 4th and 5th comma
          --  Put_Line ("between the 2nd and 3rd comma: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
@@ -75,7 +79,7 @@ package body Process_Data is
          --  Column 9 (B Outcome) lives between the 8th and 9th comma
          Data.B_Result :=
             Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
-            end if;
+      end if;
 
       return Herald_Flag;
 
