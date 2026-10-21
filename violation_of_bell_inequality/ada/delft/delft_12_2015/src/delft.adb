@@ -5,7 +5,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Delft_Printing; use Delft_Printing;
 with Delft_Types; use Delft_Types;
 with Process_Data; use Process_Data;
-with Utils; use Utils;
 
 procedure Delft is
    Routine_Name     : constant String := "Delft ";
@@ -13,12 +12,15 @@ procedure Delft is
    Target_Directory : constant String := "../generated_delft_data/";
    Source           : constant String :=
       Source_Directory & "bell_open_data_2_new_detector.txt";
-   AC_Target        : constant String := "../A_OEM.csv";
-   BC_Target        : constant String := "../B_OEM.csv";
+   aa               : constant String := Target_Directory & "aa.csv";
+   ab               : constant String := Target_Directory & "ab.csv";
+   ba               : constant String := Target_Directory & "ba.csv";
+   bb               : constant String := Target_Directory & "bb.csv";
    Data             : Delft_Data_List;
 begin
    Get_Data (Source, Data);
    Print_Delft_Data_List ("Data", Data, 1, 8);
+   Save_Data (aa, ab, ba, bb, Data);
 
 exception
    when Error : others =>

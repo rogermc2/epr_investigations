@@ -16,16 +16,16 @@ package body Delft_Printing is
       end if;
 
       Put_Line (Name & ": ");
-      Put_Line ("Line A Set   B Set  A Result   B Result");
+      Put_Line ("Line A Set B Set  A Result B Result");
       if Start >= Data.First_Index and then Last <= Data.Last_index then
          for Index in Start .. Last loop
             Item := Data (Index);
             Line := Line + 1;
             Put_Line (Natural'Image (Line) &
                ":   " & Integer'Image (Item.A_Setting) &
-               "      " & Integer'Image (Item.B_Setting) &
-               "   " & Integer'Image (Item.A_Result) &
-               "   " & Integer'Image (Item.B_Result));
+               "    " & Integer'Image (Item.B_Setting) &
+               "       " & Integer'Image (Item.A_Result) &
+               "      " & Integer'Image (Item.B_Result));
          end loop;
       else
          Put_Line

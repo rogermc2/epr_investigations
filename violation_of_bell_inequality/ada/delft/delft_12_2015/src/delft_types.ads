@@ -1,12 +1,15 @@
 
 with Ada.Containers.Vectors;
+
+with Types; use Types;
+
 package Delft_Types is
 
    type Raw_Result_Record is record
-      A_Setting  : Integer;
-      B_Setting  : Integer;
-      A_Result   : Integer;
-      B_Result   : Integer;
+      A_Setting  : UV;
+      B_Setting  : UV;
+      A_Result   : UV;
+      B_Result   : UV;
    end record;
 
    package Delft_Data_Package is new

@@ -1,9 +1,5 @@
 
-   with Interfaces; use Interfaces;
-
---  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
---  with Ada.Strings.Maps;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Types; use Types;
@@ -44,31 +40,6 @@ package body Process_Data is
 
    end Get_Data;
 
-   procedure Normalize_Delft_Outcomes (Raw_A_Count, Raw_B_Count : Integer;
-      A_Discrete, B_Discrete : out UV) is
-      --  Under the Delft experimental rules, any raw readout pulse count
-      --  crossing the dark noise floor (> 0) represents a successful
-      --  Spin-Up event.
-      Readout_Threshold : constant Integer := 0;
-   begin
-      if Raw_A_Count > Readout_Threshold then
-         --  Bright State: Fluorescent photons detected -> Spin-Up
-         A_Discrete := 1;
-      else
-         --  Dark State: Zero counts or background noise -> Spin-Down
-         A_Discrete := -1;
-      end if;
-
-      if Raw_B_Count > Readout_Threshold then
-         --  Bright State: Fluorescent photons detected -> Spin-Up
-         B_Discrete := 1;
-      else
-         --  Dark State: Zero counts or background noise -> Spin-Down
-         B_Discrete := -1;
-      end if;
-
-   end Normalize_Delft_Outcomes;
-
    procedure Parse_Delft_CSV_Line (Line : String; Data : out Raw_Result_Record) is
       Comma_Count     : Natural := 0;
       Idx             : Positive := Line'First;
@@ -88,14 +59,123 @@ package body Process_Data is
        Integer'Value (Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
       --  Column 4 (A Outcome) lives between the 3rd and 4th comma
       Data.A_Result :=
-         Integer'Value (Line(Comma_Positions(3) + 1 .. Comma_Positions(4) - 1));
+         Integer'Value (Line(Comma_Positions(7) + 1 .. Comma_Positions(8) - 1));
       --  Column 5 (B Setting) lives between the 4th and 5th comma
       Data.B_Setting :=
          Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions(5) - 1));
       --  Column 6 (B Outcome) lives between the 5th and 6th comma
       Data.B_Result :=
-         Integer'Value (Line(Comma_Positions(5) + 1 .. Comma_Positions(6) - 1));
+         Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
 
    end Parse_Delft_CSV_Line;
+
+   procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
+      use Delft_Data_Package;
+      Routine_Name : constant String := "Process_Data.Save_Data ";
+      Header       : constant String := "A Det,B Det";
+      aa_ID        : Ada.Text_IO.File_Type;
+      ab_ID        : Ada.Text_IO.File_Type;
+      ba_ID        : Ada.Text_IO.File_Type;
+      bb_ID        : Ada.Text_IO.File_Type;
+      W_Item       : W_Record;
+      Num_aa       : Natural := 0;
+      Num_ab       : Natural := 0;
+      Num_ba       : Natural := 0;
+      Num_bb       : Natural := 0;
+      Curs         : Cursor := Data.First;
+      Item         : Raw_Result_Record;
+      Count        : Natural := 0;
+
+      procedure Write_Data (File : Ada.Text_IO.File_Type) is
+      begin
+         if W_Item.AB_Result = " 1" then
+            W_Item.AB_Result := "+1";
+         end if;
+         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
+                     W_Item.AB_Result);
+
+      end Write_Data;
+
+   begin
+      Create (aa_ID, Out_File, aa);
+      Create (ab_ID, Out_File, ab);
+      Create (ba_ID, Out_File, ba);
+      Create (bb_ID, Out_File, bb);
+
+      Put_Line (aa_ID, Header);
+      Put_Line (ab_ID, Header);
+      Put_Line (ba_ID, Header);
+      Put_Line (bb_ID, Header);
+
+      while Has_Element (Curs) loop
+         item := Element (Curs);
+         Count := Count + 1;
+         W_Item.A_Result := UV'Image (item.A_Result);
+         W_Item.B_Result := UV'Image (item.B_Result);
+         W_Item.AB_Result := UV'Image (item.A_Result * item.B_Result);
+         if item.A_Setting = 0 and then item.B_Setting = 0 then
+            Num_aa := Num_aa + 1;
+            W_Item.A_Setting := 'a';
+            W_Item.B_Setting := 'a';
+            Write_Data (aa_ID);
+         elsif item.A_Setting = 0 and then item.B_Setting = 1 then
+            Num_ab := Num_ab + 1;
+            W_Item.A_Setting := 'a';
+            W_Item.B_Setting := 'b';
+            Write_Data (ab_ID);
+         elsif item.A_Setting = 1 and then item.B_Setting = 0 then
+            Num_ba := Num_ba + 1;
+            W_Item.A_Setting := 'b';
+            W_Item.B_Setting := 'a';
+            Write_Data (ba_ID);
+         elsif item.A_Setting = 1 and then item.B_Setting = 1 then
+            Num_bb := Num_bb + 1;
+            W_Item.A_Setting := 'b';
+            W_Item.B_Setting := 'b';
+            Write_Data (bb_ID);
+         else
+            Put_Line (Routine_Name & "Invalid data:");
+         end if;
+         Curs := Next (Curs);
+      end loop;
+
+      Close (aa_ID);
+      Close (ab_ID);
+      Close (ba_ID);
+      Close (bb_ID);
+
+      Put_Line (Routine_Name & "aa length: " &
+                  Integer'Image (Count_Text_File_Lines (aa)));
+      Put_Line (Routine_Name & "ab length: " &
+                  Integer'Image (Count_Text_File_Lines (ab)));
+      Put_Line (Routine_Name & "ba length: " &
+                  Integer'Image (Count_Text_File_Lines (ba)));
+      Put_Line (Routine_Name & "aa length: " &
+                  Integer'Image (Count_Text_File_Lines (aa)));
+
+      Put_Line (Routine_Name & "Number of coincident aa detections: " &
+                  Integer'Image (Num_aa));
+      Put_Line (Routine_Name & "Number of coincident ab detections: " &
+                  Integer'Image (Num_ab));
+      Put_Line (Routine_Name & "Number of coincident ba detections: " &
+                  Integer'Image (Num_ba));
+      Put_Line (Routine_Name & "Number of coincident bb detections: " &
+                  Integer'Image (Num_bb));
+
+      Put_Line ("Selected data files written to:");
+      Put_Line (aa);
+      Put_Line (ab);
+      Put_Line (ba);
+      Put_Line (bb);
+      New_Line;
+
+   exception
+      when Error : others =>
+         New_Line;
+         Put_Line ("Exception raised in " & Routine_Name);
+         Put_Line (Exception_Name (Error) & ":   " & Exception_Message (Error));
+         raise;
+
+   end Save_Data;
 
 end Process_Data;
