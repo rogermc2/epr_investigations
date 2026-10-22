@@ -37,14 +37,14 @@ package body Process_Data is
          end if;
          Target.Append (Raw_Data);
 
-         Put_Line (Routine_Name & "A_Setting: " &
-         Long_Float'Image (Raw_Data.A_Setting));
-         Put_Line (Routine_Name & "B_Setting: " &
-         Long_Float'Image (Raw_Data.B_Setting));
-         Put_Line (Routine_Name & "A_Outcome: " &
-         Integer'Image (Raw_Data.A_Outcome));
-         Put_Line (Routine_Name & "B_Outcome: " &
-         Integer'Image (Raw_Data.B_Outcome));
+         --  Put_Line (Routine_Name & "A_Setting: " &
+         --  Long_Float'Image (Raw_Data.A_Setting));
+         --  Put_Line (Routine_Name & "B_Setting: " &
+         --  Long_Float'Image (Raw_Data.B_Setting));
+         --  Put_Line (Routine_Name & "A_Outcome: " &
+         --  Integer'Image (Raw_Data.A_Outcome));
+         --  Put_Line (Routine_Name & "B_Outcome: " &
+         --  Integer'Image (Raw_Data.B_Outcome));
       end if;
 
    end Add_Selected_Trial;
