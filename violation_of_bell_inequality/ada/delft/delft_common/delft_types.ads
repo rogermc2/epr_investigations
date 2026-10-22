@@ -8,8 +8,8 @@ package Delft_Types is
    type Raw_Result_Record is record
       A_Setting  : UV;
       B_Setting  : UV;
-      A_Result   : UV;
-      B_Result   : UV;
+      A_Outcome  : UV;
+      B_Outcome  : UV;
    end record;
 
    package Delft_Data_Package is new

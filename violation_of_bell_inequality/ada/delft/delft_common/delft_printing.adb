@@ -28,8 +28,8 @@ package body Delft_Printing is
             Put_Line (Natural'Image (Line) &
                ":   " & Integer'Image (Item.A_Setting) &
                "    " & Integer'Image (Item.B_Setting) &
-               "       " & Integer'Image (Item.A_Result) &
-               "      " & Integer'Image (Item.B_Result));
+               "       " & Integer'Image (Item.A_Outcome) &
+               "      " & Integer'Image (Item.B_Outcome));
          end loop;
       else
          Put_Line

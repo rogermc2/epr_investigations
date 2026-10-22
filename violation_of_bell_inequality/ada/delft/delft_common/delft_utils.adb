@@ -1,6 +1,6 @@
-    
+
 package body Delft_Utils is
-    
+
     function Get_Delft_Integer_List
        (Data : Delft_Sample_Data_List; Selection : Detect_Type) return Integer_List is
       use Delft_Sample_Data_Package;

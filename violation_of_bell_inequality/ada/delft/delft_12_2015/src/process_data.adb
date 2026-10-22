@@ -3,7 +3,6 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Types; use Types;
-with Utils; use Utils;
 
 package body Process_Data is
 
@@ -64,20 +63,19 @@ package body Process_Data is
             and then Integer'Value
              (Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1)) = 1;
       if Herald_Flag then
-         --  Put_Line ("Herald_Flag:  " & Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1));
-         --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
+          --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
          --  Column 5 (A Setting) lives between the 4th and 5th comma
          --  Put_Line ("between the 2nd and 3rd comma: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
          Data.A_Setting :=
          Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions (5) - 1));
          --  Column 8 (A Outcome) lives between the 7th and 8th comma
-         Data.A_Result :=
+         Data.A_Outcome :=
             Integer'Value (Line(Comma_Positions(7) + 1 .. Comma_Positions(8) - 1));
          --  Column 7 (B Setting) lives between the 6th and 7th comma
          Data.B_Setting :=
             Integer'Value (Line(Comma_Positions(6) + 1 .. Comma_Positions(7) - 1));
          --  Column 9 (B Outcome) lives between the 8th and 9th comma
-         Data.B_Result :=
+         Data.B_Outcome :=
             Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
       end if;
 
@@ -139,9 +137,9 @@ package body Process_Data is
       while Has_Element (Curs) loop
          item := Element (Curs);
          Count := Count + 1;
-         W_Item.A_Result := UV'Image (item.A_Result);
-         W_Item.B_Result := UV'Image (item.B_Result);
-         W_Item.AB_Result := UV'Image (item.A_Result * item.B_Result);
+         W_Item.A_Result := UV'Image (item.A_Outcome);
+         W_Item.B_Result := UV'Image (item.B_Outcome);
+         W_Item.AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
          if item.A_Setting = 0 and then item.B_Setting = 0 then
             Num_aa := Num_aa + 1;
             W_Item.A_Setting := 'a';
