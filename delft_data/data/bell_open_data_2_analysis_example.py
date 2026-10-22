@@ -146,13 +146,13 @@ tau     = 5.4e-6*2 #see Supplementary Information Section I
 ksi    = 3./4+3*(tau+tau**2) 
 p_value =  1-binom.cdf(k-1, n, ksi)
 
-print '-'*40
-print 'k/n: {}/{}'.format(k,n)
-print 'p-value : {:.3f}'.format(p_value)
+print ('-'*40)
+print ('k/n: {}/{}'.format(k,n))
+print ('p-value : {:.3f}'.format(p_value))
 
 for psi in [+1,-1]:
-    print '-'*40
-    print 'psi_plus' if psi==+1 else 'psi_min'
+    print ('-'*40)
+    print ('psi_plus' if psi==+1 else 'psi_min')
     # Matrix containing correlations (a,b,x,y) obtained for the valid trials:
     inputs_ab  = [[0,0],[0,1],[1,0],[1,1]] #'RND (a,b) = (0,0); (0,1); (1,0); (1,1); '
     outputs_xy = [[+1,+1],[+1,-1],[-1,+1],[-1,-1]] #'RO (x,y) = (+1,+1); (+1,-1); (-1,+1); (-1,-1); 
@@ -185,22 +185,22 @@ for psi in [+1,-1]:
         S_error_psi_min = S_error
         n_psi_min = np.sum(correlation_matrix)
 
-    print 'xy     ++,+-,-+,--'
-    print 'ab 00', correlation_matrix[0], '  (0,    -3pi/4)'
-    print 'ab 01', correlation_matrix[1], '  (0,    +3pi/4)'
-    print 'ab 10', correlation_matrix[2], '  (pi/2, -3pi/4)'
-    print 'ab 11', correlation_matrix[3], '  (pi/2, +3pi/4)\n'
+    print ('xy     ++,+-,-+,--')
+    print ('ab 00', correlation_matrix[0], '  (0,    -3pi/4)')
+    print ('ab 01', correlation_matrix[1], '  (0,    +3pi/4)')
+    print ('ab 10', correlation_matrix[2], '  (pi/2, -3pi/4)')
+    print ('ab 11', correlation_matrix[3], '  (pi/2, +3pi/4)\n')
 
-    print ' E (RND00  RND01  RND10  RND11 )'
-    print '   ({:+.3f}, {:+.3f}, {:+.3f}, {:+.3f}) measured'.format(*xy_ab_correlation)
-    print '+/-( {:.3f},  {:.3f},  {:.3f},  {:.3f} )'.format(*xy_ab_correlation_error)
+    print (' E (RND00  RND01  RND10  RND11 )')
+    print ('   ({:+.3f}, {:+.3f}, {:+.3f}, {:+.3f}) measured'.format(*xy_ab_correlation))
+    print ('+/-( {:.3f},  {:.3f},  {:.3f},  {:.3f} )'.format(*xy_ab_correlation_error))
 
-    print 'CHSH S : {:.3f} +- {:.3f}'.format(S, S_error)
+    print ('CHSH S : {:.3f} +- {:.3f}'.format(S, S_error))
 
 n_tot = n_psi_min+n_psi_plus
 S_combined = n_psi_plus/float(n_tot)*S_psi_plus + n_psi_min/float(n_tot)*S_psi_min
 S_error_combined = np.sqrt((n_psi_plus/float(n_tot))**2*S_error_psi_plus**2+(n_psi_min/float(n_tot))**2*S_error_psi_min**2)
 
-print '-'*40
-print 'psi_plus, psi_min combined'
-print 'CHSH S : {:.3f} +- {:.3f}'.format(S_combined, S_error_combined)
+print ('-'*40)
+print ('psi_plus, psi_min combined')
+print ('CHSH S : {:.3f} +- {:.3f}'.format(S_combined, S_error_combined))
