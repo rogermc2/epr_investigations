@@ -28,7 +28,6 @@ package body Process_Data is
          declare
             aline : constant String := Get_Line (Source_ID);
          begin
-            --  if Parse_Line (aline, Raw_Data) then
             if Parse_Line (aline, Field_Values) then
                Raw_Data.A_Setting := Field_Values (6);
                Raw_Data.B_Setting := Field_Values (7);
@@ -40,6 +39,15 @@ package body Process_Data is
       end loop;
 
       Close (Source_ID);
+
+      Put_Line (Routine_Name & "A_Setting: " &
+       Integer'Image (Raw_Data.A_Setting));
+      Put_Line (Routine_Name & "B_Setting: " &
+       Integer'Image (Raw_Data.B_Setting));
+      Put_Line (Routine_Name & "A_Outcome: " &
+       Integer'Image (Raw_Data.A_Outcome));
+      Put_Line (Routine_Name & "B_Outcome: " &
+       Integer'Image (Raw_Data.B_Outcome));
 
    exception
       when Error : others =>
@@ -61,16 +69,14 @@ package body Process_Data is
          Pos_2 := Pos_2 + 1;
       end loop;
       Pos_2 := Pos_2 + 1; --  skip comma
-      Pos_1 := Pos_2; 
+      Pos_1 := Pos_2;
 
       for Field_Index in 1 ..16 loop
          --  Find next comma
          while Pos_2 < Line'Last and then Line (Pos_2) /= ',' loop
             Pos_2 := Pos_2 + 1;
          end loop;
-         --  Put_Line (Routine_Name & "Pos_1, Pos_2: " & Integer'Image (Pos_1) &
-         --   Integer'Image (Pos_2));
-         --  Put_Line (Routine_Name & "Field: " & Line (Pos_1 .. Pos_2 - 1));
+
          --  Get integer between Pos_1 and Pos_2 - 1, Pos_2 is comma
          Field_Values (Field_Index) := Integer'Value (Line (Pos_1 .. Pos_2 - 1));
          Pos_2 := Pos_2 + 1;
