@@ -6,10 +6,10 @@ with Types; use Types;
 package Delft_Types is
 
    type Raw_Result_Record is record
-      A_Setting  : Integer;
-      B_Setting  : Integer;
-      A_Outcome  : Integer;
-      B_Outcome  : Integer;
+      A_Setting  : UV;
+      B_Setting  : UV;
+      A_Outcome  : UV;
+      B_Outcome  : UV;
    end record;
 
    package Delft_Data_Package is new

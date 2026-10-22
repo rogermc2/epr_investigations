@@ -26,13 +26,25 @@ package body Process_Data is
       while not End_Of_File (Source_ID) loop
          Line_Num := Line_Num + 1;
          declare
-            aline : constant String := Get_Line (Source_ID);
+            aline      : constant String := Get_Line (Source_ID);
          begin
             if Parse_Line (aline, Field_Values) then
-               Raw_Data.A_Setting := Field_Values (6);
-               Raw_Data.B_Setting := Field_Values (7);
-               Raw_Data.A_Outcome := Field_Values (10);
-               Raw_Data.B_Outcome := Field_Values (11);
+               --  A random number
+               Raw_Data.A_Setting := Field_Values (7);
+               --  B random number
+               Raw_Data.B_Setting := Field_Values (8);
+               --  A readout click at time (ns), 0 if none
+               if Field_Values (11) > 0 then
+                  Raw_Data.A_Outcome := 1;
+               else
+                  Raw_Data.A_Outcome := -1;
+               end if;
+               --  B readout click at time (ns), 0 if none
+               if Field_Values (12) > 0 then
+                  Raw_Data.B_Outcome := 1;
+               else
+                  Raw_Data.B_Outcome := -1;
+               end if;
                Target.Append (Raw_Data);
             end if;
          end;
