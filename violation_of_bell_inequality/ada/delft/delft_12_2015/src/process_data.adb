@@ -21,7 +21,6 @@ package body Process_Data is
       Field_Values : Field_Array := (others => 0);
    begin
       if Parse_Line (aline, Field_Values) then
-         Put_Line (Routine_Name & "Adding_Trial");
          Process_Angles (Field_Values (7), Field_Values (8),
             Raw_Data.A_Setting, Raw_Data.B_Setting);
          --  A readout click at time (ns), 0 if none
@@ -79,7 +78,6 @@ package body Process_Data is
       Pos_2        : Integer := Pos_1;
       Herald_Flag  : Boolean;
    begin
-      Field_Values := (others => 0);
       --  Skip first field (datetime)
       while Line (Pos_2) /= ',' loop
          Pos_2 := Pos_2 + 1;
@@ -93,13 +91,12 @@ package body Process_Data is
             Pos_2 := Pos_2 + 1;
          end loop;
 
-         --  Get integer between Pos_1 and Pos_2 - 1, Pos_2 is comma
          Field_Values (Field_Index) := Integer'Value (Line (Pos_1 .. Pos_2 - 1));
          Pos_2 := Pos_2 + 1;
          Pos_1 := Pos_2;
       end loop;
 
-      Herald_Flag := Field_Values (2) = 6 and then Field_Values (9) = 1;
+      Herald_Flag := Field_Values (2) = 6 and then Field_Values (8) = 1;
 
       return Herald_Flag;
 
