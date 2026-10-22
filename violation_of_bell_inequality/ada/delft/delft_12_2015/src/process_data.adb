@@ -1,8 +1,8 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Delft_Utils;
 with Types; use Types;
 
 package body Process_Data is
@@ -11,6 +11,8 @@ package body Process_Data is
 
    function Parse_Line (Line : String;  Field_Values : out Field_Array)
       return Boolean;
+   procedure Process_Angles (Rnd_A, Rnd_B : Integer;
+         A_Rad, B_Rad : out Long_Float);
 
    procedure  Add_Selected_Trial (aline : String;
        Target : in out Delft_Data_List) is
@@ -19,10 +21,9 @@ package body Process_Data is
       Field_Values : Field_Array := (others => 0);
    begin
       if Parse_Line (aline, Field_Values) then
-         --  A random number
-         Raw_Data.A_Setting := Field_Values (7);
-         --  B random number
-         Raw_Data.B_Setting := Field_Values (8);
+         Put_Line (Routine_Name & "Adding_Trial");
+         Process_Angles (Field_Values (7), Field_Values (8),
+            Raw_Data.A_Setting, Raw_Data.B_Setting);
          --  A readout click at time (ns), 0 if none
          if Field_Values (11) > 0 then
             Raw_Data.A_Outcome := 1;
@@ -38,9 +39,9 @@ package body Process_Data is
          Target.Append (Raw_Data);
 
          Put_Line (Routine_Name & "A_Setting: " &
-         Integer'Image (Raw_Data.A_Setting));
+         Long_Float'Image (Raw_Data.A_Setting));
          Put_Line (Routine_Name & "B_Setting: " &
-         Integer'Image (Raw_Data.B_Setting));
+         Long_Float'Image (Raw_Data.B_Setting));
          Put_Line (Routine_Name & "A_Outcome: " &
          Integer'Image (Raw_Data.A_Outcome));
          Put_Line (Routine_Name & "B_Outcome: " &
@@ -52,14 +53,14 @@ package body Process_Data is
    procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
       Source_ID    : File_Type;
-      Line_Num     : Natural := 0;
+      --  Line_Num     : Natural := 0;
    begin
       Put_Line (Routine_Name & "Source File: " & Source_File);
       New_Line;
       Open (Source_ID, In_File, Source_File);
 
       while not End_Of_File (Source_ID) loop
-         Line_Num := Line_Num + 1;
+         --  Line_Num := Line_Num + 1;
          Add_Selected_Trial (Get_Line (Source_ID), Target);
       end loop;
 
@@ -73,7 +74,6 @@ package body Process_Data is
 
    function Parse_Line (Line : String; Field_Values : out Field_Array)
       return Boolean is
-      use Delft_Utils;  --  for Trim_Both
       Routine_Name : constant String := "Process_Data.Parse_Line ";
       Pos_1        : Integer := 1;
       Pos_2        : Integer := Pos_1;
@@ -112,6 +112,30 @@ package body Process_Data is
          return False;
 
    end Parse_Line;
+
+   procedure Process_Angles (Rnd_A, Rnd_B : Integer;
+         A_Rad, B_Rad : out Long_Float) is
+      --  Establish the exact physical angles used in the Delft lab framework
+      A_Angle_0  : constant Long_Float := 0.0;
+      A_Angle_1  : constant Long_Float := Pi / 2.0;
+      B_Angle_0  : constant Long_Float := Pi / 8.0;
+      B_Angle_1  : constant Long_Float := (3.0 * Pi) / 8.0;
+   begin
+      --  Assign A's physical radian value based on the basis slot
+      if Rnd_A = 0 then
+         A_Rad := A_Angle_0;
+      else
+         A_Rad := A_Angle_1;
+      end if;
+
+      --  Assign B's physical radian value based on the basis slot
+      if Rnd_B = 0 then
+         B_Rad := B_Angle_0;
+      else
+         B_Rad := B_Angle_1;
+      end if;
+
+   end Process_Angles;
 
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
       use Delft_Data_Package;
@@ -160,22 +184,22 @@ package body Process_Data is
          W_Item.A_Result := UV'Image (item.A_Outcome);
          W_Item.B_Result := UV'Image (item.B_Outcome);
          W_Item.AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
-         if item.A_Setting = 0 and then item.B_Setting = 0 then
+         if item.A_Setting = 0.0 and then item.B_Setting = 0.0 then
             Num_aa := Num_aa + 1;
             W_Item.A_Setting := 'a';
             W_Item.B_Setting := 'a';
             Write_Data (aa_ID);
-         elsif item.A_Setting = 0 and then item.B_Setting = 1 then
+         elsif item.A_Setting = 0.0 and then item.B_Setting  /= 0.0 then
             Num_ab := Num_ab + 1;
             W_Item.A_Setting := 'a';
             W_Item.B_Setting := 'b';
             Write_Data (ab_ID);
-         elsif item.A_Setting = 1 and then item.B_Setting = 0 then
+         elsif item.A_Setting  /= 0.0 and then item.B_Setting = 0.0 then
             Num_ba := Num_ba + 1;
             W_Item.A_Setting := 'b';
             W_Item.B_Setting := 'a';
             Write_Data (ba_ID);
-         elsif item.A_Setting = 1 and then item.B_Setting = 1 then
+         elsif item.A_Setting /= 0.0 and then item.B_Setting /= 0.0 then
             Num_bb := Num_bb + 1;
             W_Item.A_Setting := 'b';
             W_Item.B_Setting := 'b';

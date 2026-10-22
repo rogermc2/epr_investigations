@@ -26,8 +26,8 @@ package body Delft_Printing is
             Item := Data (Index);
             Line := Line + 1;
             Put_Line (Natural'Image (Line) &
-               ":   " & Integer'Image (Item.A_Setting) &
-               "    " & Integer'Image (Item.B_Setting) &
+               ":   " & Long_Float'Image (Item.A_Setting) &
+               "    " & Long_Float'Image (Item.B_Setting) &
                "       " & Integer'Image (Item.A_Outcome) &
                "      " & Integer'Image (Item.B_Outcome));
          end loop;
