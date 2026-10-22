@@ -121,9 +121,11 @@ procedure Analysis is
       Values := (others => 0);
       loop
          Pos := Start;
+         --  Find next comma
          while Pos <= Line'Last and then Line (Pos) /= ',' loop
             Pos := Pos + 1;
          end loop;
+         --  Get integer between Start and Pos - 1, Pos is comma
          if Field_Index >= 1 and then Field_Index <= 16 then
             Values (Field_Index - 1) := Int'Value (Trim_Both (Line (Start .. Pos - 1)));
          end if;

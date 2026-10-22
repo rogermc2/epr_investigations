@@ -1,4 +1,7 @@
 
+with Ada.Strings;
+with Ada.Strings.Fixed;
+
 package body Delft_Utils is
 
     function Get_Delft_Integer_List
@@ -25,5 +28,10 @@ package body Delft_Utils is
 
       return theList;
    end Get_Delft_Integer_List;
+
+   function Trim_Both (S : String) return String is
+   begin
+      return Ada.Strings.Fixed.Trim (S, Ada.Strings.Both);
+   end Trim_Both;
 
 end Delft_Utils;

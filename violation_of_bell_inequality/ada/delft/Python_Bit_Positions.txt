@@ -1,0 +1,12 @@
+Click1_Time    : constant Int := V (2);   -- window 1 detection time (ps)
+Click1_Channel : constant Int := V (3);   -- window 1 detection channel
+Click2_Time    : constant Int := V (4);   -- window 2 detection time (ps)
+Click2_Channel : constant Int := V (5);   -- window 2 detection channel
+Rnd_A          : constant Int := V (6);   -- random number at location A
+Rnd_B          : constant Int := V (7);   -- random number at location B
+Readout_A      : constant Int := V (10);  -- readout click time at A (ns), 0 if none
+Readout_B      : constant Int := V (11);  -- readout click time at B (ns), 0 if none
+Excite_A       : constant Int := V (12);  -- click after excitation at A, 0 if none
+Excite_B       : constant Int := V (13);  -- click after excitation at B, 0 if none
+Invalid_A      : constant Int := V (14);  -- sync-pulses since last invalid marker at A
+Invalid_B      : constant Int := V (15);  -- sync-pulses since last invalid marker at B

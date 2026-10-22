@@ -2,19 +2,21 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Delft_Utils;
 with Types; use Types;
 
 package body Process_Data is
 
    type Field_Array is array (1 .. 17) of Natural;
 
-   function Parse_Line (Line : String; Data : out Raw_Result_Record)
+   function Parse_Line (Line : String;  Field_Values : out Field_Array)
       return Boolean;
 
    procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
       Source_ID    : File_Type;
       Line_Num     : Natural := 0;
+      Field_Values : Field_Array := (others => 0);
       Raw_Data     : Raw_Result_Record;
    begin
       Put_Line (Routine_Name & "Source File: " & Source_File);
@@ -26,7 +28,12 @@ package body Process_Data is
          declare
             aline : constant String := Get_Line (Source_ID);
          begin
-            if Parse_Line (aline, Raw_Data) then
+            --  if Parse_Line (aline, Raw_Data) then
+            if Parse_Line (aline, Field_Values) then
+               Raw_Data.A_Setting := Field_Values (6);
+               Raw_Data.B_Setting := Field_Values (7);
+               Raw_Data.A_Outcome := Field_Values (10);
+               Raw_Data.B_Outcome := Field_Values (11);
                Target.Append (Raw_Data);
             end if;
          end;
@@ -40,44 +47,37 @@ package body Process_Data is
 
    end Get_Data;
 
-   function Parse_Line (Line : String; Data : out Raw_Result_Record)
+   function Parse_Line (Line : String; Field_Values : out Field_Array)
       return Boolean is
+      use Delft_Utils;  --  for Trim_Both
       Routine_Name : constant String := "Process_Data.Parse_Line ";
-      Comma_Count     : Natural := 0;
-      Idx             : Positive := Line'First;
-      Comma_Positions : Field_Array := (others => 0);
-      Herald_Flag     : Boolean;
+      Pos_1        : Integer := 1;
+      Pos_2        : Integer := Pos_1;
+      Herald_Flag  : Boolean;
    begin
-      while Idx <= Line'Last loop
-         if Line(Idx) = ',' then
-            Comma_Count := Comma_Count + 1;
-            if Comma_Count <= 17 then
-               Comma_Positions(Comma_Count) := Idx;
-            end if;
-         end if;
-         Idx := Idx + 1;
+      Field_Values := (others => 0);
+      --  Skip first field (datetime)
+      while Line (Pos_2) /= ',' loop
+         Pos_2 := Pos_2 + 1;
+      end loop;
+      Pos_2 := Pos_2 + 1; --  skip comma
+      Pos_1 := Pos_2; 
+
+      for Field_Index in 1 ..16 loop
+         --  Find next comma
+         while Pos_2 < Line'Last and then Line (Pos_2) /= ',' loop
+            Pos_2 := Pos_2 + 1;
+         end loop;
+         --  Put_Line (Routine_Name & "Pos_1, Pos_2: " & Integer'Image (Pos_1) &
+         --   Integer'Image (Pos_2));
+         --  Put_Line (Routine_Name & "Field: " & Line (Pos_1 .. Pos_2 - 1));
+         --  Get integer between Pos_1 and Pos_2 - 1, Pos_2 is comma
+         Field_Values (Field_Index) := Integer'Value (Line (Pos_1 .. Pos_2 - 1));
+         Pos_2 := Pos_2 + 1;
+         Pos_1 := Pos_2;
       end loop;
 
-      Herald_Flag := Integer'Value
-         (Line(Comma_Positions(1) + 1 .. Comma_Positions (2) - 1)) = 6
-            and then Integer'Value
-             (Line(Comma_Positions(8) + 1 .. Comma_Positions (9) - 1)) = 1;
-      if Herald_Flag then
-          --  2015-12-08 13:19:45.442647,6,1,5424324,0,5672427,0,0,0,10646,10631,11031,0,0,0,70,71
-         --  Column 5 (A Setting) lives between the 4th and 5th comma
-         --  Put_Line ("between the 2nd and 3rd comma: " & Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
-         Data.A_Setting :=
-         Integer'Value (Line(Comma_Positions(4) + 1 .. Comma_Positions (5) - 1));
-         --  Column 8 (A Outcome) lives between the 7th and 8th comma
-         Data.A_Outcome :=
-            Integer'Value (Line(Comma_Positions(7) + 1 .. Comma_Positions(8) - 1));
-         --  Column 7 (B Setting) lives between the 6th and 7th comma
-         Data.B_Setting :=
-            Integer'Value (Line(Comma_Positions(6) + 1 .. Comma_Positions(7) - 1));
-         --  Column 9 (B Outcome) lives between the 8th and 9th comma
-         Data.B_Outcome :=
-            Integer'Value (Line(Comma_Positions(8) + 1 .. Comma_Positions(9) - 1));
-      end if;
+      Herald_Flag := Field_Values (2) = 6 and then Field_Values (9) = 1;
 
       return Herald_Flag;
 
@@ -86,8 +86,6 @@ package body Process_Data is
          New_Line;
          Put_Line ("Exception raised in " & Routine_Name);
          Put_Line (Exception_Name (Error) & ":   " & Exception_Message (Error));
-         Put_Line ("Between commas 2 and 3: " &
-         Line(Comma_Positions(2) + 1 .. Comma_Positions (3) - 1));
          raise;
          return False;
 
