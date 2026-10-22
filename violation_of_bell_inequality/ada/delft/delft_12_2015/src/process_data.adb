@@ -12,12 +12,47 @@ package body Process_Data is
    function Parse_Line (Line : String;  Field_Values : out Field_Array)
       return Boolean;
 
+   procedure  Add_Selected_Trial (aline : String;
+       Target : in out Delft_Data_List) is
+      Routine_Name : constant String := "Process_Data.Add_Selected_Trial ";
+      Raw_Data     : Raw_Result_Record;
+      Field_Values : Field_Array := (others => 0);
+   begin
+      if Parse_Line (aline, Field_Values) then
+         --  A random number
+         Raw_Data.A_Setting := Field_Values (7);
+         --  B random number
+         Raw_Data.B_Setting := Field_Values (8);
+         --  A readout click at time (ns), 0 if none
+         if Field_Values (11) > 0 then
+            Raw_Data.A_Outcome := 1;
+         else
+            Raw_Data.A_Outcome := -1;
+         end if;
+         --  B readout click at time (ns), 0 if none
+         if Field_Values (12) > 0 then
+            Raw_Data.B_Outcome := 1;
+         else
+            Raw_Data.B_Outcome := -1;
+         end if;
+         Target.Append (Raw_Data);
+
+         Put_Line (Routine_Name & "A_Setting: " &
+         Integer'Image (Raw_Data.A_Setting));
+         Put_Line (Routine_Name & "B_Setting: " &
+         Integer'Image (Raw_Data.B_Setting));
+         Put_Line (Routine_Name & "A_Outcome: " &
+         Integer'Image (Raw_Data.A_Outcome));
+         Put_Line (Routine_Name & "B_Outcome: " &
+         Integer'Image (Raw_Data.B_Outcome));
+      end if;
+
+   end Add_Selected_Trial;
+
    procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
       Source_ID    : File_Type;
       Line_Num     : Natural := 0;
-      Field_Values : Field_Array := (others => 0);
-      Raw_Data     : Raw_Result_Record;
    begin
       Put_Line (Routine_Name & "Source File: " & Source_File);
       New_Line;
@@ -25,41 +60,10 @@ package body Process_Data is
 
       while not End_Of_File (Source_ID) loop
          Line_Num := Line_Num + 1;
-         declare
-            aline      : constant String := Get_Line (Source_ID);
-         begin
-            if Parse_Line (aline, Field_Values) then
-               --  A random number
-               Raw_Data.A_Setting := Field_Values (7);
-               --  B random number
-               Raw_Data.B_Setting := Field_Values (8);
-               --  A readout click at time (ns), 0 if none
-               if Field_Values (11) > 0 then
-                  Raw_Data.A_Outcome := 1;
-               else
-                  Raw_Data.A_Outcome := -1;
-               end if;
-               --  B readout click at time (ns), 0 if none
-               if Field_Values (12) > 0 then
-                  Raw_Data.B_Outcome := 1;
-               else
-                  Raw_Data.B_Outcome := -1;
-               end if;
-               Target.Append (Raw_Data);
-            end if;
-         end;
+         Add_Selected_Trial (Get_Line (Source_ID), Target);
       end loop;
 
       Close (Source_ID);
-
-      Put_Line (Routine_Name & "A_Setting: " &
-       Integer'Image (Raw_Data.A_Setting));
-      Put_Line (Routine_Name & "B_Setting: " &
-       Integer'Image (Raw_Data.B_Setting));
-      Put_Line (Routine_Name & "A_Outcome: " &
-       Integer'Image (Raw_Data.A_Outcome));
-      Put_Line (Routine_Name & "B_Outcome: " &
-       Integer'Image (Raw_Data.B_Outcome));
 
    exception
       when Error : others =>
