@@ -19,6 +19,13 @@ package Delft_Types is
    B_Angle_0 : constant Long_Float := Pi / 8.0;
    B_Angle_1 : constant Long_Float := (3.0 * Pi) / 8.0;
 
+   type Angles_Record is record
+      A_0 : Long_Float := A_Angle_0;
+      A_1 : Long_Float := A_Angle_1;
+      B_0 : Long_Float := B_Angle_0;
+      B_1 : Long_Float := B_Angle_1;
+   end record;
+
    package Delft_Data_Package is new
      Ada.Containers.Vectors (Positive, Result_Record);
    subtype Delft_Data_List is Delft_Data_Package.Vector;

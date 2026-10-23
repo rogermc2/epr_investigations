@@ -41,13 +41,23 @@ package body Process_Data is
 
    end Add_Selected_Trial;
 
-   procedure Get_Data (Source_File : String; Target : out Delft_Data_List) is
+   procedure Get_Data (Source_File, Settings_File : String;
+    Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
+      Angles       : Angles_Record;
       Source_ID    : File_Type;
+      Settings_ID  : File_Type;
       --  Line_Num     : Natural := 0;
    begin
-      Put_Line (Routine_Name & "Source File: " & Source_File);
-      New_Line;
+      --  Put_Line (Routine_Name & "Source File: " & Source_File);
+
+      Create (Settings_ID, Out_File, Settings_File);
+      Put_Line (Settings_ID, Long_Float'Image (Angles.A_0));
+      Put_Line (Settings_ID, Long_Float'Image (Angles.A_1));
+      Put_Line (Settings_ID, Long_Float'Image (Angles.B_0));
+      Put_Line (Settings_ID, Long_Float'Image (Angles.B_1));
+      Close (Settings_ID);
+
       Open (Source_ID, In_File, Source_File);
 
       while not End_Of_File (Source_ID) loop
@@ -55,7 +65,7 @@ package body Process_Data is
          Add_Selected_Trial (Get_Line (Source_ID), Target);
       end loop;
 
-      Close (Source_ID);
+      Close (Source_ID);   
 
    exception
       when Error : others =>

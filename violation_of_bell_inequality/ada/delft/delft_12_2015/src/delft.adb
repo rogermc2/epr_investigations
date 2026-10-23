@@ -13,6 +13,7 @@ procedure Delft is
    Target_Directory : constant String := "../generated_delft_data/";
    Source           : constant String :=
       Source_Directory & "bell_open_data_2_new_detector.txt";
+   Settings         : constant String := Target_Directory & "settimgs.csv";
    aa               : constant String := Target_Directory & "aa.csv";
    ab               : constant String := Target_Directory & "ab.csv";
    ba               : constant String := Target_Directory & "ba.csv";
@@ -21,7 +22,7 @@ procedure Delft is
 begin
    Put_Line (Routine_Name & "Source length: " &
                   Integer'Image (Count_Text_File_Lines (Source)));
-   Get_Data (Source, Data);
+   Get_Data (Source, Settings, Data);
    Print_Delft_Data_List ("Data", Data, 1, 10);
    Save_Data (aa, ab, ba, bb, Data);
 

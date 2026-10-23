@@ -11,6 +11,7 @@ with Types; use Types;
 
 procedure Statistical_Analysis is
    AB_Dir        : constant String := "../generated_delft_data/";
+   File_Settings : constant String := AB_Dir & "settimgs.csv";
    File_00       : constant String := AB_Dir & "aa.csv";
    File_01       : constant String := AB_Dir & "ba.csv";
    File_10       : constant String := AB_Dir & "ab.csv";
@@ -40,8 +41,10 @@ procedure Statistical_Analysis is
    True_Count    : Natural;
 begin
    New_Line;
-    Put ("Null hypothesis, H0: ");
-    Put_Line ("Sample mean is within 5% of expected value.");
+   Put_Line ("Detector settings:" &
+               Integer'Image (Integer (Detections_00.Length)));
+   Put_Line ("a1:" & Float'Image (0.0));
+   New_Line;
    --  Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
    --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
    --  Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
@@ -66,6 +69,9 @@ begin
    Print_Float_Line ("Overall B Sample_Mean: ",
     (Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0);
    New_Line;
+
+    Put ("Null hypothesis, H0: ");
+    Put_Line ("Sample mean is within 5% of expected value.");
 
    Print_Float_Line ("E(AA)", E_AA);
    Print_Float_Line ("E(AB)", E_AB);
