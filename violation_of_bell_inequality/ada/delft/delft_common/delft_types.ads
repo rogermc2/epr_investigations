@@ -26,6 +26,9 @@ package Delft_Types is
       B_1 : Long_Float := B_Angle_1;
    end record;
 
+   Detector_Angles : constant Angles_Record :=
+      (A_Angle_0, A_Angle_1, B_Angle_0, B_Angle_1);
+
    package Delft_Data_Package is new
      Ada.Containers.Vectors (Positive, Result_Record);
    subtype Delft_Data_List is Delft_Data_Package.Vector;

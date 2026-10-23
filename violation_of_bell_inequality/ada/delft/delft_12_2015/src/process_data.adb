@@ -44,24 +44,21 @@ package body Process_Data is
    procedure Get_Data (Source_File, Settings_File : String;
     Target : out Delft_Data_List) is
       Routine_Name : constant String := "Process_Data.Get_Data ";
-      Angles       : Angles_Record;
       Source_ID    : File_Type;
       Settings_ID  : File_Type;
-      --  Line_Num     : Natural := 0;
    begin
       --  Put_Line (Routine_Name & "Source File: " & Source_File);
 
       Create (Settings_ID, Out_File, Settings_File);
-      Put_Line (Settings_ID, Long_Float'Image (Angles.A_0));
-      Put_Line (Settings_ID, Long_Float'Image (Angles.A_1));
-      Put_Line (Settings_ID, Long_Float'Image (Angles.B_0));
-      Put_Line (Settings_ID, Long_Float'Image (Angles.B_1));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.A_0));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.A_1));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.B_0));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.B_1));
       Close (Settings_ID);
 
       Open (Source_ID, In_File, Source_File);
 
       while not End_Of_File (Source_ID) loop
-         --  Line_Num := Line_Num + 1;
          Add_Selected_Trial (Get_Line (Source_ID), Target);
       end loop;
 
@@ -118,10 +115,6 @@ package body Process_Data is
 
    procedure Process_Angles (Rnd_A, Rnd_B : Integer;
          A_Rad, B_Rad : out Angle_Kind) is
-      --  A_Angle_0  : constant Long_Float := 0.0;
-      --  A_Angle_1  : constant Long_Float := Pi / 2.0;
-      --  B_Angle_0  : constant Long_Float := Pi / 8.0;
-      --  B_Angle_1  : constant Long_Float := (3.0 * Pi) / 8.0;
    begin
       if Rnd_A = 0 then
          A_Rad := A1;
