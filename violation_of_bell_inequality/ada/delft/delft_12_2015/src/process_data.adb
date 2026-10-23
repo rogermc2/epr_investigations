@@ -1,6 +1,6 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Numerics; use Ada.Numerics;
+--  with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Types; use Types;
@@ -12,7 +12,7 @@ package body Process_Data is
    function Parse_Line (Line : String;  Field_Values : out Field_Array)
       return Boolean;
    procedure Process_Angles (Rnd_A, Rnd_B : Integer;
-         A_Rad, B_Rad : out Long_Float);
+         A_Rad, B_Rad : out Angle_Kind);
 
    procedure  Add_Selected_Trial (aline : String;
        Target : in out Delft_Data_List) is
@@ -107,22 +107,22 @@ package body Process_Data is
    end Parse_Line;
 
    procedure Process_Angles (Rnd_A, Rnd_B : Integer;
-         A_Rad, B_Rad : out Long_Float) is
-      A_Angle_0  : constant Long_Float := 0.0;
-      A_Angle_1  : constant Long_Float := Pi / 2.0;
-      B_Angle_0  : constant Long_Float := Pi / 8.0;
-      B_Angle_1  : constant Long_Float := (3.0 * Pi) / 8.0;
+         A_Rad, B_Rad : out Angle_Kind) is
+      --  A_Angle_0  : constant Long_Float := 0.0;
+      --  A_Angle_1  : constant Long_Float := Pi / 2.0;
+      --  B_Angle_0  : constant Long_Float := Pi / 8.0;
+      --  B_Angle_1  : constant Long_Float := (3.0 * Pi) / 8.0;
    begin
       if Rnd_A = 0 then
-         A_Rad := A_Angle_0;
+         A_Rad := A1;
       else
-         A_Rad := A_Angle_1;
+         A_Rad := A2;
       end if;
 
       if Rnd_B = 0 then
-         B_Rad := B_Angle_0;
+         B_Rad := B1;
       else
-         B_Rad := B_Angle_1;
+         B_Rad := B2;
       end if;
 
    end Process_Angles;
@@ -130,14 +130,13 @@ package body Process_Data is
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
       use Delft_Data_Package;
       Routine_Name : constant String := "Process_Data.Save_Data ";
-      Header       : constant String := "A, B, A Set, B_Set";
-      aa_ID        : Ada.Text_IO.File_Type;
-      ab_ID        : Ada.Text_IO.File_Type;
-      ba_ID        : Ada.Text_IO.File_Type;
-      bb_ID        : Ada.Text_IO.File_Type;
+      Header       : constant String := "A, B";
+      aa_ID        : File_Type;
+      ab_ID        : File_Type;
+      ba_ID        : File_Type;
+      bb_ID        : File_Type;
       A_Result     : String_2;
       B_Result     : String_2;
-      AB_Result    : String_2;
       Num_aa       : Natural := 0;
       Num_ab       : Natural := 0;
       Num_ba       : Natural := 0;
@@ -155,13 +154,11 @@ package body Process_Data is
             B_Result := "-1";
          end if;
 
-         Put_Line (Routine_Name & "Item A and B Settings: " &
-         Long_Float'Image (Item.A_Setting) &
-         Long_Float'Image (Item.B_Setting));
+         --  Put_Line (Routine_Name & "Item A and B Settings: " &
+         --     Angle_Kind'Image (Item.A_Setting) &
+         --     Angle_Kind'Image (Item.B_Setting));
 
-         Put_Line (File, A_Result & "," & B_Result & "," &
-          Long_Float'Image (Item.A_Setting) & "," &
-           Long_Float'Image (Item.B_Setting));
+         Put_Line (File, A_Result & "," & B_Result);
 
       end Write_Data;
 
@@ -181,17 +178,16 @@ package body Process_Data is
          Count := Count + 1;
          A_Result := UV'Image (item.A_Outcome);
          B_Result := UV'Image (item.B_Outcome);
-         AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
-         if item.A_Setting = 0.0 and then item.B_Setting = 0.0 then
+         if item.A_Setting = A1 and then item.B_Setting = B1 then
             Num_aa := Num_aa + 1;
             Write_Data (aa_ID);
-         elsif item.A_Setting = 0.0 and then item.B_Setting  /= 0.0 then
+         elsif item.A_Setting = A1 and then item.B_Setting = B2 then
             Num_ab := Num_ab + 1;
             Write_Data (ab_ID);
-         elsif item.A_Setting  /= 0.0 and then item.B_Setting = 0.0 then
+         elsif item.A_Setting = A2 and then item.B_Setting = B1 then
             Num_ba := Num_ba + 1;
             Write_Data (ba_ID);
-         elsif item.A_Setting /= 0.0 and then item.B_Setting /= 0.0 then
+         elsif item.A_Setting = A2 and then item.B_Setting = B2 then
             Num_bb := Num_bb + 1;
             Write_Data (bb_ID);
          else

@@ -5,9 +5,10 @@ with Types; use Types;
 
 package Delft_Types is
 
+   type Angle_Kind is (A1, A2, B1, B2);
    type Result_Record is record
-      A_Setting  : Long_Float := 0.0;
-      B_Setting  : Long_Float := 0.0;
+      A_Setting  : Angle_Kind;
+      B_Setting  : Angle_Kind;
       A_Outcome  : UV;
       B_Outcome  : UV;
    end record;
