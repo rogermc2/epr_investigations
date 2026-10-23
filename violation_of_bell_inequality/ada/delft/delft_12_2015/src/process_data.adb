@@ -71,6 +71,9 @@ package body Process_Data is
 
    end Get_Data;
 
+   --  Parse_Line splits a comma-separated line and stores fields
+   --  2..17 (file columns 1..16) in Values.
+   --  The first field (datetime) is skipped, as it is not used in the analysis.
    function Parse_Line (Line : String; Field_Values : out Field_Array)
       return Boolean is
       Routine_Name : constant String := "Process_Data.Parse_Line ";
@@ -96,7 +99,8 @@ package body Process_Data is
          Pos_1 := Pos_2;
       end loop;
 
-      Herald_Flag := Field_Values (2) = 6 and then Field_Values (8) = 1;
+      Herald_Flag := Field_Values (2) = 6 and then Field_Values (4) > 0
+                     and then Field_Values (5) > 0;
 
       return Herald_Flag;
 
