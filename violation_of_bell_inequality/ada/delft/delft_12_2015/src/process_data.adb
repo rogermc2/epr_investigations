@@ -141,7 +141,7 @@ package body Process_Data is
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
       use Delft_Data_Package;
       Routine_Name : constant String := "Process_Data.Save_Data ";
-      Header       : constant String := "A, B";
+      Header       : constant String := "A, B, A Set, B_Set";
       aa_ID        : Ada.Text_IO.File_Type;
       ab_ID        : Ada.Text_IO.File_Type;
       ba_ID        : Ada.Text_IO.File_Type;
@@ -164,7 +164,12 @@ package body Process_Data is
             W_Item.B_Result := "-1";
          end if;
 
-         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result);
+         W_Item.A_Setting := Item.A_Setting;
+         W_Item.A_Setting := Item.B_Setting;         
+
+         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
+          Long_Float'Image (W_Item.A_Setting) & "," &
+           Long_Float'Image (W_Item.B_Setting));
 
       end Write_Data;
 
@@ -187,23 +192,15 @@ package body Process_Data is
          W_Item.AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
          if item.A_Setting = 0.0 and then item.B_Setting = 0.0 then
             Num_aa := Num_aa + 1;
-            W_Item.A_Setting := 'a';
-            W_Item.B_Setting := 'a';
             Write_Data (aa_ID);
          elsif item.A_Setting = 0.0 and then item.B_Setting  /= 0.0 then
             Num_ab := Num_ab + 1;
-            W_Item.A_Setting := 'a';
-            W_Item.B_Setting := 'b';
             Write_Data (ab_ID);
          elsif item.A_Setting  /= 0.0 and then item.B_Setting = 0.0 then
             Num_ba := Num_ba + 1;
-            W_Item.A_Setting := 'b';
-            W_Item.B_Setting := 'a';
             Write_Data (ba_ID);
          elsif item.A_Setting /= 0.0 and then item.B_Setting /= 0.0 then
             Num_bb := Num_bb + 1;
-            W_Item.A_Setting := 'b';
-            W_Item.B_Setting := 'b';
             Write_Data (bb_ID);
          else
             Put_Line (Routine_Name & "Invalid data:");

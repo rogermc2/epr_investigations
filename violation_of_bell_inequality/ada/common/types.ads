@@ -86,8 +86,8 @@ package Types is
    type Detect_Type is (Det_A, Det_B, Det_Both);
 
    type W_Record is record
-      A_Setting  : Character;
-      B_Setting  : Character;
+      A_Setting  : Long_Float := 0.0;
+      B_Setting  : Long_Float := 0.0;
       A_Result   : String_2;
       B_Result   : String_2;
       AB_Result  : String_2;
