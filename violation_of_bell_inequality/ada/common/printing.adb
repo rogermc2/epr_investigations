@@ -67,6 +67,22 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Float_3 (Message_1 : String; Data_1 : Float;
+      Message_2 : String; Data_2 : Float; Message_3 : String; Data_3 : Float;
+      Aft : Natural := 3; Exp : Integer := 0) is
+   begin
+      Put (Message_1 & ": ");
+      Ada.Float_Text_IO.Put (Data_1, Aft => Aft, Exp => Exp);
+      Put ("  " & Message_2 & ": ");
+      Ada.Float_Text_IO.Put (Data_2, Aft => Aft, Exp => Exp);
+      Put ("  " & Message_3 & ": ");
+      Ada.Float_Text_IO.Put (Data_3, Aft => Aft, Exp => Exp);
+      Put_Line ("%");
+
+   end Print_Float_3;
+
+   --  ------------------------------------------------------------------------
+
    procedure Print_Float_Line (Message : String; Data : Float;
     Aft : Natural := 3; Exp : Integer := 0) is
    begin

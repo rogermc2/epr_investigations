@@ -83,6 +83,12 @@ package body Process_Data is
       return 2.0 * theta / Pi - 1.0;
    end Statistical_EAB;
 
+   function Statistical_EAB (A, B : Long_Float) return Float is
+   begin
+      return Statistical_EAB (abs (Float (A - B)));
+
+   end Statistical_EAB;
+
    function False_Positives
     (Dir, OEM_File : String;  False_Count, True_Count : out Natural)
       return Delft_Sample_Data_List is

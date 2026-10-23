@@ -19,14 +19,10 @@ procedure Statistical_Analysis is
    Detections_01 : constant Delft_Sample_Data_List := Get_Detections (File_01);
    Detections_10 : constant Delft_Sample_Data_List := Get_Detections (File_10);
    Detections_11 : constant Delft_Sample_Data_List := Get_Detections (File_11);
-   E_AA          : constant Float :=
-      Statistical_EAB (Float (abs (A_Angle_0 - B_Angle_0)));
-   E_AB          : constant Float :=
-      Statistical_EAB (Float (abs (A_Angle_0 - B_Angle_1)));
-   E_BA          : constant Float :=
-      Statistical_EAB (Float (abs (A_Angle_1 - B_Angle_0)));
-   E_BB          : constant Float :=
-      Statistical_EAB (Float (abs (A_Angle_1 - B_Angle_1)));
+   E_AA          : constant Float := Statistical_EAB (A_Angle_0, B_Angle_0);
+   E_AB          : constant Float := Statistical_EAB (A_Angle_0, B_Angle_1);
+   E_BA          : constant Float := Statistical_EAB (A_Angle_1, B_Angle_0);
+   E_BB          : constant Float := Statistical_EAB (A_Angle_1, B_Angle_1);
    Mean_A_00     : Float;
    Mean_A_01     : Float;
    Mean_A_10     : Float;
@@ -43,8 +39,9 @@ procedure Statistical_Analysis is
    False_Count   : Natural;
    True_Count    : Natural;
 begin
+   New_Line;
     Put ("Null hypothesis, H0: ");
-    Put_Line ("Sample mean is within 3% of expected value.");
+    Put_Line ("Sample mean is within 5% of expected value.");
    --  Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
    --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
    --  Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
@@ -54,13 +51,13 @@ begin
    Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);
    Sample_Means (Detections_11, Mean_A_11, Mean_B_11, Mean_AB_11);
 
-   Print_Delft_Statistics ("00", Mean_A_00, Mean_B_00, Mean_AB_00,
-                     Detections_00, Det_A, Det_B);
-   Print_Delft_Statistics ("01", Mean_A_01, Mean_B_01, Mean_AB_01,
+   Print_Delft_Statistics ("00", Mean_A_00, Mean_B_00, Mean_AB_00, E_AA,
+                           Detections_00, Det_A, Det_B);
+   Print_Delft_Statistics ("01", Mean_A_01, Mean_B_01, Mean_AB_01, E_AB,
                      Detections_01, Det_A, Det_B);
-   Print_Delft_Statistics ("10", Mean_A_10, Mean_B_10, Mean_AB_10,
+   Print_Delft_Statistics ("10", Mean_A_10, Mean_B_10, Mean_AB_10, E_BA,
                      Detections_10, Det_A, Det_B);
-   Print_Delft_Statistics ("11", Mean_A_11, Mean_B_11, Mean_AB_11,
+   Print_Delft_Statistics ("11", Mean_A_11, Mean_B_11, Mean_AB_11, E_BB,
                      Detections_11, Det_A, Det_B);
    New_Line;
 

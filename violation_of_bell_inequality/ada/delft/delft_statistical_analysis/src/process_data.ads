@@ -3,6 +3,7 @@ with Delft_Types; use Delft_Types;
 
 package Process_Data is
 
+   function Statistical_EAB (A, B : Long_Float) return Float;
    function Statistical_EAB (theta : float) return Float;
    function False_Positives
       (Dir, OEM_File : String; False_Count, True_Count : out Natural)

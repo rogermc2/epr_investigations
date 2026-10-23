@@ -29,6 +29,13 @@ package body Delft_Utils is
       return theList;
    end Get_Delft_Integer_List;
 
+   function Sample_Mean_vs_Exp_Value (E_Val, Sample_Mean : Float)
+            return Float is
+   begin
+    return 100.0 * (abs (Sample_Mean - E_Val)) / abs (E_Val);  --  per cent
+
+   end Sample_Mean_vs_Exp_Value;
+
    function Trim_Both (S : String) return String is
    begin
       return Ada.Strings.Fixed.Trim (S, Ada.Strings.Both);
