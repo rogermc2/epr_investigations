@@ -9,7 +9,7 @@ package body Delft_Printing is
 
    procedure Print_Delft_Data_List (Name : String; Data : Delft_Data_List;
                                Start : Positive := 1; Finish : Natural := 0) is
-      Item  : Raw_Result_Record;
+      Item  : Result_Record;
       Last  : Natural;
       Line  : Natural := 0;
    begin
@@ -28,8 +28,8 @@ package body Delft_Printing is
             Put_Line (Natural'Image (Line) &
                ":   " & Long_Float'Image (Item.A_Setting) &
                "    " & Long_Float'Image (Item.B_Setting) &
-               "       " & Integer'Image (Item.A_Outcome) &
-               "      " & Integer'Image (Item.B_Outcome));
+               "       " & UV'Image (Item.A_Outcome) &
+               "      " & UV'Image (Item.B_Outcome));
          end loop;
       else
          Put_Line

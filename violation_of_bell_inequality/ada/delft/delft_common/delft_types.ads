@@ -5,7 +5,7 @@ with Types; use Types;
 
 package Delft_Types is
 
-   type Raw_Result_Record is record
+   type Result_Record is record
       A_Setting  : Long_Float := 0.0;
       B_Setting  : Long_Float := 0.0;
       A_Outcome  : UV;
@@ -13,7 +13,7 @@ package Delft_Types is
    end record;
 
    package Delft_Data_Package is new
-     Ada.Containers.Vectors (Positive, Raw_Result_Record);
+     Ada.Containers.Vectors (Positive, Result_Record);
    subtype Delft_Data_List is Delft_Data_Package.Vector;
 
    type Delft_Sample_Data_Record is record

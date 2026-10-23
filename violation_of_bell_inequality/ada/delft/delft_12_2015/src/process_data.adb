@@ -16,35 +16,27 @@ package body Process_Data is
 
    procedure  Add_Selected_Trial (aline : String;
        Target : in out Delft_Data_List) is
-      Routine_Name : constant String := "Process_Data.Add_Selected_Trial ";
-      Raw_Data     : Raw_Result_Record;
+      --  Routine_Name : constant String := "Process_Data.Add_Selected_Trial ";
+      Results      : Result_Record;
       Field_Values : Field_Array := (others => 0);
    begin
       if Parse_Line (aline, Field_Values) then
-         Process_Angles (Field_Values (7), Field_Values (8),
-            Raw_Data.A_Setting, Raw_Data.B_Setting);
+         Process_Angles (Field_Values (6), Field_Values (8),
+            Results.A_Setting, Results.B_Setting);
+
          --  A readout click at time (ns), 0 if none
          if Field_Values (11) > 0 then
-            Raw_Data.A_Outcome := 1;
+            Results.A_Outcome := 1;
          else
-            Raw_Data.A_Outcome := -1;
+            Results.A_Outcome := -1;
          end if;
          --  B readout click at time (ns), 0 if none
          if Field_Values (12) > 0 then
-            Raw_Data.B_Outcome := 1;
+            Results.B_Outcome := 1;
          else
-            Raw_Data.B_Outcome := -1;
+            Results.B_Outcome := -1;
          end if;
-         Target.Append (Raw_Data);
-
-         --  Put_Line (Routine_Name & "A_Setting: " &
-         --  Long_Float'Image (Raw_Data.A_Setting));
-         --  Put_Line (Routine_Name & "B_Setting: " &
-         --  Long_Float'Image (Raw_Data.B_Setting));
-         --  Put_Line (Routine_Name & "A_Outcome: " &
-         --  Integer'Image (Raw_Data.A_Outcome));
-         --  Put_Line (Routine_Name & "B_Outcome: " &
-         --  Integer'Image (Raw_Data.B_Outcome));
+         Target.Append (Results);
       end if;
 
    end Add_Selected_Trial;
@@ -116,20 +108,17 @@ package body Process_Data is
 
    procedure Process_Angles (Rnd_A, Rnd_B : Integer;
          A_Rad, B_Rad : out Long_Float) is
-      --  Establish the exact physical angles used in the Delft lab framework
       A_Angle_0  : constant Long_Float := 0.0;
       A_Angle_1  : constant Long_Float := Pi / 2.0;
       B_Angle_0  : constant Long_Float := Pi / 8.0;
       B_Angle_1  : constant Long_Float := (3.0 * Pi) / 8.0;
    begin
-      --  Assign A's physical radian value based on the basis slot
       if Rnd_A = 0 then
          A_Rad := A_Angle_0;
       else
          A_Rad := A_Angle_1;
       end if;
 
-      --  Assign B's physical radian value based on the basis slot
       if Rnd_B = 0 then
          B_Rad := B_Angle_0;
       else
@@ -146,30 +135,33 @@ package body Process_Data is
       ab_ID        : Ada.Text_IO.File_Type;
       ba_ID        : Ada.Text_IO.File_Type;
       bb_ID        : Ada.Text_IO.File_Type;
-      W_Item       : W_Record;
+      A_Result     : String_2;
+      B_Result     : String_2;
+      AB_Result    : String_2;
       Num_aa       : Natural := 0;
       Num_ab       : Natural := 0;
       Num_ba       : Natural := 0;
       Num_bb       : Natural := 0;
       Curs         : Cursor := Data.First;
-      Item         : Raw_Result_Record;
+      Item         : Result_Record;
       Count        : Natural := 0;
 
       procedure Write_Data (File : Ada.Text_IO.File_Type) is
       begin
-         if W_Item.A_Result = " 0" then
-            W_Item.A_Result := "-1";
+         if A_Result = " 0" then
+            A_Result := "-1";
          end if;
-         if W_Item.B_Result = " 0" then
-            W_Item.B_Result := "-1";
+         if B_Result = " 0" then
+            B_Result := "-1";
          end if;
 
-         W_Item.A_Setting := Item.A_Setting;
-         W_Item.A_Setting := Item.B_Setting;         
+         Put_Line (Routine_Name & "Item A and B Settings: " &
+         Long_Float'Image (Item.A_Setting) &
+         Long_Float'Image (Item.B_Setting));
 
-         Put_Line (File, W_Item.A_Result & "," & W_Item.B_Result & "," &
-          Long_Float'Image (W_Item.A_Setting) & "," &
-           Long_Float'Image (W_Item.B_Setting));
+         Put_Line (File, A_Result & "," & B_Result & "," &
+          Long_Float'Image (Item.A_Setting) & "," &
+           Long_Float'Image (Item.B_Setting));
 
       end Write_Data;
 
@@ -187,9 +179,9 @@ package body Process_Data is
       while Has_Element (Curs) loop
          item := Element (Curs);
          Count := Count + 1;
-         W_Item.A_Result := UV'Image (item.A_Outcome);
-         W_Item.B_Result := UV'Image (item.B_Outcome);
-         W_Item.AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
+         A_Result := UV'Image (item.A_Outcome);
+         B_Result := UV'Image (item.B_Outcome);
+         AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
          if item.A_Setting = 0.0 and then item.B_Setting = 0.0 then
             Num_aa := Num_aa + 1;
             Write_Data (aa_ID);
