@@ -1,5 +1,6 @@
 
 with Ada.Containers.Vectors;
+with Ada.Numerics; use Ada.Numerics;
 
 with Types; use Types;
 
@@ -12,6 +13,11 @@ package Delft_Types is
       A_Outcome  : UV;
       B_Outcome  : UV;
    end record;
+
+   A_Angle_0 : constant Long_Float := 0.0;
+   A_Angle_1 : constant Long_Float := Pi / 2.0;
+   B_Angle_0 : constant Long_Float := Pi / 8.0;
+   B_Angle_1 : constant Long_Float := (3.0 * Pi) / 8.0;
 
    package Delft_Data_Package is new
      Ada.Containers.Vectors (Positive, Result_Record);

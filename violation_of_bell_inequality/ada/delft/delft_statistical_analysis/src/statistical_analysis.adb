@@ -1,7 +1,6 @@
 
-with Ada.Numerics; use Ada.Numerics;  --  for Pi
-with Ada.Numerics.Elementary_Functions;
-use Ada.Numerics.Elementary_Functions;  -- for Cos
+--  with Ada.Numerics; use Ada.Numerics;  --  for Pi
+--  use Ada.Numerics.Elementary_Functions;  -- for Cos
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Delft_Printing; use Delft_Printing;
@@ -20,6 +19,14 @@ procedure Statistical_Analysis is
    Detections_01 : constant Delft_Sample_Data_List := Get_Detections (File_01);
    Detections_10 : constant Delft_Sample_Data_List := Get_Detections (File_10);
    Detections_11 : constant Delft_Sample_Data_List := Get_Detections (File_11);
+   E_AA          : constant Float :=
+      Statistical_EAB (Float (abs (A_Angle_0 - B_Angle_0)));
+   E_AB          : constant Float :=
+      Statistical_EAB (Float (abs (A_Angle_0 - B_Angle_1)));
+   E_BA          : constant Float :=
+      Statistical_EAB (Float (abs (A_Angle_1 - B_Angle_0)));
+   E_BB          : constant Float :=
+      Statistical_EAB (Float (abs (A_Angle_1 - B_Angle_1)));
    Mean_A_00     : Float;
    Mean_A_01     : Float;
    Mean_A_10     : Float;
@@ -36,10 +43,12 @@ procedure Statistical_Analysis is
    False_Count   : Natural;
    True_Count    : Natural;
 begin
-   Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
-   Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
-   Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
-   Print_Delft_Sample_List ("Detections_11", Detections_11, 1, 5);
+    Put ("Null hypothesis, H0: ");
+    Put_Line ("Sample mean is within 3% of expected value.");
+   --  Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
+   --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
+   --  Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
+   --  Print_Delft_Sample_List ("Detections_11", Detections_11, 1, 5);
    Sample_Means (Detections_00, Mean_A_00, Mean_B_00, Mean_AB_00);
    Sample_Means (Detections_01, Mean_A_01, Mean_B_01, Mean_AB_01);
    Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);
@@ -55,20 +64,20 @@ begin
                      Detections_11, Det_A, Det_B);
    New_Line;
 
-   Print_Float_Line ("CHSH parameter S: ",
-      Mean_AB_00 - Mean_AB_01 + Mean_AB_10 + Mean_AB_11);
-
    Print_Float_Line ("Overall A Sample_Mean: ",
     (Mean_A_00 + Mean_A_01 + Mean_A_10 + Mean_A_11) / 4.0);
    Print_Float_Line ("Overall B Sample_Mean: ",
     (Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0);
    New_Line;
 
-   Put_Line ("E(AB) b = a: " & Float'Image (Statistical_EAB (0.0)));
-   Put_Line ("E(AB) b = a + 45 deg.: " & Float'Image (Statistical_EAB (Pi / 4.0)));
+   Print_Float_Line ("E(AA)", E_AA);
+   Print_Float_Line ("E(AB)", E_AB);
+   Print_Float_Line ("E(BA)", E_BA);
+   Print_Float_Line ("E(BB)", E_BB);
    New_Line;
-   Put_Line ("- a.b,  b = a: " & Float'Image (- Cos (0.0)));
-   Put_Line ("- a.b,  b = a + 45 deg.: " & Float'Image (-Cos (Pi / 4.0)));
+
+   Print_Float_Line ("CHSH parameter S: ",
+      Mean_AB_00 - Mean_AB_01 + Mean_AB_10 + Mean_AB_11);
    New_Line;
 
    Put_Line ("Number of AB00 detections: " &

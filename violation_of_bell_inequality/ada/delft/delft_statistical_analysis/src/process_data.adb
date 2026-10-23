@@ -121,12 +121,9 @@ package body Process_Data is
 
    function Get_Detections (Detection_Data : String)
       return Delft_Sample_Data_List is
-      --  use Ada.Strings;
-      --  use Ada.Strings.Fixed;
       Routine_Name : constant String := "Process_Data.Get_Detections ";
       Data_ID      : File_Type;
       Sample       : Delft_Sample_Data_Record;
-      --  Pos          : Natural := 0;
       Detections   : Delft_Sample_Data_List;
    begin
       if Detection_Data'Length < 2 then

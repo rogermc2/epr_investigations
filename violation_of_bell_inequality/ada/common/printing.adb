@@ -70,7 +70,7 @@ package body Printing is
    procedure Print_Float_Line (Message : String; Data : Float;
     Aft : Natural := 3; Exp : Integer := 0) is
    begin
-      Print_Float (Message, Data, Aft, Exp);
+      Print_Float (Message & ": ", Data, Aft, Exp);
       New_Line;
 
    end Print_Float_Line;
