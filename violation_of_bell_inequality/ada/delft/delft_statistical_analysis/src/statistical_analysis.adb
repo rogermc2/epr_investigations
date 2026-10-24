@@ -11,7 +11,7 @@ with Types; use Types;
 
 procedure Statistical_Analysis is
    AB_Dir        : constant String := "../generated_delft_data/";
-   File_Settings : constant String := AB_Dir & "settimgs.csv";
+   File_Settings : constant String := AB_Dir & "settings.csv";
    File_00       : constant String := AB_Dir & "aa.csv";
    File_01       : constant String := AB_Dir & "ba.csv";
    File_10       : constant String := AB_Dir & "ab.csv";
@@ -24,6 +24,7 @@ procedure Statistical_Analysis is
    E_AB          : constant Float := Statistical_EAB (A_Angle_0, B_Angle_1);
    E_BA          : constant Float := Statistical_EAB (A_Angle_1, B_Angle_0);
    E_BB          : constant Float := Statistical_EAB (A_Angle_1, B_Angle_1);
+   Settings      : Angles_Record;
    Mean_A_00     : Float;
    Mean_A_01     : Float;
    Mean_A_10     : Float;
@@ -40,6 +41,7 @@ procedure Statistical_Analysis is
    False_Count   : Natural;
    True_Count    : Natural;
 begin
+   Settings := Get_Settings (File_Settings);
    New_Line;
    Put_Line ("Detector settings:" &
                Integer'Image (Integer (Detections_00.Length)));

@@ -77,6 +77,21 @@ package body Process_Data is
 
    end Check_For_False_Positives;
 
+   function Get_Settings (File_Name : String) return Angles_Record is
+      File_ID : File_Type;
+      Angles  : Angles_Record;
+   begin
+      Open (File_ID, In_File, File_Name);
+      Angles.A_0 := Long_Float'Value (Get_Line (File_ID));
+      Angles.A_1 := Long_Float'Value (Get_Line (File_ID));
+      Angles.B_0 := Long_Float'Value (Get_Line (File_ID));
+      Angles.B_1 := Long_Float'Value (Get_Line (File_ID));
+      Close (File_ID);
+
+      return Angles;
+
+   end Get_Settings;
+
    function Statistical_EAB (theta : Float) return Float is
       use Ada.Numerics;
    begin
