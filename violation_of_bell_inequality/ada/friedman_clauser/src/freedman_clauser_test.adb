@@ -16,7 +16,7 @@ begin
       -- For example, calculate Expected_E as a function of Current_Row.Angle_Degrees...
       -- Expected_E := Calculate_My_Alternative_Inequality(Current_Row.Angle_Degrees);
       
-      -- For placeholder tracking, let's assume a sample target calculation
+      -- For placeholder tracking, assume a sample target calculation
       -- Error_Pct := (Abs(Current_Row.Normalized_Rate - Expected_E) / Expected_E) * 100.0;
       
       -- Output the comparison cleanly to your console window...
