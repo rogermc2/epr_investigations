@@ -13,7 +13,7 @@ procedure Delft is
    Target_Directory : constant String := "../generated_delft_data/";
    Source           : constant String :=
       Source_Directory & "bell_open_data_2_new_detector.txt";
-   Settings         : constant String := Target_Directory & "settimgs.csv";
+   Settings         : constant String := Target_Directory & "settings.csv";
    aa               : constant String := Target_Directory & "aa.csv";
    ab               : constant String := Target_Directory & "ab.csv";
    ba               : constant String := Target_Directory & "ba.csv";
