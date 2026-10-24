@@ -10,7 +10,9 @@ package Process_Data is
        return Delft_Sample_Data_List;
    function Get_Detections (Detection_Data : String)
        return Delft_Sample_Data_List;
-   function Get_Settings (File_Name : String) return Angles_Record ;
+   function Get_Settings (File_Name : String) return Angles_Record;
+   procedure Report_Hypothesis_Testing
+      (Mean_00, Mean_01, Mean_10, Mean_11 : Float);
    procedure Sample_Means (Data : Delft_Sample_Data_List;
                            Mean_A, Mean_B, Mean_AB : out Float);
 

@@ -41,6 +41,7 @@ procedure Statistical_Analysis is
    False_Count   : Natural;
    True_Count    : Natural;
 begin
+   Print_Delft_Sample_List ("Detections_00", Detections_00);
    Settings := Get_Settings (File_Settings);
    New_Line;
    Put_Line ("Detector settings:");
@@ -53,6 +54,7 @@ begin
    --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
    --  Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
    --  Print_Delft_Sample_List ("Detections_11", Detections_11, 1, 5);
+
    Sample_Means (Detections_00, Mean_A_00, Mean_B_00, Mean_AB_00);
    Sample_Means (Detections_01, Mean_A_01, Mean_B_01, Mean_AB_01);
    Sample_Means (Detections_10, Mean_A_10, Mean_B_10, Mean_AB_10);
@@ -74,13 +76,16 @@ begin
     (Mean_B_00 + Mean_B_01 + Mean_B_10 + Mean_B_11) / 4.0);
    New_Line;
 
-    Put ("Null hypothesis, H0: ");
-    Put_Line ("Sample mean is within 5% of expected value.");
-
    Print_Float_Line ("E(AA)", E_AA);
    Print_Float_Line ("E(AB)", E_AB);
    Print_Float_Line ("E(BA)", E_BA);
    Print_Float_Line ("E(BB)", E_BB);
+   New_Line;
+
+   Put ("Null hypothesis H0: ");
+   Put_Line ("Sample mean is within 5% of expected value.");
+   Report_Hypothesis_Testing
+      (Mean_AB_00, Mean_AB_01, Mean_AB_10, Mean_AB_11);
    New_Line;
 
    Print_Float_Line ("CHSH parameter S: ",

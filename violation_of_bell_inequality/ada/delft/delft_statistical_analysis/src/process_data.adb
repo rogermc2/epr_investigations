@@ -6,12 +6,14 @@ with Ada.Numerics;
 --  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
---  with Printing; use Printing;
+with Printing; use Printing;
 with Types; use Types;
 
 package body Process_Data is
 
    function Sample_Val (Result : String_2) return UV;
+   function Verify_H0 (Calculated, Expected : Float;
+            Percentage : out Float) return Boolean;
 
    function Check_For_False_Positives (OEM_ID : File_Type; File_Name : String;
       False_Count, True_Count : out Natural) return Delft_Sample_Data_List is
@@ -92,6 +94,57 @@ package body Process_Data is
 
    end Get_Settings;
 
+   procedure Report_Hypothesis_Testing
+      (Mean_00, Mean_01, Mean_10, Mean_11 : Float) is
+      --  Theoretical expectations
+      Exp_00     : constant Float := -0.750;
+      Exp_01     : constant Float := -0.250;
+      Exp_10     : constant Float := -0.250;
+      Exp_11     : constant Float := -0.750;
+      Percentage : Float;
+      OK         : Boolean;
+   begin
+      New_Line;
+      Put_Line ("Null Hypothesis (H0) Verification");
+
+      --  Test Quadrant 00 (AA)
+      OK := Verify_H0 (Mean_00, Exp_00, Percentage);
+      Print_Float ("00 (AA): ", Percentage, 1, 0);
+      if OK then
+         Put_Line ("% ACCEPT H0 (Within 5% margin)");
+      else
+         Put_Line ("% REJECT H0 (Outside 5% margin)");
+      end if;
+
+      --  Test Quadrant 01 (AB)
+      OK := Verify_H0 (Mean_01, Exp_01, Percentage);
+      Print_Float ("01 (AB): ", Percentage, 1, 0);
+      if OK then
+         Put_Line ("% ACCEPT H0 (Within 5% margin)");
+      else
+         Put_Line ("% REJECT H0 (Outside 5% margin)");
+      end if;
+
+      --  Test Quadrant 10 (BA)
+      OK := Verify_H0 (Mean_10, Exp_10, Percentage);
+      Print_Float ("10 (AB): ", Percentage, 1, 0);
+      if OK then
+         Put_Line ("% ACCEPT H0 (Within 5% margin)");
+      else
+         Put_Line ("% REJECT H0 (Outside 5% margin)");
+      end if;
+
+      --  Test Quadrant 11 (BB)
+      OK := Verify_H0 (Mean_11, Exp_11, Percentage);
+      Print_Float ("11 (AB): ", Percentage, 1, 0);
+      if OK then
+         Put_Line ("% ACCEPT H0 (Within 5% margin)");
+      else
+         Put_Line ("% REJECT H0 (Outside 5% margin)");
+      end if;
+
+   end Report_Hypothesis_Testing;
+
    function Statistical_EAB (theta : Float) return Float is
       use Ada.Numerics;
    begin
@@ -158,7 +211,7 @@ package body Process_Data is
             begin
                Sample.A_Detection := Sample_Val (aLine (1 .. 2));
                Sample.B_Detection := Sample_Val (aLine (4 .. 5));
-               Sample.AB := Sample.A_Detection * Sample.B_Detection;
+               Sample.AB := Sample_Val (aLine (7 .. 8));
             end;
             Detections.Append (Sample);
          end loop;
@@ -179,6 +232,7 @@ package body Process_Data is
       Routine_Name : constant String := "Process_Data.Sample_Means ";
       A      : UV;
       B      : UV;
+      AB     : UV;
       Sum_A  : Integer := 0;
       Sum_B  : Integer := 0;
       Sum_AB : Integer := 0;
@@ -197,9 +251,13 @@ package body Process_Data is
          B := Item.B_Detection;
          Assert (B = 1 or B = -1, "Sample_Means: invalid B value: " &
           Integer'Image (Integer (B)));
+
+         AB := Item.AB;
+         Assert (AB = 1 or AB = -1, "Sample_Means: invalid AB value: " &
+          Integer'Image (Integer (A)));
          Sum_A := Sum_A + A;
          Sum_B := Sum_B + B;
-         Sum_AB := Sum_AB + A * B;
+         Sum_AB := Sum_AB + AB;
          Curs := Next (Curs);
       end loop;
 
@@ -231,5 +289,18 @@ package body Process_Data is
       return Val;
 
    end Sample_Val;
+
+   function Verify_H0 (Calculated, Expected : Float;
+         Percentage : out Float) return Boolean is
+      --  5% tolerance margin calculated relative to the expected value
+      Tolerance  : constant Float := Abs (Expected) * 0.05;
+   begin
+      --  Put_Line ("Abs (Calculated - Expected)" &
+      --     Float'Image (Abs (Calculated - Expected)));
+      Percentage := Abs (Calculated - Expected) / Abs (Expected) * 100.0;
+      --  True if the calculated sample mean sits within the 5% boundary
+      return Abs (Calculated - Expected) <= Tolerance;
+
+   end Verify_H0;
 
 end Process_Data;
