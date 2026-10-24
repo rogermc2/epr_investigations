@@ -62,7 +62,7 @@ package body Process_Data is
          Add_Selected_Trial (Get_Line (Source_ID), Target);
       end loop;
 
-      Close (Source_ID);   
+      Close (Source_ID);
 
    exception
       when Error : others =>
@@ -133,13 +133,14 @@ package body Process_Data is
    procedure Save_Data (aa, ab, ba, bb : String; Data : Delft_Data_List) is
       use Delft_Data_Package;
       Routine_Name : constant String := "Process_Data.Save_Data ";
-      Header       : constant String := "A, B";
+      Header       : constant String := "A, B,AB";
       aa_ID        : File_Type;
       ab_ID        : File_Type;
       ba_ID        : File_Type;
       bb_ID        : File_Type;
       A_Result     : String_2;
       B_Result     : String_2;
+      AB_Result    : String_2;
       Num_aa       : Natural := 0;
       Num_ab       : Natural := 0;
       Num_ba       : Natural := 0;
@@ -157,11 +158,7 @@ package body Process_Data is
             B_Result := "-1";
          end if;
 
-         --  Put_Line (Routine_Name & "Item A and B Settings: " &
-         --     Angle_Kind'Image (Item.A_Setting) &
-         --     Angle_Kind'Image (Item.B_Setting));
-
-         Put_Line (File, A_Result & "," & B_Result);
+         Put_Line (File, A_Result & "," & B_Result & "," & AB_Result);
 
       end Write_Data;
 
@@ -181,6 +178,7 @@ package body Process_Data is
          Count := Count + 1;
          A_Result := UV'Image (item.A_Outcome);
          B_Result := UV'Image (item.B_Outcome);
+         AB_Result := UV'Image (item.A_Outcome * item.B_Outcome);
          if item.A_Setting = A1 and then item.B_Setting = B1 then
             Num_aa := Num_aa + 1;
             Write_Data (aa_ID);
