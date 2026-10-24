@@ -1,0 +1,11 @@
+name = "friedman_clauser"
+description = ""
+version = "0.1.0-dev"
+
+authors = ["Roger"]
+maintainers = ["Roger <rogermc@iinet.net.au>"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["fc_h0_test"]
