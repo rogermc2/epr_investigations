@@ -2,7 +2,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
---  with Combine_CSVs; use Combine_CSVs;
 with Data_Selection; use Data_Selection;
 with Process_Data; use Process_Data;
 with Types; use Types;
@@ -12,7 +11,6 @@ procedure Match_Times is
    Routine_Name     : constant String := "Match_Times ";
    A_Directory      : constant String := "../";
    B_Directory      : constant String := A_Directory;
-   --  Spyder_Directory : constant String := "../../Spyder/epr_1/";
    Result_Directory : constant String := "../generated_data/";
    Settings         : constant String := Result_Directory & "settings.csv";
    Photon_Times_A   : constant String := A_Directory & "A_Photon_Times.csv";
@@ -32,7 +30,7 @@ procedure Match_Times is
    --  G. Weihs used detection windows of 4-6 ns to identify coincidences.
    --  I find better results with windows 40-50 ns wide.
 
-   Width            : constant Float := 1.0 * ns;
+   Width            : constant Float := 5.0 * ns;
    Delta_Val        : constant Float := 0.0 * ns;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
@@ -90,7 +88,8 @@ begin
                Float'Image (Width) & " ns");
    Print_xxCounts ("A counts", A_Counts);
    Print_xxCounts ("B counts", B_Counts);
-   --  Set stack size:  ulimit -s 64000 to prevent Combine stack overflow
+   --  Set stack size: ulimit -s 64000 if needed
+   --   to prevent Combine stack overflow
    --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb,
    --   To_String (Combined_Data), Data_Length);
    Put_Line (Routine_Name & "width: " & Float'Image (Width) & " ns");

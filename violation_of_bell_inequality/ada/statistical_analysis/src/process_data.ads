@@ -1,13 +1,19 @@
 
-with Types; use Types;
+with Delft_Types; use Delft_Types;
 
 package Process_Data is
 
+   function Statistical_EAB (A, B : Long_Float) return Float;
    function Statistical_EAB (theta : float) return Float;
-   function False_Positives (OEM_File : String; False_Count : out Natural)
-                             return Sample_Data_List;
-   function Get_Detections (OEM, a_File, b_File : String) return Sample_Data_List;
-   procedure Sample_Means (Data : Sample_Data_List;
+   function False_Positives
+      (Dir, OEM_File : String; False_Count, True_Count : out Natural)
+       return Delft_Sample_Data_List;
+   function Get_Detections (Detection_Data : String)
+       return Delft_Sample_Data_List;
+   function Get_Settings (File_Name : String) return Angles_Record;
+   procedure Report_Hypothesis_Testing
+      (Mean_00, Mean_01, Mean_10, Mean_11 : Float);
+   procedure Sample_Means (Data : Delft_Sample_Data_List;
                            Mean_A, Mean_B, Mean_AB : out Float);
 
 end Process_Data;
