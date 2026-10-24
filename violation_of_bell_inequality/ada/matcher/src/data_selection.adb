@@ -2,16 +2,38 @@
 --  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Direct_IO;
+with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Utils; use Utils;
 
 package body Data_Selection is
 
+   --  type Angle_Kind is (A1, A2, B1, B2);
+   --  type Result_Record is record
+   --     A_Setting  : Angle_Kind;
+   --     B_Setting  : Angle_Kind;
+   --     A_Outcome  : UV;
+   --     B_Outcome  : UV;
+   --  end record;
+
+   A_Angle_0 : constant Long_Float := 0.0;
+   A_Angle_1 : constant Long_Float := Pi / 2.0;
+   B_Angle_0 : constant Long_Float := Pi / 8.0;
+   B_Angle_1 : constant Long_Float := (3.0 * Pi) / 8.0;
+
+   type Angles_Record is record
+      A_0 : Long_Float := A_Angle_0;
+      A_1 : Long_Float := A_Angle_1;
+      B_0 : Long_Float := B_Angle_0;
+      B_1 : Long_Float := B_Angle_1;
+   end record;
+
+   Detector_Angles : constant Angles_Record :=
+      (A_Angle_0, A_Angle_1, B_Angle_0, B_Angle_1);
+
    --  Direct_IO line includes line terminator; hence process string_4 as String_5.
    package Direct_String_5 is new Ada.Direct_IO (String_5);
-
-   procedure Print_W_Record (Message : String; Data : W_Record);
 
    procedure Count_xx (Counts : in out xxCounts; aline : String) is
       Item : constant String_4 := aline (aline'First .. aline'First + 3);
@@ -42,8 +64,10 @@ package body Data_Selection is
    procedure Print_W_Record (Message : String; Data : W_Record) is
    begin
       Put_Line (Message & ": ");
-      Put_Line ("A_Setting: " & Data.A_Setting & ", A_Result: " & Data.A_Result);
-      Put_Line ("B_Setting: " & Data.B_Setting & ", B_Result: " & Data.B_Result);
+      Put_Line ("A_Setting: " & Long_Float'Image (Data.A_Setting) &
+      ", A_Result: " & Data.A_Result);
+      Put_Line ("B_Setting: " & Long_Float'Image (Data.B_Setting) &
+       ", B_Result: " & Data.B_Result);
       Put_Line ("AB_Result: " & Data.AB_Result);
 
    end Print_W_Record;
@@ -51,7 +75,7 @@ package body Data_Selection is
    procedure Select_OEM_Data
    --  File Names
      (OEM_A, OEM_B, OEM_aa, OEM_ab,
-      OEM_ba, OEM_bb    : String;
+      OEM_ba, OEM_bb, Settings : String;
       A_Count, B_Count  : out xxCounts; Selected_Pairs : Match_List) is
       use Match_Package;
       use Direct_String_5;
@@ -59,12 +83,14 @@ package body Data_Selection is
       OEM_Header   : constant String := "A Det,B Det";
       A_Size       : constant Natural := Count_Text_File_Lines (OEM_A);
       B_Size       : constant Natural := Count_Text_File_Lines (OEM_B);
+      Pi_div_4     : constant Long_Float := Pi / 4.0;
       OEM_A_ID     : Direct_String_5.File_Type;
       OEM_B_ID     : Direct_String_5.File_Type;
       OEM_aa_ID    : Ada.Text_IO.File_Type;
       OEM_ab_ID    : Ada.Text_IO.File_Type;
       OEM_ba_ID    : Ada.Text_IO.File_Type;
       OEM_bb_ID    : Ada.Text_IO.File_Type;
+      Settings_ID  : Ada.Text_IO.File_Type;
       OEM_A_Line   : String_5;
       OEM_B_Line   : String_5;
       Indices      : Index_Record;
@@ -77,7 +103,7 @@ package body Data_Selection is
       Item         : Index_Record;
       W            : W_List;
       Count        : Natural := 0;
-      Bad_aa       : Natural := 0;
+      --  Bad_aa       : Natural := 0;
 
       procedure Write_Data (File : Ada.Text_IO.File_Type) is
       begin
@@ -94,6 +120,13 @@ package body Data_Selection is
       end Write_Data;
 
    begin
+      Create (Settings_ID, Out_File, Settings);
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.A_0));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.A_1));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.B_0));
+      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.B_1));
+      Close (Settings_ID);
+
       Put_Line (Routine_Name & "A and B file lengths: " &
                   Natural'Image (A_Size) & ", " & Natural'Image (B_Size) &
                   "  lines");
@@ -126,26 +159,26 @@ package body Data_Selection is
 
          if OEM_A_Line (1) = 'a' and then OEM_B_Line (1) = 'a' then
             Num_aa := Num_aa + 1;
-            W_Item.A_Setting := 'a';
-            W_Item.B_Setting := 'a';
+            W_Item.A_Setting := 0.0;
+            W_Item.B_Setting := 0.0;
             Write_Data (OEM_aa_ID);
-            if W_Item.A_Result = W_Item.B_Result then
-               Bad_aa := Bad_aa + 1;
-            end if;
+            --  if W_Item.A_Result = W_Item.B_Result then
+            --     Bad_aa := Bad_aa + 1;
+            --  end if;
          elsif OEM_A_Line (1) = 'a' and then OEM_B_Line (1) = 'b' then
             Num_ab := Num_ab + 1;
-            W_Item.A_Setting := 'a';
-            W_Item.B_Setting := 'b';
+            W_Item.A_Setting := 0.0;
+            W_Item.B_Setting := Pi_div_4;
             Write_Data (OEM_ab_ID);
          elsif OEM_A_Line (1) = 'b' and then OEM_B_Line (1) = 'a' then
             Num_ba := Num_ba + 1;
-            W_Item.A_Setting := 'b';
-            W_Item.B_Setting := 'a';
+            W_Item.A_Setting := Pi_div_4;
+            W_Item.B_Setting := 0.0;
             Write_Data (OEM_ba_ID);
          elsif OEM_A_Line (1) = 'b' and then OEM_B_Line (1) = 'b' then
             Num_bb := Num_bb + 1;
-            W_Item.A_Setting := 'b';
-            W_Item.B_Setting := 'b';
+            W_Item.A_Setting := Pi_div_4;
+            W_Item.B_Setting := Pi_div_4;
             Write_Data (OEM_bb_ID);
          else
             Put_Line (Routine_Name & "Invalid data:");
@@ -167,7 +200,8 @@ package body Data_Selection is
 
       Put_Line (Routine_Name & "OEM_aa length: " &
                   Integer'Image (Count_Text_File_Lines (OEM_aa)));
-      Put_Line (Routine_Name & "**** bad aa Count:"  & Integer'Image (Bad_aa));
+      --  Put_Line (Routine_Name & "**** bad aa Count:"  &
+      --  Integer'Image (Bad_aa));
 
       Put_Line (Routine_Name & "Number of coincident aa detections: " &
                   Integer'Image (Num_aa));

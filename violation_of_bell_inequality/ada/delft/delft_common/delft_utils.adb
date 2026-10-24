@@ -1,10 +1,54 @@
 
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings;
 with Ada.Strings.Fixed;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Delft_Utils is
 
-    function Get_Delft_Integer_List
+   procedure Combine_Detector_Tracks
+      (Old_File_Path, New_File_Path, Out_File_Path : String) is
+      Input_ID      : File_Type;
+      Output_ID     : File_Type;
+      Line_Buffer   : String (1 .. 1024);
+      Line_Length   : Natural;
+   begin
+      Create (Output_ID, Out_File, Out_File_Path);
+      --  Put_Line ("Appending old detector tracks: " & Old_File_Path);
+      Open (Input_ID, In_File, Old_File_Path);
+      while not End_Of_File (Input_ID) loop
+         Get_Line (Input_ID, Line_Buffer, Line_Length);
+         if Line_Length > 0 then
+            Put_Line (Output_ID, Line_Buffer (1 .. Line_Length));
+         end if;
+      end loop;
+
+      Close (Input_ID);
+
+      --  Put_Line ("Appending new detector tracks");
+      Open (Input_ID, In_File, New_File_Path);
+      while not End_Of_File (Input_ID) loop
+         Get_Line (Input_ID, Line_Buffer, Line_Length);
+         if Line_Length > 0 then
+            Put_Line (Output_ID, Line_Buffer (1 .. Line_Length));
+         end if;
+      end loop;
+
+      Close (Input_ID);
+      Close (Output_ID);
+      Put_Line (" Combined master track generated at: " & Out_File_Path);
+
+   exception
+      when Error : Name_Error =>
+         Put_Line ("Combine_Detector_Tracks, file Append Error: One of the target input files could not be located.");
+         Put_Line (Exception_Message (Error));
+      when Error : others =>
+         Put_Line ("Combine_Detector_Tracks, an unexpected file stream error occurred during append operations.");
+         Put_Line (Exception_Message (Error));
+
+   end Combine_Detector_Tracks;
+
+   function Get_Delft_Integer_List
        (Data : Delft_Sample_Data_List; Selection : Detect_Type) return Integer_List is
       use Delft_Sample_Data_Package;
       Count   : Natural := 0;

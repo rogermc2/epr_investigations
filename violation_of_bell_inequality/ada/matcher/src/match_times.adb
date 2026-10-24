@@ -12,16 +12,18 @@ procedure Match_Times is
    Routine_Name     : constant String := "Match_Times ";
    A_Directory      : constant String := "../";
    B_Directory      : constant String := A_Directory;
-   Spyder_Directory : constant String := "../../Spyder/epr_1/";
+   --  Spyder_Directory : constant String := "../../Spyder/epr_1/";
+   Result_Directory : constant String := "../generated_data/";
+   Settings         : constant String := Result_Directory & "settings.csv";
    Photon_Times_A   : constant String := A_Directory & "A_Photon_Times.csv";
    Photon_Times_B   : constant String := B_Directory & "B_Photon_Times.csv";
    OEM_A            : constant String := A_Directory & "A_OEM.csv";
    OEM_B            : constant String := B_Directory & "B_OEM.csv";
    Pairs            : constant String := B_Directory & "Selected_Pairs.csv";
-   OEM_aa           : constant String := Spyder_Directory & "OEM_aa.csv";
-   OEM_ab           : constant String := Spyder_Directory & "OEM_ab.csv";
-   OEM_ba           : constant String := Spyder_Directory & "OEM_ba.csv";
-   OEM_bb           : constant String := Spyder_Directory & "OEM_bb.csv";
+   OEM_aa           : constant String := Result_Directory & "OEM_aa.csv";
+   OEM_ab           : constant String := Result_Directory & "OEM_ab.csv";
+   OEM_ba           : constant String := Result_Directory & "OEM_ba.csv";
+   OEM_bb           : constant String := Result_Directory & "OEM_bb.csv";
    Combined_Ns_5    : constant String := "../Combined_Ns_5.csv";
    Combined_Ns_50   : constant String := "../Combined_Ns_50.csv";
    Combined_Other   : constant String := "../Combined.csv";
@@ -62,7 +64,7 @@ begin
 
    Match_Photon_Times (Photon_Times_A, Photon_Times_B, Pairs,
                        Delta_Val, Width, Num_Found, Selected_Pairs, Data_Length);
-   Select_OEM_Data (OEM_A, OEM_B, OEM_aa, OEM_ab, OEM_ba, OEM_bb,
+   Select_OEM_Data (OEM_A, OEM_B, OEM_aa, OEM_ab, OEM_ba, OEM_bb, Settings,
                     A_Counts, B_Counts, Selected_Pairs);
    New_Line;
 

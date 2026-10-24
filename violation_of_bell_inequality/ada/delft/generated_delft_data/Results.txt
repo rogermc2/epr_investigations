@@ -1,0 +1,56 @@
+bell_open_data_2_new_detector.txt
+
+00: 
+ Sample_Mean A: -0.077   Sample SD A:  1.038
+ Sample_Mean B:  0.385   Sample SD B:  0.961
+ Sample_Mean AB: -0.077   Sample SD AB:  1.038
+01: 
+ Sample_Mean A:  0.063   Sample SD A:  1.014
+ Sample_Mean B: -0.063   Sample SD B:  1.014
+ Sample_Mean AB: -0.125   Sample SD AB:  1.032
+10: 
+ Sample_Mean A: -0.429   Sample SD A:  0.976
+ Sample_Mean B:  0.429   Sample SD B:  0.976
+ Sample_Mean AB: -0.429   Sample SD AB:  0.976
+11: 
+ Sample_Mean A:  0.000   Sample SD A:  1.026
+ Sample_Mean B: -0.100   Sample SD B:  1.021
+ Sample_Mean AB: -0.100   Sample SD AB:  1.031
+
+Null Hypothesis (H0) Verification
+00 (AA): 89.7% REJECT H0 (Outside 5% margin)
+01 (AB): 50.0% REJECT H0 (Outside 5% margin)
+10 (AB): 71.4% REJECT H0 (Outside 5% margin)
+11 (AB): 86.7% REJECT H0 (Outside 5% margin)
+
+CHSH parameter S: : -0.480
+
+bell_open_data_2_combined_detector.txt
+
+00: 
+ Sample_Mean A: -0.059   Sample SD A:  1.029
+ Sample_Mean B:  0.412   Sample SD B:  0.939
+ Sample_Mean AB:  0.059   Sample SD AB:  1.036
+01: 
+ Sample_Mean A:  0.000   Sample SD A:  1.012
+ Sample_Mean B: -0.136   Sample SD B:  1.002
+ Sample_Mean AB: -0.136   Sample SD AB:  1.021
+10: 
+ Sample_Mean A: -0.333   Sample SD A:  1.000
+ Sample_Mean B:  0.333   Sample SD B:  1.000
+ Sample_Mean AB: -0.556   Sample SD AB:  1.027
+11: 
+ Sample_Mean A: -0.172   Sample SD A:  1.002
+ Sample_Mean B:  0.034   Sample SD B:  1.017
+ Sample_Mean AB: -0.310   Sample SD AB:  1.012
+
+Overall A Sample_Mean: : -0.141
+Overall B Sample_Mean: :  0.161
+
+Null Hypothesis (H0) Verification
+00 (AA): 107.8% REJECT H0 (Outside 5% margin)
+01 (AB): 45.5% REJECT H0 (Outside 5% margin)
+10 (AB): 122.2% REJECT H0 (Outside 5% margin)
+11 (AB): 58.6% REJECT H0 (Outside 5% margin)
+
+CHSH parameter S: : -0.671
