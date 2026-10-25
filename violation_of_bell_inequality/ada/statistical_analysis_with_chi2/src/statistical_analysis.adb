@@ -1,4 +1,5 @@
 
+with Ada.Long_Float_Text_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Chi_Sq; use Chi_Sq;
@@ -36,9 +37,9 @@ procedure Statistical_Analysis is
    Mean_AB_01    : Float;
    Mean_AB_10    : Float;
    Mean_AB_11    : Float;
-   --  False_Data    : Delft_Sample_Data_List;
-   --  False_Count   : Natural;
-   --  True_Count    : Natural;
+   Observed_Counts : Count_Array;
+   Calculated_Chi  : Chi_Value;
+   Resulting_P     : P_Value;
 begin
    Settings := Get_Settings (File_Settings);
    New_Line;
@@ -98,45 +99,24 @@ begin
                Integer'Image (Integer (Detections_10.Length)));
    Put_Line ("Number of AB11 detections: " &
                Integer'Image (Integer (Detections_11.Length)));
+   Calculated_Chi := Compute_Chi_Square (Observed_Counts);
+   Resulting_P := Lookup_P_Value (Calculated_Chi);
 
-   --  False_Data := False_Positives (AB_Dir, File_00, False_Count, True_Count);
-   --  if False_Count > 0 then
-   --     Put ("00 False positives: " & Integer'Image (False_Count) & " (");
-   --     Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
-   --     Put_Line ("% )");
-   --     Print_Delft_Sample_List ("00 False_Data", False_Data, 1, 10);
-   --  else
-   --     Put_Line ("00 False positives: 0");
-   --  end if;
+   Put ("Calculated Chi-Square Score: ");
+   Ada.Long_Float_Text_IO.Put (Calculated_Chi, Fore => 3, Aft => 3, Exp => 0);
+   New_Line;
 
-   --  False_Data := False_Positives (AB_Dir, File_11, False_Count, True_Count);
-   --  if False_Count > 0 then
-   --     Put ("11 False positives: " & Integer'Image (False_Count) & " (");
-   --     Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
-   --     Put_Line ("% )");
-   --     Print_Delft_Sample_List ("11 False_Data", False_Data, 1, 10);
-   --  else
-   --     Put_Line ("11 False positives: 0");
-   --  end if;
+   Put ("Resulting p-value: ");
+   Ada.Long_Float_Text_IO.Put (Long_Float (Resulting_P), Fore => 1, Aft => 5, Exp => 0);
+   New_Line;
 
-   --  False_Data := False_Positives (AB_Dir, File_10, False_Count, True_Count);
-   --  if False_Count > 0 then
-   --     Put ("10 False positives: " & Integer'Image (False_Count) & " (");
-   --     Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
-   --     Put_Line ("% )");
-   --     Print_Delft_Sample_List ("10 False_Data", False_Data, 1, 10);
-   --  else
-   --     Put_Line ("10 False positives: 0");
-   --  end if;
-
-   --  False_Data := False_Positives (AB_Dir, File_01, False_Count, True_Count);
-   --  if False_Count > 0 then
-   --     Put ("01 False positives: " & Integer'Image (False_Count) & " (");
-   --     Print_Float ("", Float (False_Count * 100) / Float (False_Count + True_Count), 1, 0);
-   --     Put_Line ("% )");
-   --     Print_Delft_Sample_List ("01 False_Data", False_Data, 1, 10);
-   --  else
-   --     Put_Line ("01 False positives: 0");
-   --  end if;
+   --  STANDARDISED HYPOTHESIS EVALUATION BLOCK
+   if Resulting_P >= 0.05 then
+      --  The deviations are well within normal statistical fluctuations!
+      Put_Line ("HYPOTHESIS TESTING: ACCEPT H0 (Statistical variations are random).");
+   else
+      --  The p-value drops below 5%, mathematically proving a systematic flaw.
+      Put_Line ("HYPOTHESIS TESTING: REJECT H0 (Data contains systematic physical bias).");
+   end if;
 
 end Statistical_Analysis;
