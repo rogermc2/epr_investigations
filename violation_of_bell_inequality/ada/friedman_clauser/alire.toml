@@ -1,4 +1,4 @@
-name = "friedman_clauser"
+name = "freedman_clauser"
 description = ""
 version = "0.1.0-dev"
 
@@ -8,4 +8,4 @@ licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = []
 
-executables = ["fc_h0_test"]
+executables = ["FC_Test"]
