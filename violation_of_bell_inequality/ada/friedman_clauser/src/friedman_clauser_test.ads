@@ -1,8 +1,10 @@
-with Ada.Text_IO; use Ada.Text_IO;
 
-package Freedman_Clauser_Types is
+with Ada.Numerics.Generic_Elementary_Functions;
+
+package Freedman_Clauser_Test is
 
    -- Define a floating-point type for precise statistical tracking
+   type Real is new Long_Float;
    type Ratio_Value is new Long_Float;
 
    -- Structure to hold the empirical parameters for each measured angle
@@ -28,7 +30,8 @@ package Freedman_Clauser_Types is
       6 => (Angle_Degrees => 112.5, Normalized_Rate => 0.091, Statistical_SD => 0.004),
       7 => (Angle_Degrees => 135.0, Normalized_Rate => 0.231, Statistical_SD => 0.005),
       8 => (Angle_Degrees => 157.5, Normalized_Rate => 0.369, Statistical_SD => 0.005),
-      9 => (Angle_Degrees => 180.0, Normalized_Rate => 0.421, Statistical_SD => 0.006)
-   );
+      9 => (Angle_Degrees => 180.0, Normalized_Rate => 0.421, Statistical_SD => 0.006));
 
-end Freedman_Clauser_Types;
+      package Freedman_Clauser_Math is new Ada.Numerics.Generic_Elementary_Functions (Real);
+
+end Freedman_Clauser_Test;
