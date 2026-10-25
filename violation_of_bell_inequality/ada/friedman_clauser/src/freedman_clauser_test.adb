@@ -13,12 +13,12 @@ begin
    Put_Line ("1972 Freedman PhD Thesis H0 Verification");
 
    for I in Data_Index loop
-      Current_Row := Freedman_Results(I);
+      Current_Row := Freedman_Results (I);
 
       --  Your alternative theory calculation block goes here.
       --  For example, calculate Expected_E as a function of Current_Row.Angle_Degrees...
       --  Expected_E := Calculate_My_Alternative_Inequality(Current_Row.Angle_Degrees);
-
+   
       --  For placeholder tracking, assume a sample target calculation
       --  Error_Pct := (Abs(Current_Row.Normalized_Rate - Expected_E) / Expected_E) * 100.0;
 
@@ -34,7 +34,7 @@ begin
         Angle_Deg : Long_Float;
         Observed  : Long_Float; --  R(phi)/R0 ratio
         Sigma     : Long_Float; --  Empirical Standard Deviation
-    end record;
+    end record
 
     type Table_Index is range 1 .. 9;
     type Dataset_Table is array (Table_Index) of Data_Row;
