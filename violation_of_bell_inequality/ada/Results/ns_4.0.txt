@@ -1,0 +1,45 @@
+Detector settings:
+a0:  0.000
+a1:  0.785
+b0:  0.393
+b1:  1.178
+
+00: 
+ Sample_Mean A: -0.526   Sample SD A:  0.851
+ Sample_Mean B:  0.509   Sample SD B:  0.862
+ Sample_Mean AB: -0.643   Sample SD AB:  0.859
+01: 
+ Sample_Mean A:  0.410   Sample SD A:  0.912
+ Sample_Mean B: -0.184   Sample SD B:  0.983
+ Sample_Mean AB:  0.212   Sample SD AB:  0.934
+10: 
+ Sample_Mean A:  0.178   Sample SD A:  0.985
+ Sample_Mean B: -0.119   Sample SD B:  0.994
+ Sample_Mean AB:  0.459   Sample SD AB:  1.025
+11: 
+ Sample_Mean A: -0.411   Sample SD A:  0.912
+ Sample_Mean B:  0.495   Sample SD B:  0.869
+ Sample_Mean AB: -0.506   Sample SD AB:  0.917
+
+Overall A Sample_Mean: : -0.087
+Overall B Sample_Mean: :  0.175
+
+E(AA): -0.750
+E(AB): -0.250
+E(BA): -0.250
+E(BB): -0.750
+
+Null hypothesis H0: Sample mean is within 5% of expected value.
+
+Null Hypothesis (H0) Verification
+00 (AA): 14.2% REJECT H0 (Outside 5% margin)
+01 (AB): 184.8% REJECT H0 (Outside 5% margin)
+10 (AB): 283.6% REJECT H0 (Outside 5% margin)
+11 (AB): 32.5% REJECT H0 (Outside 5% margin)
+
+CHSH parameter S: : -0.903
+
+Number of AB00 detections:  460
+Number of AB01 detections:  1749
+Number of AB10 detections:  377
+Number of AB11 detections:  713

@@ -1,5 +1,5 @@
 
-project Friedman_Clauser is
+project Freedman_Clauser is
 
    for Languages use ("Ada");
    for Source_Dirs use ("src", "../common");
@@ -16,5 +16,5 @@ project Friedman_Clauser is
       for Switches ("ada") use ("-gnatw.ufkpru", "-gnatybcdefux");
    end Compiler;
 
-end Friedman_Clauser;
+end Freedman_Clauser;
 
