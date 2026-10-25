@@ -4,6 +4,7 @@ with Interfaces;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 with Ada.Float_Text_IO;
+with Ada.Long_Float_Text_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths;
@@ -83,6 +84,16 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Long_Float (Message : String; Data : Long_Float;
+    Aft : Natural := 3; Exp : Integer := 0) is
+   begin
+      Put (Message);
+      Ada.Long_Float_Text_IO.Put (Data, Aft => Aft, Exp => Exp);
+
+   end Print_Long_Float;
+
+   --  ------------------------------------------------------------------------
+
    procedure Print_Float_Line (Message : String; Data : Float;
     Aft : Natural := 3; Exp : Integer := 0) is
    begin
@@ -90,6 +101,16 @@ package body Printing is
       New_Line;
 
    end Print_Float_Line;
+
+   --  ------------------------------------------------------------------------
+
+   procedure Print_Long_Float_Line (Message : String; Data : Long_Float;
+    Aft : Natural := 3; Exp : Integer := 0) is
+   begin
+      Print_Long_Float (Message & ": ", Data, Aft, Exp);
+      New_Line;
+
+   end Print_Long_Float_Line;
 
    --  ------------------------------------------------------------------------
 

@@ -13,14 +13,14 @@ package Chi_Sq is
    end record;
    type Reference_Table is array (Table_Index) of Table_Row;
 
-   --  Observed counts from your 1.0 ns optimal window run
+   --  Observed counts from the 1.0 ns optimal window run
    Observed : constant Count_Array :=
       (1 => 20.0,  -- 00 (AA)
-      2 => 55.0,  -- 01 (AB)
-      3 => 13.0,  -- 10 (BA)
-      4 => 22.0);   -- 11 (BB)
+      2 => 55.0,   -- 01 (AB)
+      3 => 13.0,   -- 10 (BA)
+      4 => 22.0);  -- 11 (BB)
 
-   -- Definitive Chi-Square distribution anchor values for 3 degrees of freedom
+   --  Definitive Chi-Square distribution anchor values for 3 degrees of freedom
    DF3_Lookup_Table : constant Reference_Table :=
      (1  => (Chi_Square_Score => 0.115,  Probability => 0.990),
       2  => (Chi_Square_Score => 0.216,  Probability => 0.975),
@@ -39,7 +39,7 @@ package Chi_Sq is
       15 => (Chi_Square_Score => 21.108, Probability => 0.0001),
       16 => (Chi_Square_Score => 26.125, Probability => 0.00001));
 
-   function Compute_Chi_Square (Obs : Count_Array) return Long_Float;
+   function Compute_Chi_Square (Obs : Count_Array) return Chi_Value;
    function Lookup_P_Value (Calculated_Chi : Chi_Value) return P_Value;
 
 end Chi_Sq;

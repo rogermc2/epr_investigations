@@ -1,5 +1,4 @@
 
-with Ada.Long_Float_Text_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Chi_Sq; use Chi_Sq;
@@ -99,24 +98,27 @@ begin
                Integer'Image (Integer (Detections_10.Length)));
    Put_Line ("Number of AB11 detections: " &
                Integer'Image (Integer (Detections_11.Length)));
+   New_Line;
+
+   Observed_Counts := (Long_Float (Detections_00.Length),
+                       Long_Float (Detections_01.Length),
+                       Long_Float (Detections_10.Length),
+                       Long_Float (Detections_11.Length));
    Calculated_Chi := Compute_Chi_Square (Observed_Counts);
    Resulting_P := Lookup_P_Value (Calculated_Chi);
 
-   Put ("Calculated Chi-Square Score: ");
-   Ada.Long_Float_Text_IO.Put (Calculated_Chi, Fore => 3, Aft => 3, Exp => 0);
-   New_Line;
+   Print_Long_Float_Line ("Calculated Chi-Square Score",
+      Long_Float (Calculated_Chi), 5, 0);
+   Print_Long_Float_Line ("Resulting p-value", Long_Float (Resulting_P), 5, 0);
 
-   Put ("Resulting p-value: ");
-   Ada.Long_Float_Text_IO.Put (Long_Float (Resulting_P), Fore => 1, Aft => 5, Exp => 0);
-   New_Line;
-
-   --  STANDARDISED HYPOTHESIS EVALUATION BLOCK
+   Put ("Hypothesis Test: ");
    if Resulting_P >= 0.05 then
       --  The deviations are well within normal statistical fluctuations!
-      Put_Line ("HYPOTHESIS TESTING: ACCEPT H0 (Statistical variations are random).");
+      Put_Line ("Accept H0 (Statistical variations are random).");
    else
       --  The p-value drops below 5%, mathematically proving a systematic flaw.
-      Put_Line ("HYPOTHESIS TESTING: REJECT H0 (Data contains systematic physical bias).");
+      Put_Line ("Reject H0 (Data contains systematic physical bias).");
    end if;
+   New_Line;
 
 end Statistical_Analysis;
