@@ -94,12 +94,8 @@ package body Process_Data is
 
    end Get_Settings;
 
-   procedure Report_Hypothesis_Testing (Means : Means_Record) is
-      --  Theoretical expectations
-      Exp_00     : constant Float := -0.750;
-      Exp_01     : constant Float := -0.250;
-      Exp_10     : constant Float := -0.250;
-      Exp_11     : constant Float := -0.750;
+   procedure Report_Hypothesis_Testing
+    (Means : Means_Record; Expectations : Expectations_Record) is
       Percentage : Float;
       OK         : Boolean;
    begin
@@ -107,7 +103,7 @@ package body Process_Data is
       Put_Line ("Null Hypothesis (H0) Verification");
 
       --  Test Quadrant 00 (AA)
-      OK := Verify_H0 (Means.Mean_AB_00, Exp_00, Percentage);
+      OK := Verify_H0 (Means.Mean_AB_00, Expectations.E_AA, Percentage);
       Print_Float ("00 (AA): ", Percentage, 1, 0);
       if OK then
          Put_Line ("% Accept H0 (Within 5% margin)");
@@ -116,7 +112,7 @@ package body Process_Data is
       end if;
 
       --  Test Quadrant 01 (AB)
-      OK := Verify_H0 (Means.Mean_AB_01, Exp_01, Percentage);
+      OK := Verify_H0 (Means.Mean_AB_01, Expectations.E_AB, Percentage);
       Print_Float ("01 (AB): ", Percentage, 1, 0);
       if OK then
          Put_Line ("% Accept H0 (Within 5% margin)");
@@ -125,7 +121,7 @@ package body Process_Data is
       end if;
 
       --  Test Quadrant 10 (BA)
-      OK := Verify_H0 (Means.Mean_AB_10, Exp_10, Percentage);
+      OK := Verify_H0 (Means.Mean_AB_10, Expectations.E_BA, Percentage);
       Print_Float ("10 (AB): ", Percentage, 1, 0);
       if OK then
          Put_Line ("% Accept H0 (Within 5% margin)");
@@ -134,13 +130,14 @@ package body Process_Data is
       end if;
 
       --  Test Quadrant 11 (BB)
-      OK := Verify_H0 (Means.Mean_AB_11, Exp_11, Percentage);
+      OK := Verify_H0 (Means.Mean_AB_11, Expectations.E_BB, Percentage);
       Print_Float ("11 (AB): ", Percentage, 1, 0);
       if OK then
          Put_Line ("% Accept H0 (Within 5% margin)");
       else
          Put_Line ("% Reject H0 (Outside 5% margin)");
       end if;
+      New_Line;
 
    end Report_Hypothesis_Testing;
 

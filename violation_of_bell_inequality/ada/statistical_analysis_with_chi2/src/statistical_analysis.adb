@@ -48,8 +48,7 @@ begin
 
    Put ("Null hypothesis H0: ");
    Put_Line ("Sample mean is within 5% of expected value.");
-   Report_Hypothesis_Testing (Means);
-   New_Line;
+   Report_Hypothesis_Testing (Means, Expectations);
 
    Print_Float_Line
       ("CHSH parameter S: ", Means.Mean_AB_00 - Means.Mean_AB_01 +

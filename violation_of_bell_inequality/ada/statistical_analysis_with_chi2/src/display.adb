@@ -21,6 +21,7 @@ package body Display is
 
    procedure Display_Expectations (Expectations : Expectations_Record) is
    begin
+      Put_Line ("Expectation Values:");
       Print_Float_Line ("E(AA)", Expectations.E_AA);
       Print_Float_Line ("E(AB)", Expectations.E_AB);
       Print_Float_Line ("E(BA)", Expectations.E_BA);
