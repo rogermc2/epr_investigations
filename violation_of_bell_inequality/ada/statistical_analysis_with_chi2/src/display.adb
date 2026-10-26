@@ -29,19 +29,19 @@ package body Display is
 
    end Display_Expectations;
 
-   procedure Get_And_Display_Sample_Means
-       (Detections : Detections_Record; Means : out Means_Record) is
-   begin
-      Sample_Means (Detections.Detections_00,
-                  Means.Mean_A_00, Means.Mean_B_00, Means.Mean_AB_00);
-      Sample_Means (Detections.Detections_01,
-                  Means.Mean_A_01, Means.Mean_B_01, Means.Mean_AB_01);
-      Sample_Means (Detections.Detections_10,
-                  Means.Mean_A_10, Means.Mean_B_10, Means.Mean_AB_10);
-      Sample_Means (Detections.Detections_11,
-                Means.Mean_A_11, Means.Mean_B_11, Means.Mean_AB_11);
+   procedure Display_Number_Of_Detections (Detections : Detections_Record) is
+   begin    
+      Put_Line ("Number of AB00 detections: " &
+                  Integer'Image (Integer (Detections.Detections_00.Length)));
+      Put_Line ("Number of AB01 detections: " &
+                  Integer'Image (Integer (Detections.Detections_01.Length)));
+      Put_Line ("Number of AB10 detections: " &
+                  Integer'Image (Integer (Detections.Detections_10.Length)));
+      Put_Line ("Number of AB11 detections: " &
+                  Integer'Image (Integer (Detections.Detections_11.Length)));
+      New_Line;
 
-   end Get_And_Display_Sample_Means;
+   end Display_Number_Of_Detections;
 
    procedure Display_Statistics
       (Means : Means_Record; Detections : Detections_Record;
@@ -66,5 +66,19 @@ package body Display is
       New_Line;
 
    end Display_Statistics;
+
+   procedure Get_And_Display_Sample_Means
+       (Detections : Detections_Record; Means : out Means_Record) is
+   begin
+      Sample_Means (Detections.Detections_00,
+                  Means.Mean_A_00, Means.Mean_B_00, Means.Mean_AB_00);
+      Sample_Means (Detections.Detections_01,
+                  Means.Mean_A_01, Means.Mean_B_01, Means.Mean_AB_01);
+      Sample_Means (Detections.Detections_10,
+                  Means.Mean_A_10, Means.Mean_B_10, Means.Mean_AB_10);
+      Sample_Means (Detections.Detections_11,
+                Means.Mean_A_11, Means.Mean_B_11, Means.Mean_AB_11);
+
+   end Get_And_Display_Sample_Means;
 
 end Display;

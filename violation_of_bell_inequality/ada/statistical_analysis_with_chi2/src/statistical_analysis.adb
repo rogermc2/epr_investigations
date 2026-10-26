@@ -36,6 +36,7 @@ begin
    Expectations.E_BB := Statistical_EAB (A_Angle_1, B_Angle_1);
 
    Display_Detector_Settings (Settings);
+   Display_Number_Of_Detections (Detections);
 
    --  Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
    --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
@@ -54,16 +55,6 @@ begin
    Print_Float_Line
       ("CHSH parameter S: ", Means.Mean_AB_00 - Means.Mean_AB_01 +
           Means.Mean_AB_10 + Means.Mean_AB_11);
-   New_Line;
-
-   Put_Line ("Number of AB00 detections: " &
-               Integer'Image (Integer (Detections.Detections_00.Length)));
-   Put_Line ("Number of AB01 detections: " &
-               Integer'Image (Integer (Detections.Detections_01.Length)));
-   Put_Line ("Number of AB10 detections: " &
-               Integer'Image (Integer (Detections.Detections_10.Length)));
-   Put_Line ("Number of AB11 detections: " &
-               Integer'Image (Integer (Detections.Detections_11.Length)));
    New_Line;
 
    Observed_Counts := (Long_Float (Detections.Detections_00.Length),
