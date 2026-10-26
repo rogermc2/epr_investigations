@@ -4,6 +4,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Chi_Sq; use Chi_Sq;
 with Delft_Printing; use Delft_Printing;
 with Delft_Types; use Delft_Types;
+with Display; use Display;
 with Printing; use Printing;
 with Process_Data; use Process_Data;
 with Types; use Types;
@@ -42,12 +43,8 @@ procedure Statistical_Analysis is
 begin
    Settings := Get_Settings (File_Settings);
    New_Line;
-   Put_Line ("Detector settings:");
-   Print_Float_Line ("a0", Float (Settings.A_0));
-   Print_Float_Line ("a1", Float (Settings.A_1));
-   Print_Float_Line ("b0", Float (Settings.B_0));
-   Print_Float_Line ("b1", Float (Settings.B_1));
-   New_Line;
+   Display_Detector_Settings (Settings);
+
    --  Print_Delft_Sample_List ("Detections_00", Detections_00, 1, 5);
    --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
    --  Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
