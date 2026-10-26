@@ -1,4 +1,6 @@
 
+with Types; use Types;
+
 package Chi_Sq is
 
    type Chi_Value is new Long_Float;
@@ -7,6 +9,20 @@ package Chi_Sq is
    type Quadrant_Index is range 1 .. 4;
    type Count_Array is array (Quadrant_Index) of Long_Float;
 
+   type Count_Record is record
+      Num_00 : Double_Natural := 0;
+      Num_01 : Double_Natural := 0;
+      Num_10 : Double_Natural := 0;
+      Num_11 : Double_Natural := 0;
+   end record;
+
+   type Proportion_Record is record
+      Prop_00 : Float := 0.0;
+      Prop_01 : Float := 0.0;
+      Prop_10 : Float := 0.0;
+      Prop_11 : Float := 0.0;
+   end record;
+
    type Table_Row is record
       Chi_Square_Score : Chi_Value;
       Probability      : P_Value;
@@ -14,11 +30,12 @@ package Chi_Sq is
    type Reference_Table is array (Table_Index) of Table_Row;
 
    --  Observed counts from the 1.0 ns optimal window run
-   Observed : constant Count_Array :=
-      (1 => 20.0,  -- 00 (AA)
-      2 => 55.0,   -- 01 (AB)
-      3 => 13.0,   -- 10 (BA)
-      4 => 22.0);  -- 11 (BB)
+   --  Observed : constant Count_Record := (20.0, 55.0, 13.0, 22.0);
+   --  Observed : constant Count_Array :=
+   --     (1 => 20.0,  -- 00 (AA)
+   --     2 => 55.0,   -- 01 (AB)
+   --     3 => 13.0,   -- 10 (BA)
+   --     4 => 22.0);  -- 11 (BB)
 
    --  Definitive Chi-Square distribution anchor values for 3 degrees of freedom
    DF3_Lookup_Table : constant Reference_Table :=

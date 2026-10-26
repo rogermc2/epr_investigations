@@ -9,10 +9,10 @@ package body Chi_Sq is
       --  Theoretical expectations for these specific phase angles
       --  (Converts your -0.750 expectations back into proportional probabilities)
       Theoretical_Prob : constant Count_Array :=
-         (1 => 0.125,    --  Expected proportion for 00
-         2 => 0.375,    --  Expected proportion for 01
-         3 => 0.375,    --  Expected proportion for 10
-         4 => 0.125);   --  Expected proportion for 11
+         (0.125,   --  Expected proportion for 00
+         0.375,    --  Expected proportion for 01
+         0.375,    --  Expected proportion for 10
+         0.125);   --  Expected proportion for 11
    begin
       --  Tally the Grand Total of events
       for I in Quadrant_Index loop
