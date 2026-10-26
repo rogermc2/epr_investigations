@@ -1,0 +1,1015 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes true
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+S.
+ J.
+ Freedman's 1972 Ph.
+ D.
+ Thesis
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Inequality:
+\begin_inset Formula 
+\begin{eqnarray}
+\delta & = & \left(\frac{R\left(22.5\textdegree\right)}{R_{0}}-\frac{R\left(67.5\textdegree\right)}{R_{0}}\right)-\frac{1}{4}\leq0
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R\left(\phi\right)$
+\end_inset
+
+ represents the coincidence rate with 
+\begin_inset Formula $\phi$
+\end_inset
+
+ being the difference in angular setting of two polarizers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ represents the coincidence rate without polarizers.
+\end_layout
+
+\begin_layout Standard
+The experimental results for 
+\begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
+\end_inset
+
+ showed no evidence of any deviation from the predictions of quantum mechanics.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+predictions of quantum mechanics
+\begin_inset Quotes erd
+\end_inset
+
+ presumably meaning 
+\begin_inset Formula $-Cos\left(\phi\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Freedman claims that his experiment verifies the 
+\begin_inset Quotes eld
+\end_inset
+
+quantum mechanical predictions
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The present experiment is a test of the generalized inequality.
+\end_layout
+
+\begin_layout Standard
+The thesis describes a measurement of the polarization correlation of the two photons emitted in the 
+\begin_inset Formula $4p^{2}\;^{1}S_{0}\rightarrow4s4p^{1}P_{1}\rightarrow4s^{2}\;^{1}S_{0}$
+\end_inset
+
+ cascade of calcium.
+\end_layout
+
+\begin_layout Standard
+Freedman describes the following EPRB type experimental condition
+\begin_inset CommandInset citation
+LatexCommand cite
+after "page 5"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+Consider two spin-
+\begin_inset Formula $\frac{1}{2}$
+\end_inset
+
+ particles,
+ 1 and 2,
+ initially in the singlet state and moving freely in opposite directions along the z axis.
+\end_layout
+
+\begin_layout Standard
+A measurement of the spin of particle 1 is associated with a deterministic function 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)$
+\end_inset
+
+ where 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ represents parameters of the measuring device;
+ for example,
+ the orientation of a Stem-Gerlach magnet.
+ Another function 
+\begin_inset Formula $B\left(\hat{b},\lambda_{2}\right)$
+\end_inset
+
+ is associated with measurements on particle 2.
+ 
+\end_layout
+
+\begin_layout Standard
+These functions take on the values corresponding to the two possible results of a measurement of a component of spin.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)=\pm1$
+\end_inset
+
+ and 
+\begin_inset Formula $B\left(\hat{b},\lambda_{2}\right)=\pm1$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+As usual,
+ the condition of locality is assumed.
+ In particular,
+ the function
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)$
+\end_inset
+
+ is independent of the orientation 
+\begin_inset Formula $\hat{b}$
+\end_inset
+
+ of the other measuring device and vice versa.
+\end_layout
+
+\begin_layout Standard
+To describe repeated measurements on identically prepared systems each 
+\begin_inset Quotes eld
+\end_inset
+
+hidden-variable
+\begin_inset Quotes erd
+\end_inset
+
+ state is assumed to be associated with the pair 
+\begin_inset Formula $\lambda_{1},\lambda_{2}$
+\end_inset
+
+ which is chosen according to a probability distribution 
+\begin_inset Formula $\rho\left(\lambda_{1},\lambda_{2}\right)$
+\end_inset
+
+.
+ for which 
+\begin_inset Formula $\rho\left(\lambda\right)$
+\end_inset
+
+ is assumed normalized:
+\begin_inset Formula 
+\begin{eqnarray}
+\intop_{\Lambda_{1},\Lambda_{2}}\rho\left(\lambda_{1},\lambda_{2}\right)d\lambda_{1}d\lambda_{2} & = & 1
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Lambda_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\Lambda_{2}$
+\end_inset
+
+ is the space from which 
+\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
+\end_inset
+
+ is chosen.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ represent the pair 
+\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Freedman incorrectly states that the expectation value for the product of two individual spin measurements 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm$
+\end_inset
+
+ in the directions 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}$
+\end_inset
+
+ is given by 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.2)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\hat{a},\hat{b}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right|\psi\right\rangle =-\hat{a}\cdot\hat{b}\label{eq:FI.2}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+the expectation value for the product of two individual spin measurements 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm$
+\end_inset
+
+ in the directions 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}$
+\end_inset
+
+ is actually given by
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.3)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\hat{a},\hat{b}\right) & = & \intop_{\Lambda}\rho\left(\lambda\right)A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)d\lambda\label{eq:FI.3  FII.2}
+\end{eqnarray}
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Freedman then states that the content of Bell's observation is that no function given by the expression 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ for any 
+\begin_inset Formula $\rho\left(\lambda\right)$
+\end_inset
+
+,
+ 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)$
+\end_inset
+
+ or 
+\begin_inset Formula $B\left(\hat{b},\lambda_{2}\right)$
+\end_inset
+
+ can equal the expectation value 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.3  FII.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ for all 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}$
+\end_inset
+
+.
+ 
+\bar under
+But this is mathematically obvious
+\bar default
+!
+\end_layout
+
+\begin_layout Standard
+Freedman introduces Bell's inequality 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.6)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+\left|P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{c}\right)\right| & \leq & 1+P\left(\hat{b},\hat{c}\right)\label{eq:FI.6}
+\end{eqnarray}
+
+\end_inset
+
+ stating that the inequality 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.6"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is inconsistent with the expectation value given by equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ which is 
+\bar under
+not surprising
+\bar default
+ as the inequality 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.6"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is derived from equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.3  FII.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ not equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+The Ideal Two-Photon System
+\end_layout
+
+\begin_layout Standard
+The system that is investigated by Freedman's experiment 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section D The Ideal Two-Photon System"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+ consists of two distinguishable photons,
+ 
+\begin_inset Formula $\gamma_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma_{2}$
+\end_inset
+
+,
+ emitted in an atomic cascade.
+\end_layout
+
+\begin_layout Standard
+To a good approximation,
+ the atom cascades via electric dipole transitions through angular-momentum states 
+\begin_inset Formula $J=0\rightarrow J=1\rightarrow J=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The most ·general state of this kind is:
+\begin_inset Formula 
+\begin{eqnarray}
+\left|\gamma_{1}\gamma_{2}\right\rangle  & = & a\left|R_{+}\right\rangle _{1}\left|L_{+}\right\rangle _{2}+b\left|L_{+}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+c\left|R_{-}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+d\left|L_{-}\right\rangle _{1}\left|R_{-}\right\rangle _{2}\\
+ &  & +e\left|R_{+}\right\rangle _{1}\left|R_{-}\right\rangle _{2}+f\left|L_{+}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+g\left|R_{-}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+h\left|L_{-}\right\rangle _{1}\left|L_{+}\right\rangle _{2}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\left|R_{+}\right\rangle _{1}$
+\end_inset
+
+ is the eigenstate of a right-hand circularly polarized photon traveling along the +z axis.
+ 
+\end_layout
+
+\begin_layout Standard
+The subscripts label the photons which are distinguishable by their energies.
+\end_layout
+
+\begin_layout Section
+Experiment Outline
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section F. Outline of the Experiment"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Photons are emitted in an atomic cascade and are counted in coincidence,
+ the coincidence rate being observed as a function of the individual photon polarization states.
+\end_layout
+
+\begin_layout Standard
+The following quantities are measured:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R\left(\phi\right)$
+\end_inset
+
+:
+ the coincidence rate for two-photon detection as a function of the angle 
+\begin_inset Formula $\phi$
+\end_inset
+
+ between the planes of linear polarization defined by the orientation of the two inserted polarizers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{1}$
+\end_inset
+
+:
+ the coincidence rate with polarizer 2 removed;
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{2}$
+\end_inset
+
+:
+ the coincidence rate with polarizer 1 removed;
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{0}$
+\end_inset
+
+:
+ the coincidence rate with both polarizers removed.
+\end_layout
+
+\begin_layout Standard
+These rates are determined by correcting the observed coincidence rates for the random coincidence background.
+\end_layout
+
+\begin_layout Standard
+In addition to ordinary coincidence counting,
+ a time delay-coincidence system provides a spectrum of the arrival time difference between 
+\begin_inset Formula $\gamma_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma_{2}$
+\end_inset
+
+ This gives the lifetime of the 
+\begin_inset Formula $4s4p^{1}P_{1}$
+\end_inset
+
+ state and provides a check on the consistency of the experiment.
+\end_layout
+
+\begin_layout Subsection
+Application of the Generalized Inequality to the Present Experiment
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section?B"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the experiment,
+ the particle pairs are pairs of photons emitted in a 
+\begin_inset Formula $0\rightarrow1\rightarrow0$
+\end_inset
+
+ atomic cascade;
+ the measuring devices each consist of a linear polarizer and a photomultiplier tube.
+ The adjustable ·parameter of each measuring device is the orientation of the polarizer about the z axis.
+\end_layout
+
+\begin_layout Standard
+It would be natural to associate the results of a measurement an each photon with passage in either the ordinary ray or the extraordinary ray of the polarizer but in any real polarizer some photons are not transmitted in either ray because of scattering losses or absorption.
+\end_layout
+
+\begin_layout Standard
+Thus,
+ there are three possible results for a measurement,
+ apparently violating the condition that measurements be two-valued.
+\end_layout
+
+\begin_layout Standard
+However,
+ we are free to associate 
+\begin_inset Formula $+1$
+\end_inset
+
+ with the transmission in the ordinary ray and
+\begin_inset Formula $-1$
+\end_inset
+
+ with non-transmission in the ordinary ray.
+\end_layout
+
+\begin_layout Standard
+This interpretation makes the measurements two-valued and has the practical advantage of making it unnecessary to detect photons in the extra-ordinary ray.
+\end_layout
+
+\begin_layout Standard
+To express inequalities II.4 in terms of quantities directly measured,
+ it is convenient to introduce the following partition of 
+\begin_inset Formula $\Lambda$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+\Lambda_{ij}\left(\hat{a},\hat{b}\right) & = & \left\{ \lambda|A\left(\hat{a},\lambda\right)=i\,and\,B\left(\hat{b},\lambda\right)=j\right\} 
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $j$
+\end_inset
+
+ equal 
+\begin_inset Formula $+1$
+\end_inset
+
+ or 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Using this partition,
+ define:
+\begin_inset Formula 
+\begin{eqnarray}
+P_{ij}\left(\hat{a},\hat{b}\right) & = & \int_{\Lambda_{ij}\left(\hat{a},\hat{b}\right)}\rho\left(\lambda\right)d\lambda
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula $P_{++}\left(\hat{a},\hat{b}\right)$
+\end_inset
+
+ being the probability of joint passage of the photons through the polarizers.
+\end_layout
+
+\begin_layout Standard
+Using equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:FI.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(\hat{a},\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)-P_{+-}\left(\hat{a},\hat{b}\right)-P_{-+}\left(\hat{a},\hat{b}\right)+P_{--}\left(\hat{a},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Define:
+\begin_inset Formula 
+\begin{eqnarray}
+P_{1}\left(\hat{a}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)\\
+P_{2}\left(\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\hat{a},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula $P_{1}\left(\hat{a}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $P_{2}\left(\hat{b}\right)$
+\end_inset
+
+ being the probabilities of joint passage when one of the polarizers is absent.
+\end_layout
+
+\begin_layout Standard
+Expressing the correlation ftmction in terms of the probabilities of joint passage:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(\hat{a},\hat{b}\right) & = & 4P_{++}\left(\hat{a},\hat{b}\right)-2P_{1}\left(\hat{a}\right)-2P_{2}\left(\hat{b}\right)+1\label{eq:F1.5}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Freedman derived the inequalityies :
+\begin_inset Formula 
+\begin{eqnarray}
+-2\leq & P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{b}\right)+P\left(\hat{a},\hat{b}\right)+P\left(\hat{a},\hat{b}\right) & \leq2\label{eq:FII.4}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On substitution of Equation
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:F1.5"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ into the inequalities 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:FII.4"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.4)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-1\leq & P_{++}\left(\hat{a},\hat{b}\right)-P_{++}\left(\hat{a},\hat{c}\right)+P_{++}\left(\hat{d},\hat{c}\right)+P_{++}\left(\hat{d},\hat{b}\right)-P_{2}\left(\hat{b}\right)-P_{1}\left(\hat{d}\right) & \leq0\label{eq:FII.6}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If all transmitted photons were detected:
+\begin_inset Formula 
+\begin{eqnarray}
+P_{++}\left(\hat{a},\hat{b}\right) & = & \frac{R\left(\hat{a},\hat{b}\right)}{R_{0}}\label{eq:FII.7a}\\
+P_{1}\left(\hat{a}\right) & = & \frac{R_{1}\left(\hat{a}\right)}{R_{0}}\label{eq:FII.7b}\\
+P_{2}\left(\hat{b}\right) & = & \frac{R_{2}\left(\hat{a},\hat{b}\right)}{R_{0}}\label{eq:FII.7c}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R\left(\hat{a},\hat{b}\right),R_{1}\left(\hat{a}\right),R_{2}\left(\hat{b}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ are the coincidence count rates.
+\end_layout
+
+\begin_layout Standard
+As 
+\begin_inset Formula $R_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $R_{2}$
+\end_inset
+
+ represent coincidences rate with polarizer removed,
+ 
+\begin_inset Formula $R_{1}\left(\hat{a}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $R_{2}\left(\hat{b}\right)$
+\end_inset
+
+ are independent of 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}$
+\end_inset
+
+ and 
+\begin_inset Formula $R\left(\hat{a},\hat{b}\right)$
+\end_inset
+
+ depends only 
+\begin_inset Formula $\hat{a}\cdot\hat{b}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-1\leq & \frac{R\left(\phi_{1}\right)}{R_{0}}-\frac{R\left(\phi_{1}+\phi_{2}+\phi_{3}\right)}{R_{0}}+\frac{R\left(\phi_{2}\right)}{R_{0}}+\frac{R\left(\phi_{3}\right)}{R_{0}}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}} & \leq0\label{eq:FII.8}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1} & = & cos^{-1}\left(\hat{a},\hat{b}\right)\\
+\phi_{1} & = & cos^{-1}\left(\hat{d},\hat{c}\right)\\
+\phi_{1} & = & cos^{-1}\left(\hat{d},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1}+\phi_{2}+\phi_{3} & = & cos^{-1}\left(\hat{a},\hat{c}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "/System/Volumes/Data/Physics/QuantumMechanics"
+options "plain"
+encoding "default"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
