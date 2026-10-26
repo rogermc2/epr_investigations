@@ -83,15 +83,13 @@ package body Delft_Printing is
       Print_Float_2 (" Sample_Mean A", Mean_A, " Sample SD A",
        Sample_Std_Deviation
          (Get_Delft_Integer_List (Detections, Det_A), Mean_A));
-         --   " Accuracy", Sample_Mean_vs_Exp_Value (Exp_Val, Mean_A));
       Print_Float_2 (" Sample_Mean B", Mean_B, " Sample SD B",
          Sample_Std_Deviation
           (Get_Delft_Integer_List (Detections, Det_B), Mean_B));
-         --   " Accuracy", Sample_Mean_vs_Exp_Value (Exp_Val, Mean_B));
-      Print_Float_2 (" Sample_Mean AB", Mean_AB, " Sample SD AB",
-         Sample_Std_Deviation
-            (Get_Delft_Integer_List (Detections, Det_A), Mean_AB));
-         --   " Accuracy", Sample_Mean_vs_Exp_Value (Exp_Val, Mean_AB));
+      Print_Float_3 (" Sample_Mean AB", Mean_AB,
+            " Expectation Value", Exp_Val, " Sample SD AB",
+            Sample_Std_Deviation
+               (Get_Delft_Integer_List (Detections, Det_A), Mean_AB));
 
    end Print_Delft_Statistics;
 

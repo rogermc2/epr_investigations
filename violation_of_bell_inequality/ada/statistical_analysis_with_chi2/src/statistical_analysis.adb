@@ -30,10 +30,10 @@ begin
    Detections.Detections_10 := Get_Detections (File_10);
    Detections.Detections_11  := Get_Detections (File_11);
 
-   Expectations.E_AA := Statistical_EAB (A_Angle_0, B_Angle_0);
-   Expectations.E_AB := Statistical_EAB (A_Angle_0, B_Angle_1);
-   Expectations.E_BA := Statistical_EAB (A_Angle_1, B_Angle_0);
-   Expectations.E_BB := Statistical_EAB (A_Angle_1, B_Angle_1);
+   Expectations.E_AA := Statistical_EAB (Settings.A_0, Settings.B_0);
+   Expectations.E_AB := Statistical_EAB (Settings.A_0, Settings.B_1);
+   Expectations.E_BA := Statistical_EAB (Settings.A_1, Settings.B_0);
+   Expectations.E_BB := Statistical_EAB (Settings.A_1, Settings.B_1);
 
    Display_Detector_Settings (Settings);
    Display_Number_Of_Detections (Detections);

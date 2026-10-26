@@ -1,0 +1,113 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      3826,        105]
+NotebookOptionsPosition[      2890,         83]
+NotebookOutlinePosition[      3282,         99]
+CellTagsIndexPosition[      3239,         96]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"EAB", " ", 
+   RowBox[{"Remove", "[", "\"\<Global`*\>\"", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ClearAll", ";"}]}], "Input",
+ CellChangeTimes->{{4.002005115368155*^9, 4.0020051178424273`*^9}, 
+   4.002005159668667*^9},
+ CellLabel->"In[9]:=",ExpressionUUID->"ddf45769-5fde-4a44-a304-e4b923d5dd65"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EAB", "[", 
+   RowBox[{"pa_", ",", "pb_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"2.0", "*", " ", 
+    RowBox[{
+     RowBox[{"Abs", "[", 
+      RowBox[{"pa", "-", "pb"}], "]"}], "/", "\[Pi]"}]}], " ", "-", " ", 
+   "1.0"}]}]], "Input",
+ CellChangeTimes->{{4.0020053048348627`*^9, 4.002005494138151*^9}, {
+  4.002005699627572*^9, 4.002005701200045*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"16e5288f-5fd3-4cc2-ba91-f8a1de044893"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"EAB", "[", 
+  RowBox[{"0.0", ",", "0.393"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"EAB", "[", 
+  RowBox[{"0.0", ",", "1.178"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"EAB", "[", 
+  RowBox[{"0.785", ",", "0.393"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"EAB", "[", 
+  RowBox[{".785", ",", "1.178"}], "]"}]}], "Input",
+ CellChangeTimes->{{4.002005533404044*^9, 4.002005577756222*^9}, {
+  4.0020057480684*^9, 4.002005844828898*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"cd85b72a-6477-462c-a0ce-0c8254f26c6b"],
+
+Cell[BoxData[
+ RowBox[{"-", "0.7498084294595405`"}]], "Output",
+ CellChangeTimes->{4.002005585608943*^9, 4.002005706337119*^9, 
+  4.002005850307993*^9},
+ CellLabel->"Out[12]=",ExpressionUUID->"23e2561e-9f53-4109-a72d-098c444efd6a"],
+
+Cell[BoxData[
+ RowBox[{"-", "0.25006190815098917`"}]], "Output",
+ CellChangeTimes->{4.002005585608943*^9, 4.002005706337119*^9, 
+  4.0020058503085546`*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"ee6fe891-eaa1-49a2-a16e-f717cec46ff0"],
+
+Cell[BoxData[
+ RowBox[{"-", "0.7504450492319081`"}]], "Output",
+ CellChangeTimes->{4.002005585608943*^9, 4.002005706337119*^9, 
+  4.0020058503090067`*^9},
+ CellLabel->"Out[14]=",ExpressionUUID->"3115637c-8850-4054-a070-99d05ea15811"],
+
+Cell[BoxData[
+ RowBox[{"-", "0.7498084294595406`"}]], "Output",
+ CellChangeTimes->{4.002005585608943*^9, 4.002005706337119*^9, 
+  4.0020058503094397`*^9},
+ CellLabel->"Out[15]=",ExpressionUUID->"2ace7b20-28a9-4ea5-a0f3-7c0069db1eea"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{Automatic, 553}, {0, Automatic}},
+FrontEndVersion->"14.3 for Mac OS X ARM (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"83077dc2-5e7f-4eae-ba4c-0c4287e84e4f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 344, 7, 49, "Input",ExpressionUUID->"ddf45769-5fde-4a44-a304-e4b923d5dd65"],
+Cell[901, 29, 465, 12, 29, "Input",ExpressionUUID->"16e5288f-5fd3-4cc2-ba91-f8a1de044893"],
+Cell[CellGroupData[{
+Cell[1391, 45, 540, 11, 90, "Input",ExpressionUUID->"cd85b72a-6477-462c-a0ce-0c8254f26c6b"],
+Cell[1934, 58, 231, 4, 33, "Output",ExpressionUUID->"23e2561e-9f53-4109-a72d-098c444efd6a"],
+Cell[2168, 64, 234, 4, 33, "Output",ExpressionUUID->"ee6fe891-eaa1-49a2-a16e-f717cec46ff0"],
+Cell[2405, 70, 233, 4, 33, "Output",ExpressionUUID->"3115637c-8850-4054-a070-99d05ea15811"],
+Cell[2641, 76, 233, 4, 52, "Output",ExpressionUUID->"2ace7b20-28a9-4ea5-a0f3-7c0069db1eea"]
+}, Open  ]]
+}
+]
+*)
+

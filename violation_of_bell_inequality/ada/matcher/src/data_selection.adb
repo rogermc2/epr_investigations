@@ -15,8 +15,10 @@ package body Data_Selection is
    Pi_3_8    : constant Long_Float := 3.0 * Pi / 8.0;
    A_Angle_0 : constant Long_Float := 0.0;
    A_Angle_1 : constant Long_Float := Pi_div_4;
-   B_Angle_0 : constant Long_Float := Pi_div_8;
-   B_Angle_1 : constant Long_Float := Pi_3_8;
+   --  B_Angle_0 : constant Long_Float := Pi_div_8;
+   B_Angle_0 : constant Long_Float := 0.0;
+   --  B_Angle_1 : constant Long_Float := Pi_3_8;
+   B_Angle_1 : constant Long_Float := Pi_div_4;
 
    type Angles_Record is record
       A_0 : Long_Float := A_Angle_0;
