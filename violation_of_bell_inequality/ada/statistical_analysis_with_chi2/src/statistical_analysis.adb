@@ -59,7 +59,7 @@ begin
                        Long_Float (Detections.Detections_01.Length),
                        Long_Float (Detections.Detections_10.Length),
                        Long_Float (Detections.Detections_11.Length));
-   Calculated_Chi := Compute_Chi_Square (Observed_Counts);
+   Calculated_Chi := Compute_Chi_Square (Observed_Counts, Expectations);
    Resulting_P := Lookup_P_Value (Calculated_Chi);
 
    Print_Long_Float_Line ("Calculated Chi-Square Score",

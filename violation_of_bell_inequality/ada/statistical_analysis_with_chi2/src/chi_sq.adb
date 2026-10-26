@@ -1,18 +1,16 @@
 
 package body Chi_Sq is
 
-   function Compute_Chi_Square (Obs : Count_Array) return Chi_Value is
+   function Compute_Chi_Square (Obs : Count_Array;
+               Expectations : Expectations_Record) return Chi_Value is
       Total_Events : Long_Float := 0.0;
       Chi_Square   : Chi_Value := 0.0;
       Expected     : Count_Array;
-
-      --  Theoretical expectations for these specific phase angles
-      --  (Converts your -0.750 expectations back into proportional probabilities)
       Theoretical_Prob : constant Count_Array :=
-         (0.125,   --  Expected proportion for 00
-         0.375,    --  Expected proportion for 01
-         0.375,    --  Expected proportion for 10
-         0.125);   --  Expected proportion for 11
+         (Long_Float (Expectations.E_AA),   --  Expected proportion for 00
+         Long_Float (Expectations.E_AB),    --  Expected proportion for 01
+         Long_Float (Expectations.E_BA),    --  Expected proportion for 10
+         Long_Float (Expectations.E_BB));   --  Expected proportion for 11
    begin
       --  Tally the Grand Total of events
       for I in Quadrant_Index loop
