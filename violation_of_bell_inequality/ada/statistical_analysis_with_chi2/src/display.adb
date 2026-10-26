@@ -29,6 +29,20 @@ package body Display is
 
    end Display_Expectations;
 
+   procedure Get_And_Display_Sample_Means
+       (Detections : Detections_Record; Means : out Means_Record) is
+   begin
+      Sample_Means (Detections.Detections_00,
+                  Means.Mean_A_00, Means.Mean_B_00, Means.Mean_AB_00);
+      Sample_Means (Detections.Detections_01,
+                  Means.Mean_A_01, Means.Mean_B_01, Means.Mean_AB_01);
+      Sample_Means (Detections.Detections_10,
+                  Means.Mean_A_10, Means.Mean_B_10, Means.Mean_AB_10);
+      Sample_Means (Detections.Detections_11,
+                Means.Mean_A_11, Means.Mean_B_11, Means.Mean_AB_11);
+
+   end Get_And_Display_Sample_Means;
+
    procedure Display_Statistics
       (Means : Means_Record; Detections : Detections_Record;
        Expectations : Expectations_Record) is

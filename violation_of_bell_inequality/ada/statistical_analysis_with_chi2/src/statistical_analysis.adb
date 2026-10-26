@@ -41,16 +41,7 @@ begin
    --  Print_Delft_Sample_List ("Detections_01", Detections_01, 1, 5);
    --  Print_Delft_Sample_List ("Detections_10", Detections_10, 1, 5);
    --  Print_Delft_Sample_List ("Detections_11", Detections_11, 1, 5);
-
-   Sample_Means (Detections.Detections_00,
-                Means.Mean_A_00, Means.Mean_B_00, Means.Mean_AB_00);
-   Sample_Means (Detections.Detections_01,
-                Means.Mean_A_01, Means.Mean_B_01, Means.Mean_AB_01);
-   Sample_Means (Detections.Detections_10,
-                Means.Mean_A_10, Means.Mean_B_10, Means.Mean_AB_10);
-   Sample_Means (Detections.Detections_11,
-                Means.Mean_A_11, Means.Mean_B_11, Means.Mean_AB_11);
-
+   Get_And_Display_Sample_Means (Detections, Means);
    Display_Statistics (Means, Detections, Expectations);
    Display_Expectations (Expectations);
 

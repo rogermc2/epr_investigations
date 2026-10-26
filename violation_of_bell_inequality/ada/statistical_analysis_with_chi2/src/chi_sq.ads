@@ -7,20 +7,6 @@ package Chi_Sq is
    type Quadrant_Index is range 1 .. 4;
    type Count_Array is array (Quadrant_Index) of Long_Float;
 
-   --  type Count_Record is record
-   --     Num_00 : Double_Natural := 0;
-   --     Num_01 : Double_Natural := 0;
-   --     Num_10 : Double_Natural := 0;
-   --     Num_11 : Double_Natural := 0;
-   --  end record;
-
-   --  type Proportion_Record is record
-   --     Prop_00 : Float := 0.0;
-   --     Prop_01 : Float := 0.0;
-   --     Prop_10 : Float := 0.0;
-   --     Prop_11 : Float := 0.0;
-   --  end record;
-
    type Table_Row is record
       Chi_Square_Score : Chi_Value;
       Probability      : P_Value;

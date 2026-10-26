@@ -9,5 +9,7 @@ package Display is
    procedure Display_Statistics
       (Means : Means_Record; Detections : Detections_Record;
       Expectations : Expectations_Record);
+   procedure Get_And_Display_Sample_Means
+       (Detections : Detections_Record; Means : out Means_Record);
 
 end Display;
