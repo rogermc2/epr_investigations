@@ -1,34 +1,22 @@
 
---  with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Direct_IO;
-with Ada.Numerics; use Ada.Numerics;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Printing; use Printing;
+with Maths;
 with Utils; use Utils;
 
 package body Data_Selection is
 
-   Pi_div_4  : constant Long_Float := Pi / 4.0;
-   Pi_div_8  : constant Long_Float := Pi / 8.0;
-   Pi_3_8    : constant Long_Float := 3.0 * Pi / 8.0;
-   A_Angle_0 : constant Long_Float := 0.0;
-   A_Angle_1 : constant Long_Float := Pi_div_4;
-   --  B_Angle_0 : constant Long_Float := Pi_div_8;
-   B_Angle_0 : constant Long_Float := 0.0;
-   --  B_Angle_1 : constant Long_Float := Pi_3_8;
-   B_Angle_1 : constant Long_Float := Pi_div_4;
-
    type Angles_Record is record
-      A_0 : Long_Float := A_Angle_0;
-      A_1 : Long_Float := A_Angle_1;
-      B_0 : Long_Float := B_Angle_0;
-      B_1 : Long_Float := B_Angle_1;
+      A_0 : Float := 0.0;
+      A_1 : Float := 0.0;
+      B_0 : Float := 0.0;
+      B_1 : Float := 0.0;
    end record;
 
-   Detector_Angles : constant Angles_Record :=
-      (A_Angle_0, A_Angle_1, B_Angle_0, B_Angle_1);
+   Detector_Angles : Angles_Record;
 
    --  Direct_IO line includes line terminator; hence process string_4 as String_5.
    package Direct_String_5 is new Ada.Direct_IO (String_5);
@@ -62,9 +50,9 @@ package body Data_Selection is
    procedure Print_W_Record (Message : String; Data : W_Record) is
    begin
       Put_Line (Message & ": ");
-      Put_Line ("A_Setting: " & Long_Float'Image (Data.A_Setting) &
+      Put_Line ("A_Setting: " & Float'Image (Data.A_Setting) &
       ", A_Result: " & Data.A_Result);
-      Put_Line ("B_Setting: " & Long_Float'Image (Data.B_Setting) &
+      Put_Line ("B_Setting: " & Float'Image (Data.B_Setting) &
        ", B_Result: " & Data.B_Result);
       Put_Line ("AB_Result: " & Data.AB_Result);
 
@@ -116,21 +104,17 @@ package body Data_Selection is
       end Write_Data;
 
    begin
-      Print_Float_Line (Routine_Name & "A_0 setting",
-          Float (Detector_Angles.A_0));
-      Print_Float_Line (Routine_Name & "A_1 setting",
-          Float (Detector_Angles.A_1));
-      Print_Float_Line (Routine_Name & "B_0 setting",
-          Float (Detector_Angles.B_0));
-      Print_Float_Line (Routine_Name & "B_1 setting",
-          Float (Detector_Angles.B_1));
+      Print_Float_Line (Routine_Name & "A_0 setting", Detector_Angles.A_0);
+      Print_Float_Line (Routine_Name & "A_1 setting", Detector_Angles.A_1);
+      Print_Float_Line (Routine_Name & "B_0 setting", Detector_Angles.B_0);
+      Print_Float_Line (Routine_Name & "B_1 setting", Detector_Angles.B_1);
       New_Line;
 
       Create (Settings_ID, Out_File, Settings_File);
-      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.A_0));
-      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.A_1));
-      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.B_0));
-      Put_Line (Settings_ID, Long_Float'Image (Detector_Angles.B_1));
+      Put_Line (Settings_ID, Float'Image (Detector_Angles.A_0));
+      Put_Line (Settings_ID, Float'Image (Detector_Angles.A_1));
+      Put_Line (Settings_ID, Float'Image (Detector_Angles.B_0));
+      Put_Line (Settings_ID, Float'Image (Detector_Angles.B_1));
       Close (Settings_ID);
 
       Put_Line (Routine_Name & "A and B input file lengths: " &
@@ -233,5 +217,13 @@ package body Data_Selection is
          raise;
 
    end Select_OEM_Data;
+
+   procedure Set_Angles (A1, A2, B1, B2 : Float) is
+      use Maths;
+   begin
+      Detector_Angles :=
+       (To_Radians (A1), To_Radians (A2), To_Radians (B1), To_Radians (B2));
+
+   end Set_Angles;
 
 end Data_Selection;

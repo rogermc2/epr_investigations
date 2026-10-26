@@ -29,6 +29,7 @@ package body Utils is
       return Line_Count;
 
    end Count_Text_File_Lines;
+   
    function Count_Text_File_Lines (File_Name  : String)
     return Double_Natural is
       File       : File_Type;

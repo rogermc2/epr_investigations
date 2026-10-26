@@ -12,7 +12,7 @@ procedure Match_Times is
    A_Directory      : constant String := "../";
    B_Directory      : constant String := A_Directory;
    Result_Directory : constant String := "../generated_data/";
-   Settings         : constant String := Result_Directory & "settings.csv";
+   Settings_File    : constant String := Result_Directory & "settings.csv";
    Photon_Times_A   : constant String := A_Directory & "A_Photon_Times.csv";
    Photon_Times_B   : constant String := B_Directory & "B_Photon_Times.csv";
    OEM_A            : constant String := A_Directory & "A_OEM.csv";
@@ -31,7 +31,7 @@ procedure Match_Times is
    --  I find better results with windows 40-50 ns wide.
 
    Width            : constant Float := 2.0 * ns;
-   Delta_Val        : constant Float := 3.8 * ns;
+   Shift            : constant Float := 3.8 * ns;
    --  **** For normal use set Data_Length to 0
    Data_Length      : constant Natural := 0;
    Num_Found        : Natural;
@@ -45,6 +45,7 @@ procedure Match_Times is
    bb_Matches       : Natural;
    Selected_Pairs   : Match_List;
 begin
+   Set_Angles (0.0, 45.0, 0.0, 45.0);
    if Width = 5.0 * ns then
       Combined_Data := To_Unbounded_String (Combined_Ns_5);
    elsif Width = 50.0 * ns then
@@ -61,9 +62,9 @@ begin
         Integer'Image (Count_Text_File_Lines (Photon_Times_B)) & " lines");
 
    Match_Photon_Times (Photon_Times_A, Photon_Times_B, Pairs,
-                       Delta_Val, Width, Num_Found, Selected_Pairs, Data_Length);
-   Select_OEM_Data (OEM_A, OEM_B, OEM_aa, OEM_ab, OEM_ba, OEM_bb, Settings,
-                    A_Counts, B_Counts, Selected_Pairs);
+                       Shift, Width, Num_Found, Selected_Pairs, Data_Length);
+   Select_OEM_Data (OEM_A, OEM_B, OEM_aa, OEM_ab, OEM_ba, OEM_bb,
+         Settings_File, A_Counts, B_Counts, Selected_Pairs);
    New_Line;
 
    aa_Matches := Number_Of_Matches (OEM_aa);
@@ -79,7 +80,7 @@ begin
    Put_Line (Routine_Name & "Number of bb matches :" &
                Integer'Image (bb_Matches));
    New_Line;
-   Find_Raw_Window_Width (Photon_Times_A, Photon_Times_B, Delta_Val,
+   Find_Raw_Window_Width (Photon_Times_A, Photon_Times_B, Shift,
                           Min_Width, Max_Width);
 
    Put_Line (Routine_Name & "raw data minimum and maximum widths: " &
@@ -92,7 +93,7 @@ begin
    --   to prevent Combine stack overflow
    --  Combine (OEM_aa, OEM_ab, OEM_ba, OEM_bb,
    --   To_String (Combined_Data), Data_Length);
-   Put_Line (Routine_Name & "width: " & Float'Image (Width) & " ns");
-   Put_Line (Routine_Name & "delta: " & Float'Image (Delta_Val) & " ns");
+   Put_Line (Routine_Name & "Width: " & Float'Image (Width) & " ns");
+   Put_Line (Routine_Name & "Shift: " & Float'Image (Shift) & " ns");
 
 end Match_Times;

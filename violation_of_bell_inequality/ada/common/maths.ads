@@ -7,5 +7,6 @@ package Maths is
      (Data : Sample_Data_List; Std_Deviation : Float) return Float;
    function Sample_Std_Deviation
      (Data : Integer_List; Mean : Float) return Float;
+   function To_Radians (Angle : Float) return Float;
 
 end Maths;

@@ -1,4 +1,5 @@
 
+with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 
 package body Maths is
@@ -35,5 +36,11 @@ package body Maths is
       return Sqrt (Var);
 
    end Sample_Std_Deviation;
+
+   function To_Radians (Angle : Float) return Float is
+   begin
+      return Angle / 180.0 * Pi;
+
+   end To_Radians;
 
 end Maths;
