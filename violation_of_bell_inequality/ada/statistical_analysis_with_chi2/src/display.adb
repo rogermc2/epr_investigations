@@ -30,7 +30,7 @@ package body Display is
    end Display_Expectations;
 
    procedure Display_Number_Of_Detections (Detections : Detections_Record) is
-   begin    
+   begin
       Put_Line ("Number of AB00 detections: " &
                   Integer'Image (Integer (Detections.Detections_00.Length)));
       Put_Line ("Number of AB01 detections: " &
