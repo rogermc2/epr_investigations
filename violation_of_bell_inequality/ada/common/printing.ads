@@ -28,6 +28,8 @@ package Printing is
    procedure Print_Double_Natural_Vector
       (Name  : String; Data : Double_Natural_Vector;
        Start : Double_Positive := 1; Finish : Double_Natural := 0);
+   procedure Print_Long_Float_Array (Name  : String; Data : Long_Float_Array;
+                               Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Match_List (Name : String; Data : Match_List;
                               Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Sample_Data_List (Name : String; Data : Sample_Data_List;

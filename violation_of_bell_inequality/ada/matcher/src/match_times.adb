@@ -45,6 +45,7 @@ procedure Match_Times is
    bb_Matches       : Natural;
    Selected_Pairs   : Match_List;
 begin
+   -- Set detector positions
    Set_Angles (0.0, 45.0, 0.0, 45.0);
    if Width = 5.0 * ns then
       Combined_Data := To_Unbounded_String (Combined_Ns_5);

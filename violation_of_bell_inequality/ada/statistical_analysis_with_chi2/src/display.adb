@@ -32,14 +32,15 @@ package body Display is
 
    procedure Display_Number_Of_Detections (Detections : Detections_Record) is
    begin
+      --  Subtract 1 for header row
       Put_Line ("Number of AB00 detections: " &
-                  Integer'Image (Integer (Detections.Detections_00.Length)));
+                  Integer'Image (Integer (Detections.Detections_00.Length) - 1));
       Put_Line ("Number of AB01 detections: " &
-                  Integer'Image (Integer (Detections.Detections_01.Length)));
+                  Integer'Image (Integer (Detections.Detections_01.Length) - 1));
       Put_Line ("Number of AB10 detections: " &
-                  Integer'Image (Integer (Detections.Detections_10.Length)));
+                  Integer'Image (Integer (Detections.Detections_10.Length) - 1));
       Put_Line ("Number of AB11 detections: " &
-                  Integer'Image (Integer (Detections.Detections_11.Length)));
+                  Integer'Image (Integer (Detections.Detections_11.Length) - 1));
       New_Line;
 
    end Display_Number_Of_Detections;

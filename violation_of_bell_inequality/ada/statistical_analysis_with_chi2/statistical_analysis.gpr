@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 --  with "../../../../../../../Ada_Source/mathpaqs/mathpaqs.gpr";
+||||||| Stash base
+with "../../../../../../../Ada_Source/mathpaqs/mathpaqs.gpr";
+=======
+>>>>>>> Stashed changes
 
 project Statistical_Analysis is
 

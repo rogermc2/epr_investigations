@@ -1,25 +1,34 @@
 
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Display; use Display;
+with Printing; use Printing;
+
 package body Chi_Sq is
 
    function Compute_Chi_Square (Num_Obs : Count_Array;
                Expectations : Expectations_Record) return Chi_Value is
-      Total_Events : Long_Float := 0.0;
-      Chi_Square   : Chi_Value := 0.0;
-      Expected     : Count_Array;
+      Routine_Name : constant String := "Compute_Chi_Square ";
       Theoretical_Prob : constant Count_Array :=
          (Long_Float (Expectations.E_AA),   --  Expected proportion for 00
          Long_Float (Expectations.E_AB),    --  Expected proportion for 01
          Long_Float (Expectations.E_BA),    --  Expected proportion for 10
          Long_Float (Expectations.E_BB));   --  Expected proportion for 11
+      Expected     : Count_Array;
+      Total_Events : Long_Float := 0.0;
+      Chi_Square   : Chi_Value := 0.0;
    begin
-      --  Tally the Grand Total of events
+      Put_Line (Routine_Name);
+      Display_Expectations (Expectations);
+      Print_Long_Float_Line (Routine_Name & "Obs", Obs (1));
+
       for I in Quadrant_Index loop
          Total_Events := Total_Events + Num_Obs (I);
       end loop;
 
       --  Compute Chi-Square terms: (O - E)^2 / E
       for I in Quadrant_Index loop
-         Expected (I) := Theoretical_Prob(I) * Total_Events;
+         Expected (I) := Theoretical_Prob (I) * Total_Events;
          Chi_Square := Chi_Square +
          Chi_Value (((Num_Obs (I) - Expected (I)) ** 2) / Expected (I));
       end loop;

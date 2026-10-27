@@ -18,6 +18,8 @@ package Types is
    subtype Int_16 is Interfaces.Unsigned_16;
    subtype UV is Integer range -1 .. 1;
 
+   type Long_Float_Array is array (Positive range <>) of Long_Float;
+
    type Vector_3D is array (1 .. 3) of Float;
    type Byte_Array is array (Integer range <>) of Byte;
    for Byte_Array'Alignment use 1;

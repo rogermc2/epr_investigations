@@ -55,10 +55,11 @@ begin
           Means.Mean_AB_10 + Means.Mean_AB_11);
    New_Line;
 
-   Observed_Counts := (Long_Float (Detections.Detections_00.Length),
-                       Long_Float (Detections.Detections_01.Length),
-                       Long_Float (Detections.Detections_10.Length),
-                       Long_Float (Detections.Detections_11.Length));
+   --  Subtract 1.0 for header row
+   Observed_Counts := (Long_Float (Detections.Detections_00.Length) - 1.0,
+                       Long_Float (Detections.Detections_01.Length) - 1.0,
+                       Long_Float (Detections.Detections_10.Length) - 1.0,
+                       Long_Float (Detections.Detections_11.Length) - 1.0);
    Calculated_Chi := Compute_Chi_Square (Observed_Counts, Expectations);
    Resulting_P := Lookup_P_Value (Calculated_Chi);
 
