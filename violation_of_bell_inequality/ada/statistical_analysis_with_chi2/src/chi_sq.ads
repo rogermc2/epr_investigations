@@ -33,7 +33,7 @@ package Chi_Sq is
       15 => (Chi_Square_Score => 21.108, Probability => 0.0001),
       16 => (Chi_Square_Score => 26.125, Probability => 0.00001));
 
-   function Compute_Chi_Square (Obs : Count_Array;
+   function Compute_Chi_Square (Num_Obs : Count_Array;
                Expectations : Expectations_Record) return Chi_Value;
    function Lookup_P_Value (Calculated_Chi : Chi_Value) return P_Value;
 

@@ -1,7 +1,7 @@
 
 package body Chi_Sq is
 
-   function Compute_Chi_Square (Obs : Count_Array;
+   function Compute_Chi_Square (Num_Obs : Count_Array;
                Expectations : Expectations_Record) return Chi_Value is
       Total_Events : Long_Float := 0.0;
       Chi_Square   : Chi_Value := 0.0;
@@ -14,14 +14,14 @@ package body Chi_Sq is
    begin
       --  Tally the Grand Total of events
       for I in Quadrant_Index loop
-         Total_Events := Total_Events + Obs (I);
+         Total_Events := Total_Events + Num_Obs (I);
       end loop;
 
       --  Compute Chi-Square terms: (O - E)^2 / E
       for I in Quadrant_Index loop
          Expected (I) := Theoretical_Prob(I) * Total_Events;
          Chi_Square := Chi_Square +
-         Chi_Value (((Obs (I) - Expected (I)) ** 2) / Expected (I));
+         Chi_Value (((Num_Obs (I) - Expected (I)) ** 2) / Expected (I));
       end loop;
 
       return Chi_Square;

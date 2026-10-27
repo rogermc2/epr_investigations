@@ -929,6 +929,19 @@ where:
 \end_inset
 
  are the coincidence count rates.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{R}{R_{0}}$
+\end_inset
+
+ is the fraction of individual photon pairs that successfully pass through a polariser and can be considered as an individual event probability (a fraction).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -996,6 +1009,72 @@ where:
 \end_inset
 
 
+\end_layout
+
+\begin_layout Part*
+\start_of_appendix
+Appendices
+\end_layout
+
+\begin_layout Section
+Click rate measurement
+\end_layout
+
+\begin_layout Enumerate
+The Clicks Enter:
+\begin_inset Newline newline
+\end_inset
+
+ Photons hit Detector A and Detector B each of which converts the light into an electrical pulse—
+a raw "click".
+\end_layout
+
+\begin_layout Enumerate
+The Gating Circuit:
+ 
+\begin_inset Newline newline
+\end_inset
+
+These pulses travel down coaxial cables into a device called a coincidence circuit which acts like a logical AND gate with a built-in stopwatch.
+ If pulse A and pulse B arrive within about 5 to 30 nanoseconds of each other the circuit emits a single "coincidence pulse".
+\end_layout
+
+\begin_layout Enumerate
+The Counter (The Scaler):
+ 
+\begin_inset Newline newline
+\end_inset
+
+The coincidence pulse travels into an electronic counter (historically called a scaler).
+ It does not calculate rates dynamically;
+ it just counts.
+ It sits there ticking up:
+ 1,
+ 2,
+ 3,
+ 4...
+\end_layout
+
+\begin_layout Enumerate
+Reporting the Rate:
+ 
+\begin_inset Newline newline
+\end_inset
+
+To get the rate a mechanical timer is used that collects clicks for a fixed period of time (say,
+ exactly 100 seconds).
+ If the counter reads 2,400 when the timer went off the reported rate for that run is written down as 24 clicks per second.
+\end_layout
+
+\begin_layout Standard
+So,
+ effectively,
+ the device counts individual,
+ discrete events over a fixed timeframe and that total count is converted into a "rate" because it is an easy way to write down the data and normalize it against baseline data 
+\begin_inset Formula $\left(R_{0}\right)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
