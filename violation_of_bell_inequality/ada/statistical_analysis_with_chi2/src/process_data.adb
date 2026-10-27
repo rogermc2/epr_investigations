@@ -1,9 +1,6 @@
 
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Numerics;
---  with Ada.Strings;
---  with Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Printing; use Printing;
@@ -140,18 +137,6 @@ package body Process_Data is
       New_Line;
 
    end Report_Hypothesis_Testing;
-
-   function Statistical_EAB (theta : Float) return Float is
-      use Ada.Numerics;
-   begin
-      return 2.0 * theta / Pi - 1.0;
-   end Statistical_EAB;
-
-   function Statistical_EAB (A, B : Long_Float) return Float is
-   begin
-      return Statistical_EAB (abs (Float (A - B)));
-
-   end Statistical_EAB;
 
    function False_Positives
     (Dir, OEM_File : String;  False_Count, True_Count : out Natural)

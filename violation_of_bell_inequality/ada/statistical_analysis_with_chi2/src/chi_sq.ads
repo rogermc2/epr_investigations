@@ -1,20 +1,9 @@
 
 with SA_Types; use SA_Types;
+with Statistics; use Statistics;
 
 package Chi_Sq is
-   type Chi_Value is new Long_Float;
-   type P_Value   is new Long_Float;
-   type Table_Index is new Positive range 1 .. 16;
-   type Quadrant_Index is range 1 .. 4;
-   type Count_Array is array (Quadrant_Index) of Long_Float;
-
-   type Table_Row is record
-      Chi_Square_Score : Chi_Value;
-      Probability      : P_Value;
-   end record;
-   type Reference_Table is array (Table_Index) of Table_Row;
-
-   --  Definitive Chi-Square distribution anchor values for 3 degrees of freedom
+   --  Chi-Square distribution anchor values for 3 degrees of freedom
    DF3_Lookup_Table : constant Reference_Table :=
      (1  => (Chi_Square_Score => 0.115,  Probability => 0.990),
       2  => (Chi_Square_Score => 0.216,  Probability => 0.975),

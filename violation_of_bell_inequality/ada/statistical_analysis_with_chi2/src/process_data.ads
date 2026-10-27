@@ -4,8 +4,6 @@ with SA_Types; use SA_Types;
 
 package Process_Data is
 
-   function Statistical_EAB (A, B : Long_Float) return Float;
-   function Statistical_EAB (theta : float) return Float;
    function False_Positives
       (Dir, OEM_File : String; False_Count, True_Count : out Natural)
        return Delft_Sample_Data_List;

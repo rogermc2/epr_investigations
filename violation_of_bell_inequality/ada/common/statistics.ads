@@ -1,4 +1,5 @@
 package Statistics is
+
    type Quadrant_Index is range 1 .. 4;
    type Count_Array is array (Quadrant_Index) of Long_Float;
    type Chi_Value is new Long_Float;
@@ -12,7 +13,7 @@ package Statistics is
    type Table_Index is new Positive range 1 .. 16;
    type Reference_Table is array (Table_Index) of Table_Row;
 
-   -- Definitive Chi-Square distribution anchor values for 3 degrees of freedom
+   --  Chi-Square distribution anchor values for 3 degrees of freedom
    DF3_Lookup_Table : constant Reference_Table :=
       (1  => (Chi_Square_Score => 0.115,  Probability => 0.990),
       2  => (Chi_Square_Score => 0.216,  Probability => 0.975),
@@ -31,6 +32,9 @@ package Statistics is
       15 => (Chi_Square_Score => 21.108, Probability => 0.0001),
       16 => (Chi_Square_Score => 26.125, Probability => 0.00001));
 
-   function Compute_Chi_Square (Obs : Count_Array) return Long_Float;
+   function Compute_Chi_Square
+    (Theoretical_Prob, Obs : Count_Array) return Long_Float;
+   function Statistical_EAB (A, B : Long_Float) return Float;
+   function Statistical_EAB (theta : float) return Float;
 
 end Statistics;

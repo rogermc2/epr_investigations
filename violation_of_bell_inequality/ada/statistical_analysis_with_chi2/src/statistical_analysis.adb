@@ -4,9 +4,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Chi_Sq; use Chi_Sq;
 with Delft_Types; use Delft_Types;
 with Display; use Display;
-with SA_Types; use SA_Types;
 with Printing; use Printing;
 with Process_Data; use Process_Data;
+with SA_Types; use SA_Types;
+with Statistics; use Statistics;
 
 procedure Statistical_Analysis is
    AB_Dir          : constant String := "../generated_data/";
