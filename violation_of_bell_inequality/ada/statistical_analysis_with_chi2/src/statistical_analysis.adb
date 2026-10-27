@@ -1,7 +1,6 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Chi_Sq; use Chi_Sq;
 with Delft_Types; use Delft_Types;
 with Display; use Display;
 with Printing; use Printing;
@@ -61,7 +60,7 @@ begin
                        Long_Float (Detections.Detections_01.Length) - 1.0,
                        Long_Float (Detections.Detections_10.Length) - 1.0,
                        Long_Float (Detections.Detections_11.Length) - 1.0);
-   Calculated_Chi := Compute_Chi_Square (Observed_Counts, Expectations);
+   Calculated_Chi := Compute_Chi_Square (Expectations, Observed_Counts);
    Resulting_P := Lookup_P_Value (Calculated_Chi);
 
    Print_Long_Float_Line ("Calculated Chi-Square Score",

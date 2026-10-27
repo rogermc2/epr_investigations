@@ -1,3 +1,6 @@
+
+with SA_Types; use SA_Types;
+
 package Statistics is
 
    type Quadrant_Index is range 1 .. 4;
@@ -33,7 +36,11 @@ package Statistics is
       16 => (Chi_Square_Score => 26.125, Probability => 0.00001));
 
    function Compute_Chi_Square
-    (Theoretical_Prob, Obs : Count_Array) return Long_Float;
+      (Theoretical_Prob : Expectations_Record; Obs_Freq : Count_Array)
+          return Chi_Value;
+   procedure Compute_Free_Crosstab_Chi ( N00, N01, N10, N11 : Long_Float;
+            Chi_Square_Score : out Long_Float);
+   function Lookup_P_Value (Calculated_Chi : Chi_Value) return P_Value;
    function Statistical_EAB (A, B : Long_Float) return Float;
    function Statistical_EAB (theta : float) return Float;
 
