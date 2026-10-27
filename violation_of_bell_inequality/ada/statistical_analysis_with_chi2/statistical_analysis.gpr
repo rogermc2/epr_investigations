@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream
---  with "../../../../../../../Ada_Source/mathpaqs/mathpaqs.gpr";
-||||||| Stash base
-with "../../../../../../../Ada_Source/mathpaqs/mathpaqs.gpr";
-=======
->>>>>>> Stashed changes
 
 project Statistical_Analysis is
 
@@ -18,4 +12,3 @@ project Statistical_Analysis is
    for Exec_Dir use ".";
 
 end Statistical_Analysis;
-

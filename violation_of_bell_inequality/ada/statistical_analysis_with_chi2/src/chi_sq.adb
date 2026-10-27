@@ -20,7 +20,7 @@ package body Chi_Sq is
    begin
       Put_Line (Routine_Name);
       Display_Expectations (Expectations);
-      Print_Long_Float_Line (Routine_Name & "Obs", Obs (1));
+      Print_Long_Float_Line (Routine_Name & "Num_Obs 1", Num_Obs (1));
 
       for I in Quadrant_Index loop
          Total_Events := Total_Events + Num_Obs (I);
