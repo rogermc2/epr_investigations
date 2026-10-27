@@ -39,7 +39,7 @@ package Freedman_Clauser_Test is
             Statistical_SD => 0.006));
 
    package Freedman_Clauser_Math is new
-      Ada.Numerics.Generic_Elementary_Functions (Long_Float);
+      Ada.Numerics.Generic_Elementary_Functions (Float);
 
    procedure FC_H0_Test;
 
