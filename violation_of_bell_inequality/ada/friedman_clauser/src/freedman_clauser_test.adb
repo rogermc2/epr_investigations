@@ -52,9 +52,15 @@ begin
         8 => (Angle_Deg => 157.5, Observed => 0.369, Sigma => 0.005),
         9 => (Angle_Deg => 180.0, Observed => 0.421, Sigma => 0.006));
 
-   --  Hardware Efficiency constraint (Page 44)
-   Epsilon_1        : constant Float := 0.970; -- Max filter transmittance
-   Epsilon_2        : constant Float := 0.038; -- Min filter transmittance
+   --  Table I. Measured polarizer efficiencies (page 53)
+   --  (using a polarized light source shaped like the interaction region).
+   --        Polarizer No. 1 Polarizer No. 2
+   --  eM: 0.97 ± 0.01   0.038 ± 0.004
+   --  em:  0.96 ± 0.01   0.037 ± 0.004
+
+   --  Hardware Efficiency constraint (Page 53)
+   Epsilon_M_1      : constant Float := 0.970; -- Max filter transmittance
+   Epsilon_M_2      : constant Float := 0.038; -- Min filter transmittance
    Chi_Square_Total : Float := 0.0;
    Expected         : Float;
    Delta_t          : Float;
@@ -66,14 +72,15 @@ begin
 
    for I in Table_Index loop
        Rad := (Freedman_Data (I).Angle_Deg * Pi) / 180.0;
-      --  Equation (I.3) Expectation Formula
+      --  Equation (I.3) Expectation Formula (page 21)
       --  Compute the strict, symmetric classical local realistic baseline
-      Expected := 0.25 * ((Epsilon_1 + Epsilon_2) ** 2 +
-         (Epsilon_1 - Epsilon_2) ** 2 * Cos (2.0 * Rad));
-      --  Compute individual term contribution:
+      Expected := 0.25 * ((Epsilon_M_1 + Epsilon_M_2) ** 2 +
+         (Epsilon_M_1 - Epsilon_M_2) ** 2 * Cos (2.0 * Rad));
+      --  Compute individual Chi_Square term contribution:
       Delta_t := Freedman_Data (I).Observed - Expected;
       Term := (Delta_t ** 2) / (Freedman_Data (I).Sigma ** 2);
       Chi_Square_Total := Chi_Square_Total + Term;
+
       Put (Float'Image (Freedman_Data (I).Angle_Deg) & " | ");
       Put (Float'Image (Freedman_Data (I).Observed) & " | ");
       Put (Float'Image (Expected) & " | ");
