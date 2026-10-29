@@ -345,7 +345,7 @@ Freedman incorrectly states that the expectation value for the product of two in
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm$
 \end_inset
 
- in the directions 
+1 in the directions 
 \begin_inset Formula $\hat{a}$
 \end_inset
 
@@ -374,8 +374,8 @@ E\left(\hat{a},\hat{b}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrigh
 \end_layout
 
 \begin_layout Standard
-the expectation value for the product of two individual spin measurements 
-\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm$
+The expectation value for the product of two individual spin measurements 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm1$
 \end_inset
 
  in the directions 
@@ -403,7 +403,31 @@ E\left(\hat{a},\hat{b}\right) & = & \intop_{\Lambda}\rho\left(\lambda\right)A\le
 
 \end_inset
 
- 
+
+\end_layout
+
+\begin_layout Standard
+Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.3  FII.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is the expectation value for the product of two observables 
+\begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}\cdot\overrightarrow{\sigma_{2}}$
+\end_inset
+
+ which are impossible to be measured by the equipment described in the thesis.
 \end_layout
 
 \begin_layout Standard
@@ -706,7 +730,7 @@ In the experiment,
 
  atomic cascade;
  the measuring devices each consist of a linear polarizer and a photomultiplier tube.
- The adjustable ·parameter of each measuring device is the orientation of the polarizer about the z axis.
+ The adjustable parameter of each measuring device is the orientation of the polarizer about the z axis.
 \end_layout
 
 \begin_layout Standard
@@ -715,8 +739,7 @@ It would be natural to associate the results of a measurement an each photon wit
 
 \begin_layout Standard
 Thus,
- there are three possible results for a measurement,
- apparently violating the condition that measurements be two-valued.
+ there are three possible results for a measurement that apparently violating the condition that measurements be two-valued.
 \end_layout
 
 \begin_layout Standard
@@ -850,7 +873,7 @@ P\left(\hat{a},\hat{b}\right) & = & 4P_{++}\left(\hat{a},\hat{b}\right)-2P_{1}\l
 \end_layout
 
 \begin_layout Standard
-Freedman derived the inequalityies :
+Freedman derived the inequalities :
 \begin_inset Formula 
 \begin{eqnarray}
 -2\leq & P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{b}\right)+P\left(\hat{a},\hat{b}\right)+P\left(\hat{a},\hat{b}\right) & \leq2\label{eq:FII.4}
@@ -907,7 +930,7 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-If all transmitted photons were detected:
+If all transmitted photons are detected:
 \begin_inset Formula 
 \begin{eqnarray}
 P_{++}\left(\hat{a},\hat{b}\right) & = & \frac{R\left(\hat{a},\hat{b}\right)}{R_{0}}\label{eq:FII.7a}\\
@@ -1009,6 +1032,54 @@ where:
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Direct Comparison With the Local Hidden-Variable Inequalities
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section IVB"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The experimentally determined dependence of 
+\begin_inset Formula $\nabla(\phi)$
+\end_inset
+
+ on the angle 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is displayed in 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Fig. 21"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+.
+ The solid curve in the figure is the dependence predicted by quantum mechanics at equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:FII.6"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Part*
