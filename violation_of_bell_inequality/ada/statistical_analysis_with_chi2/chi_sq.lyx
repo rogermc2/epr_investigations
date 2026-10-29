@@ -1,0 +1,984 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes true
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Chi-Square Distribution
+\end_layout
+
+\begin_layout Standard
+The Chi-Square 
+\begin_inset Formula $(χ^{2})$
+\end_inset
+
+ distribution is the best method to test a population variance against a known or assumed value of the population.
+ A Chi-Square distribution is a continuous distribution with degrees of freedom.
+ As the degrees of freedom increase,
+ the chi-square curve becomes more symmetric and approaches a normal distribution.
+ Six Sigma practitioners (Green Belts and Black Belts) encounter the chi-square distribution when they need to analyze variability or test hypotheses about categorical data.
+\end_layout
+
+\begin_layout Standard
+The best part of a Chi-Square distribution is that it describes the distribution of a sum of squared random variables.
+\end_layout
+
+\begin_layout Standard
+It is also used to test the goodness of fit of data distribution,
+ whether or not a data series is independent and for judging the confidences surrounding variance and standard deviation for a random variable from a normal distribution.
+\end_layout
+
+\begin_layout Standard
+This guide explains what the chi-square distribution is,
+ why it’s important in Six Sigma,
+ how to conduct various chi-square hypothesis tests and when to use each test in a process.
+\end_layout
+
+\begin_layout Section
+What Is the Chi-Square Distribution?
+\end_layout
+
+\begin_layout Standard
+The chi-square distribution is a family of distributions defined by a parameter called degrees of freedom (df).
+ 
+\end_layout
+
+\begin_layout Standard
+Intuitively you can think of degrees of freedom as being related to sample size.
+\end_layout
+
+\begin_layout Standard
+For example if you sum the squares of k independent standard normal variables the result follows a 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ distribution with k degrees of freedom.
+ 
+\end_layout
+
+\begin_layout Standard
+Key properties of the chi-square distribution include:
+\end_layout
+
+\begin_layout Itemize
+Non-negativity:
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ ² values range from 0 to 
+\begin_inset Formula $\infty$
+\end_inset
+
+ (no negative values as it’s a sum of squares).
+\end_layout
+
+\begin_layout Itemize
+Shape depends on degrees of freedom:
+\begin_inset Newline newline
+\end_inset
+
+ With low df the distribution is highly skewed right (a long tail to the right).
+ 
+\begin_inset Newline newline
+\end_inset
+
+As df increases the distribution becomes more bell-shaped and approaches symmetry.
+\end_layout
+
+\begin_layout Itemize
+Mean and variance:
+ 
+\begin_inset Newline newline
+\end_inset
+
+The mean of a 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ distribution is equal to its degrees of freedom and the variance is twice the degrees of freedom.
+ 
+\begin_inset Newline newline
+\end_inset
+
+For example,
+ a 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ ² with df = 6 has mean 6 and variance 12.
+\end_layout
+
+\begin_layout Itemize
+Relation to normal distribution:
+\begin_inset Newline newline
+\end_inset
+
+ A chi-square distribution with a large df (say df ≥ 30) is approximately normal.
+\begin_inset Newline newline
+\end_inset
+
+ In fact as df increases the 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ probability density function begins to look symmetric like the normal curve.
+\end_layout
+
+\begin_layout Standard
+These properties mean that small 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ values cluster near zero and large values are rarer (in the right tail).
+\end_layout
+
+\begin_layout Standard
+This characteristic is what makes the chi-square distribution useful for hypothesis testing.
+ We use it to quantify how far our observed data deviate from expectation.
+\end_layout
+
+\begin_layout Standard
+In practice chi-square statistics often measure the discrepancy between observed data and what we expect under some hypothesis.
+\end_layout
+
+\begin_layout Standard
+If the chi-square statistic is small it suggests that the observed data are close to what was expected.
+ If it’s large it means there’s a big gap between observation and expectation so large 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ values often indicate that the observed pattern is unlikely to be due to random chance under the null hypothesis.
+\end_layout
+
+\begin_layout Section
+Why Is Chi-Square Important in Six Sigma?
+\end_layout
+
+\begin_layout Standard
+Six Sigma projects focus on reducing defects and variability.
+ 
+\end_layout
+
+\begin_layout Standard
+While many Six Sigma analyses involve means and the normal distribution practitioners also need to understand variability and categorical data relationships.
+\end_layout
+
+\begin_layout Standard
+The chi-square distribution is central to several hypothesis tests that Six Sigma teams use to analyze variation and categorical factors in the Analyze phase (and sometimes in Measure/Improve phases).
+ 
+\end_layout
+
+\begin_layout Standard
+Usually the goal of the Six Sigma team is to find the level of variation of the output,
+ not just the mean.
+\end_layout
+
+\begin_layout Standard
+Chi-square tests help in this pursuit by enabling you to:
+\end_layout
+
+\begin_layout Itemize
+Evaluate process variance:
+\begin_inset Newline newline
+\end_inset
+
+ The chi-square is the distribution used to test a population variance or standard deviation against a target or baseline.
+ 
+\begin_inset Newline newline
+\end_inset
+
+For example,
+ you might verify in the Measure phase that a process’s variance is within an acceptable range or in the Improve phase that an improvement initiative significantly reduced variability.
+ (This is done via the chi-square test for a single variance described later.)
+\end_layout
+
+\begin_layout Itemize
+Assess distribution fit:
+ 
+\begin_inset Newline newline
+\end_inset
+
+Six Sigma often assumes normality for process metrics but what if the data are not normal?
+ 
+\begin_inset Newline newline
+\end_inset
+
+A chi-square goodness-of-fit test can check if your data follow a particular distribution (e.g.,
+ normal,
+ Poisson,
+ etc.).
+\begin_inset Newline newline
+\end_inset
+
+ This could occur in Measure/Analyze when you need to validate distribution assumptions for capability analysis or determine if a count of defects fits a Poisson model.
+\end_layout
+
+\begin_layout Itemize
+Test for independence (association):
+\begin_inset Newline newline
+\end_inset
+
+ In Analyze you may need to determine whether two categorical factors are related.
+\begin_inset Newline newline
+\end_inset
+
+ For example,
+ are defect types independent of the machine or shift?
+ 
+\begin_inset Newline newline
+\end_inset
+
+A chi-square test of independence can reveal whether there is a statistically significant association between two categorical variables (e.g.,
+ factor and defect occurrence) which can help to pinpoint root causes.
+ If the test shows dependence you’ve found a clue on where to focus improvements.
+\end_layout
+
+\begin_layout Itemize
+Analyze frequency counts and proportions:
+\begin_inset Newline newline
+\end_inset
+
+ Chi-square tests handle data in frequency form (counts in categories).
+ 
+\begin_inset Newline newline
+\end_inset
+
+This is common in survey data or whenever outcomes are classified into categories.
+ 
+\begin_inset Newline newline
+\end_inset
+
+For instance a Six Sigma team might survey customers about preferences (categorical responses) or classify defect reasons into categories:
+\begin_inset Newline newline
+\end_inset
+
+ chi-square analysis can determine if those frequencies differ from expectations or differ across groups.
+\end_layout
+
+\begin_layout Standard
+In summary the chi-square distribution underpins tools for variation analysis and categorical data analysis in Six Sigma.
+\end_layout
+
+\begin_layout Standard
+It is especially relevant during Analyze (hypothesis testing for root cause analysis) but also appears in Measure (for baseline distribution checks or variance tests) and Improve (to confirm changes in variation).
+\end_layout
+
+\begin_layout Standard
+Knowing when and how to use chi-square tests during DMAIC ensures you select the right tool for questions about variability or categorical factors.
+\end_layout
+
+\begin_layout Section
+History of Chi-Square
+\end_layout
+
+\begin_layout Standard
+Karl Pearson (1857 to 1936) founded the first statistics department in the world at University College London) and came up with the Chi-Square distribution.
+ 
+\end_layout
+
+\begin_layout Standard
+Pearson’s work in statistics began when he developed a mathematical method for studying the process of heredity and evolution.
+ 
+\end_layout
+
+\begin_layout Standard
+Later the Chi-Square distribution came about as Pearson tried to find a measure of the goodness of fit of other distributions to random variables in his heredity model.
+\end_layout
+
+\begin_layout Section
+Chi-Square Statistic
+\end_layout
+
+\begin_layout Standard
+A Chi-Square distribution may skew to the right or with a long tail toward the significant values of the distribution.
+ 
+\end_layout
+
+\begin_layout Standard
+The overall shape of the distribution will depend on the number of degrees of freedom in a given problem.
+ 
+\end_layout
+
+\begin_layout Standard
+The degree of freedom is one less than the sample size.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+alignment center
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Chisquare4.png
+	scale 120
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Degrees Of Freedom Examples
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Chi-Square Properties
+\end_layout
+
+\begin_layout Standard
+The mean of the distribution is equal to the number of degrees of freedom:
+ 
+\begin_inset Formula $μ=ϑ$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The variance equals two times the number of degrees of freedom:
+ 
+\begin_inset Formula $σ^{2}=2*ϑ$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+When the degrees of freedom are greater than or equal to 2,
+ the maximum value for Y occurs when 
+\begin_inset Formula $χ^{2}=ϑ-2$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As the degrees of freedom increase the Chi-Square curve approaches a normal distribution and the symmetry of the graph also increases.
+\end_layout
+
+\begin_layout Standard
+Finally the distribution may be skewed to the right and as the random variable it is based on is squared it has no negative values.
+ 
+\end_layout
+
+\begin_layout Standard
+As the degrees of freedom increase the probability density function begins to appear symmetrical.
+\end_layout
+
+\begin_layout Standard
+The formula for the probability density function of the Chi-Square distribution is:
+\begin_inset Formula 
+\begin{eqnarray}
+f\left(x\right) & = & \frac{e^{-\frac{x}{2}}\frac{\vartheta}{x^{2}}-1}{2^{\frac{\vartheta}{2}}\Gamma\left(\frac{\delta}{2}\right)}\,\,\,for\,x\geq0
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $ϑ$
+\end_inset
+
+ is the shape parameter and 
+\begin_inset Formula $Γ$
+\end_inset
+
+ is the gamma function.
+\end_layout
+
+\begin_layout Standard
+The formula for the gamma function is:
+\begin_inset Formula 
+\begin{eqnarray}
+\varGamma\left(a\right) & = & \int^{\infty}_{0}e^{a-1}e^{-t}dt
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Chi-Square Hypothesis Test
+\end_layout
+
+\begin_layout Standard
+Usually the goal of the Six Sigma team is to find the level of variation of the output,
+ not just the mean of the population.
+\end_layout
+
+\begin_layout Standard
+Above all the team would like to know how much variation the production process shows about the target to see what changes are needed to reach a process free of defects.
+\end_layout
+
+\begin_layout Standard
+For a comparison between several sample variances or a comparison between frequency proportions the standard test statistic called the Chi-Square 
+\begin_inset Formula $χ^{2}$
+\end_inset
+
+ test will be used.
+ 
+\end_layout
+
+\begin_layout Standard
+So,
+ the distribution of the Chi-Square statistic is called the Chi-Square distribution.
+\end_layout
+
+\begin_layout Section
+Types of Chi-Square Hypothesis Tests
+\end_layout
+
+\begin_layout Standard
+The Chi-Square test is best suited for:
+\end_layout
+
+\begin_layout Description
+Case
+\begin_inset space ~
+\end_inset
+
+I:
+ Testing whether a sample’s variance matches a known population variance (Chi-Square test for a single variance).
+\end_layout
+
+\begin_layout Description
+Case
+\begin_inset space ~
+\end_inset
+
+II:
+ Testing whether observed frequencies differ significantly from expected frequencies,
+ as in tests of independence or goodness-of-fit with categorical data.
+\end_layout
+
+\begin_layout Standard
+I’ll give an overview of each below and link to pages where you can find more information on exactly how to perform both.
+\end_layout
+
+\begin_layout Standard
+A hypothesis test is used to assess claims about a population parameter.
+\end_layout
+
+\begin_layout Standard
+Whether or not the test is one-tailed or two-tailed depends on the direction of the alternative hypothesis.
+\end_layout
+
+\begin_layout Itemize
+A one-tailed test checks whether a parameter is significantly greater than or less than a certain value (rejection area in one tail).
+\end_layout
+
+\begin_layout Itemize
+A two-tailed test checks whether a parameter is different from the hypothesized value (rejection areas in both tails).
+\end_layout
+
+\begin_layout Standard
+The Chi-square test is commonly used for:
+\end_layout
+
+\begin_layout Itemize
+Goodness-of-fit tests.
+\end_layout
+
+\begin_layout Itemize
+Tests of independence.
+\end_layout
+
+\begin_layout Itemize
+Tests for a single population variance.
+\end_layout
+
+\begin_layout Itemize
+Key characteristics of the Chi-square distribution:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+It is non-negative (values ≥ 0).
+\end_layout
+
+\begin_layout Itemize
+It is not symmetric it is right-skewed.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The shape depends on the degrees of freedom (df)
+\end_layout
+
+\begin_layout Itemize
+For a variance test:
+ 
+\begin_inset Formula $df=n−1df=n–1df=n−1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Important distinction:
+\end_layout
+
+\begin_layout Standard
+When testing frequency data (e.g.,
+ for independence or goodness-of-fit) you do not need the population variance.
+\end_layout
+
+\begin_layout Standard
+When testing frequency data (e.g.,
+ for independence or goodness-of-fit),
+ you do not need the population variance.
+\end_layout
+
+\begin_layout Standard
+When testing a single variance you must know the population variance to form your null hypothesis.
+\end_layout
+
+\begin_layout Section
+Right-Tailed vs.
+ Left-Tailed vs.
+ Two-Tailed Chi-Square Tests
+\end_layout
+
+\begin_layout Standard
+Most chi-square hypothesis tests are naturally one-tailed but it’s important to understand which tail (right or left) is being used.
+ 
+\end_layout
+
+\begin_layout Standard
+The chi-square distribution is not symmetric and is typically right-skewed so the “tail” refers to the upper end (right tail) or lower end (left tail) of the distribution curve.
+\end_layout
+
+\begin_layout Standard
+Left-tailed vs.
+ right-tailed regions in a χ² distribution (SixSigmaStudyGuide.com).
+ In a right-tailed test,
+ large χ² values (far right) indicate significance.
+ In a left-tailed test,
+ very small χ² values (far left) indicate significance.
+\end_layout
+
+\begin_layout Itemize
+Right-Tailed Tests:
+\begin_inset Newline newline
+\end_inset
+
+ By far the most common case.
+ Goodness-of-fit and independence tests are almost always right-tailed.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Why?
+ Because the test statistic in these cases is 
+\begin_inset Formula $χ²=Σ(O−E)²/E$
+\end_inset
+
+ which is always positive.
+\begin_inset Newline newline
+\end_inset
+
+ The greater the discrepancy between Observed (O) and Expected (E) frequencies the larger 
+\begin_inset Formula $χ²$
+\end_inset
+
+ becomes pushing it into the right tail of the distribution.
+\begin_inset Newline newline
+\end_inset
+
+ If the 
+\begin_inset Formula $χ²$
+\end_inset
+
+ value is extremely large (beyond a critical value in the right tail) it indicates that the observed frequencies deviate significantly from expectations and we reject the null hypothesis.
+\begin_inset Newline newline
+\end_inset
+
+ In other words,
+ these tests only have one rejection region on the high side of the χ² curve.
+\end_layout
+
+\begin_layout Itemize
+Left-Tailed Tests:
+\begin_inset Newline newline
+\end_inset
+
+These are rare for chi-square but do occur in specific scenarios,
+ particularly the chi-square test for a single variance when you want to see if a variance is significantly smaller than a target value.
+\begin_inset Newline newline
+\end_inset
+
+In a left-tailed 
+\begin_inset Formula $χ²$
+\end_inset
+
+ test the rejection region is in the left tail (low values) of the distribution.
+\begin_inset Newline newline
+\end_inset
+
+ A small 
+\begin_inset Formula $χ²$
+\end_inset
+
+ statistic indicates observed variance is much lower than expected.
+ 
+\begin_inset Newline newline
+\end_inset
+
+For example,
+ if you hypothesize that a new process’s variance is less than the old variance you’d use a left-tailed test (lower variance yields a smaller 
+\begin_inset Formula $χ²$
+\end_inset
+
+ value).
+\begin_inset Newline newline
+\end_inset
+
+ If the test statistic falls below a critical value near the left tail then reject the null and conclude the variance is significantly lower.
+ (We’ll see an example with queue wait times shortly.)
+\end_layout
+
+\begin_layout Itemize
+Two-Tailed Tests:
+\begin_inset Newline newline
+\end_inset
+
+ There is no built-in two-tailed version of the chi-square in the way we have for Z or t (because χ² ≥ 0 only).
+\begin_inset Newline newline
+\end_inset
+
+ However,
+ you can conduct a two-tailed test on variance by splitting α into both tails of the 
+\begin_inset Formula $χ²$
+\end_inset
+
+ distribution.
+ 
+\begin_inset Newline newline
+\end_inset
+
+This is used if you want to detect any significant difference (either increase or decrease) in variance.
+\begin_inset Newline newline
+\end_inset
+
+ In practice,
+ a two-tailed chi-square test for variance means you have two critical values:
+\begin_inset Newline newline
+\end_inset
+
+ one in the right tail and one in the left tail.
+ 
+\begin_inset Newline newline
+\end_inset
+
+You would reject the null hypothesis if the 
+\begin_inset Formula $χ²$
+\end_inset
+
+ statistic is either too high (above the upper critical value) or too low (below the lower critical value).
+ 
+\begin_inset Newline newline
+\end_inset
+
+Two-tailed chi-square tests are less common in Six Sigma because usually one is checking either for an increase or a decrease in variation not just any change.
+ But it’s conceptually similar to two-tailed tests elsewhere.
+ You’re defining an extreme region on both ends of the distribution.
+\end_layout
+
+\begin_layout Standard
+Selecting the Correct Tail:
+\end_layout
+
+\begin_layout Standard
+A common mistake is confusing which tail to use.
+\begin_inset Newline newline
+\end_inset
+
+ Remember that for goodness-of-fit and independence tests you always use the right tail:
+\end_layout
+
+\begin_layout Standard
+a large 
+\begin_inset Formula $χ²$
+\end_inset
+
+ is the signal that the observed data don’t match the null hypothesis expectation.
+\end_layout
+
+\begin_layout Standard
+For variance tests it depends on your alternative hypothesis:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H₁:σ²>σ₀²$
+\end_inset
+
+ (looking for greater variability):
+ use a right-tailed test.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H₁:σ²<σ₀²$
+\end_inset
+
+ (looking for reduced variability):
+ use a left-tailed test.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H₁:σ²≠σ₀²$
+\end_inset
+
+ (any difference):
+ use a two-tailed approach (both tails).
+\end_layout
+
+\begin_layout Standard
+In the sections below we’ll highlight the tail for each type of test.
+ We’ll also discuss how to find the correct critical values from a chi-square table for each case in a later section.
+\end_layout
+
+\begin_layout Section
+Chi-Square Goodness-of-Fit Test
+\end_layout
+
+\begin_layout Standard
+A chi-square goodness-of-fit (GOF) test checks how well an observed categorical data distribution fits an expected distribution.
+ 
+\end_layout
+
+\begin_layout Standard
+In other words it tests whether or not the frequencies observed in different categories match some hypothesized frequencies.
+\end_layout
+
+\begin_layout Standard
+This is useful when you have one categorical variable and a theory or historical data about what the distribution of that variable should be.
+ 
+\end_layout
+
+\begin_layout Standard
+For example,
+ you might want to verify if defect occurrences follow a Poisson distribution or if customer preferences are evenly distributed among choices.
+ 
+\end_layout
+
+\begin_layout Standard
+The chi-square GOF test is a non-parametric test (no assumption of normality;
+ it deals directly with category counts) (see the chi-square goodness of fit test).
+\end_layout
+
+\begin_layout Subsection
+When to use:
+\end_layout
+
+\begin_layout Standard
+Use a GOF test in Six Sigma during Measure or Analyze when you need to validate distributional assumptions.
+\end_layout
+
+\begin_layout Standard
+For instance,
+ if you assume defects per hour follow a Poisson distribution then a GOF test can confirm or refute that.
+ 
+\end_layout
+
+\begin_layout Standard
+Or if historical data suggest a certain proportional breakdown of defect causes you can test if current data still fits that pattern.
+ This helps ensure that you’re using the correct statistical models and can reveal changes in process behavior.
+\end_layout
+
+\begin_layout Subsection
+Hypotheses
+\end_layout
+
+\begin_layout Standard
+Typically,
+ for a goodness-of-fit test:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H₀$
+\end_inset
+
+ (null hypothesis):
+ 
+\begin_inset Newline newline
+\end_inset
+
+The observed distribution fits the expected distribution.
+ (No significant difference between observed and expected frequencies.)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H₁$
+\end_inset
+
+ (alternative hypothesis):
+ 
+\begin_inset Newline newline
+\end_inset
+
+The observed distribution does not fit the expected distribution (at least one category’s frequency is significantly different from expected).
+\end_layout
+
+\begin_layout Standard
+In plain terms,
+ 
+\begin_inset Formula $H₀$
+\end_inset
+
+ assumes that any differences between observed and expected counts are just due to random chance,
+ while 
+\begin_inset Formula $H₁$
+\end_inset
+
+ asserts that the differences are too large to be random thereby indicating that the distribution has changed or the assumption was wrong.
+\end_layout
+
+\begin_layout Subsection
+Assumptions
+\end_layout
+
+\begin_layout Standard
+Each observation falls into one of the categories and you have a sufficiently large sample such that expected counts in each category aren’t too low.
+ 
+\end_layout
+
+\begin_layout Standard
+A common rule of thumb is that expected counts should be at least 5 in each category (or if that’s not possible,
+ no more than 20% of categories have expected < 5) (see the chi-square goodness of fit test).
+ 
+\end_layout
+
+\begin_layout Standard
+If expected frequencies are very small,
+ the chi-square approximation may not be accurate (you might need to combine categories or use an exact test).
+\end_layout
+
+\end_body
+\end_document
