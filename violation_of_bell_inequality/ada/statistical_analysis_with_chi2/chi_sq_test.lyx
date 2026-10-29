@@ -543,8 +543,7 @@ The Core Hardware Calibration Constants
 \end_layout
 
 \begin_layout Standard
-To simulate or parse this run inside an Ada program using  Kolmogorov discrete probability metrics,
- you need the exact experimental efficiency boundaries recorded by their "pile-of-plates" polarizers.
+To simulate or parse this run inside an Ada program using Kolmogorov discrete probability metrics the exact experimental efficiency boundaries recorded by their "pile-of-plates" polarizers needs to be recorded.
 \end_layout
 
 \begin_layout Itemize

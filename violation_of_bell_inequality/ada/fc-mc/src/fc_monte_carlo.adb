@@ -53,7 +53,7 @@ begin
       for Pair in 1 .. Num_Pairs loop
          --  1. QUANTUM MECHANICAL MODEL (Wave-function collapse)
          --  Generate random uniform initial polarization from [0, 2*Pi)
-         Pol_1 :=  QM_Expectation (Random (Gen));
+         Pol_1 :=  2.0 * Random (Gen) + Pi;
          --  Photon 1 interacts with Analyzer 1 (set at 0 rad)
          --  using Malus's Law
          Passed_1_QM := Random (Gen) < QM_Expectation (Pol_1);
