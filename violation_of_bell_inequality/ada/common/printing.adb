@@ -54,6 +54,39 @@ package body Printing is
 
    --  ------------------------------------------------------------------------
 
+   procedure Print_Float_Array (Name  : String; Data : Float_Array;
+                               Start : Positive := 1; Finish : Natural := 0) is
+      use Ada.Float_Text_IO;
+      Last  : Positive;
+      Count : Integer := 1;
+   begin
+      if Finish > 0 then
+         Last := Finish;
+      else
+         Last := Data'Length;
+      end if;
+
+      Put_Line (Name & ": ");
+      if Start >= Data'First and then Last <= Data'Last then
+         for Index in Start .. Last loop
+            Ada.Float_Text_IO.Put (Data (Index), 4, 0);
+            Put ("  ");
+            Count := Count + 1;
+            if Count > 10 then
+               New_Line;
+               Count := 1;
+            end if;
+         end loop;
+      else
+         Put_Line
+           ("Print_Float_Array called with invalid start or finish index:");
+      end if;
+      New_Line;
+
+   end Print_Float_Array;
+
+   --  ------------------------------------------------------------------
+
    procedure Print_Float_2 (Message_1 : String; Data_1 : Float;
       Message_2 : String; Data_2 : Float;
       Aft : Natural := 3; Exp : Integer := 0) is

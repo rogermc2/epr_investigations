@@ -7,6 +7,8 @@ package Printing is
                                Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Float (Message : String; Data : Float;
     Aft : Natural := 3; Exp : Integer := 0);
+   procedure Print_Float_Array (Name  : String; Data : Float_Array;
+                               Start : Positive := 1; Finish : Natural := 0);
    procedure Print_Float_2 (Message_1 : String; Data_1 : Float;
       Message_2 : String; Data_2 : Float;
       Aft : Natural := 3; Exp : Integer := 0);
