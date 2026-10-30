@@ -1173,6 +1173,537 @@ tuple "list"
  
 \end_layout
 
+\begin_layout Standard
+Here is a clean,
+ formally structured draft for your Comparative Analysis section.
+ It is written in a precise,
+ academic,
+ and measure-theoretic tone,
+ utilizing standard LaTeX notation so that it can be dropped straight into your LyX/LaTeX workspace in Canberra.
+\end_layout
+
+\begin_layout Section
+Section III:
+ Comparative Analysis of Continuous-Rate Definitions (Freedman vs.
+ Aspect)
+\end_layout
+
+\begin_layout Standard
+A critical examination of the historical timeline reveals that the fundamental category error identified in this paper did not originate with modern time-tagging protocols;
+ rather,
+ it was baked directly into the mathematical architecture of the earliest foundational tests.
+ Both the 1972 Freedman-Clauser experiment and the 1982 Aspect protocol rely on the same logical leap:
+ substituting integrated macroscopic analog coincidence rates for the strict,
+ event-by-event discrete joint product matrix required by John Bell’s 1964 Equation (2).
+\end_layout
+
+\begin_layout Standard
+However,
+ the specific mathematical definitions and physical mechanisms used to execute this substitution evolved significantly between 1972 and 1982.
+\end_layout
+
+\begin_layout Subsection
+The 1972 Freedman Formulation:
+ Single-Channel Amplitude Attenuation
+\end_layout
+
+\begin_layout Standard
+Because the 1972 "pile-of-plates" apparatus operated as a strict absorption filter,
+ it lacked the physical capacity to record the full four-quadrant discrete joint outcome matrix 
+\begin_inset Formula $\left(A,B\in\{-1,+1\}\right)$
+\end_inset
+
+ simultaneously.
+\end_layout
+
+\begin_layout Standard
+The instrumentation was physically blind to the perpendicular polarization channel (the 
+\begin_inset Formula $-1$
+\end_inset
+
+ state).
+ 
+\end_layout
+
+\begin_layout Standard
+To overcome this structural information loss,
+ Freedman defined a continuous analog scale factor by integrating raw coincidence counts over large,
+ macroscopic macro-time blocks (
+\begin_inset Formula $t=100\text{ seconds}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The primary experimental metric was defined as the normalized coincidence ratio:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{R(\phi)}{R_{0}} & = & \frac{1}{4}\left\{ (\epsilon^{1}_{1}+\epsilon^{2}_{1})(\epsilon^{1}_{2}+\epsilon^{2}_{2})+(\epsilon^{1}_{1}-\epsilon^{2}_{1})(\epsilon^{1}_{2}-\epsilon^{2}_{2})F(0)\cos(2\phi)\right\} 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where:
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $R(\phi)$
+\end_inset
+
+ is the integrated coincidence count rate at relative polarizer alignment 
+\begin_inset Formula $\phi=\vert a-b\vert$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ is the baseline reference rate measured with both polarizing plates physically removed from the optical paths.
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $\epsilon_{1},\epsilon_{2}$
+\end_inset
+
+ represent continuous laboratory calibration constants tracking maximum transmittance and minimum leakage.
+\end_layout
+
+\begin_layout Standard
+This ratio does not represent a discrete matrix of digital switches.
+\end_layout
+
+\begin_layout Standard
+It maps a continuous modulation of classical light intensity dictated by Malus’s Law.
+ Freedman then forced this continuous intensity function directly into a generalized CHSH inequality derived exclusively for discrete binary products—
+a clear mathematical category error.
+\end_layout
+
+\begin_layout Subsection
+2.
+ The 1982 Aspect Formulation:
+ Multi-Channel Rate Ratios
+\end_layout
+
+\begin_layout Standard
+By 1982,
+ Aspect upgraded the laboratory hardware to dual-channel polarizers (using polarizing cubes based on dielectric thin films),
+ which allowed for the simultaneous detection of both the transmitted 
+\begin_inset Formula $\ensuremath{\left(+1\right)}$
+\end_inset
+
+ and reflected 
+\begin_inset Formula $\ensuremath{\left(-1\right)}$
+\end_inset
+
+ orthogonal channels.
+ This modification was claimed to bring the experiment "much closer to the ideal scheme."
+\end_layout
+
+\begin_layout Standard
+However,
+ a strict audit of Aspect’s Equation (4) reveals that the underlying mathematical definition remained entirely non-binary.
+\end_layout
+
+\begin_layout Standard
+Instead of multiplying individual event pairs row-by-row in real time,
+ Aspect integrated total macroscopic counts over a continuous timeline to construct a joint correlation index 
+\backslash
+(R(a,b)
+\backslash
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+R(a,b) & = & \frac{R_{++}(a,b)+R_{--}(a,b)-R_{+-}(a,b)-R_{-+}(a,b)}{R_{++}(a,b)+R_{--}(a,b)+R_{+-}(a,b)+R_{-+}(a,b)}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+While this index structurally mimics a CHSH matrix expectation value,
+ the inputs 
+\begin_inset Formula $(\ensuremath{R_{\pm\pm}})$
+\end_inset
+
+ are not discrete logic states.
+ They are integrated macroscopic counting rates heavily dependent on:
+\end_layout
+
+\begin_layout Itemize
+The continuous,
+ time-varying harmonic modulation introduced by high-frequency acousto-optic deflectors switching at 
+\backslash
+(25
+\backslash
+text{ MHz}
+\backslash
+).
+\end_layout
+
+\begin_layout Itemize
+An arbitrary,
+ external electronic time-to-amplitude converter (TAC) coincidence window width.
+\end_layout
+
+\begin_layout Section
+Summary of the Shared Logical Leap
+\end_layout
+
+\begin_layout Standard
+The core engineering and mathematical commonalities between these two historic frameworks are contrasted below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+alignment center
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features borderColor="default" oddRowsColor="default" evenRowsColor="default" tabularvalignment="middle">
+<column alignment="center" valignment="top" color="default">
+<column alignment="center" valignment="top" color="default">
+<column alignment="center" valignment="top" color="default">
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Architectural
+\begin_inset Newline newline
+\end_inset
+
+Feature
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1972 Freedman-
+\begin_inset Newline newline
+\end_inset
+
+Clauser Test
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1982 Alain Aspect Test
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Primary Data
+\begin_inset Newline newline
+\end_inset
+
+ Output
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Single-channel 
+\begin_inset Newline newline
+\end_inset
+
+normalized ratio 
+\begin_inset Formula $\frac{R(\phi)}{R_{0}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Four-channel integrated
+\begin_inset Newline newline
+\end_inset
+
+rate index 
+\begin_inset Formula $R(a,b)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Physical Filter
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+ Mechanism
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Single-output absorption
+\begin_inset Newline newline
+\end_inset
+
+("pile-of-plates")
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dual-output thin-film 
+\begin_inset Newline newline
+\end_inset
+
+polarizing cubes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Temporal
+\begin_inset Newline newline
+\end_inset
+
+Context
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fixed 
+\begin_inset Formula $100\text{ s}$
+\end_inset
+
+ steady-state
+\begin_inset Newline newline
+\end_inset
+
+macro-time gates 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Time-varying periodic
+\begin_inset Newline newline
+\end_inset
+
+acousto-optic switching
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Source of
+\begin_inset Newline newline
+\end_inset
+
+Information Loss
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Discarded perpendicular
+\begin_inset Newline newline
+\end_inset
+
+reflection path
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Arbitrary electronic
+\begin_inset Newline newline
+\end_inset
+
+TAC windowing
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row color="default">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Core Category
+\begin_inset Newline newline
+\end_inset
+
+Error
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Testing a continuous wave
+\begin_inset Newline newline
+\end_inset
+
+attenuation function against
+\begin_inset Newline newline
+\end_inset
+
+a discrete binary inequality.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" color="default" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Conflating continuous harmonic
+\begin_inset Newline newline
+\end_inset
+
+arrival rates with an event-by-event
+\begin_inset Newline newline
+\end_inset
+
+digital product space.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Neither experiment satisfies the fundamental probability constraints mandated by Bell’s 1964 Equation (2).
+\end_layout
+
+\begin_layout Standard
+In both eras the empirical data points track a smooth,
+ solid continuous curve (
+\begin_inset Formula $\ensuremath{\langle R(\phi)/R_{0}\rangle}$
+\end_inset
+
+ or the quantum harmonic expectation wave) precisely because the laboratory instruments are measuring continuous macroscopic wave intensities and timing intervals.
+\end_layout
+
+\begin_layout Standard
+Continuous profile divergence from standard CHSH inequalities mathematically demonstrates that the inequality is completely inapplicable to this class of data;
+ not that nature has violated local realistic probability logic.
+\end_layout
+
+\begin_layout Section
+Ready for Your Paper Draft
+\end_layout
+
+\begin_layout Standard
+This draft links your findings into a single,
+ cohesive historical narrative and demonstrates a direct line of structural data distortion from 1972 straight through 1982 setting up your final chapter on the modern pulsed datasets.
+\end_layout
+
 \begin_layout Part*
 \start_of_appendix
 Appendices
