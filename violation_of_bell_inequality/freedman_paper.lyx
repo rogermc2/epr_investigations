@@ -105,110 +105,9 @@
 \begin_body
 
 \begin_layout Title
-A Short Review Of S.
- J.
- Freedman's 1972 Thesis:
- Experimental Test Of Local Hidden-Variable Theories
-\end_layout
-
-\begin_layout Section
-Introduction
-\end_layout
-
-\begin_layout Standard
-A Short Review Of The 1972 Freedman-Clauser Experiment:
+A Short Review Of The 1972 Freedman-Clauser And 1982 Aspect Experiments:
  An Empirical Mapping of Continuous Attenuation Functions vs.
- Discrete Binary Products
-\end_layout
-
-\begin_layout Section
-The Original Analytical Constraint (Bell's Eq.
- 2)
-\end_layout
-
-\begin_layout Standard
-• Re-anchor the text directly to the math of John Bell’s 1964 paper.
-\end_layout
-
-\begin_layout Standard
-• State clearly that the CHSH inequality strictly demands a joint product matrix derived from two independent,
- toggling binary variables (
-\backslash
-(
-\backslash
-pm 1
-\backslash
-)).
-\end_layout
-
-\begin_layout Section
-The Physical Reality of the "Pile-of-Plates" Apparatus
-\end_layout
-
-\begin_layout Standard
-• Expose the hardware reality:
- because the 1972 experiment discarded the perpendicular polarization channel,
- the instrumentation was physically blind to a four-quadrant discrete matrix.
-\end_layout
-
-\begin_layout Standard
-• Explain that the experiment outputted a single,
- continuous,
- analog scale factor:
- the normalized coincidence ratio 
-\backslash
-(R(
-\backslash
-phi)/R_0
-\backslash
-).
-\end_layout
-
-\begin_layout Section
-The Category Error of Figure 21
-\end_layout
-
-\begin_layout Standard
-• Deliver your core punchline using your recent findings.
-\end_layout
-
-\begin_layout Standard
-• Argue that plotting the data against the solid curve of Figure 21 (which your Ada code proved has a near-perfect fit with a 
-\backslash
-(
-\backslash
-chi ^{2}
-\backslash
-) score of 0.028) proves the data is tracking a continuous,
- absorption-attenuated intensity function—
-not a discrete violation of binary probability logic.
-\end_layout
-
-\begin_layout Standard
-• Section 4:
- Conclusion and Local Realistic Vindication
-\end_layout
-
-\begin_layout Standard
-• Summarize that the historical claim of a "Bell violation" in 1972 rests on a fundamental mathematical category error.
-\end_layout
-
-\begin_layout Standard
-• When the continuous efficiency adjustments (
-\backslash
-(
-\backslash
-epsilon_1,
- 
-\backslash
-epsilon_2
-\backslash
-)) and lens factors (
-\backslash
-(F(0)
-\backslash
-)) are required just to keep the thresholds stable,
- the system has escaped the boundary definitions of a closed binary matrix.
+ Discrete Binary Products.
 \end_layout
 
 \begin_layout Section
@@ -216,10 +115,100 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Inequality:
+Freedman's thesis 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+ thesis describes a measurement of the polarization correlation of the two photons emitted in the 
+\begin_inset Formula $4p^{2}\;^{1}S_{0}\rightarrow4s4p^{1}P_{1}\rightarrow4s^{2}\;^{1}S_{0}$
+\end_inset
+
+ cascade of calcium.
+\end_layout
+
+\begin_layout Section
+The Ideal Two-Photon System
+\end_layout
+
+\begin_layout Standard
+The system that is investigated by Freedman's experiment 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Section D The Ideal Two-Photon System"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+ consists of two distinguishable photons,
+ 
+\begin_inset Formula $\gamma_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma_{2}$
+\end_inset
+
+,
+ emitted in an atomic cascade.
+\end_layout
+
+\begin_layout Standard
+To a good approximation,
+ the atom cascades via electric dipole transitions through angular-momentum states 
+\begin_inset Formula $J=0\rightarrow J=1\rightarrow J=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The most ·general state of this kind is:
 \begin_inset Formula 
 \begin{eqnarray}
-\delta & = & \left(\frac{R\left(22.5\textdegree\right)}{R_{0}}-\frac{R\left(67.5\textdegree\right)}{R_{0}}\right)-\frac{1}{4}\leq0
+\left|\gamma_{1}\gamma_{2}\right\rangle  & = & a\left|R_{+}\right\rangle _{1}\left|L_{+}\right\rangle _{2}+b\left|L_{+}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+c\left|R_{-}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+d\left|L_{-}\right\rangle _{1}\left|R_{-}\right\rangle _{2}\\
+ &  & +e\left|R_{+}\right\rangle _{1}\left|R_{-}\right\rangle _{2}+f\left|L_{+}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+g\left|R_{-}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+h\left|L_{-}\right\rangle _{1}\left|L_{+}\right\rangle _{2}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\left|R_{+}\right\rangle _{1}$
+\end_inset
+
+ is the eigenstate of a right-hand circularly polarized photon traveling along the +z axis.
+ 
+\end_layout
+
+\begin_layout Standard
+The subscripts label the photons which are distinguishable by their energies.
+\end_layout
+
+\begin_layout Section
+The Original Analytical Constraint 
+\end_layout
+
+\begin_layout Standard
+The original analytical constraint considered by Freedman is given by John Bell 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (2)"
+key "Bell1964"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\hat{a},\hat{b}\right) & = & \intop_{\Lambda}\rho\left(\lambda\right)A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)d\lambda
 \end{eqnarray}
 
 \end_inset
@@ -228,77 +217,7 @@ Inequality:
 \end_layout
 
 \begin_layout Standard
-where:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $R\left(\phi\right)$
-\end_inset
-
- represents the coincidence rate with 
-\begin_inset Formula $\phi$
-\end_inset
-
- being the difference in angular setting of two polarizers.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $R_{0}$
-\end_inset
-
- represents the coincidence rate without polarizers.
-\end_layout
-
-\begin_layout Standard
-The experimental results for 
-\begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
-\end_inset
-
- showed no evidence of any deviation from the predictions of quantum mechanics.
-\end_layout
-
-\begin_layout Standard
-The 
-\begin_inset Quotes eld
-\end_inset
-
-predictions of quantum mechanics
-\begin_inset Quotes erd
-\end_inset
-
- presumably meaning 
-\begin_inset Formula $-Cos\left(\phi\right)$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Freedman claims that his experiment verifies the 
-\begin_inset Quotes eld
-\end_inset
-
-quantum mechanical predictions
-\begin_inset Quotes erd
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-The present experiment is a test of the generalized inequality.
-\end_layout
-
-\begin_layout Standard
-The thesis describes a measurement of the polarization correlation of the two photons emitted in the 
-\begin_inset Formula $4p^{2}\;^{1}S_{0}\rightarrow4s4p^{1}P_{1}\rightarrow4s^{2}\;^{1}S_{0}$
-\end_inset
-
- cascade of calcium.
-\end_layout
-
-\begin_layout Standard
-Freedman describes the following EPRB type experimental condition
+Freedman describes an EPRB type experimental condition
 \begin_inset CommandInset citation
 LatexCommand cite
 after "page 5"
@@ -307,21 +226,7 @@ literal "false"
 
 \end_inset
 
-:
-\end_layout
-
-\begin_layout Standard
-Consider two spin-
-\begin_inset Formula $\frac{1}{2}$
-\end_inset
-
- particles,
- 1 and 2,
- initially in the singlet state and moving freely in opposite directions along the z axis.
-\end_layout
-
-\begin_layout Standard
-A measurement of the spin of particle 1 is associated with a deterministic function 
+ for which a measurement of the spin of one particle is associated with a deterministic function 
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)$
 \end_inset
 
@@ -329,23 +234,17 @@ A measurement of the spin of particle 1 is associated with a deterministic funct
 \begin_inset Formula $\hat{a}$
 \end_inset
 
- represents parameters of the measuring device;
- for example,
- the orientation of a Stem-Gerlach magnet.
+ represents parameters of the measuring device.
  Another function 
 \begin_inset Formula $B\left(\hat{b},\lambda_{2}\right)$
 \end_inset
 
- is associated with measurements on particle 2.
+ is associated with measurements on the other particle.
  
 \end_layout
 
 \begin_layout Standard
-These functions take on the values corresponding to the two possible results of a measurement of a component of spin.
-\end_layout
-
-\begin_layout Standard
-Let 
+These functions take values corresponding to the two possible results of a spin polarity measurement such that 
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)=\pm1$
 \end_inset
 
@@ -388,7 +287,6 @@ hidden-variable
 \begin_inset Formula $\rho\left(\lambda_{1},\lambda_{2}\right)$
 \end_inset
 
-.
  for which 
 \begin_inset Formula $\rho\left(\lambda\right)$
 \end_inset
@@ -658,67 +556,6 @@ tuple "list"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Section
-The Ideal Two-Photon System
-\end_layout
-
-\begin_layout Standard
-The system that is investigated by Freedman's experiment 
-\begin_inset CommandInset citation
-LatexCommand cite
-after "Section D The Ideal Two-Photon System"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
- consists of two distinguishable photons,
- 
-\begin_inset Formula $\gamma_{1}$
-\end_inset
-
- and 
-\begin_inset Formula $\gamma_{2}$
-\end_inset
-
-,
- emitted in an atomic cascade.
-\end_layout
-
-\begin_layout Standard
-To a good approximation,
- the atom cascades via electric dipole transitions through angular-momentum states 
-\begin_inset Formula $J=0\rightarrow J=1\rightarrow J=0$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-The most ·general state of this kind is:
-\begin_inset Formula 
-\begin{eqnarray}
-\left|\gamma_{1}\gamma_{2}\right\rangle  & = & a\left|R_{+}\right\rangle _{1}\left|L_{+}\right\rangle _{2}+b\left|L_{+}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+c\left|R_{-}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+d\left|L_{-}\right\rangle _{1}\left|R_{-}\right\rangle _{2}\\
- &  & +e\left|R_{+}\right\rangle _{1}\left|R_{-}\right\rangle _{2}+f\left|L_{+}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+g\left|R_{-}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+h\left|L_{-}\right\rangle _{1}\left|L_{+}\right\rangle _{2}
-\end{eqnarray}
-
-\end_inset
-
-where:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\left|R_{+}\right\rangle _{1}$
-\end_inset
-
- is the eigenstate of a right-hand circularly polarized photon traveling along the +z axis.
- 
-\end_layout
-
-\begin_layout Standard
-The subscripts label the photons which are distinguishable by their energies.
 \end_layout
 
 \begin_layout Section
@@ -1126,582 +963,25 @@ where:
 \end_layout
 
 \begin_layout Section
-Direct Comparison With the Local Hidden-Variable Inequalities
-\begin_inset CommandInset citation
-LatexCommand cite
-after "Section IVB"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The experimentally determined dependence of 
-\begin_inset Formula $\nabla(\phi)$
-\end_inset
-
- on the angle 
-\begin_inset Formula $\phi$
-\end_inset
-
- is displayed in 
-\begin_inset CommandInset citation
-LatexCommand cite
-after "Fig. 21"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
-.
- The solid curve in the figure is the dependence predicted by quantum mechanics at equation 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:FII.6"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-tuple "list"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-Here is a clean,
- formally structured draft for your Comparative Analysis section.
- It is written in a precise,
- academic,
- and measure-theoretic tone,
- utilizing standard LaTeX notation so that it can be dropped straight into your LyX/LaTeX workspace in Canberra.
-\end_layout
-
-\begin_layout Section
-Section III:
- Comparative Analysis of Continuous-Rate Definitions (Freedman vs.
- Aspect)
-\end_layout
-
-\begin_layout Standard
-A critical examination of the historical timeline reveals that the fundamental category error identified in this paper did not originate with modern time-tagging protocols;
- rather,
- it was baked directly into the mathematical architecture of the earliest foundational tests.
- Both the 1972 Freedman-Clauser experiment and the 1982 Aspect protocol rely on the same logical leap:
- substituting integrated macroscopic analog coincidence rates for the strict,
- event-by-event discrete joint product matrix required by John Bell’s 1964 Equation (2).
-\end_layout
-
-\begin_layout Standard
-However,
- the specific mathematical definitions and physical mechanisms used to execute this substitution evolved significantly between 1972 and 1982.
-\end_layout
-
-\begin_layout Subsection
-The 1972 Freedman Formulation:
- Single-Channel Amplitude Attenuation
-\end_layout
-
-\begin_layout Standard
-Because the 1972 "pile-of-plates" apparatus operated as a strict absorption filter,
- it lacked the physical capacity to record the full four-quadrant discrete joint outcome matrix 
-\begin_inset Formula $\left(A,B\in\{-1,+1\}\right)$
-\end_inset
-
- simultaneously.
-\end_layout
-
-\begin_layout Standard
-The instrumentation was physically blind to the perpendicular polarization channel (the 
-\begin_inset Formula $-1$
-\end_inset
-
- state).
- 
-\end_layout
-
-\begin_layout Standard
-To overcome this structural information loss,
- Freedman defined a continuous analog scale factor by integrating raw coincidence counts over large,
- macroscopic macro-time blocks (
-\begin_inset Formula $t=100\text{ seconds}$
-\end_inset
-
-).
-\end_layout
-
-\begin_layout Standard
-The primary experimental metric was defined as the normalized coincidence ratio:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-\frac{R(\phi)}{R_{0}} & = & \frac{1}{4}\left\{ (\epsilon^{1}_{1}+\epsilon^{2}_{1})(\epsilon^{1}_{2}+\epsilon^{2}_{2})+(\epsilon^{1}_{1}-\epsilon^{2}_{1})(\epsilon^{1}_{2}-\epsilon^{2}_{2})F(0)\cos(2\phi)\right\} 
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Where:
-\end_layout
-
-\begin_layout Standard
-• 
-\begin_inset Formula $R(\phi)$
-\end_inset
-
- is the integrated coincidence count rate at relative polarizer alignment 
-\begin_inset Formula $\phi=\vert a-b\vert$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-• 
-\begin_inset Formula $R_{0}$
-\end_inset
-
- is the baseline reference rate measured with both polarizing plates physically removed from the optical paths.
-\end_layout
-
-\begin_layout Standard
-• 
-\begin_inset Formula $\epsilon_{1},\epsilon_{2}$
-\end_inset
-
- represent continuous laboratory calibration constants tracking maximum transmittance and minimum leakage.
-\end_layout
-
-\begin_layout Standard
-This ratio does not represent a discrete matrix of digital switches.
-\end_layout
-
-\begin_layout Standard
-It maps a continuous modulation of classical light intensity dictated by Malus’s Law.
- Freedman then forced this continuous intensity function directly into a generalized CHSH inequality derived exclusively for discrete binary products—
-a clear mathematical category error.
-\end_layout
-
-\begin_layout Subsection
-2.
- The 1982 Aspect Formulation:
- Multi-Channel Rate Ratios
-\end_layout
-
-\begin_layout Standard
-By 1982,
- Aspect upgraded the laboratory hardware to dual-channel polarizers (using polarizing cubes based on dielectric thin films),
- which allowed for the simultaneous detection of both the transmitted 
-\begin_inset Formula $\ensuremath{\left(+1\right)}$
-\end_inset
-
- and reflected 
-\begin_inset Formula $\ensuremath{\left(-1\right)}$
-\end_inset
-
- orthogonal channels.
- This modification was claimed to bring the experiment "much closer to the ideal scheme."
-\end_layout
-
-\begin_layout Standard
-However,
- a strict audit of Aspect’s Equation (4) reveals that the underlying mathematical definition remained entirely non-binary.
-\end_layout
-
-\begin_layout Standard
-Instead of multiplying individual event pairs row-by-row in real time,
- Aspect integrated total macroscopic counts over a continuous timeline to construct a joint correlation index 
-\backslash
-(R(a,b)
-\backslash
-):
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-R(a,b) & = & \frac{R_{++}(a,b)+R_{--}(a,b)-R_{+-}(a,b)-R_{-+}(a,b)}{R_{++}(a,b)+R_{--}(a,b)+R_{+-}(a,b)+R_{-+}(a,b)}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-While this index structurally mimics a CHSH matrix expectation value,
- the inputs 
-\begin_inset Formula $(\ensuremath{R_{\pm\pm}})$
-\end_inset
-
- are not discrete logic states.
- They are integrated macroscopic counting rates heavily dependent on:
-\end_layout
-
-\begin_layout Itemize
-The continuous,
- time-varying harmonic modulation introduced by high-frequency acousto-optic deflectors switching at 
-\backslash
-(25
-\backslash
-text{ MHz}
-\backslash
-).
-\end_layout
-
-\begin_layout Itemize
-An arbitrary,
- external electronic time-to-amplitude converter (TAC) coincidence window width.
-\end_layout
-
-\begin_layout Section
-Summary of the Shared Logical Leap
-\end_layout
-
-\begin_layout Standard
-The core engineering and mathematical commonalities between these two historic frameworks are contrasted below:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-placement H
-alignment center
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="3">
-<features borderColor="default" oddRowsColor="default" evenRowsColor="default" tabularvalignment="middle">
-<column alignment="center" valignment="top" color="default">
-<column alignment="center" valignment="top" color="default">
-<column alignment="center" valignment="top" color="default">
-<row color="default">
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Architectural
-\begin_inset Newline newline
-\end_inset
-
-Feature
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1972 Freedman-
-\begin_inset Newline newline
-\end_inset
-
-Clauser Test
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1982 Alain Aspect Test
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row color="default">
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Primary Data
-\begin_inset Newline newline
-\end_inset
-
- Output
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Single-channel 
-\begin_inset Newline newline
-\end_inset
-
-normalized ratio 
-\begin_inset Formula $\frac{R(\phi)}{R_{0}}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Four-channel integrated
-\begin_inset Newline newline
-\end_inset
-
-rate index 
-\begin_inset Formula $R(a,b)$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row color="default">
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Physical Filter
-\backslash
-
-\begin_inset Newline newline
-\end_inset
-
- Mechanism
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Single-output absorption
-\begin_inset Newline newline
-\end_inset
-
-("pile-of-plates")
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Dual-output thin-film 
-\begin_inset Newline newline
-\end_inset
-
-polarizing cubes
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row color="default">
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Temporal
-\begin_inset Newline newline
-\end_inset
-
-Context
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Fixed 
-\begin_inset Formula $100\text{ s}$
-\end_inset
-
- steady-state
-\begin_inset Newline newline
-\end_inset
-
-macro-time gates 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Time-varying periodic
-\begin_inset Newline newline
-\end_inset
-
-acousto-optic switching
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row color="default">
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Source of
-\begin_inset Newline newline
-\end_inset
-
-Information Loss
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Discarded perpendicular
-\begin_inset Newline newline
-\end_inset
-
-reflection path
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Arbitrary electronic
-\begin_inset Newline newline
-\end_inset
-
-TAC windowing
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row color="default">
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Core Category
-\begin_inset Newline newline
-\end_inset
-
-Error
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Testing a continuous wave
-\begin_inset Newline newline
-\end_inset
-
-attenuation function against
-\begin_inset Newline newline
-\end_inset
-
-a discrete binary inequality.
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" color="default" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Conflating continuous harmonic
-\begin_inset Newline newline
-\end_inset
-
-arrival rates with an event-by-event
-\begin_inset Newline newline
-\end_inset
-
-digital product space.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
 Conclusion
 \end_layout
 
 \begin_layout Standard
-Neither experiment satisfies the fundamental probability constraints mandated by Bell’s 1964 Equation (2).
+Neither Freedman's nor Aspect's experiment satisfies the fundamental probability constraints mandated by Bell’s 1964 Equation (2).
 \end_layout
 
 \begin_layout Standard
-In both eras the empirical data points track a smooth,
- solid continuous curve (
+In both experiments the empirical data points track a smooth,
+ solid continuous curve 
 \begin_inset Formula $\ensuremath{\langle R(\phi)/R_{0}\rangle}$
 \end_inset
 
- or the quantum harmonic expectation wave) precisely because the laboratory instruments are measuring continuous macroscopic wave intensities and timing intervals.
+ because the laboratory instruments are measuring continuous macroscopic wave intensities and timing intervals.
 \end_layout
 
 \begin_layout Standard
 Continuous profile divergence from standard CHSH inequalities mathematically demonstrates that the inequality is completely inapplicable to this class of data;
  not that nature has violated local realistic probability logic.
-\end_layout
-
-\begin_layout Section
-Ready for Your Paper Draft
-\end_layout
-
-\begin_layout Standard
-This draft links your findings into a single,
- cohesive historical narrative and demonstrates a direct line of structural data distortion from 1972 straight through 1982 setting up your final chapter on the modern pulsed datasets.
 \end_layout
 
 \begin_layout Part*
@@ -1728,7 +1008,7 @@ The Gating Circuit:
 \begin_inset Newline newline
 \end_inset
 
-These pulses travel down coaxial cables into a device called a coincidence circuit which acts like a logical AND gate with a built-in stopwatch.
+These pulses travel down coaxial cables into a coincidence circuit which acts like a logical AND gate with a built-in stopwatch.
  If pulse A and pulse B arrive within about 5 to 30 nanoseconds of each other the circuit emits a single "coincidence pulse".
 \end_layout
 
@@ -1741,7 +1021,7 @@ The Counter (The Scaler):
 The coincidence pulse travels into an electronic counter (historically called a scaler).
  It does not calculate rates dynamically;
  it just counts.
- It sits there ticking up:
+ It ticks up:
  1,
  2,
  3,
@@ -1754,14 +1034,13 @@ Reporting the Rate:
 \begin_inset Newline newline
 \end_inset
 
-To get the rate a mechanical timer is used that collects clicks for a fixed period of time (say,
- exactly 100 seconds).
+To get the rate a mechanical timer collects clicks for a fixed period of time (say,
+ 100 seconds).
  If the counter reads 2,400 when the timer went off the reported rate for that run is written down as 24 clicks per second.
 \end_layout
 
 \begin_layout Standard
-So,
- effectively,
+Effectively,
  the device counts individual,
  discrete events over a fixed timeframe and that total count is converted into a "rate" because it is an easy way to write down the data and normalize it against baseline data 
 \begin_inset Formula $\left(R_{0}\right)$
