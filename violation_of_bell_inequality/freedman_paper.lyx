@@ -123,7 +123,15 @@ literal "false"
 
 \end_inset
 
- thesis describes a measurement of the polarization correlation of the two photons emitted in the 
+ thesis and Aspect's article
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+ both describe the measurement of the polarization correlation of the two photons emitted in the 
 \begin_inset Formula $4p^{2}\;^{1}S_{0}\rightarrow4s4p^{1}P_{1}\rightarrow4s^{2}\;^{1}S_{0}$
 \end_inset
 
@@ -135,16 +143,7 @@ The Ideal Two-Photon System
 \end_layout
 
 \begin_layout Standard
-The system that is investigated by Freedman's experiment 
-\begin_inset CommandInset citation
-LatexCommand cite
-after "Section D The Ideal Two-Photon System"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
- consists of two distinguishable photons,
+The systems investigated by Freedman's and Aspect's experiment both comprise beams of distinguishable pairs of photons,
  
 \begin_inset Formula $\gamma_{1}$
 \end_inset
@@ -164,6 +163,14 @@ To a good approximation,
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
+The initial and final atomic angular momentum.
+ is zero;
+ hence,
+ by conservation of angular momentum,
+ the two photons are in a combined state of angular momentum zero.
 \end_layout
 
 \begin_layout Standard
@@ -188,22 +195,7 @@ where:
 \end_layout
 
 \begin_layout Standard
-The subscripts label the photons which are distinguishable by their energies.where:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\Lambda_{1}$
-\end_inset
-
- and 
-\begin_inset Formula $\Lambda_{2}$
-\end_inset
-
- is the space from which 
-\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
-\end_inset
-
- is chosen.
+The subscripts label the photons which are distinguishable by their energies.
 \end_layout
 
 \begin_layout Standard
@@ -252,7 +244,52 @@ E\left(\hat{a},\hat{b}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrigh
 \end_layout
 
 \begin_layout Section
-Experimental Descritions 
+Relevant Theory
+\end_layout
+
+\begin_layout Standard
+Freedman derives the expectation value for experimental results as:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{R\left(\phi\right)}{R_{0}} & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)cos\left(2\phi\right)\label{eq:FII.10}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\phi$
+\end_inset
+
+ represents the angle between the two polarizer orientations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon^{i}_{M}$
+\end_inset
+
+ represents the transmission efficiency of polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon^{i}_{m}$
+\end_inset
+
+ represents the non-transmission efficiency of polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Experimental Descriptions 
 \end_layout
 
 \begin_layout Standard
@@ -335,7 +372,7 @@ In addition to ordinary coincidence counting,
 \end_layout
 
 \begin_layout Subsection
-Application of the Generalized Inequality to the Present Experiment
+Application of the Generalized Inequality to the Experiment
 \begin_inset CommandInset citation
 LatexCommand cite
 after "Section?B"
@@ -486,7 +523,7 @@ P_{2}\left(\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\
 \end_layout
 
 \begin_layout Standard
-Expressing the correlation ftmction in terms of the probabilities of joint passage:
+Expressing the correlation function in terms of the probabilities of joint passage:
 \begin_inset Formula 
 \begin{eqnarray}
 P\left(\hat{a},\hat{b}\right) & = & 4P_{++}\left(\hat{a},\hat{b}\right)-2P_{1}\left(\hat{a}\right)-2P_{2}\left(\hat{b}\right)+1\label{eq:F1.5}
@@ -584,7 +621,7 @@ status collapsed
 \begin_inset Formula $\frac{R}{R_{0}}$
 \end_inset
 
- is the fraction of individual photon pairs that successfully pass through a polariser and can be considered as an individual event probability (a fraction).
+ is the fraction of individual photon pairs that successfully pass through a polarizer and can be considered as an individual event probability (a fraction).
 \end_layout
 
 \end_inset
@@ -679,6 +716,16 @@ In both experiments the empirical data points track a smooth,
 \begin_layout Standard
 Continuous profile divergence from standard CHSH inequalities mathematically demonstrates that the inequality is completely inapplicable to this class of data;
  not that nature has violated local realistic probability logic.
+\end_layout
+
+\begin_layout Section
+Acknowledgments
+\end_layout
+
+\begin_layout Standard
+chatGPT helped with computer programming and provide suggestions for the draft of this article.
+ Collaboration with Gordon S.
+ Watson over many years has contributed to the ideas inherent in this article.
 \end_layout
 
 \begin_layout Part*
