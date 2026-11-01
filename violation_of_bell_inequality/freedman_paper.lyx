@@ -110,6 +110,32 @@ A Short Review Of The 1972 Freedman-Clauser And 1982 Aspect Experiments:
  Discrete Binary Products.
 \end_layout
 
+\begin_layout Abstract
+This article reviews the results of the 1972 Freedman-Clauser 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+ experiments and the 1982 Aspect et.
+ al.
+ experiments 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Abstract
+The results of both experiments are in excellent agreement with their relevant expectation values.
+\end_layout
+
 \begin_layout Section
 Introduction
 \end_layout
@@ -136,6 +162,11 @@ literal "false"
 \end_inset
 
  cascade of calcium.
+\end_layout
+
+\begin_layout Standard
+The results of both experiments are in excellent agreement with their relevant expectation values.
+ Unfortunately this situation is somewhat marred by comparisons with inapplicable expectation values.
 \end_layout
 
 \begin_layout Section
@@ -302,7 +333,10 @@ literal "false"
 
 \end_inset
 
- and Aspect are similar.
+ and Aspect are similar comprizing polarizers,
+ detectors and coincidence monitoring devices.
+ The main difference being in the type of polarizers used.
+ Freedman used pile-of-plates polarizers for which only main ray photons could be detected whereas Aspect used dichotomic polarizers enabling detection of both main and extrordinary ray photons.
 \end_layout
 
 \begin_layout Standard
@@ -311,10 +345,10 @@ In both experiments photons are emitted in an atomic cascade and are counted in 
 \end_layout
 
 \begin_layout Standard
-The following quantities are measured:
+In Freedman's experiment the following quantities were measured measured:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 \begin_inset Formula $R\left(\phi\right)$
 \end_inset
 
@@ -326,7 +360,7 @@ The following quantities are measured:
  between the planes of linear polarization defined by the orientation of the two inserted polarizers.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 \begin_inset Formula $R_{1}$
 \end_inset
 
@@ -334,7 +368,7 @@ The following quantities are measured:
  the coincidence rate with polarizer 2 removed;
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 \begin_inset Formula $R_{2}$
 \end_inset
 
@@ -342,7 +376,7 @@ The following quantities are measured:
  the coincidence rate with polarizer 1 removed;
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 \begin_inset Formula $R_{0}$
 \end_inset
 
@@ -364,11 +398,42 @@ In addition to ordinary coincidence counting,
 \begin_inset Formula $\gamma_{2}$
 \end_inset
 
- This gives the lifetime of the 
+ which gives the lifetime of the 
 \begin_inset Formula $4s4p^{1}P_{1}$
 \end_inset
 
  state and provides a check on the consistency of the experiment.
+\end_layout
+
+\begin_layout Standard
+In Aspects experiment the following quantities were measured measured:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{\pm\pm}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+:
+ four coincidence counting rates for 
+\begin_inset Formula $\left\{ +,+\right\} $
+\end_inset
+
+,
+ 
+\begin_inset Formula $\left\{ +,-\right\} $
+\end_inset
+
+,
+ 
+\begin_inset Formula $\left\{ -,+\right\} $
+\end_inset
+
+ and 
+\begin_inset Formula $\left\{ -,-\right\} $
+\end_inset
+
+ pair detections.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -391,34 +456,30 @@ In the experiment,
 \end_inset
 
  atomic cascade;
- the measuring devices each consist of a linear polarizer and a photomultiplier tube.
+ the measuring devices comprising a linear polarizer and a photomultiplier tube.
  The adjustable parameter of each measuring device is the orientation of the polarizer about the z axis.
 \end_layout
 
 \begin_layout Standard
-It would be natural to associate the results of a measurement an each photon with passage in either the ordinary ray or the extraordinary ray of the polarizer but in any real polarizer some photons are not transmitted in either ray because of scattering losses or absorption.
+It would be natural to associate the results of a measurement on each photon with passage in either the ordinary ray or the extraordinary ray of the polarizer but in any real polarizer some photons are not transmitted in either ray because of scattering losses or absorption.
 \end_layout
 
 \begin_layout Standard
 Thus,
- there are three possible results for a measurement that apparently violating the condition that measurements be two-valued.
+ there are three possible results for a measurement that apparently violates the condition that measurements be two-valued.
 \end_layout
 
 \begin_layout Standard
 However,
- we are free to associate 
+ for single output polarizers 
 \begin_inset Formula $+1$
 \end_inset
 
- with the transmission in the ordinary ray and
+ can be associated with the transmission in the ordinary ray and 
 \begin_inset Formula $-1$
 \end_inset
 
- with non-transmission in the ordinary ray.
-\end_layout
-
-\begin_layout Standard
-This interpretation makes the measurements two-valued and has the practical advantage of making it unnecessary to detect photons in the extra-ordinary ray.
+ with non-transmission in the ordinary ray making the measurements two-valued with the practical advantage of making it unnecessary to detect photons in the extra-ordinary ray.
 \end_layout
 
 \begin_layout Standard
@@ -716,6 +777,10 @@ In both experiments the empirical data points track a smooth,
 \begin_layout Standard
 Continuous profile divergence from standard CHSH inequalities mathematically demonstrates that the inequality is completely inapplicable to this class of data;
  not that nature has violated local realistic probability logic.
+\end_layout
+
+\begin_layout Standard
+Unfortunately the statistical concept and definition of expectation value appeares to be widely misunderstood or ignored by many within the physics community.
 \end_layout
 
 \begin_layout Section
