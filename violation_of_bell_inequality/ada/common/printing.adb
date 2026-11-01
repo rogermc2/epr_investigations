@@ -56,7 +56,6 @@ package body Printing is
 
    procedure Print_Float_Array (Name  : String; Data : Float_Array;
                                Start : Positive := 1; Finish : Natural := 0) is
-      use Ada.Float_Text_IO;
       Last  : Positive;
       Count : Integer := 1;
    begin
