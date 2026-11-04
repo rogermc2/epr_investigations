@@ -141,7 +141,7 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Freedman's thesis 
+Stuart Freedman's thesis 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Freedman1972"
@@ -149,7 +149,7 @@ literal "false"
 
 \end_inset
 
- thesis and Aspect's article
+ thesis and Alain Aspect's article
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Aspect82"
@@ -157,7 +157,7 @@ literal "false"
 
 \end_inset
 
- both describe the measurement of the polarization correlation of the two photons emitted in the 
+ both describe the measurement of the polarization correlation of two photons emitted in the 
 \begin_inset Formula $4p^{2}\;^{1}S_{0}\rightarrow4s4p^{1}P_{1}\rightarrow4s^{2}\;^{1}S_{0}$
 \end_inset
 
@@ -170,21 +170,11 @@ The results of both experiments are in excellent agreement with their relevant e
 \end_layout
 
 \begin_layout Section
-The Ideal Two-Photon System
+The Two-Photon System Investigated
 \end_layout
 
 \begin_layout Standard
-The systems investigated by Freedman's and Aspect's experiment both comprise beams of distinguishable pairs of photons,
- 
-\begin_inset Formula $\gamma_{1}$
-\end_inset
-
- and 
-\begin_inset Formula $\gamma_{2}$
-\end_inset
-
-,
- emitted in an atomic cascade.
+The systems investigated by Freedman's and Aspect's experiments both comprise beams of distinguishable pairs of photons emitted in an atomic cascade.
 \end_layout
 
 \begin_layout Standard
@@ -204,41 +194,8 @@ The initial and final atomic angular momentum.
  the two photons are in a combined state of angular momentum zero.
 \end_layout
 
-\begin_layout Standard
-The most ·general state of this kind is:
-\begin_inset Formula 
-\begin{eqnarray}
-\left|\gamma_{1}\gamma_{2}\right\rangle  & = & a\left|R_{+}\right\rangle _{1}\left|L_{+}\right\rangle _{2}+b\left|L_{+}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+c\left|R_{-}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+d\left|L_{-}\right\rangle _{1}\left|R_{-}\right\rangle _{2}\\
- &  & +e\left|R_{+}\right\rangle _{1}\left|R_{-}\right\rangle _{2}+f\left|L_{+}\right\rangle _{1}\left|L_{-}\right\rangle _{2}+g\left|R_{-}\right\rangle _{1}\left|R_{+}\right\rangle _{2}+h\left|L_{-}\right\rangle _{1}\left|L_{+}\right\rangle _{2}
-\end{eqnarray}
-
-\end_inset
-
-where:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\left|R_{+}\right\rangle _{1}$
-\end_inset
-
- is the eigenstate of a right-hand circularly polarized photon traveling along the +z axis.
- 
-\end_layout
-
-\begin_layout Standard
-The subscripts label the photons which are distinguishable by their energies.
-\end_layout
-
-\begin_layout Standard
-Let 
-\begin_inset Formula $\lambda$
-\end_inset
-
- represent the pair 
-\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
-\end_inset
-
-.
+\begin_layout Section
+Relevant Theory
 \end_layout
 
 \begin_layout Standard
@@ -271,18 +228,174 @@ E\left(\hat{a},\hat{b}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrigh
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Section
-Relevant Theory
+where:
 \end_layout
 
 \begin_layout Standard
-Freedman derives the expectation value for experimental results as:
+\begin_inset Formula $\psi$
+\end_inset
+
+ represents the wavefunction of two photons in the so-called singlet state.
+\end_layout
+
+\begin_layout Standard
+Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is actually the expectation value for the observables 
+\begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}\cdot\overrightarrow{\sigma_{2}}$
+\end_inset
+
+ operating on the wavefunction 
+\begin_inset Formula $\psi$
+\end_inset
+
+ whereas the expectaion value of 
+\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)$
+\end_inset
+
+ is given by:
 \begin_inset Formula 
 \begin{eqnarray}
-\frac{R\left(\phi\right)}{R_{0}} & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)cos\left(2\phi\right)\label{eq:FII.10}
+E\left(A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)\right)_{\Lambda} & = & \int_{\Lambda}\rho\left(\lambda\right)A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)d\lambda_{2}d\lambda_{1}
+\end{eqnarray}
+
+\end_inset
+
+were:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\lambda$
+\end_inset
+
+ represents the random variable 
+\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\rho\left(\lambda\right)$
+\end_inset
+
+ is the probability distribution function of the random variables 
+\begin_inset Formula $\lambda_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda_{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Lambda$
+\end_inset
+
+ is the population space of the set of random variables 
+\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Freedman derives the following inequalities 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "inequality (II.8)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+-1\leq & \frac{R\left(\phi_{1}\right)}{R_{0}}-\frac{R\left(\phi_{1}+\phi_{2}+\phi_{3}\right)}{R_{0}}+\frac{R\left(\phi_{2}\right)}{R_{0}}+\frac{R\left(\phi_{3}\right)}{R_{0}}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}} & \leq0\label{eq:FII.8}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1} & = & cos^{-1}\left(\hat{a},\hat{b}\right)\\
+\phi_{2} & = & cos^{-1}\left(\hat{d},\hat{c}\right)\\
+\phi_{3} & = & cos^{-1}\left(\hat{d},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1}+\phi_{2}+\phi_{3} & = & cos^{-1}\left(\hat{a},\hat{c}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R\left(\phi_{i}\right)$
+\end_inset
+
+ representsthe coincidence rate with both polarizers in place.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ representsthe coincidence rate with both polarizers removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{1}$
+\end_inset
+
+ represents the coincidence rate with polarizer 2 removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{2}$
+\end_inset
+
+ represents the coincidence rate with polarizer 1 removed.
+\end_layout
+
+\begin_layout Standard
+Freedman derives the expectation value for the experimental results as:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)cos\left(2\phi\right)\label{eq:FII.10}\\
+E\left(\frac{R_{1}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\label{eq:FII.11a}\\
+E\left(\frac{R_{2}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)\label{eq:FI.11b}
 \end{eqnarray}
 
 \end_inset
@@ -406,7 +519,7 @@ In addition to ordinary coincidence counting,
 \end_layout
 
 \begin_layout Standard
-In Aspects experiment the following quantities were measured measured:
+In Aspects experiment the following quantities were measured:
 \end_layout
 
 \begin_layout Standard
@@ -436,325 +549,55 @@ In Aspects experiment the following quantities were measured measured:
  
 \end_layout
 
-\begin_layout Subsection
-Application of the Generalized Inequality to the Experiment
-\begin_inset CommandInset citation
-LatexCommand cite
-after "Section?B"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
-
+\begin_layout Section
+Experimental Results
 \end_layout
 
 \begin_layout Standard
-In the experiment,
- the particle pairs are pairs of photons emitted in a 
-\begin_inset Formula $0\rightarrow1\rightarrow0$
-\end_inset
-
- atomic cascade;
- the measuring devices comprising a linear polarizer and a photomultiplier tube.
- The adjustable parameter of each measuring device is the orientation of the polarizer about the z axis.
+The primary experimental metric was defined as the normalized coincidence ratio:
 \end_layout
 
 \begin_layout Standard
-It would be natural to associate the results of a measurement on each photon with passage in either the ordinary ray or the extraordinary ray of the polarizer but in any real polarizer some photons are not transmitted in either ray because of scattering losses or absorption.
-\end_layout
-
-\begin_layout Standard
-Thus,
- there are three possible results for a measurement that apparently violates the condition that measurements be two-valued.
-\end_layout
-
-\begin_layout Standard
-However,
- for single output polarizers 
-\begin_inset Formula $+1$
-\end_inset
-
- can be associated with the transmission in the ordinary ray and 
-\begin_inset Formula $-1$
-\end_inset
-
- with non-transmission in the ordinary ray making the measurements two-valued with the practical advantage of making it unnecessary to detect photons in the extra-ordinary ray.
-\end_layout
-
-\begin_layout Standard
-To express inequalities II.4 in terms of quantities directly measured,
- it is convenient to introduce the following partition of 
-\begin_inset Formula $\Lambda$
-\end_inset
-
-:
 \begin_inset Formula 
 \begin{eqnarray}
-\Lambda_{ij}\left(\hat{a},\hat{b}\right) & = & \left\{ \lambda|A\left(\hat{a},\lambda\right)=i\,and\,B\left(\hat{b},\lambda\right)=j\right\} 
+\frac{R(\phi)}{R_{0}} & = & \frac{1}{4}\left\{ (\epsilon^{1}_{1}+\epsilon^{2}_{1})(\epsilon^{1}_{2}+\epsilon^{2}_{2})+(\epsilon^{1}_{1}-\epsilon^{2}_{1})(\epsilon^{1}_{2}-\epsilon^{2}_{2})F(0)\cos(2\phi)\right\} 
 \end{eqnarray}
 
 \end_inset
 
-where:
+
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $i$
+Where:
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $R(\phi)$
 \end_inset
 
- and 
-\begin_inset Formula $j$
-\end_inset
-
- equal 
-\begin_inset Formula $+1$
-\end_inset
-
- or 
-\begin_inset Formula $-1$
+ is the integrated coincidence count rate at relative polarizer alignment 
+\begin_inset Formula $\phi=\vert a-b\vert$
 \end_inset
 
 .
 \end_layout
 
 \begin_layout Standard
-Using this partition,
- define:
-\begin_inset Formula 
-\begin{eqnarray}
-P_{ij}\left(\hat{a},\hat{b}\right) & = & \int_{\Lambda_{ij}\left(\hat{a},\hat{b}\right)}\rho\left(\lambda\right)d\lambda
-\end{eqnarray}
-
-\end_inset
-
-
-\begin_inset Formula $P_{++}\left(\hat{a},\hat{b}\right)$
-\end_inset
-
- being the probability of joint passage of the photons through the polarizers.
-\end_layout
-
-\begin_layout Standard
-Using equation 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:FI.2"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-tuple "list"
-
-\end_inset
-
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-P\left(\hat{a},\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)-P_{+-}\left(\hat{a},\hat{b}\right)-P_{-+}\left(\hat{a},\hat{b}\right)+P_{--}\left(\hat{a},\hat{b}\right)
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Define:
-\begin_inset Formula 
-\begin{eqnarray}
-P_{1}\left(\hat{a}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)\\
-P_{2}\left(\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\hat{a},\hat{b}\right)
-\end{eqnarray}
-
-\end_inset
-
-
-\begin_inset Formula $P_{1}\left(\hat{a}\right)$
-\end_inset
-
- and 
-\begin_inset Formula $P_{2}\left(\hat{b}\right)$
-\end_inset
-
- being the probabilities of joint passage when one of the polarizers is absent.
-\end_layout
-
-\begin_layout Standard
-Expressing the correlation function in terms of the probabilities of joint passage:
-\begin_inset Formula 
-\begin{eqnarray}
-P\left(\hat{a},\hat{b}\right) & = & 4P_{++}\left(\hat{a},\hat{b}\right)-2P_{1}\left(\hat{a}\right)-2P_{2}\left(\hat{b}\right)+1\label{eq:F1.5}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Freedman derived the inequalities :
-\begin_inset Formula 
-\begin{eqnarray}
--2\leq & P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{b}\right)+P\left(\hat{a},\hat{b}\right)+P\left(\hat{a},\hat{b}\right) & \leq2\label{eq:FII.4}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-On substitution of Equation
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:F1.5"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-tuple "list"
-
-\end_inset
-
- into the inequalities 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:FII.4"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-tuple "list"
-
-\end_inset
-
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-after "equation (II.4)"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
-:
-\begin_inset Formula 
-\begin{eqnarray}
--1\leq & P_{++}\left(\hat{a},\hat{b}\right)-P_{++}\left(\hat{a},\hat{c}\right)+P_{++}\left(\hat{d},\hat{c}\right)+P_{++}\left(\hat{d},\hat{b}\right)-P_{2}\left(\hat{b}\right)-P_{1}\left(\hat{d}\right) & \leq0\label{eq:FII.6}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If all transmitted photons are detected:
-\begin_inset Formula 
-\begin{eqnarray}
-P_{++}\left(\hat{a},\hat{b}\right) & = & \frac{R\left(\hat{a},\hat{b}\right)}{R_{0}}\label{eq:FII.7a}\\
-P_{1}\left(\hat{a}\right) & = & \frac{R_{1}\left(\hat{a}\right)}{R_{0}}\label{eq:FII.7b}\\
-P_{2}\left(\hat{b}\right) & = & \frac{R_{2}\left(\hat{a},\hat{b}\right)}{R_{0}}\label{eq:FII.7c}
-\end{eqnarray}
-
-\end_inset
-
-where:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $R\left(\hat{a},\hat{b}\right),R_{1}\left(\hat{a}\right),R_{2}\left(\hat{b}\right)$
-\end_inset
-
- and 
+• 
 \begin_inset Formula $R_{0}$
 \end_inset
 
- are the coincidence count rates.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Formula $\frac{R}{R_{0}}$
-\end_inset
-
- is the fraction of individual photon pairs that successfully pass through a polarizer and can be considered as an individual event probability (a fraction).
-\end_layout
-
-\end_inset
-
-
+ is the baseline reference rate measured with both polarizing plates physically removed from the optical paths.
 \end_layout
 
 \begin_layout Standard
-As 
-\begin_inset Formula $R_{1}$
+• 
+\begin_inset Formula $\epsilon_{1},\epsilon_{2}$
 \end_inset
 
- and 
-\begin_inset Formula $R_{2}$
-\end_inset
-
- represent coincidence rates with polarizer removed,
- 
-\begin_inset Formula $R_{1}\left(\hat{a}\right)$
-\end_inset
-
- and 
-\begin_inset Formula $R_{2}\left(\hat{b}\right)$
-\end_inset
-
- are independent of 
-\begin_inset Formula $\hat{a}$
-\end_inset
-
- and 
-\begin_inset Formula $\hat{b}$
-\end_inset
-
- and 
-\begin_inset Formula $R\left(\hat{a},\hat{b}\right)$
-\end_inset
-
- depends only 
-\begin_inset Formula $\hat{a}\cdot\hat{b}$
-\end_inset
-
-:
-\begin_inset Formula 
-\begin{eqnarray}
--1\leq & \frac{R\left(\phi_{1}\right)}{R_{0}}-\frac{R\left(\phi_{1}+\phi_{2}+\phi_{3}\right)}{R_{0}}+\frac{R\left(\phi_{2}\right)}{R_{0}}+\frac{R\left(\phi_{3}\right)}{R_{0}}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}} & \leq0\label{eq:FII.8}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-where:
-\begin_inset Formula 
-\begin{eqnarray}
-\phi_{1} & = & cos^{-1}\left(\hat{a},\hat{b}\right)\\
-\phi_{1} & = & cos^{-1}\left(\hat{d},\hat{c}\right)\\
-\phi_{1} & = & cos^{-1}\left(\hat{d},\hat{b}\right)
-\end{eqnarray}
-
-\end_inset
-
-
-\begin_inset Formula 
-\begin{eqnarray}
-\phi_{1}+\phi_{2}+\phi_{3} & = & cos^{-1}\left(\hat{a},\hat{c}\right)
-\end{eqnarray}
-
-\end_inset
-
-
+ represent continuous laboratory calibration constants tracking maximum transmittance and minimum leakage.
 \end_layout
 
 \begin_layout Section
