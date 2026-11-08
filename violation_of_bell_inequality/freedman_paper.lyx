@@ -199,7 +199,7 @@ Relevant Theory
 \end_layout
 
 \begin_layout Standard
-Freedman incorrectly states that the expectation value for the product of two individual spin measurements 
+Freedman incorrectly states that the expectation value for the product of the measuement of two individual particles (fermions or photons) 
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm$
 \end_inset
 
@@ -229,13 +229,40 @@ E\left(\hat{a},\hat{b}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrigh
 \end_inset
 
 where:
+ 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+In general,
+ the symbology 
+\begin_inset Formula $E\left(...\right)$
+\end_inset
+
+ denotes an expectation value.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\lambda_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda_{2}$
+\end_inset
+
+ represents the wave function of two particles.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula $\psi$
 \end_inset
 
- represents the wavefunction of two photons in the so-called singlet state.
+ represents the wave function of two particles in the so-called singlet state.
 \end_layout
 
 \begin_layout Standard
@@ -251,7 +278,11 @@ tuple "list"
 
 \end_inset
 
- is actually the expectation value for the observables 
+ is actually the expectation value 
+\begin_inset Formula $E\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right)$
+\end_inset
+
+ for the observables 
 \begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
 \end_inset
 
@@ -259,11 +290,62 @@ tuple "list"
 \begin_inset Formula $\hat{b}\cdot\overrightarrow{\sigma_{2}}$
 \end_inset
 
- operating on the wavefunction 
+ operating on the wave function 
 \begin_inset Formula $\psi$
 \end_inset
 
- whereas the expectaion value of 
+ and is more correctly written:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right|\psi\right\rangle =-\hat{a}\cdot\hat{b}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Similarly,
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.9)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+,
+ the expectation value for the joint polarization measurements of the observables 
+\begin_inset Formula $O_{1}\left(\phi_{1}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $O_{2}\left(\phi_{2}\right)$
+\end_inset
+
+ over the domain of 
+\begin_inset Formula $\gamma_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma_{2}$
+\end_inset
+
+ should be written:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle =cos\left(2\phi\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The expectation value of 
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)$
 \end_inset
 
@@ -275,7 +357,7 @@ E\left(A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)\right)
 
 \end_inset
 
-were:
+where:
 \end_layout
 
 \begin_layout Standard
@@ -293,7 +375,7 @@ were:
 \begin_inset Formula $\rho\left(\lambda\right)$
 \end_inset
 
- is the probability distribution function of the random variables 
+ represents the probability distribution function of the random variables 
 \begin_inset Formula $\lambda_{1}$
 \end_inset
 
@@ -308,11 +390,224 @@ were:
 \begin_inset Formula $\Lambda$
 \end_inset
 
- is the population space of the set of random variables 
+ represents the population space of the set of random variables 
 \begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
+The derivation of 
+\begin_inset Formula $E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}$
+\end_inset
+
+ is given in Appendix 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "sec:Derivation-Of-Equation"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Freedman states that the probability (actually expectation value) that both photons are detected as:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{R\left(\phi\right)}{R_{0}} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\phi$
+\end_inset
+
+ represents the angle between the two polarizer orientations,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\phi_{i}$
+\end_inset
+
+ represents the polarizer orientation of polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\gamma_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma_{2}$
+\end_inset
+
+ represent
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\pi_{i}\left(\phi_{i}\right)$
+\end_inset
+
+ represents the observation of the transmission or non-transmission of a photon through a polarizer with polarization axis in the x direction 
+\begin_inset Formula $\pi_{i}$
+\end_inset
+
+ which is given by:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\pi_{i} & = & \begin{bmatrix}\varepsilon^{i}_{M} & 0\\
+0 & \varepsilon^{i}_{m}
+\end{bmatrix}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon^{i}_{M}$
+\end_inset
+
+ represents the transmission efficiency of polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon^{i}_{m}$
+\end_inset
+
+ represents the non-transmission efficiency of polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The right side of equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.9"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+,
+ in standard quantum theoretical symbology,
+ actually represents an expectation value (predicted value),
+ not a probability 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Off-diagonal matrix elements describe transition probabilities between different states.
+ Diagonal matrix elements represent expectation values which are the predicted statistical averages of measurements of an observable across an ensemble of identical quantum systems.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Defining 
+\begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
+\end_inset
+
+ as the experimentally measured values Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.9"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+,
+ the predicted ratio of the measured count rate 
+\begin_inset Formula $R\left(\phi\right)$
+\end_inset
+
+ with polarizers to the measured count rate 
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ without polarizers the expected value of 
+\begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
+\end_inset
+
+ ,
+ 
+\begin_inset Formula $E\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
+\end_inset
+
+,
+ given by:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This assumption provides the statistical null-hypothesis 
+\begin_inset Formula $H_{0}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Freedman also defines:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R_{1}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\label{eq:FII.11a}\\
+E\left(\frac{R_{2}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)\label{eq:FI.11b}
+\end{eqnarray}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -365,14 +660,14 @@ where:
 \begin_inset Formula $R\left(\phi_{i}\right)$
 \end_inset
 
- representsthe coincidence rate with both polarizers in place.
+ represents the coincidence rate with both polarizers in place.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula $R_{0}$
 \end_inset
 
- representsthe coincidence rate with both polarizers removed.
+ represents the coincidence rate with both polarizers removed.
 \end_layout
 
 \begin_layout Standard
@@ -390,12 +685,62 @@ where:
 \end_layout
 
 \begin_layout Standard
-Freedman derives the expectation value for the experimental results as:
+Expectation values can be expressed as a four-quadrant matrix:
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)cos\left(2\phi\right)\label{eq:FII.10}\\
-E\left(\frac{R_{1}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\label{eq:FII.11a}\\
-E\left(\frac{R_{2}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)\label{eq:FI.11b}
+E_{\Lambda} & = & \begin{bmatrix}E_{\varLambda}\left(\overrightarrow{a},\overrightarrow{b}\right) & E_{\varLambda}\left(\overrightarrow{a},\overrightarrow{d}\right)\\
+E_{\varLambda}\left(\overrightarrow{c},\overrightarrow{b}\right) & E_{\varLambda}\left(\overrightarrow{c},\overrightarrow{d}\right)
+\end{bmatrix}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aspect et.
+ al.
+ define the theoretical expectation value 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (1)"
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\overrightarrow{a},\overrightarrow{b}\right) & = & P_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)+P_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)-P_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right)-P_{-+}\left(\overrightarrow{a},\overrightarrow{b}\right)\label{eq:A1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then allowing for experimental restrictions 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (5)"
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\overrightarrow{a},\overrightarrow{b}\right) & = & F\frac{\left(T^{\Vert}_{1}-T^{\bot}_{1}\right)\left(T^{\Vert}_{2}-T^{\bot}_{2}\right)}{\left(T^{\Vert}_{1}+T^{\bot}_{1}\right)\left(T^{\Vert}_{2}+T^{\bot}_{2}\right)}cos\left(2\left(\overrightarrow{a},\overrightarrow{b}\right)\right)\label{eq:A5}
 \end{eqnarray}
 
 \end_inset
@@ -404,17 +749,28 @@ where:
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\phi$
+\begin_inset Formula $F$
 \end_inset
 
- represents the angle between the two polarizer orientations.
+ represents a factor that accounts for the finite solid detection angles,
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\varepsilon^{i}_{M}$
+\begin_inset Formula $T^{\Vert}_{i}$
 \end_inset
 
- represents the transmission efficiency of polarizer 
+ represents the transmission coefficient for the parallel channel of polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $T^{\bot}_{i}$
+\end_inset
+
+ represents the transmission coefficient for the perpendicular channel of polarizer 
 \begin_inset Formula $i$
 \end_inset
 
@@ -422,18 +778,100 @@ where:
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\varepsilon^{i}_{m}$
+Aspect et.
+ al.
+ define 
+\begin_inset Quotes eld
 \end_inset
 
- represents the non-transmission efficiency of polarizer 
-\begin_inset Formula $i$
+generalized Bell's inequality 
+\begin_inset Formula $S$
 \end_inset
 
-.
+ as 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (2)"
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-2\leq & S & \leq2\label{eq:A2}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+S & = & E\left(\overrightarrow{a},\overrightarrow{b}\right)-E\left(\overrightarrow{a},\overrightarrow{d}\right)+E\left(\overrightarrow{c},\overrightarrow{b}\right)+E\left(\overrightarrow{c},\overrightarrow{d}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Based on equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.7"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FI.7"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+,
+ the corresponding 
+\begin_inset Formula $S$
+\end_inset
+
+ factor defined by equation 
+\begin_inset Formula $S_{QM}$
+\end_inset
+
+ is 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (19)"
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+S_{QM} & = & 2.70\pm0.05\label{eq:A6}
+\end{eqnarray}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
-Experimental Descriptions 
+Descriptions Of Experiments
 \end_layout
 
 \begin_layout Standard
@@ -446,10 +884,10 @@ literal "false"
 
 \end_inset
 
- and Aspect are similar comprizing polarizers,
+ and Aspect are similar comprising polarizers,
  detectors and coincidence monitoring devices.
  The main difference being in the type of polarizers used.
- Freedman used pile-of-plates polarizers for which only main ray photons could be detected whereas Aspect used dichotomic polarizers enabling detection of both main and extrordinary ray photons.
+ Freedman used pile-of-plates polarizers for which only main ray photons could be detected whereas Aspect used dihcotomic polarizers enabling detection of both main and extraordinary ray photons.
 \end_layout
 
 \begin_layout Standard
@@ -458,7 +896,7 @@ In both experiments photons are emitted in an atomic cascade and are counted in 
 \end_layout
 
 \begin_layout Standard
-In Freedman's experiment the following quantities were measured measured:
+In Freedman's experiment the following quantities were measured:
 \end_layout
 
 \begin_layout Itemize
@@ -519,19 +957,22 @@ In addition to ordinary coincidence counting,
 \end_layout
 
 \begin_layout Standard
-In Aspects experiment the following quantities were measured:
+In the Aspect et.al ex experiment the following quantities were measured:
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $R_{\pm\pm}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\begin_inset Formula $R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{-+}\left(\overrightarrow{a},\overrightarrow{b}\right)$
 \end_inset
 
-:
- four coincidence counting rates for 
+ and 
+\begin_inset Formula $R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+ being the observed coincidence counting rates for the photon detection pairs
 \begin_inset Formula $\left\{ +,+\right\} $
 \end_inset
 
-,
+ ,
  
 \begin_inset Formula $\left\{ +,-\right\} $
 \end_inset
@@ -545,16 +986,15 @@ In Aspects experiment the following quantities were measured:
 \begin_inset Formula $\left\{ -,-\right\} $
 \end_inset
 
- pair detections.
- 
+.
 \end_layout
 
 \begin_layout Section
-Experimental Results
+Freedman's Experimental Results
 \end_layout
 
 \begin_layout Standard
-The primary experimental metric was defined as the normalized coincidence ratio:
+Freedman's primary experimental metric was defined as the normalized coincidence ratio:
 \end_layout
 
 \begin_layout Standard
@@ -597,7 +1037,197 @@ Where:
 \begin_inset Formula $\epsilon_{1},\epsilon_{2}$
 \end_inset
 
- represent continuous laboratory calibration constants tracking maximum transmittance and minimum leakage.
+ represent laboratory calibration constants for polarizer maximum transmittance and minimum leakage.
+\end_layout
+
+\begin_layout Standard
+The solid curve of Figure 21 has a near-perfect fit with a 
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ score of 0.028 confirming that the data is tracking a continuous,
+ absorption-attenuated intensity function and is not a discrete violation of binary probability logic.
+\end_layout
+
+\begin_layout Section
+Aspect et.
+ al.
+ Experimental Results
+\end_layout
+
+\begin_layout Standard
+Aspect et.
+ al.
+ used a four-fold coincidence method to measure four pair detection coincidence rates 
+\begin_inset Formula $R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{-+}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+ for 
+\begin_inset Formula $\left\{ +,+\right\} $
+\end_inset
+
+,
+ 
+\begin_inset Formula $\left\{ +,-\right\} $
+\end_inset
+
+,
+ 
+\begin_inset Formula $\left\{ -,+\right\} $
+\end_inset
+
+ and 
+\begin_inset Formula $\left\{ -,-\right\} $
+\end_inset
+
+ for four different orientations of the polarizers.
+ These results are used to yield the correlation coefficient 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (3)"
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+\rho\left(\overrightarrow{a},\overrightarrow{b}\right) & = & \frac{R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)+R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)-R_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right)-R_{-+}\left(\overrightarrow{a},\overrightarrow{b}\right)}{R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)+R_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right)+R\left(\overrightarrow{a},\overrightarrow{b}\right)+R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)}\label{eq:A3}
+\end{eqnarray}
+
+\end_inset
+
+which can be compared with the expectation value given by equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:A1"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:A3"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is also the sample mean 
+\begin_inset Formula $SM\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+ corresponding to expectation value given by equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:A1"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Aspect et.
+ al.
+ used the results to calculate the value:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+S_{expt} & = & \frac{R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)}{R_{total}\left(\overrightarrow{a},\overrightarrow{b}\right)}-\frac{R_{++}\left(\overrightarrow{a},\overrightarrow{d}\right)}{R_{total}\left(\overrightarrow{a},\overrightarrow{d}\right)}+\frac{R_{++}\left(\overrightarrow{c},\overrightarrow{b}\right)}{R_{total}\left(\overrightarrow{c},\overrightarrow{b}\right)}+\frac{R_{++}\left(\overrightarrow{c},\overrightarrow{d}\right)}{R_{total}\left(\overrightarrow{c},\overrightarrow{d}\right)}\\
+ & = & 2.697
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which is outside the bounds of inequalities 
+\begin_inset Formula $S$
+\end_inset
+
+ defined by inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:A2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+However,
+ inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:A2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ are derived from the expectation value of the product of two binary random variables whereas 
+\begin_inset Formula $S_{expt}$
+\end_inset
+
+ is a function of numerical random variables and,
+ therefore,
+ inapplicable for comparison with 
+\begin_inset Formula $S_{expt}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Therefore,
+ the Aspect et.
+ al.
+ statement that 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ must be considered erroneous.
 \end_layout
 
 \begin_layout Section
@@ -623,7 +1253,7 @@ Continuous profile divergence from standard CHSH inequalities mathematically dem
 \end_layout
 
 \begin_layout Standard
-Unfortunately the statistical concept and definition of expectation value appeares to be widely misunderstood or ignored by many within the physics community.
+Unfortunately the statistical concept and definition of expectation value appears to be widely misunderstood or ignored by many within the physics community.
 \end_layout
 
 \begin_layout Section
@@ -696,6 +1326,191 @@ Effectively,
  the device counts individual,
  discrete events over a fixed timeframe and that total count is converted into a "rate" because it is an easy way to write down the data and normalize it against baseline data 
 \begin_inset Formula $\left(R_{0}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Derivation Of The Expected Value 
+\begin_inset Formula $E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}$
+\end_inset
+
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Derivation-Of-Equation"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In a representation that exploits the binary character of photon polarization 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.7)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+\left|\gamma_{1}\gamma_{2}\right\rangle  & = & \frac{1}{\sqrt{2}}\left[\begin{pmatrix}1\\
+0
+\end{pmatrix}_{1}\begin{pmatrix}1\\
+0
+\end{pmatrix}_{2}-\begin{pmatrix}0\\
+1
+\end{pmatrix}_{1}\begin{pmatrix}0\\
+1
+\end{pmatrix}_{2}\right]\label{eq:FI.7}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this representation a measurement of a photon's linear polarization in an arbitrary direction perpendicular to the z axis is associated with an hermitian operator of the form 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.8)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+O_{i}\left(\phi_{i}\right) & = & \begin{bmatrix}cos\left(2\phi_{i}\right) & sin\left(2\phi_{i}\right)\\
+sin\left(2\phi_{i}\right) & -cos\left(2\phi_{i}\right)
+\end{bmatrix}\label{eq:FI.8}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The expectation value for joint polarization measurements is 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (I.9)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\phi\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle =cos\left(2\phi\right)\label{eq:FI.9}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\phi$
+\end_inset
+
+ represents the angle between the polarizer orientations.
+\end_layout
+
+\begin_layout Standard
+The observation of transmission or non-transmission of a photon through a polarizer with polarization axis in the x direction 
+\begin_inset Formula $\pi_{i}$
+\end_inset
+
+ is given by:
+\begin_inset Formula 
+\begin{eqnarray}
+\pi_{i} & = & \begin{bmatrix}\varepsilon^{i}_{M} & 0\\
+0 & \varepsilon^{i}_{m}
+\end{bmatrix}
+\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $\left(\varepsilon^{i}_{M}>\varepsilon^{i}_{m}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Transforming 
+\begin_inset Formula $\pi_{i}$
+\end_inset
+
+ by a rotation 
+\begin_inset Formula $\phi_{i}$
+\end_inset
+
+ about the z axis defines an operator 
+\begin_inset Formula $\pi_{i}\left(\phi_{i}\right)$
+\end_inset
+
+ for arbitrary for an polarizer orientation as:
+\begin_inset Formula 
+\begin{eqnarray}
+\pi_{i}\left(\phi_{i}\right) & = & \begin{bmatrix}\frac{1}{2}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
+\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right)
+\end{bmatrix}
+\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $\phi_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\phi_{2}$
+\end_inset
+
+ are defined in different right-handed coordinate frames.
+\end_layout
+
+\begin_layout Standard
+The expectation value that both photons are transmitted is defined by:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\gamma_{1}\gamma_{2}\right|\right\rangle \label{eq:FII.9-1}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\gamma_{i}$
+\end_inset
+
+ represents the wave function of photon 
+\begin_inset Formula $i$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Lambda$
+\end_inset
+
+ represents the population domain of the 
+\begin_inset Formula $\gamma_{i}$
 \end_inset
 
 .

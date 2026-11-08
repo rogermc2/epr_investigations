@@ -139,12 +139,10 @@ The Original Analytical Constraint (Bell's Eq.
 \begin_layout Standard
 • State clearly that the CHSH inequality strictly demands a joint product matrix derived from two independent,
  toggling binary variables (
-\backslash
-(
-\backslash
-pm 1
-\backslash
-)).
+\begin_inset Formula $\pm1$
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Section
@@ -162,12 +160,10 @@ The Physical Reality of the "Pile-of-Plates" Apparatus
  continuous,
  analog scale factor:
  the normalized coincidence ratio 
-\backslash
-(R(
-\backslash
-phi)/R_0
-\backslash
-).
+\begin_inset Formula $R(\phi)/R_{0}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -180,17 +176,15 @@ The Category Error of Figure 21
 
 \begin_layout Standard
 • Argue that plotting the data against the solid curve of Figure 21 (which your Ada code proved has a near-perfect fit with a 
-\backslash
-(
-\backslash
-chi ^{2}
-\backslash
-) score of 0.028) proves the data is tracking a continuous,
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ score of 0.028) proves the data is tracking a continuous,
  absorption-attenuated intensity function—
 not a discrete violation of binary probability logic.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 • Section 4:
  Conclusion and Local Realistic Vindication
 \end_layout
@@ -201,19 +195,14 @@ not a discrete violation of binary probability logic.
 
 \begin_layout Standard
 • When the continuous efficiency adjustments (
-\backslash
-(
-\backslash
-epsilon_1,
- 
-\backslash
-epsilon_2
-\backslash
-)) and lens factors (
-\backslash
-(F(0)
-\backslash
-)) are required just to keep the thresholds stable,
+\begin_inset Formula $\epsilon_{1},\epsilon_{2}$
+\end_inset
+
+) and lens factors (
+\begin_inset Formula $F(0)$
+\end_inset
+
+) are required just to keep the thresholds stable,
  the system has escaped the boundary definitions of a closed binary matrix.
 \end_layout
 
