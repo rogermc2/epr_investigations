@@ -199,11 +199,11 @@ Relevant Theory
 \end_layout
 
 \begin_layout Standard
-Freedman incorrectly states that the expectation value for the product of the measuement of two individual particles (fermions or photons) 
-\begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)=\pm$
+Freedman incorrectly states that 
+\begin_inset Quotes eld
 \end_inset
 
-1 in the directions 
+the quantum-mechanical expectation value for the product of individual spin measurements in the directions 
 \begin_inset Formula $\hat{a}$
 \end_inset
 
@@ -211,7 +211,11 @@ Freedman incorrectly states that the expectation value for the product of the me
 \begin_inset Formula $\hat{b}$
 \end_inset
 
- is given by 
+ is given by the following expectation value
+\begin_inset Quotes erd
+\end_inset
+
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (I.2)"
@@ -248,21 +252,14 @@ In general,
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\lambda_{1}$
+\begin_inset Formula $\overrightarrow{\sigma_{1}}\,$
 \end_inset
 
  and 
-\begin_inset Formula $\lambda_{2}$
+\begin_inset Formula $\overrightarrow{\sigma_{2}}$
 \end_inset
 
  represents the wave function of two particles.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\psi$
-\end_inset
-
- represents the wave function of two particles in the so-called singlet state.
 \end_layout
 
 \begin_layout Standard
@@ -282,7 +279,7 @@ tuple "list"
 \begin_inset Formula $E\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right)$
 \end_inset
 
- for the observables 
+ of the observables 
 \begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
 \end_inset
 
@@ -317,7 +314,7 @@ literal "false"
 \end_inset
 
 ,
- the expectation value for the joint polarization measurements of the observables 
+  the expectation value for the joint polarization measurements of observables 
 \begin_inset Formula $O_{1}\left(\phi_{1}\right)$
 \end_inset
 
