@@ -1662,6 +1662,151 @@ If your derivation establishes that an assumption is not satisfied,
 \end_layout
 
 \begin_layout Standard
+Freedman's commences his derivation of inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.8"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "inequality (II.8)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+ by defining a correlation function 
+\begin_inset Formula $P\left(\hat{a},\hat{b}\right)$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.2)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(\hat{a},\hat{b}\right) & = & \int\rho\left(\lambda\right)A\left(\hat{a},\lambda\right)B\left(\hat{b},\lambda\right)d\lambda\label{eq:FII.2}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then he introduces two additional measurement parramaters 
+\begin_inset Formula $\hat{c}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{d}$
+\end_inset
+
+,
+ based on equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+,
+ defining:
+\begin_inset Formula 
+\begin{eqnarray}
+\left|P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{c}\right)\right| & = & \left|\int\rho\left(\lambda\right)A\left(\hat{a},\lambda\right)B\left(\hat{b},\lambda\right)d\lambda-\int\rho\left(\lambda\right)A\left(\hat{a},\lambda\right)B\left(\hat{c},\lambda\right)d\lambda\right|\\
+ & = & \Big|\int\rho\left(\lambda\right)A\left(\hat{a},\lambda\right)B\left(\hat{b},\lambda\right)\left[1\pm A\left(\hat{d},\lambda\right)B\left(\hat{c},\lambda\right)\right]d\lambda\\
+ &  & -\int\rho\left(\lambda\right)A\left(\hat{a},\lambda\right)B\left(\hat{c},\lambda\right)\left[1\pm A\left(\hat{d},\lambda\right)B\left(\hat{b},\lambda\right)\right]d\lambda\Big|\\
+ & \leq & \int\rho\left(\lambda\right)\left|A\left(\hat{a},\lambda\right)B\left(\hat{b},\lambda\right)\right|\left|1\pm A\left(\hat{d},\lambda\right)B\left(\hat{c},\lambda\right)\right|d\lambda\\
+ &  & +\int\rho\left(\lambda\right)\left|A\left(\hat{a},\lambda\right)B\left(\hat{c},\lambda\right)\right|\left|1\pm A\left(\hat{d},\lambda\right)B\left(\hat{b},\lambda\right)\right|d\lambda
+\end{eqnarray}
+
+\end_inset
+
+Therefore:
+\begin_inset Formula 
+\begin{eqnarray}
+\left|P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{c}\right)\right| & \leq & 2\int\rho\left(\lambda\right)d\lambda\\
+ &  & \pm\left(\int\rho\left(\lambda\right)A\left(\hat{d},\lambda\right)B\left(\hat{c},\lambda\right)d\lambda+\int\rho\left(\lambda\right)A\left(\hat{d},\lambda\right)B\left(\hat{b},\lambda\right)\right)\\
+\therefore\left|P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{c}\right)\right| & \leq & 2+\left[P\left(\hat{d},\hat{c}\right)-P\left(\hat{d},\hat{b}\right)\right]
+\end{eqnarray}
+
+\end_inset
+
+which can be written as 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.4)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-2\leq & P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{c}\right)+P\left(\hat{d},\hat{c}\right)+P\left(\hat{d},\hat{b}\right) & \leq2\label{eq:FII.4}
+\end{eqnarray}
+
+\end_inset
+
+Note that the inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.4"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ are very general;
+ in particular,
+ the source of the particle pairs and the exact nature of the measurements are not specified.
+\end_layout
+
+\begin_layout Standard
+To express the inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.4"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ in terms of directly measurable quantities the following partition of 
+\begin_inset Formula $\Gamma$
+\end_inset
+
+ is defined:
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 btprint "btPrintCited"
