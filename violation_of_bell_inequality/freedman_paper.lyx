@@ -107,11 +107,27 @@
 \begin_layout Title
 A Short Review Of The 1972 Freedman-Clauser And 1982 Aspect Experiments:
  An Empirical Mapping of Continuous Attenuation Functions vs.
- Discrete Binary Products.
+ Discrete Binary Products
+\end_layout
+
+\begin_layout Author
+Roger L.
+ Mc Murtrie
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Email:
+ rogermc@iinet.net.au
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Abstract
-This article reviews the results of the 1972 Freedman-Clauser 
+This article re-examines the results of the 1972 Freedman-Clauser 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Freedman1972"
@@ -133,7 +149,27 @@ literal "false"
 \end_layout
 
 \begin_layout Abstract
-The results of both experiments are in excellent agreement with their relevant expectation values.
+Particular attention is given to the mathematical relationship between the experimentally measured photon coincidence rates and the theoretical expressions used in interpreting those measurements.
+\end_layout
+
+\begin_layout Abstract
+The analysis follows the original mathematical formulations,
+ examining the definitions of the experimental observables,
+ the derivation of their expected values and the assumptions underlying the application of Bell inequalities.
+\end_layout
+
+\begin_layout Abstract
+It is argued that the excellent experimental agreement with the predicted angular dependence of coincidence rates must be distinguished from the separate question of whether or not those measurements establish a violation of local realism.
+ The implications of this distinction for the interpretation of the reported experimental results are discussed.
+\end_layout
+
+\begin_layout Abstract
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -149,7 +185,7 @@ literal "false"
 
 \end_inset
 
- thesis and Alain Aspect's article
+ and Alain Aspect's article
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Aspect82"
@@ -191,15 +227,15 @@ The initial and final atomic angular momentum.
  is zero;
  hence,
  by conservation of angular momentum,
- the two photons are in a combined state of angular momentum zero.
+ the two photons are in a combined state of angular momentum zero which means that their polarization vectors are correlated.
 \end_layout
 
 \begin_layout Section
-Relevant Theory
+Relevant Theoretical Framework
 \end_layout
 
 \begin_layout Standard
-Freedman incorrectly states that 
+Freedman states that 
 \begin_inset Quotes eld
 \end_inset
 
@@ -303,6 +339,21 @@ E\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sig
 \end_layout
 
 \begin_layout Standard
+However,
+ the experiments described herein measure either 
+\begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
+\end_inset
+
+ nor 
+\begin_inset Formula $\hat{b}\cdot\overrightarrow{\sigma_{2}}$
+\end_inset
+
+ but,
+ effectively,
+ do measure the polarity of these expressions.
+\end_layout
+
+\begin_layout Standard
 Similarly,
  
 \begin_inset CommandInset citation
@@ -314,7 +365,7 @@ literal "false"
 \end_inset
 
 ,
-  the expectation value for the joint polarization measurements of observables 
+ the expectation value for the joint polarization measurements of the observables 
 \begin_inset Formula $O_{1}\left(\phi_{1}\right)$
 \end_inset
 
@@ -322,7 +373,13 @@ literal "false"
 \begin_inset Formula $O_{2}\left(\phi_{2}\right)$
 \end_inset
 
- over the domain of 
+ over the domain,
+ 
+\begin_inset Formula $\varGamma$
+\end_inset
+
+,
+ of 
 \begin_inset Formula $\gamma_{1}$
 \end_inset
 
@@ -333,7 +390,7 @@ literal "false"
  should be written:
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle =cos\left(2\phi\right)
+E\left(O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right)_{\varGamma} & = & \left\langle \gamma_{1}\gamma_{2}\left|O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle =cos\left(2\phi\right)
 \end{eqnarray}
 
 \end_inset
@@ -346,6 +403,12 @@ The expectation value of
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)$
 \end_inset
 
+ over the domain,
+ 
+\begin_inset Formula $\varLambda$
+\end_inset
+
+,
  is given by:
 \begin_inset Formula 
 \begin{eqnarray}
@@ -378,37 +441,6 @@ where:
 
  and 
 \begin_inset Formula $\lambda_{2}$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\Lambda$
-\end_inset
-
- represents the population space of the set of random variables 
-\begin_inset Formula $\left\{ \lambda_{1},\lambda_{2}\right\} $
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-The derivation of 
-\begin_inset Formula $E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}$
-\end_inset
-
- is given in Appendix 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "sec:Derivation-Of-Equation"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-tuple "list"
-
 \end_inset
 
 .
@@ -452,18 +484,18 @@ where:
 \begin_inset Formula $\gamma_{2}$
 \end_inset
 
- represent
+ represent the individual wave functions of a particle-pair
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula $\pi_{i}\left(\phi_{i}\right)$
 \end_inset
 
- represents the observation of the transmission or non-transmission of a photon through a polarizer with polarization axis in the x direction 
+ represents the the transmission characteristics of polarizer (i) for of a photon through a polarizer with polarization axis in the x direction 
 \begin_inset Formula $\pi_{i}$
 \end_inset
 
- which is given by:
+ which is represented by the matrix:
 \end_layout
 
 \begin_layout Standard
@@ -473,6 +505,14 @@ where:
 0 & \varepsilon^{i}_{m}
 \end{bmatrix}
 \end{eqnarray}
+
+\end_inset
+
+where:
+\begin_inset Formula 
+\begin{equation}
+0\leq\epsilon_{mi}\leq\epsilon_{Mi}\leq1.
+\end{equation}
 
 \end_inset
 
@@ -532,11 +572,31 @@ Off-diagonal matrix elements describe transition probabilities between different
 \end_layout
 
 \begin_layout Standard
+The derivation of 
+\begin_inset Formula $E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}$
+\end_inset
+
+ is given in Appendix 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "sec:Derivation-Of-Equation"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 Defining 
 \begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
 \end_inset
 
- as the experimentally measured values Equation 
+ as the experimentally measured values given by Equation 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:FII.9"
@@ -561,13 +621,13 @@ tuple "list"
 \begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
 \end_inset
 
- ,
+,
  
 \begin_inset Formula $E\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
 \end_inset
 
 ,
- given by:
+ is given by:
 \begin_inset Formula 
 \begin{eqnarray}
 E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}
@@ -608,12 +668,24 @@ E\left(\frac{R_{2}}{R_{0}}\right) & = & \frac{1}{2}\left(\varepsilon^{2}_{M}+\va
 \end_layout
 
 \begin_layout Standard
-Freedman derives the following inequalities 
+Freedman's derivation of the following inequalities 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "inequality (II.8)"
 key "Freedman1972"
 literal "false"
+
+\end_inset
+
+ is given in Appendix 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "sec:Derivation-And-Applicabiliry"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
 
 \end_inset
 
@@ -722,7 +794,7 @@ E\left(\overrightarrow{a},\overrightarrow{b}\right) & = & P_{++}\left(\overright
 \end_layout
 
 \begin_layout Standard
-Then allowing for experimental restrictions 
+Allowing for experimental restrictions 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (5)"
@@ -777,11 +849,15 @@ where:
 \begin_layout Standard
 Aspect et.
  al.
- define 
+ define a 
 \begin_inset Quotes eld
 \end_inset
 
-generalized Bell's inequality 
+generalized Bell's inequality
+\begin_inset Quotes erd
+\end_inset
+
+ 
 \begin_inset Formula $S$
 \end_inset
 
@@ -805,7 +881,7 @@ literal "false"
 where:
 \begin_inset Formula 
 \begin{eqnarray}
-S & = & E\left(\overrightarrow{a},\overrightarrow{b}\right)-E\left(\overrightarrow{a},\overrightarrow{d}\right)+E\left(\overrightarrow{c},\overrightarrow{b}\right)+E\left(\overrightarrow{c},\overrightarrow{d}\right)
+S & = & E\left(\overrightarrow{a},\overrightarrow{b}\right)-E\left(\overrightarrow{a},\overrightarrow{d}\right)+E\left(\overrightarrow{c},\overrightarrow{b}\right)+E\left(\overrightarrow{c},\overrightarrow{d}\right)\label{eq:A2-1}
 \end{eqnarray}
 
 \end_inset
@@ -868,7 +944,7 @@ S_{QM} & = & 2.70\pm0.05\label{eq:A6}
 \end_layout
 
 \begin_layout Section
-Descriptions Of Experiments
+Experimental Methods
 \end_layout
 
 \begin_layout Standard
@@ -933,12 +1009,12 @@ In Freedman's experiment the following quantities were measured:
 \end_layout
 
 \begin_layout Standard
-These rates are determined by correcting the observed coincidence rates for the random coincidence background.
+These rates were determined by correcting the observed coincidence rates for the random coincidence background.
 \end_layout
 
 \begin_layout Standard
 In addition to ordinary coincidence counting,
- a time delay-coincidence system provides a spectrum of the arrival time difference between 
+ a time delay-coincidence system provided a spectrum of arrival time differences between 
 \begin_inset Formula $\gamma_{1}$
 \end_inset
 
@@ -946,11 +1022,11 @@ In addition to ordinary coincidence counting,
 \begin_inset Formula $\gamma_{2}$
 \end_inset
 
- which gives the lifetime of the 
+ thereby giving the lifetime of the 
 \begin_inset Formula $4s4p^{1}P_{1}$
 \end_inset
 
- state and provides a check on the consistency of the experiment.
+ state and provided a check on the consistency of the experiment.
 \end_layout
 
 \begin_layout Standard
@@ -987,7 +1063,7 @@ In the Aspect et.al ex experiment the following quantities were measured:
 \end_layout
 
 \begin_layout Section
-Freedman's Experimental Results
+Analysis Of Freedman's Experimental Results
 \end_layout
 
 \begin_layout Standard
@@ -1006,7 +1082,7 @@ Freedman's primary experimental metric was defined as the normalized coincidence
 \end_layout
 
 \begin_layout Standard
-Where:
+where:
 \end_layout
 
 \begin_layout Standard
@@ -1046,8 +1122,17 @@ The solid curve of Figure 21 has a near-perfect fit with a
  absorption-attenuated intensity function and is not a discrete violation of binary probability logic.
 \end_layout
 
+\begin_layout Standard
+The experimental coincidence rates are not the dihcotomic variables for which the theoretical inequality is derived.
+ Consequently,
+ applying the inequality to those rates requires a mathematically justified transformation,
+ together with verification of its underlying assumptions.
+ Without this justification,
+ the inference of nonlocality is not established by the experimental comparison.
+\end_layout
+
 \begin_layout Section
-Aspect et.
+Analysis Of Aspect et.
  al.
  Experimental Results
 \end_layout
@@ -1063,7 +1148,7 @@ Aspect et.
 \begin_inset Formula $R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)$
 \end_inset
 
- for 
+ representing 
 \begin_inset Formula $\left\{ +,+\right\} $
 \end_inset
 
@@ -1082,7 +1167,7 @@ Aspect et.
 \end_inset
 
  for four different orientations of the polarizers.
- These results are used to yield the correlation coefficient 
+ These results were used to yield the correlation coefficient 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (3)"
@@ -1220,7 +1305,7 @@ Therefore,
 \begin_inset Quotes eld
 \end_inset
 
-
+The impressive violation of inequalities is 83% of the maximum violation predicted by quantum mechanics with ideal polarizers
 \begin_inset Quotes erd
 \end_inset
 
@@ -1228,7 +1313,26 @@ Therefore,
 \end_layout
 
 \begin_layout Section
-Conclusion
+Discussion And Conclusions
+\end_layout
+
+\begin_layout Standard
+There are two separate conclusions to examine:
+\end_layout
+
+\begin_layout Standard
+- Whether the measured coincidence rates agree with the theoretical predictions.
+\end_layout
+
+\begin_layout Standard
+- Whether those measurements,
+ together with the assumptions used in their analysis,
+ establish a violation of the relevant local-hidden-variable inequality.
+\end_layout
+
+\begin_layout Standard
+These are logically distinct questions.
+ Keeping them separate would strengthen the argument.
 \end_layout
 
 \begin_layout Standard
@@ -1242,6 +1346,25 @@ In both experiments the empirical data points track a smooth,
 \end_inset
 
  because the laboratory instruments are measuring continuous macroscopic wave intensities and timing intervals.
+\end_layout
+
+\begin_layout Standard
+The differing graphical forms of Freedman's Figure 21 and Aspect et al.'s Figure 3 arise principally from the different experimental observables employed.
+ Freedman's measurements were expressed as normalized coincidence rates associated with transmission through single-channel polarizers.
+ Aspect et al.,
+ employing two-channel polarimeters,
+ constructed polarization correlation coefficients from the four possible combinations of detected outcomes.
+\end_layout
+
+\begin_layout Standard
+Although both quantities exhibit an angular dependence involving (
+\backslash
+cos(2
+\backslash
+phi)),
+ their mathematical definitions and normalization procedures differ.
+ In particular,
+ the interpretation of Aspect's experimentally constructed correlation coefficients as the theoretical correlations entering the Bell inequality depends upon the assumption that the detected photon pairs constitute a representative sample of the emitted pairs.
 \end_layout
 
 \begin_layout Standard
@@ -1269,7 +1392,7 @@ Appendices
 \end_layout
 
 \begin_layout Section
-Click rate measurement
+Measurement Of Photon Detection Rates
 \end_layout
 
 \begin_layout Enumerate
@@ -1341,6 +1464,10 @@ name "sec:Derivation-Of-Equation"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+This derivation follows Freedman's mathematical treatment.
 \end_layout
 
 \begin_layout Standard
@@ -1511,6 +1638,27 @@ where:
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Section
+Derivation And Applicability Of The Bell Inequality And The Conditions For Its Experimental Application
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Derivation-And-Applicabiliry"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This appendix should identify the precise assumptions needed to connect the theoretical inequality with Freedman's and Aspect's experimental measurements.
+\end_layout
+
+\begin_layout Standard
+If your derivation establishes that an assumption is not satisfied,
+ or that the experimental data do not establish its satisfaction,
+ you can make a specific and defensible criticism.
 \end_layout
 
 \begin_layout Standard
