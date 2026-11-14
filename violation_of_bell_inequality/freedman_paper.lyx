@@ -163,15 +163,6 @@ It is argued that the excellent experimental agreement with the predicted angula
  The implications of this distinction for the interpretation of the reported experimental results are discussed.
 \end_layout
 
-\begin_layout Abstract
-\begin_inset CommandInset toc
-LatexCommand tableofcontents
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Introduction
 \end_layout
@@ -185,7 +176,7 @@ literal "false"
 
 \end_inset
 
- and Alain Aspect's article
+ and Alain Aspect's article 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Aspect82"
@@ -202,7 +193,35 @@ literal "false"
 
 \begin_layout Standard
 The results of both experiments are in excellent agreement with their relevant expectation values.
- Unfortunately this situation is somewhat marred by comparisons with inapplicable expectation values.
+ Unfortunately this situation is somewhat marred by comparisons with other inapplicable expectation values.
+ In accordance with the scientific method,
+ a statistically significant disagreement between experimental observations and theoretical predictions calls for investigation.
+ Such disagreement may arise from one or more of the following:
+\end_layout
+
+\begin_layout Itemize
+Experimental limitations:
+ The experimental arrangement,
+ measurement procedures or statistical treatment of the observations may be inadequate or inappropriate.
+\end_layout
+
+\begin_layout Itemize
+Inapplicability of the theory:
+ The assumptions or conditions under which the theoretical prediction was derived may not be satisfied by the experimental arrangement.
+\end_layout
+
+\begin_layout Itemize
+Errors in the theoretical derivation:
+ The mathematical reasoning leading to the theoretical prediction may contain errors or unjustified assumptions.
+\end_layout
+
+\begin_layout Standard
+These possibilities are not mutually exclusive and should be examined before conclusions are drawn concerning the validity or applicability of the theoretical model.
+\end_layout
+
+\begin_layout Standard
+In the case of the experiments investigated in this article it aappears to be the second of these possibilities that is responsible for disagreement.
+ The experimental results investigated are numeric coincidence rates whereas the inequalities that they are compared with are derived from and are only applicable to experiments in which the experimental results are binary values.
 \end_layout
 
 \begin_layout Section
@@ -214,8 +233,7 @@ The systems investigated by Freedman's and Aspect's experiments both comprise be
 \end_layout
 
 \begin_layout Standard
-To a good approximation,
- the atom cascades via electric dipole transitions through angular-momentum states 
+To a good approximation the atom cascades via electric dipole transitions through angular-momentum states 
 \begin_inset Formula $J=0\rightarrow J=1\rightarrow J=0$
 \end_inset
 
@@ -227,7 +245,7 @@ The initial and final atomic angular momentum.
  is zero;
  hence,
  by conservation of angular momentum,
- the two photons are in a combined state of angular momentum zero which means that their polarization vectors are correlated.
+ the two photons are in a combined state of zero angular momentum meaning that their polarization vectors are correlated.
 \end_layout
 
 \begin_layout Section
@@ -269,7 +287,6 @@ E\left(\hat{a},\hat{b}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrigh
 \end_inset
 
 where:
- 
 \begin_inset Foot
 status collapsed
 
@@ -288,6 +305,13 @@ In general,
 \end_layout
 
 \begin_layout Standard
+\begin_inset Formula $\psi$
+\end_inset
+
+ represents the wave functions of two particles.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula $\overrightarrow{\sigma_{1}}\,$
 \end_inset
 
@@ -295,7 +319,7 @@ In general,
 \begin_inset Formula $\overrightarrow{\sigma_{2}}$
 \end_inset
 
- represents the wave function of two particles.
+ represents the vector of three Pauli matrices.
 \end_layout
 
 \begin_layout Standard
@@ -330,7 +354,7 @@ tuple "list"
  and is more correctly written:
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right) & = & \left\langle \psi\left|\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sigma_{2}}\right|\psi\right\rangle =-\hat{a}\cdot\hat{b}
+E\left(\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\right)\,\left(\hat{b}\cdot\overrightarrow{\sigma_{2}}\right)\right) & = & \left\langle \psi\left|\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\right)\,\left(\hat{b}\cdot\overrightarrow{\sigma_{2}}\right)\right|\psi\right\rangle =-\hat{a}\cdot\hat{b}
 \end{eqnarray}
 
 \end_inset
@@ -340,7 +364,7 @@ E\left(\hat{a}\cdot\overrightarrow{\sigma_{1}}\,\hat{b}\cdot\overrightarrow{\sig
 
 \begin_layout Standard
 However,
- the experiments described herein measure either 
+ the experiments described herein measure neither 
 \begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
 \end_inset
 
@@ -350,7 +374,7 @@ However,
 
  but,
  effectively,
- do measure the polarity of these expressions.
+ do measure the positive and negative polarity of these observables.
 \end_layout
 
 \begin_layout Standard
@@ -399,20 +423,18 @@ E\left(O_{1}\left(\phi_{1}\right)O_{2}\left(\phi_{2}\right)\right)_{\varGamma} &
 \end_layout
 
 \begin_layout Standard
-The expectation value of 
+The expectation value of the product 
 \begin_inset Formula $A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)$
 \end_inset
 
- over the domain,
- 
+ over the domain 
 \begin_inset Formula $\varLambda$
 \end_inset
 
-,
  is given by:
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)\right)_{\Lambda} & = & \int_{\Lambda}\rho\left(\lambda\right)A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)d\lambda_{2}d\lambda_{1}
+E\left(A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)\right)_{\Lambda} & = & \int_{\Lambda}\rho\left(\lambda\right)A\left(\hat{a},\lambda_{1}\right)B\left(\hat{b},\lambda_{2}\right)d\lambda_{2}d\lambda_{1}\label{eq:FII.2-1}
 \end{eqnarray}
 
 \end_inset
@@ -447,7 +469,52 @@ where:
 \end_layout
 
 \begin_layout Standard
-Freedman states that the probability (actually expectation value) that both photons are detected as:
+As shown in Appendix 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:Derivation-of-Bell-inequality"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+Freedman derives the following inequalities from equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.2-1"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation(II.6)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+-2\leq & P_{++}\left(\hat{a},\hat{b}\right)+P_{++}\left(\hat{d},\hat{c}\right)+P_{++}\left(\hat{d},\hat{b}\right)-P_{1}\left(\hat{d}\right)-P_{2}\left(\hat{b}\right) & \leq2\label{eq:FII.6-1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Freedman states the probability (actually expectation value) that both photons are detected as:
 \begin_inset Formula 
 \begin{eqnarray}
 \frac{R\left(\phi\right)}{R_{0}} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9}
@@ -484,7 +551,7 @@ where:
 \begin_inset Formula $\gamma_{2}$
 \end_inset
 
- represent the individual wave functions of a particle-pair
+ represent the individual wave functions of a particle-pair,
 \end_layout
 
 \begin_layout Standard
@@ -495,7 +562,49 @@ where:
 \begin_inset Formula $\pi_{i}$
 \end_inset
 
- which is represented by the matrix:
+ which is represented by the matrix 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:pi_i"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The right side of equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.9"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+,
+ in standard quantum theoretical symbology,
+ actually represents an expectation value (predicted value),
+ not a probability 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Off-diagonal matrix elements describe transition probabilities between different states.
+ Diagonal matrix elements represent expectation values which are the predicted statistical averages of measurements of an observable across an ensemble of identical quantum systems.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -503,7 +612,7 @@ where:
 \begin{eqnarray}
 \pi_{i} & = & \begin{bmatrix}\varepsilon^{i}_{M} & 0\\
 0 & \varepsilon^{i}_{m}
-\end{bmatrix}
+\end{bmatrix}\label{eq:pi_i}
 \end{eqnarray}
 
 \end_inset
@@ -542,43 +651,13 @@ where:
 \end_layout
 
 \begin_layout Standard
-The right side of equation 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:FII.9"
-plural "false"
-caps "false"
-noprefix "false"
-nolink "false"
-tuple "list"
-
-\end_inset
-
-,
- in standard quantum theoretical symbology,
- actually represents an expectation value (predicted value),
- not a probability 
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Off-diagonal matrix elements describe transition probabilities between different states.
- Diagonal matrix elements represent expectation values which are the predicted statistical averages of measurements of an observable across an ensemble of identical quantum systems.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 The derivation of 
 \begin_inset Formula $E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}$
 \end_inset
 
  is given in Appendix 
 \begin_inset CommandInset ref
-LatexCommand eqref
+LatexCommand ref
 reference "sec:Derivation-Of-Equation"
 plural "false"
 caps "false"
@@ -596,7 +675,7 @@ Defining
 \begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
 \end_inset
 
- as the experimentally measured values given by Equation 
+ as the experimentally measured ratio given by Equation 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:FII.9"
@@ -621,12 +700,6 @@ tuple "list"
 \begin_inset Formula $\frac{R\left(\phi\right)}{R_{0}}$
 \end_inset
 
-,
- 
-\begin_inset Formula $E\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
-\end_inset
-
-,
  is given by:
 \begin_inset Formula 
 \begin{eqnarray}
@@ -754,11 +827,90 @@ where:
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Freedman's inequality 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.8"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is initially derived in terms of theoretical joint and marginal probabilities.
+ These probabilities are subsequently expressed in terms of experimentally measured coincidence-rate ratios,
+ such as 
+\begin_inset Formula $\frac{R(\phi)}{R_{0}}$
+\end_inset
+
+.
+ The derivation of the probability inequality and its subsequent application to the experimental measurements involves two distinct steps:
+\end_layout
+
+\begin_layout Description
+1.
+ 
+\series bold
+Derivation of the theoretical inequality
+\series default
+.
+ Freedman derives inequality 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.8"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ in terms of theoretical joint and marginal probabilities including 
+\begin_inset Formula $P_{++}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
+\end_inset
+
+ etc..
+\end_layout
+
+\begin_layout Description
+2.
+ 
+\series bold
+Application to experimental measurements.
+
+\series default
+ This involves expressing the theoretical probabilities in terms of experimentally measured coincidence-rate ratios including 
+\begin_inset Formula $\frac{R(\phi}{R_{0}}$
+\end_inset
+
+,
+ 
+\begin_inset Formula $\frac{R_{1}}{R_{0}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\frac{R_{2}}{R_{0}}$
+\end_inset
+
+ enabling the inequality to be evaluated using experimental results.
+\end_layout
+
+\begin_layout Standard
 Expectation values can be expressed as a four-quadrant matrix:
 \begin_inset Formula 
 \begin{eqnarray}
-E_{\Lambda} & = & \begin{bmatrix}E_{\varLambda}\left(\overrightarrow{a},\overrightarrow{b}\right) & E_{\varLambda}\left(\overrightarrow{a},\overrightarrow{d}\right)\\
-E_{\varLambda}\left(\overrightarrow{c},\overrightarrow{b}\right) & E_{\varLambda}\left(\overrightarrow{c},\overrightarrow{d}\right)
+E_{\Lambda} & = & \begin{bmatrix}E_{\varLambda}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right) & E_{\varLambda}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{d}\right)\right)\\
+E_{\varLambda}\left(A\left(\overrightarrow{c}\right)B\left(\overrightarrow{b}\right)\right) & E_{\varLambda}\left(A\left(\overrightarrow{c}\right)B\left(\overrightarrow{d}\right)\right)
 \end{bmatrix}
 \end{eqnarray}
 
@@ -790,7 +942,18 @@ E\left(\overrightarrow{a},\overrightarrow{b}\right) & = & P_{++}\left(\overright
 
 \end_inset
 
+where:
+\end_layout
 
+\begin_layout Standard
+\begin_inset Formula $\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+ means 
+\begin_inset Formula $\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -893,7 +1056,7 @@ S & = & E\left(\overrightarrow{a},\overrightarrow{b}\right)-E\left(\overrightarr
 Based on equations 
 \begin_inset CommandInset ref
 LatexCommand eqref
-reference "eq:FI.7"
+reference "eq:A1"
 plural "false"
 caps "false"
 noprefix "false"
@@ -905,7 +1068,7 @@ tuple "list"
  and 
 \begin_inset CommandInset ref
 LatexCommand eqref
-reference "eq:FI.7"
+reference "eq:A2"
 plural "false"
 caps "false"
 noprefix "false"
@@ -1034,11 +1197,11 @@ In the Aspect et.al ex experiment the following quantities were measured:
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{-+}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\begin_inset Formula $R_{++}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right),R_{+-}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right),R_{-+}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
 \end_inset
 
  and 
-\begin_inset Formula $R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\begin_inset Formula $R_{--}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
 \end_inset
 
  being the observed coincidence counting rates for the photon detection pairs
@@ -1090,7 +1253,7 @@ where:
 \begin_inset Formula $R(\phi)$
 \end_inset
 
- is the integrated coincidence count rate at relative polarizer alignment 
+ represents the integrated coincidence count rate at relative polarizer alignment 
 \begin_inset Formula $\phi=\vert a-b\vert$
 \end_inset
 
@@ -1102,7 +1265,7 @@ where:
 \begin_inset Formula $R_{0}$
 \end_inset
 
- is the baseline reference rate measured with both polarizing plates physically removed from the optical paths.
+ represents the baseline reference rate measured with both polarizing plates physically removed from the optical paths.
 \end_layout
 
 \begin_layout Standard
@@ -1110,15 +1273,18 @@ where:
 \begin_inset Formula $\epsilon_{1},\epsilon_{2}$
 \end_inset
 
- represent laboratory calibration constants for polarizer maximum transmittance and minimum leakage.
+ represents laboratory calibration constants for polarizer maximum transmittance and minimum leakage.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $F\left(0\right)$
+\end_inset
+
+ represents a factor that accounts for the finite solid detection angle.
 \end_layout
 
 \begin_layout Standard
-The solid curve of Figure 21 has a near-perfect fit with a 
-\begin_inset Formula $\chi^{2}$
-\end_inset
-
- score of 0.028 confirming that the data is tracking a continuous,
+The solid curve of Figure 21 has a near-perfect fit confirming that the data is tracking a continuous,
  absorption-attenuated intensity function and is not a discrete violation of binary probability logic.
 \end_layout
 
@@ -1141,11 +1307,21 @@ Analysis Of Aspect et.
 Aspect et.
  al.
  used a four-fold coincidence method to measure four pair detection coincidence rates 
-\begin_inset Formula $R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{+-}\left(\overrightarrow{a},\overrightarrow{b}\right),R_{-+}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\begin_inset Formula $R_{++}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
+\end_inset
+
+,
+ 
+\begin_inset Formula $R_{+-}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
+\end_inset
+
+,
+ 
+\begin_inset Formula $R_{-+}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
 \end_inset
 
  and 
-\begin_inset Formula $R_{--}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\begin_inset Formula $R_{--}\left(A\left(\overrightarrow{a}\right)B\left(\overrightarrow{b}\right)\right)$
 \end_inset
 
  representing 
@@ -1235,7 +1411,16 @@ tuple "list"
 \begin_layout Standard
 Aspect et.
  al.
- used the results to calculate the value:
+ used the results to calculate the value 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (4)"
+key "Aspect82"
+literal "false"
+
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Standard
@@ -1321,11 +1506,11 @@ There are two separate conclusions to examine:
 \end_layout
 
 \begin_layout Standard
-- Whether the measured coincidence rates agree with the theoretical predictions.
+- Whether or not the measured coincidence rates agree with the theoretical predictions.
 \end_layout
 
 \begin_layout Standard
-- Whether those measurements,
+- Whether or not those measurements,
  together with the assumptions used in their analysis,
  establish a violation of the relevant local-hidden-variable inequality.
 \end_layout
@@ -1357,11 +1542,10 @@ The differing graphical forms of Freedman's Figure 21 and Aspect et al.'s Figure
 \end_layout
 
 \begin_layout Standard
-Although both quantities exhibit an angular dependence involving (
-\backslash
-cos(2
-\backslash
-phi)),
+Although both quantities exhibit an angular dependence involving 
+\begin_inset Formula $(\cos(2\phi),$
+\end_inset
+
  their mathematical definitions and normalization procedures differ.
  In particular,
  the interpretation of Aspect's experimentally constructed correlation coefficients as the theoretical correlations entering the Bell inequality depends upon the assumption that the detected photon pairs constitute a representative sample of the emitted pairs.
@@ -1370,6 +1554,21 @@ phi)),
 \begin_layout Standard
 Continuous profile divergence from standard CHSH inequalities mathematically demonstrates that the inequality is completely inapplicable to this class of data;
  not that nature has violated local realistic probability logic.
+\end_layout
+
+\begin_layout Standard
+In addition to the experimental results investigated herein the article 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Aspect1991"
+literal "false"
+
+\end_inset
+
+ also involves an inapplicable comparison.
+ In this case,
+ as for the other two,
+ experimental results appear in excellent agreement with predicted results but the article contains an inapplicable comparison with an inequality.
 \end_layout
 
 \begin_layout Standard
@@ -1661,6 +1860,25 @@ If your derivation establishes that an assumption is not satisfied,
  you can make a specific and defensible criticism.
 \end_layout
 
+\begin_layout Subsection
+Derivation of the Theoretical Inequality
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Derivation-of-Bell-inequality"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Reproduce Freedman's derivation in terms of 
+\backslash
+(P_{++}
+\backslash
+) and the marginal probabilities.
+\end_layout
+
 \begin_layout Standard
 Freedman's commences his derivation of inequalities 
 \begin_inset CommandInset ref
@@ -1708,7 +1926,7 @@ P\left(\hat{a},\hat{b}\right) & = & \int\rho\left(\lambda\right)A\left(\hat{a},\
 \end_layout
 
 \begin_layout Standard
-Then he introduces two additional measurement parramaters 
+Then he introduces two additional measurement parameters 
 \begin_inset Formula $\hat{c}$
 \end_inset
 
@@ -1769,7 +1987,7 @@ literal "false"
 
 \end_inset
 
-Note that the inequalities 
+Freedman states that the inequalities 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:FII.4"
@@ -1781,9 +1999,29 @@ tuple "list"
 
 \end_inset
 
- are very general;
+ are quite general;
  in particular,
  the source of the particle pairs and the exact nature of the measurements are not specified.
+ However,
+ the nature of the measurements are specifically specified by the definitions 
+\begin_inset Formula $A\left(\hat{a},\lambda\right)=\pm1$
+\end_inset
+
+ and 
+\begin_inset Formula $B\left(\hat{b},\lambda\right)=\pm1$
+\end_inset
+
+.
+ They certainly are not of the form 
+\begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}\cdot\overrightarrow{\sigma_{2}}$
+\end_inset
+
+;
+ nor are they of the form of coincidence count measurements.
 \end_layout
 
 \begin_layout Standard
@@ -1803,7 +2041,280 @@ tuple "list"
 \begin_inset Formula $\Gamma$
 \end_inset
 
- is defined:
+ is defined by:
+\begin_inset Formula 
+\begin{eqnarray}
+\Gamma_{ij}\left(\hat{a},\hat{b}\right) & = & \left\{ A\left(\hat{a},\lambda\right)=i\,and\,B\left(\hat{b},\lambda\right)\right\} 
+\end{eqnarray}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $i=\pm1$
+\end_inset
+
+ and 
+\begin_inset Formula $j=\pm1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Freedman uses this partition,
+ we define the following quantities:
+\begin_inset Formula 
+\begin{eqnarray}
+P_{ij}\left(\hat{a},\hat{b}\right) & = & \int_{\Gamma_{ij}\left(\hat{a},\hat{b}\right)}\rho\left(\lambda\right)d\lambda
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $P_{++}\left(\hat{a},\hat{b}\right)$
+\end_inset
+
+ is defined as the probability of joint passage of the photons through the polarizers.
+\end_layout
+
+\begin_layout Standard
+Using 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.2"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ and the normalization condition 
+\begin_inset Formula $\int\rho\left(\lambda\right)d\lambda$
+\end_inset
+
+ yields:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(\hat{a},\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)-P_{+-}\left(\hat{a},\hat{b}\right)-P_{-+}\left(\hat{a},\hat{b}\right)+P_{--}\left(\hat{a},\hat{b}\right)\\
+1 & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\hat{a},\hat{b}\right)+P_{--}\left(\hat{a},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Define:
+\begin_inset Formula 
+\begin{eqnarray}
+P_{1}\left(\hat{a}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)\\
+P_{2}\left(\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\hat{a},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $P_{1}\left(\hat{a}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $P_{2}\left(\hat{b}\right)$
+\end_inset
+
+ are the probabilities of joint passage when one of the polarizers is absent.
+\end_layout
+
+\begin_layout Standard
+Expressing the correlation function in terms of the probabilities of joint passage 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.5)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(\hat{a},\hat{b}\right) & = & 4P_{++}\left(\hat{a},\hat{b}\right)-2P_{1}\left(\hat{a}\right)-P_{2}\left(\hat{b}\right)+1\label{eq:FII.5}
+\end{eqnarray}
+
+\end_inset
+
+Substitution equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.5"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ into the inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.4"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.6)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-2\leq & P_{++}\left(\hat{a},\hat{b}\right)+P_{++}\left(\hat{d},\hat{c}\right)+P_{++}\left(\hat{d},\hat{b}\right)-P_{1}\left(\hat{d}\right)-P_{2}\left(\hat{b}\right) & \leq2\label{eq:FII.6}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Application to Experimental Measurements
+\end_layout
+
+\begin_layout Standard
+Having derived the inequality in terms of theoretical probabilities,
+ Freedman then expresses equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.6"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ in terms of experimentally measured coincidence-rate ratios.
+ 
+\end_layout
+
+\begin_layout Standard
+In the experiment under consideration the efficiencies of the detectors are less than 30% so all transmitted photons are not detected and the probabilities of joint passage to experimental count rates involves an additional assumption that the detection probability for a photon is independent of whether or not the photon has passed through a polarizer.The following equations reproduce this step in his derivation,
+ using the notation of the original thesis.
+\end_layout
+
+\begin_layout Standard
+For this experiment 
+\begin_inset Formula $R_{1}\left(\hat{a}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $R_{2}\left(\hat{b}\right)$
+\end_inset
+
+ are independent of 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{b}$
+\end_inset
+
+ and 
+\begin_inset Formula $R\left(\hat{a},\hat{b}\right)$
+\end_inset
+
+ depends only on 
+\begin_inset Formula $\hat{a}\cdot\hat{b}$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.8)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-1\leq & \frac{R\left(\phi_{1}\right)}{R_{0}}-\frac{R\left(\phi_{1}+\phi_{2}+\phi_{3}\right)}{R_{0}}+\frac{R\left(\phi_{2}\right)}{R_{0}}+\frac{R\left(\phi_{3}\right)}{R_{0}}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}} & \leq0\label{eq:FII.8-1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1} & = & cos^{-1}\left(\hat{a},\hat{b}\right)\\
+\phi_{2} & = & cos^{-1}\left(\hat{d},\hat{c}\right)\\
+\phi_{3} & = & cos^{-1}\left(\hat{d},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1}+\phi_{2}+\phi_{3} & = & cos^{-1}\left(\hat{a},\hat{c}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R\left(\phi_{i}\right)$
+\end_inset
+
+ represents the coincidence rate with both polarizers in place.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ represents the coincidence rate with both polarizers removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{1}$
+\end_inset
+
+ represents the coincidence rate with polarizer 2 removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{2}$
+\end_inset
+
+ represents the coincidence rate with polarizer 1 removed.
 \end_layout
 
 \begin_layout Standard
