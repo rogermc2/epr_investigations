@@ -503,7 +503,16 @@ literal "false"
 
 \end_inset
 
+ which is Bell's 1964 equation (2)
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation(2)"
+key "Bell1964"
+literal "false"
 
+\end_inset
+
+.
 \begin_inset Formula 
 \begin{eqnarray}
 -2\leq & P_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)+P_{++}\left(\overrightarrow{d},\overrightarrow{c}\right)+P_{++}\left(\overrightarrow{d},\overrightarrow{b}\right)-P_{1}\left(\overrightarrow{d}\right)-P_{2}\left(\overrightarrow{b}\right) & \leq2\label{eq:FII.6-1}
@@ -537,6 +546,22 @@ where:
 \end_inset
 
  represents the probabilty of detection of a particle pair with polarizer 1 removed.
+\end_layout
+
+\begin_layout Standard
+Note that this derivation is based on equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.2-1"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1464,7 +1489,7 @@ tuple "list"
 \begin_layout Standard
 Aspect et.
  al.
- used the results to calculate the value 
+ used these results to calculate the value 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (4)"
@@ -2109,6 +2134,22 @@ P\left(\hat{a},\hat{b}\right) & = & \int\rho\left(\lambda\right)A\left(\hat{a},\
 \end_layout
 
 \begin_layout Standard
+Note that this correlation function is based on equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.2-1"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Then he introduces two additional measurement parameters 
 \begin_inset Formula $\hat{c}$
 \end_inset
@@ -2182,8 +2223,19 @@ tuple "list"
 
 \end_inset
 
- are quite general;
- in particular,
+,
+ which are based on 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (2)"
+key "Bell1964"
+literal "false"
+
+\end_inset
+
+,
+ are quite general.
+ In particular,
  the source of the particle pairs and the exact nature of the measurements are not specified.
  However,
  the nature of the measurements are specifically specified by the definitions 
@@ -2387,6 +2439,20 @@ literal "false"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Note that this derivation is based on are based on 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (2)"
+key "Bell1964"
+literal "false"
+
+\end_inset
+
+,
+ not on the expected value of coincidence rates.
 \end_layout
 
 \begin_layout Subsection
