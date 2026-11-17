@@ -254,6 +254,34 @@ Relevant Theoretical Framework
 \end_layout
 
 \begin_layout Standard
+
+\strikeout on
+For the purposes of this paper,
+ a hidden variable is defined as a physical parameter,
+ or part of a more complete specification of a physical system,
+ whose value is not specified by the standard quantum-mechanical state and which is assumed to be relevant to measurement outcomes
+\strikeout default
+.
+\end_layout
+
+\begin_layout Standard
+The important task is to establish what Freedman means by 
+\begin_inset Formula $\lambda$
+\end_inset
+
+,
+ how he distinguishes it from the quantum state 
+\begin_inset Formula $\psi$
+\end_inset
+
+ and precisely which assumptions enter his derivation.
+\end_layout
+
+\begin_layout Standard
+We should also distinguish carefully between what Freedman explicitly states and what we might infer from his mathematics.
+\end_layout
+
+\begin_layout Standard
 Freedman states that 
 \begin_inset Quotes eld
 \end_inset
