@@ -1946,7 +1946,11 @@ where:
 \end_layout
 
 \begin_layout Standard
-Freedman states that equation 
+Further derivation of 
+\begin_inset Formula $E\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
+\end_inset
+
+ rests on the following premise stated by Freedman that equation 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:FII.9-1"
