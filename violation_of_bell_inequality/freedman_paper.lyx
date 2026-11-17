@@ -1772,7 +1772,7 @@ This derivation follows Freedman's mathematical treatment.
 \end_layout
 
 \begin_layout Standard
-In a representation that exploits the binary character of photon polarization 
+In a representation that exploits the binary character of a linearly polarized photon (left or right) 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (I.7)"
@@ -1820,7 +1820,15 @@ sin\left(2\phi_{i}\right) & -cos\left(2\phi_{i}\right)
 
 \end_inset
 
+where 
+\begin_inset Formula $\phi_{i}$
+\end_inset
 
+ represents the measurement axis in a plane perpendicular to the 
+\begin_inset Formula $z$
+\end_inset
+
+ axis
 \end_layout
 
 \begin_layout Standard
@@ -1848,11 +1856,23 @@ where:
 \begin_inset Formula $\phi$
 \end_inset
 
- represents the angle between the polarizer orientations.
+ represents the angle between polarizer orientations 
+\begin_inset Formula $\phi_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\phi_{2}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-The observation of transmission or non-transmission of a photon through a polarizer with polarization axis set in the x direction 
+The observation of transmission or non-transmission of a photon through polarizer 
+\begin_inset Formula $i$
+\end_inset
+
+ with polarization axis set in the x direction 
 \begin_inset Formula $\pi_{i}$
 \end_inset
 
@@ -1886,7 +1906,7 @@ Transforming
 \begin_inset Formula $\pi_{i}\left(\phi_{i}\right)$
 \end_inset
 
- for the arbitrary polarizer orientation 
+ for an arbitrary polarizer orientation 
 \begin_inset Formula $\phi_{i}$
 \end_inset
 
