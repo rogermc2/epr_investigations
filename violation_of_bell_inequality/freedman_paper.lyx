@@ -193,7 +193,6 @@ literal "false"
 
 \begin_layout Standard
 The results of both experiments are in excellent agreement with their relevant expectation values.
- Unfortunately this situation is somewhat marred by comparisons with other inapplicable expectation values.
  In accordance with the scientific method,
  a statistically significant disagreement between experimental observations and theoretical predictions calls for investigation.
  Such disagreement may arise from one or more of the following:
@@ -220,6 +219,8 @@ These possibilities are not mutually exclusive and should be examined before con
 \end_layout
 
 \begin_layout Standard
+
+\strikeout on
 In the case of the experiments investigated in this article it aappears to be the second of these possibilities that is responsible for disagreement.
  The experimental results investigated are numeric coincidence rates whereas the inequalities that they are compared with are derived from and are only applicable to experiments in which the experimental results are binary values.
 \end_layout
@@ -505,12 +506,37 @@ literal "false"
 
 \begin_inset Formula 
 \begin{eqnarray}
--2\leq & P_{++}\left(\hat{a},\hat{b}\right)+P_{++}\left(\hat{d},\hat{c}\right)+P_{++}\left(\hat{d},\hat{b}\right)-P_{1}\left(\hat{d}\right)-P_{2}\left(\hat{b}\right) & \leq2\label{eq:FII.6-1}
+-2\leq & P_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)+P_{++}\left(\overrightarrow{d},\overrightarrow{c}\right)+P_{++}\left(\overrightarrow{d},\overrightarrow{b}\right)-P_{1}\left(\overrightarrow{d}\right)-P_{2}\left(\overrightarrow{b}\right) & \leq2\label{eq:FII.6-1}
 \end{eqnarray}
 
 \end_inset
 
+where:
+\end_layout
 
+\begin_layout Standard
+\begin_inset Formula $P_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)$
+\end_inset
+
+ represents the probabilty of detection of a particle pair with each polarization being 
+\begin_inset Formula $+$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $P_{1}\left(\overrightarrow{d}\right)$
+\end_inset
+
+ represents the probabilty of detection of a particle pair with polarizer 2 removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $P_{2}\left(\overrightarrow{b}\right)$
+\end_inset
+
+ represents the probabilty of detection of a particle pair with polarizer 1 removed.
 \end_layout
 
 \begin_layout Standard
@@ -778,20 +804,14 @@ tuple "list"
 
 \begin_layout Standard
 where:
-\begin_inset Formula 
-\begin{eqnarray}
-\phi_{1} & = & cos^{-1}\left(\hat{a},\hat{b}\right)\\
-\phi_{2} & = & cos^{-1}\left(\hat{d},\hat{c}\right)\\
-\phi_{3} & = & cos^{-1}\left(\hat{d},\hat{b}\right)
-\end{eqnarray}
-
-\end_inset
-
-
-\begin_inset Formula 
-\begin{eqnarray}
-\phi_{1}+\phi_{2}+\phi_{3} & = & cos^{-1}\left(\hat{a},\hat{c}\right)
-\end{eqnarray}
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.8"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
 
 \end_inset
 
@@ -824,6 +844,22 @@ where:
 \end_inset
 
  represents the coincidence rate with polarizer 1 removed.
+\end_layout
+
+\begin_layout Standard
+Inequalities 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.8"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ refer directly to the measured coincidence rates.
 \end_layout
 
 \begin_layout Standard
@@ -903,6 +939,10 @@ Application to experimental measurements.
 \end_inset
 
  enabling the inequality to be evaluated using experimental results.
+\end_layout
+
+\begin_layout Standard
+The derivation and its application to the experimental measurements are examined in Appendix C.
 \end_layout
 
 \begin_layout Standard
@@ -1295,6 +1335,19 @@ The experimental coincidence rates are not the dihcotomic variables for which th
  together with verification of its underlying assumptions.
  Without this justification,
  the inference of nonlocality is not established by the experimental comparison.
+\end_layout
+
+\begin_layout Standard
+The appropriate comparison is with:
+\begin_inset Formula 
+\begin{eqnarray}
+-2 & \leq & P_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)+P_{++}\left(\overrightarrow{d},\overrightarrow{c}\right)+P_{++}\left(\overrightarrow{d},\overrightarrow{b}\right)-P_{1}\left(\overrightarrow{d}\right)-P_{2}\left(\overrightarrow{b}\right)\leq2\\
+-2 & \leq & \frac{R_{++}\left(\overrightarrow{a},\overrightarrow{b}\right)}{R_{total}\left(\overrightarrow{a},\overrightarrow{b}\right)}+\frac{R_{++}\left(\overrightarrow{d},\overrightarrow{c}\right)}{R_{total}\left(\overrightarrow{d},\overrightarrow{c}\right)}+\frac{R_{++}\left(\overrightarrow{d},\overrightarrow{b}\right)}{R_{total}\left(\overrightarrow{d},\overrightarrow{b}\right)}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}}\leq2
+\end{eqnarray}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1809,7 +1862,7 @@ where
 The expectation value that both photons are transmitted is defined by:
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\gamma_{1}\gamma_{2}\right|\right\rangle \label{eq:FII.9-1}
+E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9-1}
 \end{eqnarray}
 
 \end_inset
@@ -1839,8 +1892,108 @@ where:
 .
 \end_layout
 
+\begin_layout Standard
+Freedman states that equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.9-1"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ evaluates to:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{M}\right)Cos\left(2\phi\right)\label{eq:F11.10}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Similarly:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R_{1}}{R_{0}}\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \\
+ & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)\label{eq:FII.11a-1}\\
+E\left(\frac{R_{2}}{R_{0}}\right) & = & =\left\langle \gamma_{1}\gamma_{2}\left|\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \\
+ &  & \frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)\label{eq:FII.11b}
+\end{eqnarray}
+
+\end_inset
+
+Because the detectors have finite solid angles,
+ the coincident photons are not,
+ in general,
+ colinear.
+\end_layout
+
+\begin_layout Standard
+To account for this equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:F11.10"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is modified to 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "Eequation (12)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{M}\right)F_{1}\left(\theta\right)Cos\left(2\phi\right)\label{eq:F11.12}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+F_{1}\left(\theta\right) & = & \frac{\left(7-3Cos\left(\theta\right)-3Cos^{2}\left(\theta\right)-Cos^{3}\left(\theta\right)\right)^{2}}{12\left(8-16Cos\left(\theta\right)+9Cos^{2}\left(\theta\right)-2Cos^{4}\left(\theta\right)+Cos^{6}\left(\theta\right)\right)}\label{eq:FII.13}
+\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $\theta$
+\end_inset
+
+ represents the half-angle of the cone defining the detector solid angles.
+\end_layout
+
+\begin_layout Standard
+For the detector solid angles in this experiment,
+ 
+\begin_inset Formula $\theta\approx30\textdegree$
+\end_inset
+
+ therefore 
+\begin_inset Formula $F_{1}\left(\theta\right)=0.988$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Section
-Derivation And Applicability Of The Bell Inequality And The Conditions For Its Experimental Application
+Derivation And Applicability Of The Bell Inequality And  Conditions For Its Experimental Application
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Derivation-And-Applicabiliry"
@@ -1861,7 +2014,7 @@ If your derivation establishes that an assumption is not satisfied,
 \end_layout
 
 \begin_layout Subsection
-Derivation of the Theoretical Inequality
+Derivation 1 of the Theoretical Inequality
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Derivation-of-Bell-inequality"
@@ -1873,10 +2026,14 @@ name "subsec:Derivation-of-Bell-inequality"
 
 \begin_layout Standard
 Reproduce Freedman's derivation in terms of 
-\backslash
-(P_{++}
-\backslash
-) and the marginal probabilities.
+\begin_inset Formula $P_{++}$
+\end_inset
+
+ and the marginal probabilities.
+\end_layout
+
+\begin_layout Standard
+Inequality involvig 
 \end_layout
 
 \begin_layout Standard
@@ -2022,6 +2179,17 @@ tuple "list"
 
 ;
  nor are they of the form of coincidence count measurements.
+\end_layout
+
+\begin_layout Subsection
+Derivation 1 of the Theoretical Inequality
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Derivation-inequality-2"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

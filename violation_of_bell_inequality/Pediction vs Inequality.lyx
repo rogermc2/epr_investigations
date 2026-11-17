@@ -1,0 +1,254 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Freedman Inequality Versus Prediction Analysis
+\end_layout
+
+\begin_layout Standard
+Prediction:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{R(\phi)}{R_{0}} & = & \frac{1}{4}\left\{ (\epsilon^{1}_{1}+\epsilon^{2}_{1})(\epsilon^{1}_{2}+\epsilon^{2}_{2})+(\epsilon^{1}_{1}-\epsilon^{2}_{1})(\epsilon^{1}_{2}-\epsilon^{2}_{2})F(0)\cos(2\phi)\right\} 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where:
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $R(\phi)$
+\end_inset
+
+ represents the integrated coincidence count rate at relative polarizer alignment 
+\begin_inset Formula $\phi=\vert a-b\vert$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ represents the baseline reference rate measured with both polarizing plates physically removed from the optical paths.
+\end_layout
+
+\begin_layout Standard
+• 
+\begin_inset Formula $\epsilon_{1},\epsilon_{2}$
+\end_inset
+
+ represents laboratory calibration constants for polarizer maximum transmittance and minimum leakage.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $F\left(0\right)$
+\end_inset
+
+ represents a factor that accounts for the finite solid detection angle.
+\end_layout
+
+\begin_layout Standard
+Inequality:
+\begin_inset Formula 
+\begin{eqnarray}
+-1\leq & \frac{R\left(\phi_{1}\right)}{R_{0}}-\frac{R\left(\phi_{1}+\phi_{2}+\phi_{3}\right)}{R_{0}}+\frac{R\left(\phi_{2}\right)}{R_{0}}+\frac{R\left(\phi_{3}\right)}{R_{0}}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}} & \leq0\label{eq:FII.8}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1} & = & cos^{-1}\left(\overrightarrow{a},\overrightarrow{b}\right)\\
+\phi_{2} & = & cos^{-1}\left(\overrightarrow{d},\overrightarrow{c}\right)\\
+\phi_{3} & = & cos^{-1}\left(\overrightarrow{d}\overrightarrow{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1}+\phi_{2}+\phi_{3} & = & cos^{-1}\left(\overrightarrow{a},\overrightarrow{c}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R\left(\phi_{i}\right)$
+\end_inset
+
+ represents the coincidence rate with both polarizers in place.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{0}$
+\end_inset
+
+ represents the coincidence rate with both polarizers removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{1}$
+\end_inset
+
+ represents the coincidence rate with polarizer 2 removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R_{2}$
+\end_inset
+
+ represents the coincidence rate with polarizer 1 removed.
+\end_layout
+
+\begin_layout Standard
+Inequalities II.8 refer directly to the measured coincidence rates.
+\end_layout
+
+\begin_layout Standard
+Prediction 
+\begin_inset Formula $\frac{R(\phi)}{R_{0}}$
+\end_inset
+
+ is a function of 
+\begin_inset Formula $\phi$
+\end_inset
+
+,
+ the difference between two polarizer settings whereas the inequalty 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FII.8"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
+
+\end_inset
+
+ is a function of three different pairs of polarizer settings;
+\end_layout
+
+\end_body
+\end_document
