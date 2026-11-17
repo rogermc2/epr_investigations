@@ -1704,11 +1704,7 @@ Effectively,
 \end_layout
 
 \begin_layout Section
-Derivation Of The Expected Value 
-\begin_inset Formula $E\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right)_{\Lambda}$
-\end_inset
-
- 
+Derivation Of The Expected Values Of Coincidence Rates 
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Derivation-Of-Equation"
@@ -1803,7 +1799,7 @@ where:
 \end_layout
 
 \begin_layout Standard
-The observation of transmission or non-transmission of a photon through a polarizer with polarization axis in the x direction 
+The observation of transmission or non-transmission of a photon through a polarizer with polarization axis set in the x direction 
 \begin_inset Formula $\pi_{i}$
 \end_inset
 
@@ -1837,7 +1833,11 @@ Transforming
 \begin_inset Formula $\pi_{i}\left(\phi_{i}\right)$
 \end_inset
 
- for arbitrary for an polarizer orientation as:
+ for the arbitrary polarizer orientation 
+\begin_inset Formula $\phi_{i}$
+\end_inset
+
+ as:
 \begin_inset Formula 
 \begin{eqnarray}
 \pi_{i}\left(\phi_{i}\right) & = & \begin{bmatrix}\frac{1}{2}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
@@ -1992,8 +1992,34 @@ For the detector solid angles in this experiment,
 .
 \end_layout
 
+\begin_layout Standard
+Freedman's results for the coincicence rate expected values are 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equations (IV.1),  (IV.2),  (IV.3)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \left(0.251\pm0.004\right)+\left(0.213\pm0.004\right)Cos\left(2\phi\right)\label{eq:FIV.1}\\
+E\left(\frac{R_{1}}{R_{0}}\right) & = & 0.504\pm0.005\label{eq:FIV.2}\\
+E\left(\frac{R_{2}}{R_{0}}\right) & = & 0.499\pm0.005\label{eq:FIV.3}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
-Derivation And Applicability Of The Bell Inequality And  Conditions For Its Experimental Application
+Derivation And Applicability Of The Bell Inequality And Conditions For Its Experimental Application
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Derivation-And-Applicabiliry"
