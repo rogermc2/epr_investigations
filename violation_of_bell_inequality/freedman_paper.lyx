@@ -1376,8 +1376,24 @@ where:
  represents a factor that accounts for the finite solid detection angle.
 \end_layout
 
+\begin_layout Itemize
+\begin_inset Formula $F\left(0\right)$
+\end_inset
+
+ represents a factor that accounts for the finite solid detection angle.
+\end_layout
+
 \begin_layout Standard
-The solid curve of Figure 21 has a near-perfect fit confirming that the data is tracking a continuous,
+Figures 18 and 19,
+ that compare experimental sample values 
+\begin_inset Formula $\frac{R(\phi)}{R_{0}}$
+\end_inset
+
+ for different angles have near perfect fits with their corresponding expectation values 
+\begin_inset Formula $E\left(\frac{R(\phi)}{R_{0}}\right)$
+\end_inset
+
+ confirming that the data is tracking a continuous,
  absorption-attenuated intensity function and is not a discrete violation of binary probability logic.
 \end_layout
 
