@@ -1985,7 +1985,7 @@ tuple "list"
  evaluates to:
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{M}\right)Cos\left(2\phi\right)\label{eq:F11.10}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)Cos\left(2\phi\right)\label{eq:F11.10}
 \end{eqnarray}
 
 \end_inset
@@ -2036,7 +2036,7 @@ literal "false"
 :
 \begin_inset Formula 
 \begin{eqnarray}
-E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{M}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{M}\right)F_{1}\left(\theta\right)Cos\left(2\phi\right)\label{eq:F11.12}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)F_{1}\left(\theta\right)Cos\left(2\phi\right)\label{eq:F11.12}
 \end{eqnarray}
 
 \end_inset
