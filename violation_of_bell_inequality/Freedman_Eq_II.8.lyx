@@ -116,8 +116,8 @@ S\left(\phi_{1},\phi_{2},\phi_{3}\right) & \equiv & \frac{R\left(\phi_{1}\right)
 \begin_inset Formula 
 \begin{eqnarray}
 \frac{R\left(\phi\right)}{R_{0}} & = & A+BCos\left(2\phi\right)\label{eq:FII.10}\\
-\frac{R_{1}}{R_{0}} & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\label{eq:FII.11a}\\
-\frac{R_{2}}{R_{0}} & = & \frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)\label{eq:FII.11b}
+\frac{R_{1}}{R_{0}} & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\\
+\frac{R_{2}}{R_{0}} & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)
 \end{eqnarray}
 
 \end_inset
@@ -131,11 +131,18 @@ B & = & \frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\va
 
 \end_inset
 
-
+To account for detector solid angles:
 \begin_inset Formula 
 \begin{eqnarray}
-S\left(\phi_{1},\phi_{2},\phi_{3}\right) & = & A+BCos\left(2\phi_{1}\right)+A+BCos\left(2\left(\phi_{1}+\phi_{2}+\phi_{3}\right)\right)+A+BCos\left(2\phi_{3}\right)-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}}\\
- & = & 3A+B\left(Cos\left(2\phi_{1}\right)+Cos\left(2\left(\phi_{1}+\phi_{2}+\phi_{3}\right)\right)+Cos\left(2\phi_{3}\right)\right)-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}}
+B & = & \frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)F_{1}\left(\theta\right)\label{eq:part F11.12}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+F_{1}\left(\theta\right) & = & \frac{\left(7-3Cos\left(\theta\right)-3Cos^{2}\left(\theta\right)-Cos^{6}\left(\theta\right)\right)}{12\left(8-16Cos\left(\theta\right)+9Cos^{2}\left(\theta\right)-2Cos^{4}\left(\theta\right)+Cos^{6}\left(\theta\right)\right)}\label{eq:FII.13}
 \end{eqnarray}
 
 \end_inset
