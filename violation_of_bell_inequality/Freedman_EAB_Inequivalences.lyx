@@ -112,10 +112,17 @@
 
 \end_inset
 
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+\phi_{1} & = & cos^{-1}\left(\hat{a},\hat{b}\right)\\
+\phi_{2} & = & cos^{-1}\left(\hat{d},\hat{c}\right)\\
+\phi_{3} & = & cos^{-1}\left(\hat{d},\hat{b}\right)
+\end{eqnarray}
 
-\end_layout
+\end_inset
 
-\begin_layout Standard
+
 \begin_inset Formula 
 \begin{eqnarray*}
 -1 & \leq & \frac{R\left(\phi_{1}\right)}{R_{0}}-\frac{R\left(\phi_{1}+\phi_{2}+\phi_{3}\right)}{R_{0}}+\frac{R\left(\phi_{2}\right)}{R_{0}}+\frac{R\left(\phi_{3}\right)}{R_{0}}-\frac{R_{1}}{R_{0}}-\frac{R_{2}}{R_{0}}\\
