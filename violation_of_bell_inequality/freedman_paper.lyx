@@ -2271,58 +2271,6 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-However,
- the measurement results of the experiment are not the product of two binary random variables but are numeric values of coincidence counts.
-\end_layout
-
-\begin_layout Standard
-The derivation should,
- therefore,
- be based on the matrix element 
-\begin_inset CommandInset citation
-LatexCommand cite
-after "equation (II.9)"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
-:
-\begin_inset Formula 
-\begin{eqnarray}
-\frac{R\left(\phi\right)}{R_{0}} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9-2}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-so that:
-\begin_inset Formula 
-\begin{eqnarray}
-E\left(\frac{R\left(\phi\right)}{R_{0}}\right)_{\varLambda} & = & \int\rho\left(\lambda\right)\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)d\lambda
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-which Freedman has evaluated as :
-\begin_inset Formula 
-\begin{eqnarray}
-E\left(\frac{R\left(\phi\right)}{R_{0}}\right)_{\varLambda} & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)Cos\left(2\phi\right)\label{eq:F11.10-1}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 Define:
 \begin_inset Formula 
 \begin{eqnarray}
@@ -2358,7 +2306,7 @@ If your derivation establishes that an assumption is not satisfied,
 \end_layout
 
 \begin_layout Subsection
-Derivation 1 of the Theoretical Inequality
+Derivation of the Intial Detection Measuremen Inequality
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Derivation-of-Bell-inequality"
@@ -2535,21 +2483,11 @@ literal "false"
 \begin_inset Formula $B\left(\hat{b},\lambda\right)=\pm1$
 \end_inset
 
-.
- They certainly are not of the form 
-\begin_inset Formula $\hat{a}\cdot\overrightarrow{\sigma_{1}}$
-\end_inset
-
- and 
-\begin_inset Formula $\hat{b}\cdot\overrightarrow{\sigma_{2}}$
-\end_inset
-
-;
- nor are they of the form of coincidence count measurements.
+ so this part of the derivation applies to the detector outcomes prior to processing by coincidence detection and rate measurement.
 \end_layout
 
 \begin_layout Subsection
-Derivation 2 of the Theoretical Inequality
+Adaption Of The Initial Theoretical Inequality To Coincidence Count Rates
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Derivation-inequality-2"
@@ -2599,8 +2537,7 @@ where:
 \end_layout
 
 \begin_layout Standard
-Freedman uses this partition,
- we define the following quantities:
+Freedman uses this partition to define the following quantities:
 \begin_inset Formula 
 \begin{eqnarray}
 P_{ij}\left(\hat{a},\hat{b}\right) & = & \int_{\Gamma_{ij}\left(\hat{a},\hat{b}\right)}\rho\left(\lambda\right)d\lambda
