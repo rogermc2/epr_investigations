@@ -1873,7 +1873,7 @@ Effectively,
 \end_layout
 
 \begin_layout Section
-Derivation Of The Expected Values Of Coincidence Rates 
+Derivation Of Coincidence Rates Expected Values 
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Derivation-Of-Equation"
@@ -1884,11 +1884,7 @@ name "sec:Derivation-Of-Equation"
 \end_layout
 
 \begin_layout Standard
-This derivation follows Freedman's mathematical treatment.
-\end_layout
-
-\begin_layout Standard
-In a representation that exploits the binary character of a linearly polarized photon (left or right) 
+In a wave function representation that exploits the binary character of a linearly polarized photon (left or right) 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (I.7)"
@@ -1900,7 +1896,7 @@ literal "false"
 :
 \begin_inset Formula 
 \begin{eqnarray}
-\left|\gamma_{1}\gamma_{2}\right\rangle  & = & \frac{1}{\sqrt{2}}\left[\begin{pmatrix}1\\
+\left|\text{\gamma_{1}\gamma_{2}}\right\rangle  & = & \frac{1}{\sqrt{2}}\left[\begin{pmatrix}1\\
 0
 \end{pmatrix}_{1}\begin{pmatrix}1\\
 0
@@ -1913,7 +1909,44 @@ literal "false"
 
 \end_inset
 
+where:
+\end_layout
 
+\begin_layout Standard
+\begin_inset Formula $\text{\gamma_{1}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\text{\gamma_{2}}$
+\end_inset
+
+ represent the wave functions of a correlated pair of photons traveling in opposite directions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\begin{pmatrix}1\\
+0
+\end{pmatrix}_{i}$
+\end_inset
+
+represents one polarization state of photon 
+\begin_inset Formula $i$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\begin{pmatrix}0\\
+1
+\end{pmatrix}_{i}$
+\end_inset
+
+represents the opposite polarization state of photon 
+\begin_inset Formula $i$
+\end_inset
+
+,
 \end_layout
 
 \begin_layout Standard
@@ -1985,7 +2018,7 @@ The probability
 \begin_inset Formula $P\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
 \end_inset
 
- that both photons are transmitted is defined by the matrix element 
+ that both photons are transmitted by the respective polarizers is defined by the matrix element 
 \begin_inset Formula $\left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle $
 \end_inset
 
@@ -2006,18 +2039,7 @@ P\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \left\langle \gamma_{1}\gam
 
 \end_inset
 
-where:
-\end_layout
 
-\begin_layout Standard
-\begin_inset Formula $\gamma_{i}$
-\end_inset
-
- represents the wave function of photon 
-\begin_inset Formula $i$
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Standard
@@ -2199,11 +2221,114 @@ name "sec:Derivation-of-inequality"
 \end_layout
 
 \begin_layout Standard
+Based on the expectation value for the average of the product of two binary random variables 
+\begin_inset Formula $A\left(\hat{a},\lambda\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $B\left(\hat{b},\lambda\right)$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.2)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\hat{a},\hat{b}\right) & = & \int\rho\left(\lambda\right)A\left(\hat{a},\lambda\right)B\left(\hat{b},\lambda\right)d\lambda\label{eq:FII.2-2}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Freedman derives the following inequalities 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.4)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+-2\leq & P\left(\hat{a},\hat{b}\right)-P\left(\hat{a},\hat{c}\right)+P\left(\hat{d},\hat{c}\right)+P\left(\hat{d},\hat{b}\right) & \leq2\label{eq:FII.4-1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+However,
+ the measurement results of the experiment are not the product of two binary random variables but are numeric values of coincidence counts.
+\end_layout
+
+\begin_layout Standard
+The derivation should,
+ therefore,
+ be based on the matrix element 
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.9)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{R\left(\phi\right)}{R_{0}} & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9-2}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so that:
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right)_{\varLambda} & = & \int\rho\left(\lambda\right)\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)d\lambda
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which Freedman has evaluated as :
+\begin_inset Formula 
+\begin{eqnarray}
+E\left(\frac{R\left(\phi\right)}{R_{0}}\right)_{\varLambda} & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)Cos\left(2\phi\right)\label{eq:F11.10-1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Define:
 \begin_inset Formula 
 \begin{eqnarray}
 S & = & E\left(\frac{R\left(\phi\right)}{R_{0}}\right)_{\varLambda}-E\left(\frac{R_{1}}{R_{0}}\right)_{\Lambda}-E\left(\frac{R_{2}}{R_{0}}\right)_{\Lambda}\\
- & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)F_{1}\left(\theta\right)Cos\left(2\phi\right)-\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)-\frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)\\
+ & = & \frac{1}{4}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)+\frac{1}{4}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)F_{1}\left(\theta\right)Cos\left(2\phi\right)\\
+ &  & -\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{M}\right)-\frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{M}\right)\\
 \end{eqnarray}
 
 \end_inset
