@@ -27,14 +27,11 @@ package body Freedman_Polarizer_Model is
       return Long_Float (Arctan (Float (Get_N_Glass (Arm) / N_Air)));
    end Brewster_Angle;
 
-   function Evaluate_Ray (
-      Arm     : Polarizer_Arm;
-      Theta_I : Long_Float;
-      Psi     : Long_Float := 0.0
-   ) return Ray_Transmittance is
-      N_Glass     : constant Long_Float := Get_N_Glass (Arm);
-      Attenuation : constant Long_Float := 1.0 - Get_Plate_Loss (Arm);
-
+   function Evaluate_Ray (Arm : Polarizer_Arm;
+      Theta_I : Long_Float; Psi : Long_Float := 0.0)
+      return Ray_Transmittance is
+      N_Glass      : constant Long_Float := Get_N_Glass (Arm);
+      Attenuation  : constant Long_Float := 1.0 - Get_Plate_Loss (Arm);
       Sin_I, Cos_I : Long_Float;
       Sin_T, Cos_T : Long_Float;
       Rs, Rp       : Long_Float;
@@ -74,19 +71,13 @@ package body Freedman_Polarizer_Model is
       return Res;
    end Evaluate_Ray;
 
-   procedure Cone_To_Plate_Angles (
-      Tilt_Angle : in  Long_Float;
-      Alpha      : in  Long_Float;
-      Phi        : in  Long_Float;
-      Theta_I    : out Long_Float;
-      Psi        : out Long_Float
-   ) is
+   procedure Cone_To_Plate_Angles (Tilt_Angle, Alpha, Phi : Long_Float;
+      Theta_I, Psi        : out Long_Float) is
       -- Ray direction unit vector k = (sin(alpha)cos(phi), sin(alpha)sin(phi), cos(alpha))
       -- Plate normal unit vector n = (sin(tilt), 0, cos(tilt))
       Kx : constant Long_Float := Long_Float (Sin (Float (Alpha))) * Long_Float (Cos (Float (Phi)));
       Ky : constant Long_Float := Long_Float (Sin (Float (Alpha))) * Long_Float (Sin (Float (Phi)));
       Kz : constant Long_Float := Long_Float (Cos (Float (Alpha)));
-
       Nx : constant Long_Float := Long_Float (Sin (Float (Tilt_Angle)));
       Nz : constant Long_Float := Long_Float (Cos (Float (Tilt_Angle)));
 
@@ -101,13 +92,13 @@ package body Freedman_Polarizer_Model is
       end if;
 
       Theta_I := Long_Float (Arccos (Float (Cos_Theta_I)));
-
-      -- Azimuthal rotation of the plane of incidence (k x n) relative to the tilt plane (y-axis)
+      --  Azimuthal rotation of the plane of incidence (k x n) relative to the tilt plane (y-axis)
       if Abs (Ky) < 1.0E-12 and then Abs (Kx * Nz - Kz * Nx) < 1.0E-12 then
          Psi := 0.0;
       else
          Psi := Long_Float (Arctan (Float (Ky), Float (Kx * Nz - Kz * Nx)));
       end if;
+
    end Cone_To_Plate_Angles;
 
 end Freedman_Polarizer_Model;

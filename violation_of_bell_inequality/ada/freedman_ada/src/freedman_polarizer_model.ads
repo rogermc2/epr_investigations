@@ -1,13 +1,13 @@
 --  Freedman_Polarizer_Model exposes exact single-ray functions for arbitrary
---   incidence angles (theta {i}) and azimuthal tilt angles (φ).
+--  incidence angles (theta {i}) and azimuthal tilt angles (φ).
 --  When a ray enters a tilted pile-of-plates polarizer inside a finite
 --  collection cone, two geometric effects occur simultaneously:
 --  1. Effective Incidence Angle (\(\theta _{i}\)): The ray strikes the
---   plate normal at an angle shifted from Brewster's angle (theta {B}).
+--     plate normal at an angle shifted from Brewster's angle (theta {B}).
 --  2. Plane-of-Incidence Rotation (ψ): Off-axis rays have a rotated plane
---  of incidence relative to the polarizer's nominal axis,
---  mixing T{p} and T_{s} into effective laboratory-frame transmittances
---  T{parallel} and T{perp}.
+--     of incidence relative to the polarizer's nominal axis,
+--     mixing T{p} and T_{s} into effective laboratory-frame transmittances
+--     T{parallel} and T{perp}.
 
 package Freedman_Polarizer_Model is
 
@@ -24,15 +24,14 @@ package Freedman_Polarizer_Model is
       T_Perp     : Long_Float;
    end record;
 
-   -- Returns nominal Brewster's angle (in radians) for the selected arm
-   function Brewster_Angle (Arm : Polarizer_Arm) return Long_Float;
+   --  Brewster_Angle returns nominal Brewster's angle (in radians) for the selected arm
+   --  function Brewster_Angle (Arm : Polarizer_Arm) return Long_Float;
 
-   --  Computes single-ray transmittance for a given local incidence angle
-   --  Theta_I (radians) and plane-of-incidence rotation Psi (radians)
-   --  relative to the polarizer's transmission axis.
-
+   --  Evaluate_Ray computes single-ray transmittance for a given local
+   --  incidence angle Theta_I (radians) and plane-of-incidence rotation
+   --  Psi (radians) relative to the polarizer's transmission axis.
    function Evaluate_Ray (Arm : Polarizer_Arm;
-      Theta_I : Long_Float; Psi     : Long_Float := 0.0)
+      Theta_I : Long_Float; Psi : Long_Float := 0.0)
        return Ray_Transmittance;
 
    --  Helper: Converts cone polar angle Alpha and azimuth Phi (relative to
