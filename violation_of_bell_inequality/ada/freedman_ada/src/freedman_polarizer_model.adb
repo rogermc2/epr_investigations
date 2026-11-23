@@ -1,4 +1,7 @@
 with Ada.Numerics.Elementary_Functions;
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Maths; use Maths;
 
 package body Freedman_Polarizer_Model is
    use Ada.Numerics.Elementary_Functions;
@@ -100,5 +103,82 @@ package body Freedman_Polarizer_Model is
       end if;
 
    end Cone_To_Plate_Angles;
+
+ --  procedure Generate_LUT is
+  package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
+
+   -- Grid resolution (adjust as needed for your external integrator)
+   Alpha_Max_Deg : constant Long_Float := 30.0;  -- Half-angle of collection cone
+   Alpha_Steps   : constant Integer    := 60;    -- 0.5 deg steps (0.0 to 30.0 deg)
+   Phi_Steps     : constant Integer    := 72;    -- 5.0 deg steps (0.0 to 360.0 deg)
+
+   procedure Write_Arm_CSV (Arm : Polarizer_Arm; Filename : String) is
+      File       : Ada.Text_IO.File_Type;
+      Tilt_Rad   : constant Long_Float := Brewster_Angle (Arm);
+      Alpha_Deg  : Long_Float;
+      Phi_Deg    : Long_Float;
+      Alpha_Rad  : Long_Float;
+      Phi_Rad    : Long_Float;
+      Theta_I    : Long_Float;
+      Psi        : Long_Float;
+      Result     : Ray_Transmittance;
+   begin
+      Ada.Text_IO.Create (File => File, Mode => Ada.Text_IO.Out_File, Name => Filename);
+
+      -- CSV Header
+      Ada.Text_IO.Put_Line
+        (File, "alpha_deg,phi_deg,theta_i_deg,psi_deg,Tp,Ts,T_parallel,T_perp");
+
+      for A_Idx in 0 .. Alpha_Steps loop
+         Alpha_Deg := (Alpha_Max_Deg * Long_Float (A_Idx)) / Long_Float (Alpha_Steps);
+         Alpha_Rad := Alpha_Deg * Pi / 180.0;
+
+         for P_Idx in 0 .. Phi_Steps loop
+            Phi_Deg := (360.0 * Long_Float (P_Idx)) / Long_Float (Phi_Steps);
+            Phi_Rad := Phi_Deg * Pi / 180.0;
+
+            Cone_To_Plate_Angles (
+               Tilt_Angle => Tilt_Rad,
+               Alpha      => Alpha_Rad,
+               Phi        => Phi_Rad,
+               Theta_I    => Theta_I,
+               Psi        => Psi
+            );
+
+            Result := Evaluate_Ray (
+               Arm     => Arm,
+               Theta_I => Theta_I,
+               Psi     => Psi
+            );
+
+            -- Write formatted CSV row
+            F_IO.Put (File, Alpha_Deg, Fore => 1, Aft => 4, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Phi_Deg, Fore => 1, Aft => 4, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Theta_I * 180.0 / Pi, Fore => 1, Aft => 4, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Psi * 180.0 / Pi, Fore => 1, Aft => 4, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Result.Tp, Fore => 1, Aft => 6, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Result.Ts, Fore => 1, Aft => 6, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Result.T_Parallel, Fore => 1, Aft => 6, Exp => 0);
+            Ada.Text_IO.Put (File, ",");
+            F_IO.Put (File, Result.T_Perp, Fore => 1, Aft => 6, Exp => 0);
+            Ada.Text_IO.New_Line (File);
+         end loop;
+      end loop;
+
+      Ada.Text_IO.Close (File);
+      Ada.Text_IO.Put_Line ("Generated: " & Filename);
+   end Write_Arm_CSV;
+
+procedure Generate_LUT is
+begin
+   Write_Arm_CSV (Green_551nm,  "freedman_lut_551nm.csv");
+   Write_Arm_CSV (Violet_423nm, "freedman_lut_423nm.csv");
+end Generate_LUT;
 
 end Freedman_Polarizer_Model;
