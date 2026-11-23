@@ -1,6 +1,6 @@
 
 package Polarizer is
 
-   procedure Polarize;
+   procedure Test_Polarize;
 
 end Polarizer;

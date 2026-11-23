@@ -4,6 +4,7 @@ with Ada.Numerics.Real_Arrays; use Ada.Numerics.Real_Arrays;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths; use Maths;
+with Polarizer; use Polarizer;
 
 procedure Freedman is
    a      : constant Real_Vector := (0.0, 0.5, 0.0);
@@ -13,5 +14,7 @@ procedure Freedman is
 begin
    Put_Line ("Hello!");
    Put (Result);
+
+   Test_Polarize;
    
 end Freedman;
