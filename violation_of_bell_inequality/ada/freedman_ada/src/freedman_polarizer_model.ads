@@ -11,6 +11,9 @@
 
 package Freedman_Polarizer_Model is
 
+   Alpha_Steps : constant Integer := 60; -- 0.5 deg steps (0.0 to 30.0 deg)
+   Phi_Steps   : constant Integer := 72;  -- 5.0 deg steps (0.0 to 360.0 deg)
+
    type Polarizer_Arm is (Green_551nm, Violet_423nm);
 
    type Ray_Transmittance is record
@@ -24,6 +27,18 @@ package Freedman_Polarizer_Model is
       T_Perp     : Long_Float;
    end record;
 
+   type LU_Record is record
+      alpha_deg   : Long_Float;
+      phi_deg     : Long_Float;
+      theta_i_deg : Long_Float;
+      psi_deg     : Long_Float;
+      Tp          : Long_Float;
+      Ts          : Long_Float;
+      T_parallel  : Long_Float;
+      T_perp      : Long_Float;
+   end record;
+
+   LU_Table : array (1 .. Alpha_Steps, 1 .. Phi_Steps) of LU_Record;
    --  Brewster_Angle returns nominal Brewster's angle (in radians) for the selected arm
    --  function Brewster_Angle (Arm : Polarizer_Arm) return Long_Float;
 
@@ -44,8 +59,7 @@ package Freedman_Polarizer_Model is
       Alpha      : Long_Float;
        -- Ray azimuth around optical axis (0 .. 2*Pi)
       Phi        : Long_Float;
-      Theta_I    : out Long_Float; --  Local incidence angle on plate normal
-      Psi        : out Long_Float  --  Rotation of local plane of incidence
-   );
+      Theta_I, Psi        : out Long_Float);  --  Rotation of local plane of incidence);
+   procedure Generate_LUT;
 
 end Freedman_Polarizer_Model;

@@ -1,10 +1,11 @@
-with Ada.Numerics.Elementary_Functions;
+with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Maths; use Maths;
 
 package body Freedman_Polarizer_Model is
-   use Ada.Numerics.Elementary_Functions;
+
+  package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
 
    Num_Plates : constant Integer    := 10;
    N_Air      : constant Long_Float := 1.000;
@@ -15,6 +16,7 @@ package body Freedman_Polarizer_Model is
          when Green_551nm  => return 1.518;
          when Violet_423nm => return 1.528;
       end case;
+
    end Get_N_Glass;
 
    function Get_Plate_Loss (Arm : Polarizer_Arm) return Long_Float is
@@ -23,6 +25,7 @@ package body Freedman_Polarizer_Model is
          when Green_551nm  => return 0.0030;
          when Violet_423nm => return 0.0041;
       end case;
+
    end Get_Plate_Loss;
 
    function Brewster_Angle (Arm : Polarizer_Arm) return Long_Float is
@@ -72,18 +75,18 @@ package body Freedman_Polarizer_Model is
       Res.T_Perp     := Res.Tp * Sin_Psi_Sq + Res.Ts * Cos_Psi_Sq;
 
       return Res;
+
    end Evaluate_Ray;
 
    procedure Cone_To_Plate_Angles (Tilt_Angle, Alpha, Phi : Long_Float;
-      Theta_I, Psi        : out Long_Float) is
-      -- Ray direction unit vector k = (sin(alpha)cos(phi), sin(alpha)sin(phi), cos(alpha))
-      -- Plate normal unit vector n = (sin(tilt), 0, cos(tilt))
+      Theta_I, Psi : out Long_Float) is
+      --  Ray direction unit vector k = (sin(alpha)cos(phi), sin(alpha)sin(phi), cos(alpha))
+      --  Plate normal unit vector n = (sin(tilt), 0, cos(tilt))
       Kx : constant Long_Float := Long_Float (Sin (Float (Alpha))) * Long_Float (Cos (Float (Phi)));
       Ky : constant Long_Float := Long_Float (Sin (Float (Alpha))) * Long_Float (Sin (Float (Phi)));
       Kz : constant Long_Float := Long_Float (Cos (Float (Alpha)));
       Nx : constant Long_Float := Long_Float (Sin (Float (Tilt_Angle)));
       Nz : constant Long_Float := Long_Float (Cos (Float (Tilt_Angle)));
-
       Cos_Theta_I : Long_Float;
    begin
       -- Dot product k . n = cos(Theta_I)
@@ -104,13 +107,22 @@ package body Freedman_Polarizer_Model is
 
    end Cone_To_Plate_Angles;
 
- --  procedure Generate_LUT is
-  package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
-
    -- Grid resolution (adjust as needed for your external integrator)
    Alpha_Max_Deg : constant Long_Float := 30.0;  -- Half-angle of collection cone
-   Alpha_Steps   : constant Integer    := 60;    -- 0.5 deg steps (0.0 to 30.0 deg)
-   Phi_Steps     : constant Integer    := 72;    -- 5.0 deg steps (0.0 to 360.0 deg)
+ 
+ procedure Load_LU_Table (Arm : Polarizer_Arm) is
+      Tilt_Rad   : constant Long_Float := Brewster_Angle (Arm);
+      Alpha_Deg  : Long_Float;
+      Phi_Deg    : Long_Float;
+      Alpha_Rad  : Long_Float;
+      Phi_Rad    : Long_Float;
+      Theta_I    : Long_Float;
+      Psi        : Long_Float;
+      LU         : LU_Record;
+   begin
+     null;
+
+   end Load_LU_Table;
 
    procedure Write_Arm_CSV (Arm : Polarizer_Arm; Filename : String) is
       File       : Ada.Text_IO.File_Type;
@@ -137,19 +149,10 @@ package body Freedman_Polarizer_Model is
             Phi_Deg := (360.0 * Long_Float (P_Idx)) / Long_Float (Phi_Steps);
             Phi_Rad := Phi_Deg * Pi / 180.0;
 
-            Cone_To_Plate_Angles (
-               Tilt_Angle => Tilt_Rad,
-               Alpha      => Alpha_Rad,
-               Phi        => Phi_Rad,
-               Theta_I    => Theta_I,
-               Psi        => Psi
-            );
+            Cone_To_Plate_Angles ( Tilt_Angle => Tilt_Rad, Alpha => Alpha_Rad,
+               Phi => Phi_Rad, Theta_I => Theta_I, Psi => Psi);
 
-            Result := Evaluate_Ray (
-               Arm     => Arm,
-               Theta_I => Theta_I,
-               Psi     => Psi
-            );
+            Result := Evaluate_Ray (Arm, Theta_I, Psi);
 
             -- Write formatted CSV row
             F_IO.Put (File, Alpha_Deg, Fore => 1, Aft => 4, Exp => 0);
