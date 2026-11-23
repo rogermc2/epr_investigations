@@ -9,6 +9,14 @@ package body Random_Unit_Vectors is
 
   Gen : Generator;
 
+   --  The most accurate way to generate a uniformly distributed random
+   --  3D unit vector in Ada is to use spherical coordinates with
+   --  inverse transform sampling (Marsaglia's method).
+   --  Uniformity z and theta:
+   --  On a sphere, surface area is proportional to dz/dtheta.
+   --  By drawing z uniformly from [-1, 1] and theta uniformly from [0, 2\pi)
+   --  every equal-area patch on the sphere has an equal probability of being
+   --  chosen.
   function Random_Unit_Vector (G : Generator) return Vector_3D is
       Z    : Float;
       Theta : Float;
