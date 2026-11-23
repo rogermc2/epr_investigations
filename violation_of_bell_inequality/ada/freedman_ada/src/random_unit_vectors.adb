@@ -18,20 +18,16 @@ package body Random_Unit_Vectors is
    --  every equal-area patch on the sphere has an equal probability of being
    --  chosen.
   function Random_Unit_Vector (G : Generator) return Vector_3D is
-      Z    : Float;
-      Theta : Float;
-      R     : Float;
+      
+      --  1. Sample Z uniformly in [-1.0, 1.0]
+      Z      : constant Float := 2.0 * Random (G) - 1.0;
+      --  2. Sample azimuthal angle Theta uniformly in [0.0, 2*Pi)
+      Theta  : constant Float := 2.0 * Pi * Random (G);
+      --  3. Compute radius in the XY-plane
+      Radius : constant Float := Sqrt (1.0 - Z * Z);
   begin
-    --  1. Sample Z uniformly in [-1.0, 1.0]
-    Z := 2.0 * Random (G) - 1.0;
-
-    --  2. Sample azimuthal angle Theta uniformly in [0.0, 2*Pi)
-    Theta := 2.0 * Pi * Random (G);
-
-    --  3. Compute radius in the XY-plane
-    R := Sqrt (1.0 - Z * Z);
-
-    return (R * Cos (Theta), Y => R * Sin (Theta), Z);
+  
+    return (Radius * Cos (Theta), Radius * Sin (Theta), Z);
 
   end Random_Unit_Vector;
 
