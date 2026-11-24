@@ -13,13 +13,12 @@ procedure Freedman is
    b      : constant Real_Vector := (0.5, 0.5, 0.0);
    lambda : constant Real_Vector := (0.5, -0.3, 0.6);
    Result : constant Float := AB (a, b, lambda);
-   Theta_I : constant Long_Float := Pi /10.0;
+   Theta_I : constant Long_Float := Pi / 10.0;
    Transmittance : Ray_Transmittance;
 begin
    Put_Line ("Hello!");
    Put (Result);
-
    Test_Polarize;
    Transmittance := Evaluate_Ray (Green_551nm, Theta_I);
-   
+
 end Freedman;

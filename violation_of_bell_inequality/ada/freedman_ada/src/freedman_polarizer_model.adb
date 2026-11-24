@@ -7,8 +7,12 @@ package body Freedman_Polarizer_Model is
 
   package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
 
-   Num_Plates : constant Integer    := 10;
-   N_Air      : constant Long_Float := 1.000;
+   Num_Plates    : constant Integer    := 10;
+   N_Air         : constant Long_Float := 1.000;
+   --  Grid resolution (adjust as needed for your external integrator)
+   -- Alpha_Max_Deg is half-angle of collection cone
+   Alpha_Max_Deg : constant Long_Float := 30.0;
+   LU_Table      : LU_Array (1 .. Alpha_Steps, 1 .. Phi_Steps);
 
    function Get_N_Glass (Arm : Polarizer_Arm) return Long_Float is
    begin
@@ -58,17 +62,19 @@ package body Freedman_Polarizer_Model is
 
       Cos_T := Long_Float (Sqrt (Float (1.0 - Sin_T * Sin_T)));
 
-      Rs := ((N_Air * Cos_I - N_Glass * Cos_T) / (N_Air * Cos_I + N_Glass * Cos_T)) ** 2;
-      Rp := ((N_Air * Cos_T - N_Glass * Cos_I) / (N_Air * Cos_T + N_Glass * Cos_I)) ** 2;
+      Rs := ((N_Air * Cos_I - N_Glass * Cos_T) /
+          (N_Air * Cos_I + N_Glass * Cos_T)) ** 2;
+      Rp := ((N_Air * Cos_T - N_Glass * Cos_I) /
+          (N_Air * Cos_T + N_Glass * Cos_I)) ** 2;
 
-      -- Single-plate incoherent multiple-bounce transmittance
+      --  Single-plate incoherent multiple-bounce transmittance
       T_Plate_P := ((1.0 - Rp) / (1.0 + Rp)) * Attenuation;
       T_Plate_S := ((1.0 - Rs) / (1.0 + Rs)) * Attenuation;
 
       Res.Tp := T_Plate_P ** Num_Plates;
       Res.Ts := T_Plate_S ** Num_Plates;
 
-      -- Project local s/p transmittances onto laboratory polarizer axes
+      --  Project local s/p transmittances onto laboratory polarizer axes
       Cos_Psi_Sq     := Long_Float (Cos (Float (Psi))) ** 2;
       Sin_Psi_Sq     := 1.0 - Cos_Psi_Sq;
       Res.T_Parallel := Res.Tp * Cos_Psi_Sq + Res.Ts * Sin_Psi_Sq;
@@ -80,13 +86,19 @@ package body Freedman_Polarizer_Model is
 
    procedure Cone_To_Plate_Angles (Tilt_Angle, Alpha, Phi : Long_Float;
       Theta_I, Psi : out Long_Float) is
-      --  Ray direction unit vector k = (sin(alpha)cos(phi), sin(alpha)sin(phi), cos(alpha))
+      --  Ray direction unit vector k =
+      --  (sin(alpha)cos(phi), sin(alpha)sin(phi), cos(alpha))
       --  Plate normal unit vector n = (sin(tilt), 0, cos(tilt))
-      Kx : constant Long_Float := Long_Float (Sin (Float (Alpha))) * Long_Float (Cos (Float (Phi)));
-      Ky : constant Long_Float := Long_Float (Sin (Float (Alpha))) * Long_Float (Sin (Float (Phi)));
-      Kz : constant Long_Float := Long_Float (Cos (Float (Alpha)));
-      Nx : constant Long_Float := Long_Float (Sin (Float (Tilt_Angle)));
-      Nz : constant Long_Float := Long_Float (Cos (Float (Tilt_Angle)));
+      Kx : constant Long_Float :=
+         Long_Float (Sin (Float (Alpha))) * Long_Float (Cos (Float (Phi)));
+      Ky : constant Long_Float :=
+         Long_Float (Sin (Float (Alpha))) * Long_Float (Sin (Float (Phi)));
+      Kz : constant Long_Float :=
+         Long_Float (Cos (Float (Alpha)));
+      Nx : constant Long_Float
+         := Long_Float (Sin (Float (Tilt_Angle)));
+      Nz : constant Long_Float
+         := Long_Float (Cos (Float (Tilt_Angle)));
       Cos_Theta_I : Long_Float;
    begin
       -- Dot product k . n = cos(Theta_I)
@@ -98,7 +110,8 @@ package body Freedman_Polarizer_Model is
       end if;
 
       Theta_I := Long_Float (Arccos (Float (Cos_Theta_I)));
-      --  Azimuthal rotation of the plane of incidence (k x n) relative to the tilt plane (y-axis)
+      --  Azimuthal rotation of the plane of incidence (k x n) relative to
+      --  the tilt plane (y-axis)
       if Abs (Ky) < 1.0E-12 and then Abs (Kx * Nz - Kz * Nx) < 1.0E-12 then
          Psi := 0.0;
       else
@@ -107,10 +120,13 @@ package body Freedman_Polarizer_Model is
 
    end Cone_To_Plate_Angles;
 
-   -- Grid resolution (adjust as needed for your external integrator)
-   Alpha_Max_Deg : constant Long_Float := 30.0;  -- Half-angle of collection cone
- 
- procedure Load_LU_Table (Arm : Polarizer_Arm) is
+   function Get_LU_Table return LU_Array is
+   begin
+      return LU_Table;
+
+   end Get_LU_Table;
+
+   procedure Load_LU_Table (Arm : Polarizer_Arm) is
       Tilt_Rad   : constant Long_Float := Brewster_Angle (Arm);
       Alpha_Deg  : Long_Float;
       Phi_Deg    : Long_Float;
@@ -118,9 +134,32 @@ package body Freedman_Polarizer_Model is
       Phi_Rad    : Long_Float;
       Theta_I    : Long_Float;
       Psi        : Long_Float;
-      LU         : LU_Record;
+      aRecord    : LU_Record;
+      Result     : Ray_Transmittance;
    begin
-     null;
+     for row in 0 .. Alpha_Steps loop
+         Alpha_Deg := (Alpha_Max_Deg * Long_Float (row)) /
+                      Long_Float (Alpha_Steps);
+         Alpha_Rad := Alpha_Deg * Pi / 180.0;
+
+         for col in 0 .. Phi_Steps loop
+            Phi_Deg :=
+               (360.0 * Long_Float (col)) / Long_Float (Phi_Steps);
+            Phi_Rad := Phi_Deg * Pi / 180.0;
+            Cone_To_Plate_Angles (Tilt_Rad, Alpha_Rad, Phi_Rad, Theta_I, Psi);
+            Result := Evaluate_Ray (Arm, Theta_I, Psi);
+
+            aRecord.Alpha_Deg := Alpha_Deg;
+            aRecord.Phi_Deg := Phi_Deg * 180.0 / Pi;
+            aRecord.Theta_I_Deg := Theta_I * 180.0 / Pi;
+            aRecord.Psi_Deg := Psi * 180.0 / Pi;
+            aRecord.Tp := Result.Tp;
+            aRecord.Ts := Result.Ts;
+            aRecord.T_Parallel := Result.T_Parallel;
+            aRecord.T_Perp := Result.T_Perp;
+            LU_Table (row, col) := aRecord;
+         end loop;
+      end loop;
 
    end Load_LU_Table;
 
@@ -135,33 +174,31 @@ package body Freedman_Polarizer_Model is
       Psi        : Long_Float;
       Result     : Ray_Transmittance;
    begin
-      Ada.Text_IO.Create (File => File, Mode => Ada.Text_IO.Out_File, Name => Filename);
+      Ada.Text_IO.Create (File, Ada.Text_IO.Out_File, Filename);
 
-      -- CSV Header
-      Ada.Text_IO.Put_Line
-        (File, "alpha_deg,phi_deg,theta_i_deg,psi_deg,Tp,Ts,T_parallel,T_perp");
+      --  CSV Header
+      Ada.Text_IO.Put_Line (File,
+         "alpha_deg,phi_deg,theta_i_deg,psi_deg,Tp,Ts,T_parallel,T_perp");
 
       for A_Idx in 0 .. Alpha_Steps loop
-         Alpha_Deg := (Alpha_Max_Deg * Long_Float (A_Idx)) / Long_Float (Alpha_Steps);
+         Alpha_Deg := (Alpha_Max_Deg * Long_Float (A_Idx)) /
+             Long_Float (Alpha_Steps);
          Alpha_Rad := Alpha_Deg * Pi / 180.0;
 
          for P_Idx in 0 .. Phi_Steps loop
             Phi_Deg := (360.0 * Long_Float (P_Idx)) / Long_Float (Phi_Steps);
             Phi_Rad := Phi_Deg * Pi / 180.0;
-
-            Cone_To_Plate_Angles ( Tilt_Angle => Tilt_Rad, Alpha => Alpha_Rad,
-               Phi => Phi_Rad, Theta_I => Theta_I, Psi => Psi);
-
+            Cone_To_Plate_Angles (Tilt_Rad, Alpha_Rad, Phi_Rad, Theta_I, Psi);
             Result := Evaluate_Ray (Arm, Theta_I, Psi);
 
-            -- Write formatted CSV row
+            --  Write formatted CSV row
             F_IO.Put (File, Alpha_Deg, Fore => 1, Aft => 4, Exp => 0);
             Ada.Text_IO.Put (File, ",");
             F_IO.Put (File, Phi_Deg, Fore => 1, Aft => 4, Exp => 0);
             Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Theta_I * 180.0 / Pi, Fore => 1, Aft => 4, Exp => 0);
+            F_IO.Put (File, Theta_I * 180.0 / Pi, 1, 4, 0);
             Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Psi * 180.0 / Pi, Fore => 1, Aft => 4, Exp => 0);
+            F_IO.Put (File, Psi * 180.0 / Pi, 1, 4, 0);
             Ada.Text_IO.Put (File, ",");
             F_IO.Put (File, Result.Tp, Fore => 1, Aft => 6, Exp => 0);
             Ada.Text_IO.Put (File, ",");

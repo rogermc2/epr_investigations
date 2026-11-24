@@ -28,18 +28,20 @@ package Freedman_Polarizer_Model is
    end record;
 
    type LU_Record is record
-      alpha_deg   : Long_Float;
-      phi_deg     : Long_Float;
-      theta_i_deg : Long_Float;
-      psi_deg     : Long_Float;
+      Alpha_Deg   : Long_Float;
+      Phi_Deg     : Long_Float;
+      Theta_I_Deg : Long_Float;
+      Psi_Deg     : Long_Float;
       Tp          : Long_Float;
       Ts          : Long_Float;
-      T_parallel  : Long_Float;
-      T_perp      : Long_Float;
+      T_Parallel  : Long_Float;
+      T_Perp      : Long_Float;
    end record;
 
-   LU_Table : array (1 .. Alpha_Steps, 1 .. Phi_Steps) of LU_Record;
-   --  Brewster_Angle returns nominal Brewster's angle (in radians) for the selected arm
+   type LU_Array is array (Positive range <>, Positive range <>) of LU_Record;
+
+   --  Brewster_Angle returns nominal Brewster's angle (in radians)
+   --  for the selected arm
    --  function Brewster_Angle (Arm : Polarizer_Arm) return Long_Float;
 
    --  Evaluate_Ray computes single-ray transmittance for a given local
@@ -53,13 +55,16 @@ package Freedman_Polarizer_Model is
    --  optical axis) into local plate incidence angle Theta_I and
    --  plane rotation Psi.
    procedure Cone_To_Plate_Angles (
-       -- Polarizer tilt relative to optical axis (usually Brewster_Angle)
+      --  Polarizer tilt relative to optical axis (usually Brewster_Angle)
       Tilt_Angle : Long_Float;
-       -- Ray polar angle from optical axis (0 .. 30 deg in rad)
+      --  Ray polar angle from optical axis (0 .. 30 deg in rad)
       Alpha      : Long_Float;
-       -- Ray azimuth around optical axis (0 .. 2*Pi)
+      --  Ray azimuth around optical axis (0 .. 2*Pi)
       Phi        : Long_Float;
-      Theta_I, Psi        : out Long_Float);  --  Rotation of local plane of incidence);
+      --  Rotation of local plane of incidence)
+      Theta_I, Psi        : out Long_Float);
    procedure Generate_LUT;
+   function Get_LU_Table return LU_Array;
+   procedure Load_LU_Table (Arm : Polarizer_Arm);
 
 end Freedman_Polarizer_Model;
