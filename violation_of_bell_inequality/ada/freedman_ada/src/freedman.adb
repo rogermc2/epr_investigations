@@ -16,7 +16,7 @@ procedure Freedman is
    Green_Transmittance  : Ray_Transmittance;
    Violet_Transmittance : Ray_Transmittance;
 begin
-   Put_Line ("Hello!");
+   Put_Line ("Freedman Simulator");
    Put (Result);
    Green_Transmittance := Evaluate_Ray (Green_551nm, Theta_I);
    Violet_Transmittance := Evaluate_Ray (Violet_423nm, Theta_I);
