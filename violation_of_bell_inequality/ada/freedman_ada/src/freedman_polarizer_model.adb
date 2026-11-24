@@ -5,12 +5,12 @@ with Maths; use Maths;
 
 package body Freedman_Polarizer_Model is
 
-  package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
+   package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
 
    Num_Plates    : constant Integer    := 10;
    N_Air         : constant Long_Float := 1.000;
    --  Grid resolution (adjust as needed for your external integrator)
-   -- Alpha_Max_Deg is half-angle of collection cone
+   --  Alpha_Max_Deg is half-angle of collection cone
    Alpha_Max_Deg : constant Long_Float := 30.0;
    LU_Table      : LU_Array (1 .. Alpha_Steps, 1 .. Phi_Steps);
 
@@ -40,45 +40,45 @@ package body Freedman_Polarizer_Model is
    function Evaluate_Ray (Arm : Polarizer_Arm;
       Theta_I : Long_Float; Psi : Long_Float := 0.0)
       return Ray_Transmittance is
-      N_Glass      : constant Long_Float := Get_N_Glass (Arm);
-      Attenuation  : constant Long_Float := 1.0 - Get_Plate_Loss (Arm);
-      Sin_I, Cos_I : Long_Float;
-      Sin_T, Cos_T : Long_Float;
-      Rs, Rp       : Long_Float;
-      T_Plate_P    : Long_Float;
-      T_Plate_S    : Long_Float;
-      Cos_Psi_Sq   : Long_Float;
-      Sin_Psi_Sq   : Long_Float;
-      Res          : Ray_Transmittance;
+      N_Glass     : constant Long_Float := Get_N_Glass (Arm);
+      Attenuation : constant Long_Float := 1.0 - Get_Plate_Loss (Arm);
+      Sin_I       : Long_Float;
+      Cos_I       : Long_Float;
+      Sin_T       : Long_Float;
+      Cos_T       : Long_Float;
+      Rs          : Long_Float;
+      Rp          : Long_Float;
+      T_Plate_P   : Long_Float;  --  Parrallel
+      T_Plate_S   : Long_Float;  --  Perpendicular
+      Cos_Psi_Sq  : Long_Float;
+      Sin_Psi_Sq  : Long_Float;
+      Res         : Ray_Transmittance;
    begin
       Sin_I := Long_Float (Sin (Float (Theta_I)));
       Cos_I := Long_Float (Cos (Float (Theta_I)));
       Sin_T := (N_Air / N_Glass) * Sin_I;
 
-      if Sin_T >= 1.0 then
-         Res := (Tp => 0.0, Ts => 0.0, T_Parallel => 0.0, T_Perp => 0.0);
-         return Res;
+      if Sin_T < 1.0 then
+         Cos_T := Long_Float (Sqrt (Float (1.0 - Sin_T * Sin_T)));
+         Rs := ((N_Air * Cos_I - N_Glass * Cos_T) /
+            (N_Air * Cos_I + N_Glass * Cos_T)) ** 2;
+         Rp := ((N_Air * Cos_T - N_Glass * Cos_I) /
+            (N_Air * Cos_T + N_Glass * Cos_I)) ** 2;
+
+         --  Single-plate incoherent multiple-bounce transmittance
+         T_Plate_P := ((1.0 - Rp) / (1.0 + Rp)) * Attenuation;
+         T_Plate_S := ((1.0 - Rs) / (1.0 + Rs)) * Attenuation;
+
+         Res.T_P_Local := T_Plate_P ** Num_Plates;
+         Res.T_S_Local := T_Plate_S ** Num_Plates;
+         --  Project local s/p transmittances onto laboratory polarizer axes
+         Cos_Psi_Sq := Long_Float (Cos (Float (Psi))) ** 2;
+         Sin_Psi_Sq := 1.0 - Cos_Psi_Sq;
+         Res.T_Parallel :=
+            Res.T_P_Local * Cos_Psi_Sq + Res.T_S_Local * Sin_Psi_Sq;
+         Res.T_Perp :=
+            Res.T_P_Local * Sin_Psi_Sq + Res.T_S_Local * Cos_Psi_Sq;
       end if;
-
-      Cos_T := Long_Float (Sqrt (Float (1.0 - Sin_T * Sin_T)));
-
-      Rs := ((N_Air * Cos_I - N_Glass * Cos_T) /
-          (N_Air * Cos_I + N_Glass * Cos_T)) ** 2;
-      Rp := ((N_Air * Cos_T - N_Glass * Cos_I) /
-          (N_Air * Cos_T + N_Glass * Cos_I)) ** 2;
-
-      --  Single-plate incoherent multiple-bounce transmittance
-      T_Plate_P := ((1.0 - Rp) / (1.0 + Rp)) * Attenuation;
-      T_Plate_S := ((1.0 - Rs) / (1.0 + Rs)) * Attenuation;
-
-      Res.Tp := T_Plate_P ** Num_Plates;
-      Res.Ts := T_Plate_S ** Num_Plates;
-
-      --  Project local s/p transmittances onto laboratory polarizer axes
-      Cos_Psi_Sq     := Long_Float (Cos (Float (Psi))) ** 2;
-      Sin_Psi_Sq     := 1.0 - Cos_Psi_Sq;
-      Res.T_Parallel := Res.Tp * Cos_Psi_Sq + Res.Ts * Sin_Psi_Sq;
-      Res.T_Perp     := Res.Tp * Sin_Psi_Sq + Res.Ts * Cos_Psi_Sq;
 
       return Res;
 
@@ -101,7 +101,7 @@ package body Freedman_Polarizer_Model is
          := Long_Float (Cos (Float (Tilt_Angle)));
       Cos_Theta_I : Long_Float;
    begin
-      -- Dot product k . n = cos(Theta_I)
+      --  Dot product k . n = cos(Theta_I)
       Cos_Theta_I := Kx * Nx + Kz * Nz;
       if Cos_Theta_I > 1.0 then
          Cos_Theta_I := 1.0;
@@ -112,7 +112,7 @@ package body Freedman_Polarizer_Model is
       Theta_I := Long_Float (Arccos (Float (Cos_Theta_I)));
       --  Azimuthal rotation of the plane of incidence (k x n) relative to
       --  the tilt plane (y-axis)
-      if Abs (Ky) < 1.0E-12 and then Abs (Kx * Nz - Kz * Nx) < 1.0E-12 then
+      if abs (Ky) < 1.0E-12 and then abs (Kx * Nz - Kz * Nx) < 1.0E-12 then
          Psi := 0.0;
       else
          Psi := Long_Float (Arctan (Float (Ky), Float (Kx * Nz - Kz * Nx)));
@@ -137,11 +137,10 @@ package body Freedman_Polarizer_Model is
       aRecord    : LU_Record;
       Result     : Ray_Transmittance;
    begin
-     for row in 0 .. Alpha_Steps loop
+      for row in 0 .. Alpha_Steps loop
          Alpha_Deg := (Alpha_Max_Deg * Long_Float (row)) /
                       Long_Float (Alpha_Steps);
          Alpha_Rad := Alpha_Deg * Pi / 180.0;
-
          for col in 0 .. Phi_Steps loop
             Phi_Deg :=
                (360.0 * Long_Float (col)) / Long_Float (Phi_Steps);
@@ -153,8 +152,8 @@ package body Freedman_Polarizer_Model is
             aRecord.Phi_Deg := Phi_Deg * 180.0 / Pi;
             aRecord.Theta_I_Deg := Theta_I * 180.0 / Pi;
             aRecord.Psi_Deg := Psi * 180.0 / Pi;
-            aRecord.Tp := Result.Tp;
-            aRecord.Ts := Result.Ts;
+            aRecord.Tp := Result.T_P_Local;
+            aRecord.Ts := Result.T_S_Local;
             aRecord.T_Parallel := Result.T_Parallel;
             aRecord.T_Perp := Result.T_Perp;
             LU_Table (row, col) := aRecord;
@@ -200,9 +199,9 @@ package body Freedman_Polarizer_Model is
             Ada.Text_IO.Put (File, ",");
             F_IO.Put (File, Psi * 180.0 / Pi, 1, 4, 0);
             Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Result.Tp, Fore => 1, Aft => 6, Exp => 0);
+            F_IO.Put (File, Result.T_P_Local, Fore => 1, Aft => 6, Exp => 0);
             Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Result.Ts, Fore => 1, Aft => 6, Exp => 0);
+            F_IO.Put (File, Result.T_S_Local, Fore => 1, Aft => 6, Exp => 0);
             Ada.Text_IO.Put (File, ",");
             F_IO.Put (File, Result.T_Parallel, Fore => 1, Aft => 6, Exp => 0);
             Ada.Text_IO.Put (File, ",");
@@ -215,10 +214,10 @@ package body Freedman_Polarizer_Model is
       Ada.Text_IO.Put_Line ("Generated: " & Filename);
    end Write_Arm_CSV;
 
-procedure Generate_LUT is
-begin
-   Write_Arm_CSV (Green_551nm,  "freedman_lut_551nm.csv");
-   Write_Arm_CSV (Violet_423nm, "freedman_lut_423nm.csv");
-end Generate_LUT;
+   procedure Generate_LUT is
+   begin
+      Write_Arm_CSV (Green_551nm,  "freedman_lut_551nm.csv");
+      Write_Arm_CSV (Violet_423nm, "freedman_lut_423nm.csv");
+   end Generate_LUT;
 
 end Freedman_Polarizer_Model;

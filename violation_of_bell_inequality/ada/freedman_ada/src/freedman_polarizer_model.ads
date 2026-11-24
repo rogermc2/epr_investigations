@@ -2,12 +2,13 @@
 --  incidence angles (theta {i}) and azimuthal tilt angles (φ).
 --  When a ray enters a tilted pile-of-plates polarizer inside a finite
 --  collection cone, two geometric effects occur simultaneously:
---  1. Effective Incidence Angle (\(\theta _{i}\)): The ray strikes the
---     plate normal at an angle shifted from Brewster's angle (theta {B}).
---  2. Plane-of-Incidence Rotation (ψ): Off-axis rays have a rotated plane
---     of incidence relative to the polarizer's nominal axis,
---     mixing T{p} and T_{s} into effective laboratory-frame transmittances
---     T{parallel} and T{perp}.
+--  1. Effective Incidence Angle (theta {i}):
+--     The ray strikes the plate normal at an angle shifted from
+--     Brewster's angle (theta {B}).
+--  2. Plane-of-Incidence Rotation (ψ):
+--     Off-axis rays have a rotated plane of incidence relative to the
+--     polarizer's nominal axis, mixing T{p} and T{s} into an effective
+--     laboratory-frame transmittances T{parallel} and T{perp}.
 
 package Freedman_Polarizer_Model is
 
@@ -16,15 +17,18 @@ package Freedman_Polarizer_Model is
 
    type Polarizer_Arm is (Green_551nm, Violet_423nm);
 
+   --  s-Polarization and p-Polarization:
+   --  Linear polarization components perpendicular (s) or
+   --  parallel (p) to the plane of incidence.
    type Ray_Transmittance is record
       --  Pure p-polarized transmittance in ray's local plane
-      Tp         : Long_Float;
+      T_S_Local  : Long_Float := Long_Float (0.0);
       --  Pure s-polarized transmittance in ray's local plane
-      Ts         : Long_Float;
+      T_P_Local : Long_Float := Long_Float (0.0);
       --  Effective transmittance aligned with polarizer axis
-      T_Parallel : Long_Float;
+      T_Parallel   : Long_Float := Long_Float (0.0);
       --  Effective transmittance orthogonal to polarizer axis
-      T_Perp     : Long_Float;
+      T_Perp       : Long_Float := Long_Float (0.0);
    end record;
 
    type LU_Record is record

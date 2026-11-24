@@ -8,17 +8,17 @@ with Freedman_Polarizer_Model; use Freedman_Polarizer_Model;
 with Maths; use Maths;
 
 procedure Freedman is
-   a      : constant Real_Vector := (0.0, 0.5, 0.0);
-   b      : constant Real_Vector := (0.5, 0.5, 0.0);
-   lambda : constant Real_Vector := (0.5, -0.3, 0.6);
-   Result : constant Float := AB (a, b, lambda);
+   a       : constant Real_Vector := (0.0, 0.5, 0.0);
+   b       : constant Real_Vector := (0.5, 0.5, 0.0);
+   lambda  : constant Real_Vector := (0.5, -0.3, 0.6);
+   Result  : constant Float := AB (a, b, lambda);
    Theta_I : constant Long_Float := Pi / 10.0;
-   Green_Transmittance  : Ray_Transmittance;
-   Violet_Transmittance : Ray_Transmittance;
+   Trans_1 : Ray_Transmittance;  --  Green
+   Trans_2 : Ray_Transmittance;  --  Violet
 begin
    Put_Line ("Freedman Simulator");
    Put (Result);
-   Green_Transmittance := Evaluate_Ray (Green_551nm, Theta_I);
-   Violet_Transmittance := Evaluate_Ray (Violet_423nm, Theta_I);
+   Trans_1 := Evaluate_Ray (Green_551nm, Theta_I);
+   Trans_2 := Evaluate_Ray (Violet_423nm, Theta_I);
 
 end Freedman;
