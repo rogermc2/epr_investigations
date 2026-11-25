@@ -32,27 +32,30 @@ package body Freedman_Polarizer_Model is
    end Normalize;
 
    --  2. Construct Freedman Pile-of-Plates Polarizer
-   function Create_Freedman_Polarizer
+   function Create_Polarizer
      (Angle_Deg, Eps_Major, Eps_Minor : Float;
       Inserted   : Boolean := True) return Pile_Of_Plates_Polarizer is
       Rad        : constant Float := To_Radians (Angle_Deg);
-      C          : constant Float := Cos (Rad);
-      S          : constant Float := Sin (Rad);
+      Cos_Angle  : constant Float := Cos (Rad);
+      Sin_Angle  : constant Float := Sin (Rad);
+      Cos_Sq     : constant Float := Cos_Angle ** 2;
+      Sin_Sq     : constant Float := Sin_Angle ** 2;
+      CS         : constant Float := Cos_Angle * Sin_Angle;
       Amp_Maj    : constant Float := Sqrt (Eps_Major);
       Amp_min    : constant Float := Sqrt (Eps_Minor);
       Diff       : constant Float := Amp_Maj - Amp_min;
       Phi_Matrix : Jones_Matrix;
    begin
       Phi_Matrix (1, 1) :=
-         (Re => Amp_Maj * C * C + Amp_min * S * S, Im => 0.0);
-      Phi_Matrix (1, 2) := (Re => Diff * C * S, Im => 0.0);
-      Phi_Matrix (2, 1) := (Re => Diff * C * S, Im => 0.0);
-      Phi_Matrix (2, 2) := (Re => Amp_Maj * S * S +
-         Amp_min * C * C, Im => 0.0);
+         (Re => Amp_Maj * Cos_Sq + Amp_min * Sin_Sq, Im => 0.0);
+      Phi_Matrix (1, 2) := (Re => Diff * CS, Im => 0.0);
+      Phi_Matrix (2, 1) := (Re => Diff * CS, Im => 0.0);
+      Phi_Matrix (2, 2) := (Re => Amp_Maj * Sin_Sq +
+         Amp_min * Cos_Sq, Im => 0.0);
 
       return (Angle_Deg, Eps_Major, Eps_Minor, Inserted, Phi_Matrix);
 
-   end Create_Freedman_Polarizer;
+   end Create_Polarizer;
 
    --  3. Single-Photon Interaction with Pile-of-Plates Polarizer
    procedure Interact
@@ -82,14 +85,14 @@ package body Freedman_Polarizer_Model is
    --  4. Simulate Entangled Calcium Cascade Pair:
    --     |Psi> = 1/sqrt(2) (|HH> + |VV>)
    --     Measures normalized coincidence rate R(phi) / R_0
-   function Simulate_Freedman_Coincidence
+   function Simulate_Coincidence
      (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
       Seed      : Integer := 1972) return Float is
       Gen        : Ada.Numerics.Float_Random.Generator;
       P1         : constant Pile_Of_Plates_Polarizer :=
-        Create_Freedman_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
+        Create_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
       P2         : constant Pile_Of_Plates_Polarizer :=
-        Create_Freedman_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
+        Create_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
       Photon_1   : Jones_Vector;
       Photon_2   : Jones_Vector;
       Pass_1     : Boolean;
@@ -141,7 +144,7 @@ package body Freedman_Polarizer_Model is
       --  both polarizers removed (= Num_Pairs)
       return Float (Coinc_Both) / Float (Num_Pairs);
 
-   end Simulate_Freedman_Coincidence;
+   end Simulate_Coincidence;
 
    --  Theoretical Quantum Prediction from Freedman's Thesis Eq. (5):
    --  R(phi)/R_0 = 1/4 (eM1 + em1)(eM2 + em2) +

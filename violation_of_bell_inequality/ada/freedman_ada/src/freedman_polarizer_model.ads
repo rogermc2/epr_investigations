@@ -88,7 +88,7 @@ package Freedman_Polarizer_Model is
    --  procedure Generate_LUT;
    --  function Get_LU_Table return LU_Array;
    --  procedure Load_LU_Table (Arm : Polarizer_Arm);
-   function Simulate_Freedman_Coincidence
+   function Simulate_Coincidence
      (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
       Seed      : Integer := 1972) return Float;
 
