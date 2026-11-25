@@ -19,7 +19,7 @@ package Polarizer_Model is
       Extinction_Ratio_dB : Float := -1.0) return Linear_Polarizer;
    procedure Print_Result (Label : String; Measured, Theory : Float);
    function Simulate_Beam (Num_Photons : Positive; Train : Polarizer_Train;
-      Unpolarized : Boolean := True; Init_Angle_Deg : Float := 0.0;
+      Polarized : Boolean := True; Init_Angle_Deg : Float := 0.0;
       Seed : Integer := 42) return Float;
 
 end Polarizer_Model;

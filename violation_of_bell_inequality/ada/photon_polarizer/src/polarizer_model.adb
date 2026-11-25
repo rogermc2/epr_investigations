@@ -98,21 +98,19 @@ package body Polarizer_Model is
       Prob := Norm_Squared (Out_State);
       --  Monte Carlo quantum measurement
       Roll := Ada.Numerics.Float_Random.Random (Gen);
-      if Roll < Prob then
+      Transmitted := Roll < Prob;
+      if Transmitted then
          --  Photon passes and collapses into normalized transmitted state
-         Photon      := Normalize (Out_State);
-         Transmitted := True;
-      else
-         --  Photon is absorbed
-         Transmitted := False;
+         --  otherwise the photon is absorbed
+         Photon := Normalize (Out_State);
       end if;
 
    end Interact;
 
    --  5. Run Photon-by-Photon Monte Carlo Simulation
    function Simulate_Beam (Num_Photons : Positive; Train : Polarizer_Train;
-      Unpolarized : Boolean := True; Init_Angle_Deg : Float := 0.0;
-      Seed        : Integer := 42) return Float is
+      Polarized : Boolean := True; Init_Angle_Deg : Float := 0.0;
+      Seed      : Integer := 42) return Float is
       Gen         : Ada.Numerics.Float_Random.Generator;
       Photon      : Jones_Vector;
       Survived    : Boolean;
@@ -121,10 +119,10 @@ package body Polarizer_Model is
       Ada.Numerics.Float_Random.Reset (Gen, Seed);
 
       for I in 1 .. Num_Photons loop
-         if Unpolarized then
-            Photon := Make_Unpolarized_Photon (Gen);
-         else
+         if Polarized then
             Photon := Make_Linear_Photon (Init_Angle_Deg);
+         else
+            Photon := Make_Unpolarized_Photon (Gen);
          end if;
 
          Survived := True;
