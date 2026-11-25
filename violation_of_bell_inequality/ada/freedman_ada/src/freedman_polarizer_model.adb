@@ -1,4 +1,6 @@
 
+with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics.Complex_Types; use Ada.Numerics.Complex_Types;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 with Ada.Numerics.Float_Random;
 
