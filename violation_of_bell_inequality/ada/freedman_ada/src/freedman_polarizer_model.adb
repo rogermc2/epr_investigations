@@ -2,7 +2,9 @@
 with Ada.Numerics; use Ada.Numerics;
 with Ada.Numerics.Complex_Types; use Ada.Numerics.Complex_Types;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
-with Ada.Numerics.Float_Random;
+with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
+
+with Random_Unit_Vectors;
 
 package body Freedman_Polarizer_Model is
 
@@ -11,6 +13,8 @@ package body Freedman_Polarizer_Model is
    P1_Eps_min : constant Float := 0.038;
    P2_Eps_Maj : constant Float := 0.96;   --  4227 A channel
    P2_Eps_min : constant Float := 0.037;
+
+   G          : Generator;
 
    --  Helper Functions
    function To_Radians (Deg : Float) return Float is
@@ -90,22 +94,23 @@ package body Freedman_Polarizer_Model is
    function Simulate_Coincidence
      (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
       Seed      : Integer := 1972) return Float is
+      use Random_Unit_Vectors;
       a            : constant Real_Vector_3D := (0.0, 0.5, 0.0);
       b            : constant Real_Vector_3D := (0.5, 0.5, 0.0);
       lambda       : constant Complex_Vector_3D :=
-          ((0.0, 0.5), (0.0, -0.3), (0.0, 0.6));
-      Jones_lambda : constant Jones_Vector :=
-            To_Jones_Vector (lambda, (0.0, 0.0, 0.0));
-      P1         : constant Pile_Of_Plates_Polarizer :=
+                      Random_Complex_Unit_Vector (G);
+      P1           : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
-      P2         : constant Pile_Of_Plates_Polarizer :=
+      P2           : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
-      Gen        : Ada.Numerics.Float_Random.Generator;
-      Photon_1   : Jones_Vector;
-      Photon_2   : Jones_Vector;
-      Pass_1     : Boolean;
-      Pass_2     : Boolean;
-      Coinc_Both : Natural := 0;
+      Gen          : Ada.Numerics.Float_Random.Generator;
+      Photon_1     : Jones_Vector :=
+            To_Jones_Vector (lambda, (0.0, 0.0, 0.0));
+      Photon_2     : Jones_Vector :=
+            To_Jones_Vector (Opposite (lambda), (0.0, 0.0, 0.0));
+      Pass_1       : Boolean;
+      Pass_2       : Boolean;
+      Coinc_Both   : Natural := 0;
    begin
       Ada.Numerics.Float_Random.Reset (Gen, Seed);
 

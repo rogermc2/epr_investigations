@@ -1,4 +1,5 @@
 
+with Ada.Assertions; use Ada.Assertions;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 
 package body Maths is
@@ -43,9 +44,16 @@ package body Maths is
 
    end Normalize;
 
+   function Opposite (Vec : Complex_Vector_3D) return Complex_Vector_3D is
+   begin
+      return ((-Vec (1).Re, -Vec (1).Im), (-Vec (2).Re, -Vec (2).Im),
+               (-Vec (3).Re, -Vec (3).Im));
+               
+   end Opposite;
+
    function To_Jones_Vector (E_3D : Complex_Vector_3D;
       K_Hat  : Real_Vector_3D;   --  Unit propagation vector
-      Up_Ref  : Real_Vector_3D := (0.0, 1.0, 0.0)) return Jones_Vector is
+      Up_Ref  : Real_Vector_3D := (0.0, 0.0, 1.0)) return Jones_Vector is
       S_Hat, P_Hat : Real_Vector_3D;
       S_Norm       : Float;
       E_Long       : constant Complex := Dot (E_3D, K_Hat);
@@ -68,6 +76,7 @@ package body Maths is
          S_Norm := Sqrt (S_Hat (1)**2 + S_Hat (2)**2 + S_Hat (3)**2);
       end if;
 
+      Assert (S_Norm > 0.0, "To_Jones_Vector, S_Norm =< 0.0");
       for I in 1 .. 3 loop
          S_Hat (I) := S_Hat (I) / S_Norm;
       end loop;

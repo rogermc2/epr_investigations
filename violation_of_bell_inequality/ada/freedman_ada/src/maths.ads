@@ -24,8 +24,9 @@ package Maths is
    --  type Transmission_Operator is new Long_Matrix (1 ..2, 1 .. 2);
 
    function AB (a, b, lambda : Long_3D_Vector) return Long_Float;
+   function Opposite (Vec : Complex_Vector_3D) return Complex_Vector_3D;
    function To_Jones_Vector (E_3D : Complex_Vector_3D;
       K_Hat  : Real_Vector_3D;   --  Unit propagation vector
-      Up_Ref : Real_Vector_3D := (0.0, 1.0, 0.0)) return Jones_Vector;
+      Up_Ref : Real_Vector_3D := (0.0, 0.0, 1.0)) return Jones_Vector;
 
 end Maths;
