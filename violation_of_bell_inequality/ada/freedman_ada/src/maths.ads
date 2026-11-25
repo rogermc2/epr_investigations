@@ -1,6 +1,6 @@
 
 with Ada.Numerics.Complex_Types; use Ada.Numerics.Complex_Types;
-with  Ada.Numerics.Generic_Real_Arrays;
+with Ada.Numerics.Generic_Real_Arrays;
 
 package Maths is
 
