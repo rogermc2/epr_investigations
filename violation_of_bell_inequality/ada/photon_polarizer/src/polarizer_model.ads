@@ -3,11 +3,15 @@ with Ada.Numerics.Complex_Types; use Ada.Numerics.Complex_Types;
 
 package Polarizer_Model is
 
-   --  Core Quantum & Optical Data Types
+   --  A Jones vector is a two-component complex column vector used in optics
+   --  to represent the amplitude and phase of a
+   --  fully polarized monochromatic light wave in two orthogonal
+   --  transverse directions (x and y).
    type Jones_Vector is record
       Ex : Complex;
       Ey : Complex;
    end record;
+   
    type Jones_Matrix is array (1 .. 2, 1 .. 2) of Complex;
 
    type Linear_Polarizer is record

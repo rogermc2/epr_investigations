@@ -10,10 +10,10 @@ procedure Polarize is
    Single_0     : constant Polarizer_Train := (1 => Create_Polarizer (0.0));
    Crossed_0_90 : constant Polarizer_Train :=
      (Create_Polarizer (0.0), Create_Polarizer (90.0));
-   Three_Pol   : constant Polarizer_Train :=
+   Three_Pol    : constant Polarizer_Train :=
      (Create_Polarizer (0.0), Create_Polarizer (45.0),
        Create_Polarizer (90.0));
-   Imperfect   : constant Polarizer_Train :=
+   Imperfect    : constant Polarizer_Train :=
      (Create_Polarizer (0.0, 30.0), Create_Polarizer (90.0, 30.0));
 begin
    Put_Line ("Polarizer Simulator");
