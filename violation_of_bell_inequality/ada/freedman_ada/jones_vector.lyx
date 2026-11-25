@@ -1,0 +1,311 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Convert 3D Electric Field Polarization Vector To 2D Jones Vector
+\end_layout
+
+\begin_layout Standard
+You can convert a 3D electric field polarization vector to a 2D Jones vector provided that the wave is a transverse plane wave (paraxial approximation) and you define a local 2D coordinate basis perpendicular to its propagation direction.
+\end_layout
+
+\begin_layout Standard
+Because a Jones vector only tracks the two transverse components of the electric field converting from 3D world space requires projecting the 3D vector onto the local plane perpendicular to the photon's wavevector 
+\begin_inset Formula $\mathbf{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+The Mathematical Projection
+\end_layout
+
+\begin_layout Standard
+Suppose a photon is traveling along a unit propagation direction 
+\begin_inset Formula ${\mathbf{k}}$
+\end_inset
+
+ (where 
+\begin_inset Formula $\ensuremath{\Vert{}\hat{\mathbf{k}}\Vert{}=1})$
+\end_inset
+
+ with a complex 3D electric field vector 
+\begin_inset Formula $\mathbf{E}_{3\text{D}}=(E_{x},E_{y},E_{z})^{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Ensure Transversality:
+\begin_inset Newline newline
+\end_inset
+
+ For a plane wave in free space,
+ 
+\begin_inset Formula $\mathbf{E}_{3\text{D}}$
+\end_inset
+
+ must be perpendicular to 
+\begin_inset Formula $\ensuremath{\mathbf{\hat{k}}}(\ensuremath{\mathbf{E}_{3\text{D}}\cdot\hat{\mathbf{k}}=0})$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+If your raytracer produces slight numerical drift strip any longitudinal component first:
+ 
+\begin_inset Formula $\mathbf{E}_{\perp}=\mathbf{E}_{3\text{D}}-(\mathbf{E}_{3\text{D}}\cdot\mathbf{k})\mathbf{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Construct a Local 2D Orthonormal Basis 
+\begin_inset Formula $(\hat{\mathbf{s}},\hat{\mathbf{p}})$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+ Choose two orthogonal unit vectors in the plane perpendicular to 
+\begin_inset Formula $\mathbf{k}$
+\end_inset
+
+ (such as the standard s- and p-polarization vectors relative to an optical axis or global up-vector 
+\begin_inset Formula $\mathbf{\hat{u}})$
+\end_inset
+
+:
+ 
+\begin_inset Formula $\hat{s}=\frac{\mathbf{\hat{k}}\times\hat{\mathbf{u}}}{\|\mathbf{\mathbf{\hat{k}}}\times\hat{\mathbf{u}}\|},\qquad\mathbf{\hat{p}}=\mathbf{\hat{k}}\times\mathbf{\hat{s}}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+(Note:
+ If 
+\begin_inset Formula $\mathbf{\hat{k}}$
+\end_inset
+
+ is parallel to 
+\begin_inset Formula $\hat{\mathbf{u}}$
+\end_inset
+
+ then fall back to an alternate reference vector like 
+\begin_inset Formula $\hat{\mathbf{x}}$
+\end_inset
+
+ to avoid a zero cross product).
+\end_layout
+
+\begin_layout Enumerate
+Project and Normalize:
+ Dot the 3D field with your local basis vectors to get the 2D Jones vector:
+\begin_inset Formula 
+\begin{eqnarray*}
+|\psi\rangle & = & \frac{1}{\|\mathbf{E}_{\perp}\|}\left(\begin{matrix}\mathbf{E}_{\perp}\cdot\mathbf{\hat{s}}\\
+\mathbf{E}_{\perp}\cdot\mathbf{\hat{p}}
+\end{matrix}\right)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+ When This Breaks Down (Limitations)
+\end_layout
+
+\begin_layout Itemize
+Tightly Focused Beams / High Numerical Aperture (NA):
+\begin_inset Newline newline
+\end_inset
+
+ Near a tight focal spot (like Freedman's f/0.8 lenses),
+ light develops a strong longitudinal electric field component (
+\begin_inset Formula $\ensuremath{E_{z}\neq0\$}$
+\end_inset
+
+) along 
+\begin_inset Formula $\ensuremath{\mathbf{\hat{k}}})$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+A 2D Jones vector discards this longitudinal component;
+ you must use a 3 × 3 polarization coherency matrix or full vector diffraction instead.
+\end_layout
+
+\begin_layout Itemize
+Non-Planar / Off-Axis Ray Tracing:
+\begin_inset Newline newline
+\end_inset
+
+ When a ray reflects or refracts in 3D space the local 
+\begin_inset Formula $(\hat{\mathbf{s}},\hat{\mathbf{p}})$
+\end_inset
+
+ basis rotates.
+\begin_inset Newline newline
+\end_inset
+
+ In 3D ray tracers it is often cleaner to keep the polarization as a 3D complex vector using 3 × 3 polarization ray-tracing matrices (Yun,
+ Crabtree,
+ & Chipman) and only project to a 2D Jones vector right at the polarizer's surface plane.
+\end_layout
+
+\begin_layout Standard
+Note:
+ After the photon passes through the polarizer and collapses to a 2D state 
+\begin_inset Formula $\vert\psi_{\text{out}}\rangle$
+\end_inset
+
+ you can reconstruct its 3D field vector via 
+\begin_inset Formula $\ensuremath{\mathbf{E}_{3\text{D, out}}=E_{x}\hat{\mathbf{s}}+E_{y}\hat{\mathbf{p}}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If you are integrating this into a 3D optical geometry,
+ let me know:
+\end_layout
+
+\begin_layout Itemize
+Whether your photons hit the polarizer at oblique angles of incidence (which shifts the effective transmission axis and Fresnel reflection)
+\end_layout
+
+\begin_layout Itemize
+If you also need the inverse function (To_3D_Vector) to propagate the collapsed photon onward in 3D space
+\end_layout
+
+\begin_layout Itemize
+Whether you are modeling collection cone angles (like Freedman's f/0.8 lenses where rays fan out across multiple 
+\begin_inset Formula $\ensuremath{\mathbf{\hat{k}}}$
+\end_inset
+
+ directions
+\end_layout
+
+\begin_layout Standard
+I can provide the exact geometric transformations for your setup.
+\end_layout
+
+\end_body
+\end_document
