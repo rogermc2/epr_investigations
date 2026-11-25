@@ -114,7 +114,7 @@ You can convert a 3D electric field polarization vector to a 2D Jones vector pro
 
 \begin_layout Standard
 Because a Jones vector only tracks the two transverse components of the electric field converting from 3D world space requires projecting the 3D vector onto the local plane perpendicular to the photon's wavevector 
-\begin_inset Formula $\mathbf{k}$
+\begin_inset Formula $\hat{\mathbf{k}}$
 \end_inset
 
 .
@@ -125,8 +125,8 @@ The Mathematical Projection
 \end_layout
 
 \begin_layout Standard
-Suppose a photon is traveling along a unit propagation direction 
-\begin_inset Formula ${\mathbf{k}}$
+Consider a photon traveling along a unit propagation direction 
+\begin_inset Formula $\mathbf{\hat{k}}$
 \end_inset
 
  (where 
@@ -177,23 +177,28 @@ Construct a Local 2D Orthonormal Basis
 \end_inset
 
  Choose two orthogonal unit vectors in the plane perpendicular to 
-\begin_inset Formula $\mathbf{k}$
+\begin_inset Formula $\hat{\mathbf{k}}$
 \end_inset
 
- (such as the standard s- and p-polarization vectors relative to an optical axis or global up-vector 
+ (such as the standard s and p polarization vectors relative to an optical axis or global up-vector 
 \begin_inset Formula $\mathbf{\hat{u}})$
 \end_inset
 
 :
  
-\begin_inset Formula $\hat{s}=\frac{\mathbf{\hat{k}}\times\hat{\mathbf{u}}}{\|\mathbf{\mathbf{\hat{k}}}\times\hat{\mathbf{u}}\|},\qquad\mathbf{\hat{p}}=\mathbf{\hat{k}}\times\mathbf{\hat{s}}$
+\begin_inset Formula 
+\begin{eqnarray*}
+\hat{s} & = & \frac{\mathbf{\hat{k}}\times\hat{\mathbf{u}}}{\|\mathbf{\mathbf{\hat{k}}}\times\hat{\mathbf{u}}\|},\\
+\mathbf{\hat{p}} & = & \mathbf{\hat{k}}\times\mathbf{\hat{s}}
+\end{eqnarray*}
+
 \end_inset
 
 
 \begin_inset Newline newline
 \end_inset
 
-(Note:
+Note:
  If 
 \begin_inset Formula $\mathbf{\hat{k}}$
 \end_inset
@@ -206,12 +211,15 @@ Construct a Local 2D Orthonormal Basis
 \begin_inset Formula $\hat{\mathbf{x}}$
 \end_inset
 
- to avoid a zero cross product).
+ to avoid a zero cross product.
 \end_layout
 
 \begin_layout Enumerate
 Project and Normalize:
- Dot the 3D field with your local basis vectors to get the 2D Jones vector:
+\begin_inset Newline newline
+\end_inset
+
+ Dot the 3D field with local basis vectors to get the 2D Jones vector:
 \begin_inset Formula 
 \begin{eqnarray*}
 |\psi\rangle & = & \frac{1}{\|\mathbf{E}_{\perp}\|}\left(\begin{matrix}\mathbf{E}_{\perp}\cdot\mathbf{\hat{s}}\\
@@ -225,7 +233,7 @@ Project and Normalize:
 \end_layout
 
 \begin_layout Section
- When This Breaks Down (Limitations)
+When This Breaks Down (Limitations)
 \end_layout
 
 \begin_layout Itemize
@@ -233,8 +241,7 @@ Tightly Focused Beams / High Numerical Aperture (NA):
 \begin_inset Newline newline
 \end_inset
 
- Near a tight focal spot (like Freedman's f/0.8 lenses),
- light develops a strong longitudinal electric field component (
+ Near a tight focal spot (like Freedman's f/0.8 lenses) light develops a strong longitudinal electric field component (
 \begin_inset Formula $\ensuremath{E_{z}\neq0\$}$
 \end_inset
 
