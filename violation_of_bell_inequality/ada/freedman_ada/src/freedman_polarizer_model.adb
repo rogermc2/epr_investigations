@@ -97,12 +97,12 @@ package body Freedman_Polarizer_Model is
       use Random_Unit_Vectors;
       a            : constant Real_Vector_3D := (0.0, 0.5, 0.0);
       b            : constant Real_Vector_3D := (0.5, 0.5, 0.0);
-      lambda       : constant Complex_Vector_3D :=
-                      Random_Complex_Unit_Vector (G);
       P1           : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
       P2           : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
+      lambda       : constant Complex_Vector_3D :=
+                      Random_Complex_Unit_Vector (G);
       Gen          : Ada.Numerics.Float_Random.Generator;
       Photon_1     : Jones_Vector :=
             To_Jones_Vector (lambda, (0.0, 0.0, 0.0));

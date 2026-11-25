@@ -3,6 +3,7 @@ with Ada.Float_Text_IO;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Freedman_Polarizer_Model; use Freedman_Polarizer_Model;
+with Random_Unit_Vectors;
 
 procedure Freedman is
    N          : constant Positive := 500_000;
@@ -13,7 +14,7 @@ procedure Freedman is
 begin
    Put_Line
       ("Freedman (1972) Pile-of-Plates Coincidence Simulation R(phi)/R0");
-
+   Random_Unit_Vectors.Test_Random_Unit_Vectors;
    for Phi of Angles loop
       Sim_Val := Simulate_Coincidence (N, 0.0, Phi);
       Theory_Val := Freedman_Theory_Ratio (Phi);

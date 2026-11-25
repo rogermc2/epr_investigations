@@ -55,12 +55,13 @@ package body Maths is
 
    function To_Jones_Vector (E_3D : Complex_Vector_3D;
       K_Hat  : Real_Vector_3D;   --  Unit propagation vector
-      Up_Ref  : Real_Vector_3D := (0.0, 0.0, 1.0)) return Jones_Vector is
-      S_Hat, P_Hat : Real_Vector_3D;
-      S_Norm       : Float;
-      E_Long       : constant Complex := Dot (E_3D, K_Hat);
-      E_Trans      : Complex_Vector_3D;
-      Raw_Jones    : Jones_Vector;
+      Up_Ref  : Real_Vector_3D := (0.0, 1.0, 0.0)) return Jones_Vector is
+      S_Hat     : Real_Vector_3D;
+      P_Hat     : Real_Vector_3D;
+      S_Norm    : Float;
+      E_Long    : constant Complex := Dot (E_3D, K_Hat);
+      E_Trans   : Complex_Vector_3D;
+      Raw_Jones : Jones_Vector;
    begin
       --  1. Remove any longitudinal component along K_Hat
       for I in 1 .. 3 loop
@@ -71,10 +72,16 @@ package body Maths is
       --    (S_Hat, P_Hat) perpendicular to K_Hat
       S_Hat  := Cross (K_Hat, Up_Ref);
       S_Norm := Sqrt (S_Hat (1)**2 + S_Hat (2)**2 + S_Hat (3)**2);
+      Put_Line ("To_Jones_Vector, S_Norm: " & Float'Image (S_Norm));
 
       --  Handle gimbal lock if K_Hat is parallel to Up_Ref
       if S_Norm < 1.0E-6 then
+         Put_Line ("To_Jones_Vector, S_Norm < 1.0E-6");
          S_Hat  := Cross (K_Hat, (1.0, 0.0, 0.0));
+         Put_Line ("To_Jones_Vector, K_Hat: " & Float'Image (K_Hat (1)) &
+         Float'Image (K_Hat (2)) & Float'Image (K_Hat (3)));
+         Put_Line ("To_Jones_Vector, S_Hat: " & Float'Image (S_Hat (1)) &
+         Float'Image (S_Hat (2)) & Float'Image (S_Hat (3)));
          S_Norm := Sqrt (S_Hat (1)**2 + S_Hat (2)**2 + S_Hat (3)**2);
       end if;
 
