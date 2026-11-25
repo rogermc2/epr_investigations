@@ -1,18 +1,20 @@
 
 with Ada.Assertions; use Ada.Assertions;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Maths is
 
-   function Adot (a, lambda : Long_3D_Vector) return Long_Float is
-   begin
-      return (a * lambda);  --  Dot prdoct
-   end Adot;
+   --  function Adot (a, lambda : Long_3D_Vector) return Long_Float is
+   --  begin
+   --     return (a * lambda);  --  Dot prdoct
+   --  end Adot;
 
-   function AB (a, b, lambda : Long_3D_Vector) return Long_Float is
-   begin
-      return Adot (a, lambda) * Adot (b, lambda);
-   end AB;
+   --  function AB (a, b, lambda : Long_3D_Vector) return Long_Float is
+   --  begin
+   --     return Adot (a, lambda) * Adot (b, lambda);
+   --  end AB;
 
    function Dot (A : Complex_Vector_3D; B : Real_Vector_3D) return Complex is
    begin
@@ -48,7 +50,7 @@ package body Maths is
    begin
       return ((-Vec (1).Re, -Vec (1).Im), (-Vec (2).Re, -Vec (2).Im),
                (-Vec (3).Re, -Vec (3).Im));
-               
+
    end Opposite;
 
    function To_Jones_Vector (E_3D : Complex_Vector_3D;
@@ -76,7 +78,8 @@ package body Maths is
          S_Norm := Sqrt (S_Hat (1)**2 + S_Hat (2)**2 + S_Hat (3)**2);
       end if;
 
-      Assert (S_Norm > 0.0, "To_Jones_Vector, S_Norm =< 0.0");
+      Assert (S_Norm > 0.0, "To_Jones_Vector, S_Norm =< 0.0: " &
+            Float'Image (S_Norm));
       for I in 1 .. 3 loop
          S_Hat (I) := S_Hat (I) / S_Norm;
       end loop;
@@ -87,6 +90,11 @@ package body Maths is
                   Ey => Dot (E_Trans, P_Hat));
 
       return Normalize (Raw_Jones);
+
+   exception
+      when anError : others => Put_Line ("To_Jones_Vector exception: ");
+         Put_Line (Exception_Information (anError));
+      raise;
 
    end To_Jones_Vector;
 

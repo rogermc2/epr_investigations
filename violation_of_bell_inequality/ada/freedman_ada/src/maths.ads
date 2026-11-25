@@ -23,7 +23,7 @@ package Maths is
    type Long_3D_Vector is new Long_Vector (1 .. 3);
    --  type Transmission_Operator is new Long_Matrix (1 ..2, 1 .. 2);
 
-   function AB (a, b, lambda : Long_3D_Vector) return Long_Float;
+   --  function AB (a, b, lambda : Long_3D_Vector) return Long_Float;
    function Opposite (Vec : Complex_Vector_3D) return Complex_Vector_3D;
    function To_Jones_Vector (E_3D : Complex_Vector_3D;
       K_Hat  : Real_Vector_3D;   --  Unit propagation vector

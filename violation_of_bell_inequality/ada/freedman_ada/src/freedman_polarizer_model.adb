@@ -106,8 +106,8 @@ package body Freedman_Polarizer_Model is
       Gen          : Ada.Numerics.Float_Random.Generator;
       Photon_1     : Jones_Vector :=
             To_Jones_Vector (lambda, (0.0, 0.0, 0.0));
-      Photon_2     : Jones_Vector :=
-            To_Jones_Vector (Opposite (lambda), (0.0, 0.0, 0.0));
+      Photon_2     : Jones_Vector;
+            --  To_Jones_Vector (Opposite (lambda), (0.0, 0.0, 0.0));
       Pass_1       : Boolean;
       Pass_2       : Boolean;
       Coinc_Both   : Natural := 0;
