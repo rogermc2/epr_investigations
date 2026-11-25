@@ -16,7 +16,6 @@ package body Freedman_Polarizer_Model is
 
    Gen        : Ada.Numerics.Float_Random.Generator;
 
-   --  Helper Functions
    function To_Radians (Deg : Float) return Float is
    begin
       return Deg * (Pi / 180.0);
@@ -37,7 +36,6 @@ package body Freedman_Polarizer_Model is
 
    end Normalize;
 
-   --  2. Construct Freedman Pile-of-Plates Polarizer
    function Create_Polarizer
      (Angle_Deg, Eps_Major, Eps_Minor : Float;
       Inserted   : Boolean := True) return Pile_Of_Plates_Polarizer is
@@ -63,14 +61,14 @@ package body Freedman_Polarizer_Model is
 
    end Create_Polarizer;
 
-   --  3. Single-Photon Interaction with Pile-of-Plates Polarizer
-   procedure Interact
+   --  Single-Photon Interaction with Pile-of-Plates Polarizer
+   procedure Polarize
      (P   : Pile_Of_Plates_Polarizer; Photon : in out Jones_Vector;
       Gen : Ada.Numerics.Float_Random.Generator; Transmitted : out Boolean) is
       Out_State : Jones_Vector;
       Prob      : Float;
    begin
-      --  In Freedman's apparatus, plates could be folded completely out
+      --  In Freedman's apparatus the plates could be folded completely out
       if not P.Inserted then
          Transmitted := True;
       else
@@ -86,17 +84,15 @@ package body Freedman_Polarizer_Model is
          end if;
       end if;
 
-   end Interact;
+   end Polarize;
 
-   --  4. Simulate Entangled Calcium Cascade Pair:
-   --     |Psi> = 1/sqrt(2) (|HH> + |VV>)
-   --     Measures normalized coincidence rate R(phi) / R_0
+   --  Simulate Entangled Calcium Cascade Pair:
+   --  |Psi> = 1/sqrt(2) (|HH> + |VV>)
+   --   Measures normalized coincidence rate R(phi) / R_0
    function Simulate_Coincidence
      (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
       Seed      : Integer := 1972) return Float is
       use Random_Unit_Vectors;
-      a            : constant Real_Vector_3D := (0.0, 0.5, 0.0);
-      b            : constant Real_Vector_3D := (0.5, 0.5, 0.0);
       P1           : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
       P2           : constant Pile_Of_Plates_Polarizer :=
@@ -104,8 +100,8 @@ package body Freedman_Polarizer_Model is
       lambda       : constant Complex_Vector_3D :=
                       Random_Complex_Unit_Vector (Gen);
       Photon_1     : Jones_Vector :=
-            To_Jones_Vector (lambda, (0.0, 0.0, 0.0));
-      Photon_2     : Jones_Vector;
+            To_Jones_Vector (lambda, (0.0, 0.0, 1.0));
+      Photon_2     : Jones_Vector := Photon_1;
             --  To_Jones_Vector (Opposite (lambda), (0.0, 0.0, 0.0));
       Pass_1       : Boolean;
       Pass_2       : Boolean;
@@ -130,22 +126,22 @@ package body Freedman_Polarizer_Model is
          --  angles, we project Photon 2 onto Photon 1's collapsed state if
          --  Photon 1 passes, or orthogonal state if blocked, followed by P2.
          --  Equivalently, we generate an isotropic hidden-angle basis:
-         declare
-            Basis_Angle : constant Float :=
-              Ada.Numerics.Float_Random.Random (Gen) * 2.0 * Pi;
-         begin
-            Photon_1 := (Ex => (Cos (Basis_Angle), 0.0),
-                         Ey => (Sin (Basis_Angle), 0.0));
-            Photon_2 := Photon_1;
-         end;
+         --  declare
+         --     Basis_Angle : constant Float :=
+         --       Ada.Numerics.Float_Random.Random (Gen) * 2.0 * Pi;
+         --  begin
+         --     Photon_1 := (Ex => (Cos (Basis_Angle), 0.0),
+         --                  Ey => (Sin (Basis_Angle), 0.0));
+         --     Photon_2 := Photon_1;
+         --  end;
 
          --  Measure Photon 1 at Polarizer 1
-         Interact (P1, Photon_1, Gen, Pass_1);
+         Polarize (P1, Photon_1, Gen, Pass_1);
 
          if Pass_1 then
             --  Quantum collapse: Photon 2 collapses to match Photon 1's state
             Photon_2 := Photon_1;
-            Interact (P2, Photon_2, Gen, Pass_2);
+            Polarize (P2, Photon_2, Gen, Pass_2);
             if Pass_2 then
                Coinc_Both := Coinc_Both + 1;
             end if;

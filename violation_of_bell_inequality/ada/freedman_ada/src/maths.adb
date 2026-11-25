@@ -72,16 +72,10 @@ package body Maths is
       --    (S_Hat, P_Hat) perpendicular to K_Hat
       S_Hat  := Cross (K_Hat, Up_Ref);
       S_Norm := Sqrt (S_Hat (1)**2 + S_Hat (2)**2 + S_Hat (3)**2);
-      Put_Line ("To_Jones_Vector, S_Norm: " & Float'Image (S_Norm));
 
       --  Handle gimbal lock if K_Hat is parallel to Up_Ref
       if S_Norm < 1.0E-6 then
-         Put_Line ("To_Jones_Vector, S_Norm < 1.0E-6");
          S_Hat  := Cross (K_Hat, (1.0, 0.0, 0.0));
-         Put_Line ("To_Jones_Vector, K_Hat: " & Float'Image (K_Hat (1)) &
-         Float'Image (K_Hat (2)) & Float'Image (K_Hat (3)));
-         Put_Line ("To_Jones_Vector, S_Hat: " & Float'Image (S_Hat (1)) &
-         Float'Image (S_Hat (2)) & Float'Image (S_Hat (3)));
          S_Norm := Sqrt (S_Hat (1)**2 + S_Hat (2)**2 + S_Hat (3)**2);
       end if;
 
