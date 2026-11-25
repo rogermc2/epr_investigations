@@ -1,17 +1,12 @@
+
 with Ada.Text_IO;
 with Ada.Float_Text_IO;
-with Ada.Numerics;
-with Ada.Numerics.Elementary_Functions;
+with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 with Ada.Numerics.Float_Random;
 
 package body Polarizer_Model is
 
-procedure Polarizer_Sim is
-   use Ada.Numerics;
-   use Ada.Numerics.Elementary_Functions;
-   use Ada.Numerics.Complex_Types;
-  
-   --  Helper: Convert degrees to radians
    function To_Radians (Deg : Float) return Float is
    begin
       return Deg * (Pi / 180.0);
@@ -60,10 +55,8 @@ procedure Polarizer_Sim is
    end Make_Unpolarized_Photon;
 
    --  3. Polarizer Constructor (Ideal or Finite Extinction Ratio)
-   function Create_Polarizer
-     (Angle_Deg           : Float;
-      Extinction_Ratio_dB : Float := -1.0) return Linear_Polarizer
-   is
+   function Create_Polarizer (Angle_Deg : Float;
+      Extinction_Ratio_dB : Float := -1.0) return Linear_Polarizer is
       Rad     : constant Float := To_Radians (Angle_Deg);
       C       : constant Float := Cos (Rad);
       S       : constant Float := Sin (Rad);
@@ -84,19 +77,17 @@ procedure Polarizer_Sim is
    end Create_Polarizer;
 
    --  4. Single-Photon Interaction & Quantum State Collapse
-   procedure Interact
-     (P           : in     Linear_Polarizer;
-      Photon      : in out Jones_Vector;
-      Gen         : in     Ada.Numerics.Float_Random.Generator;
-      Transmitted : out    Boolean)
-   is
+   procedure Interact (P : Linear_Polarizer; Photon : in out Jones_Vector;
+      Gen : Ada.Numerics.Float_Random.Generator; Transmitted : out Boolean) is
       Out_State : Jones_Vector;
       Prob      : Float;
       Roll      : Float;
    begin
       --  Apply 2x2 Jones Matrix: |psi_out> = P * |psi_in>
-      Out_State.Ex := P.Matrix (1, 1) * Photon.Ex + P.Matrix (1, 2) * Photon.Ey;
-      Out_State.Ey := P.Matrix (2, 1) * Photon.Ex + P.Matrix (2, 2) * Photon.Ey;
+      Out_State.Ex :=
+          P.Matrix (1, 1) * Photon.Ex + P.Matrix (1, 2) * Photon.Ey;
+      Out_State.Ey :=
+          P.Matrix (2, 1) * Photon.Ex + P.Matrix (2, 2) * Photon.Ey;
 
       --  Transmission probability T = <psi_out | psi_out>
       Prob := Norm_Squared (Out_State);
@@ -157,18 +148,5 @@ procedure Polarizer_Sim is
       Ada.Float_Text_IO.Put (Theory, Fore => 1, Aft => 4, Exp => 0);
       Ada.Text_IO.New_Line;
    end Print_Result;
-
-   N : constant Positive := 100_000;
-
-   --  Optical setups
-   Single_0    : constant Polarizer_Train := (1 => Create_Polarizer (0.0));
-   Crossed_0_90 : constant Polarizer_Train :=
-     (Create_Polarizer (0.0), Create_Polarizer (90.0));
-   Three_Pol   : constant Polarizer_Train :=
-     (Create_Polarizer (0.0), Create_Polarizer (45.0), Create_Polarizer (90.0));
-   Imperfect   : constant Polarizer_Train :=
-     (Create_Polarizer (0.0, 30.0), Create_Polarizer (90.0, 30.0));
-
-end Polarizer_Sim;
 
 end Polarizer_Model;
