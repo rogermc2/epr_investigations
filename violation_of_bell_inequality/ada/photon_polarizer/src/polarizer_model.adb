@@ -31,7 +31,15 @@ package body Polarizer_Model is
 
    end Normalize;
 
-   --  2. Photon State Constructors
+   --  Common Polarization States (Normalized)
+   --  Horizontal linear (x-axis): T(1, 0)
+   --  Vertical linear (y-axis): T(0, 1)
+   --  Diagonal linear (45°): 1 \ sqrt(2} T(1, 1)
+   --  Circular polarization:
+   --    (delta phi = +/- pi/2), equal amplitudes): 1 sqrt(2) T(1. i)
+   --    (handedness convention depends on sign/time convention)
+   --  Elliptical polarization:
+   --    General unequal amplitudes or arbitrary phase differences.
    function Make_Linear_Photon (Angle_Deg : Float) return Jones_Vector is
       Rad : constant Float := To_Radians (Angle_Deg);
    begin
@@ -40,13 +48,13 @@ package body Polarizer_Model is
 
    end Make_Linear_Photon;
 
-   function Make_RHC_Photon return Jones_Vector is
-      Inv_Sqrt2 : constant Float := 1.0 / Sqrt (2.0);
-   begin
-      return (Ex => (Re => Inv_Sqrt2, Im => 0.0),
-              Ey => (Re => 0.0,       Im => -Inv_Sqrt2));
+   --  function Make_RHC_Photon return Jones_Vector is
+   --     Inv_Sqrt2 : constant Float := 1.0 / Sqrt (2.0);
+   --  begin
+   --     return (Ex => (Re => Inv_Sqrt2, Im => 0.0),
+   --             Ey => (Re => 0.0,       Im => -Inv_Sqrt2));
 
-   end Make_RHC_Photon;
+   --  end Make_RHC_Photon;
 
    function Make_Unpolarized_Photon
      (Gen : Ada.Numerics.Float_Random.Generator) return Jones_Vector
