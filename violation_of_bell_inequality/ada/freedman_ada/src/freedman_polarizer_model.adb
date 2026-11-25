@@ -90,11 +90,17 @@ package body Freedman_Polarizer_Model is
    function Simulate_Coincidence
      (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
       Seed      : Integer := 1972) return Float is
-      Gen        : Ada.Numerics.Float_Random.Generator;
+      a            : constant Real_Vector_3D := (0.0, 0.5, 0.0);
+      b            : constant Real_Vector_3D := (0.5, 0.5, 0.0);
+      lambda       : constant Complex_Vector_3D :=
+          ((0.0, 0.5), (0.0, -0.3), (0.0, 0.6));
+      Jones_lambda : constant Jones_Vector :=
+            To_Jones_Vector (lambda, (0.0, 0.0, 0.0));
       P1         : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
       P2         : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
+      Gen        : Ada.Numerics.Float_Random.Generator;
       Photon_1   : Jones_Vector;
       Photon_2   : Jones_Vector;
       Pass_1     : Boolean;
