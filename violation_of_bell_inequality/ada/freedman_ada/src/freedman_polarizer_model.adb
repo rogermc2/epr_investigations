@@ -14,7 +14,7 @@ package body Freedman_Polarizer_Model is
    P2_Eps_Maj : constant Float := 0.96;   --  4227 A channel
    P2_Eps_min : constant Float := 0.037;
 
-   G          : Generator;
+   Gen        : Ada.Numerics.Float_Random.Generator;
 
    --  Helper Functions
    function To_Radians (Deg : Float) return Float is
@@ -102,8 +102,7 @@ package body Freedman_Polarizer_Model is
       P2           : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
       lambda       : constant Complex_Vector_3D :=
-                      Random_Complex_Unit_Vector (G);
-      Gen          : Ada.Numerics.Float_Random.Generator;
+                      Random_Complex_Unit_Vector (Gen);
       Photon_1     : Jones_Vector :=
             To_Jones_Vector (lambda, (0.0, 0.0, 0.0));
       Photon_2     : Jones_Vector;
@@ -117,15 +116,15 @@ package body Freedman_Polarizer_Model is
       for I in 1 .. Num_Pairs loop
          --  Generate entangled pair in |HH> + |VV> basis
          --  (Equivalent to |RR> + |LL> in circular basis)
-         if Ada.Numerics.Float_Random.Random (Gen) < 0.5 then
-            --  Both Horizontal (0 deg)
-            Photon_1 := (Ex => (1.0, 0.0), Ey => (0.0, 0.0));
-            Photon_2 := (Ex => (1.0, 0.0), Ey => (0.0, 0.0));
-         else
-            --  Both Vertical (90 deg)
-            Photon_1 := (Ex => (0.0, 0.0), Ey => (1.0, 0.0));
-            Photon_2 := (Ex => (0.0, 0.0), Ey => (1.0, 0.0));
-         end if;
+         --  if Ada.Numerics.Float_Random.Random (Gen) < 0.5 then
+         --     --  Both Horizontal (0 deg)
+         --     Photon_1 := (Ex => (1.0, 0.0), Ey => (0.0, 0.0));
+         --     Photon_2 := (Ex => (1.0, 0.0), Ey => (0.0, 0.0));
+         --  else
+         --     --  Both Vertical (90 deg)
+         --     Photon_1 := (Ex => (0.0, 0.0), Ey => (1.0, 0.0));
+         --     Photon_2 := (Ex => (0.0, 0.0), Ey => (1.0, 0.0));
+         --  end if;
 
          --  Note: For full rotational invariance of |HH> + |VV> at arbitrary
          --  angles, we project Photon 2 onto Photon 1's collapsed state if
