@@ -1,223 +1,160 @@
-with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
-with Ada.Text_IO; use Ada.Text_IO;
 
-with Maths; use Maths;
+with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
+with Ada.Numerics.Float_Random;
 
 package body Freedman_Polarizer_Model is
 
-   package F_IO is new Ada.Text_IO.Float_IO (Long_Float);
+   --  Freedman & Clauser (1972) Measured Constants
+   P1_Eps_Maj : constant Float := 0.97;   --  5513 A channel
+   P1_Eps_min : constant Float := 0.038;
+   P2_Eps_Maj : constant Float := 0.96;   --  4227 A channel
+   P2_Eps_min : constant Float := 0.037;
 
-   Num_Plates    : constant Integer    := 10;
-   N_Air         : constant Long_Float := 1.000;
-   --  Grid resolution (adjust as needed for your external integrator)
-   --  Alpha_Max_Deg is half-angle of collection cone
-   Alpha_Max_Deg : constant Long_Float := 30.0;
-   LU_Table      : LU_Array (1 .. Alpha_Steps, 1 .. Phi_Steps);
-
-   function Get_N_Glass (Arm : Polarizer_Arm) return Long_Float is
+   --  Helper Functions
+   function To_Radians (Deg : Float) return Float is
    begin
-      case Arm is
-         when Green_551nm  => return 1.518;
-         when Violet_423nm => return 1.528;
-      end case;
+      return Deg * (Pi / 180.0);
 
-   end Get_N_Glass;
+   end To_Radians;
 
-   function Get_Plate_Loss (Arm : Polarizer_Arm) return Long_Float is
+   function Norm_Squared (Psi : Jones_Vector) return Float is
    begin
-      case Arm is
-         when Green_551nm  => return 0.0030;
-         when Violet_423nm => return 0.0041;
-      end case;
+      return (Psi.Ex.Re ** 2 + Psi.Ex.Im ** 2) +
+             (Psi.Ey.Re ** 2 + Psi.Ey.Im ** 2);
 
-   end Get_Plate_Loss;
+   end Norm_Squared;
 
-   function Brewster_Angle (Arm : Polarizer_Arm) return Long_Float is
+   function Normalize (Psi : Jones_Vector) return Jones_Vector is
+      Mag : constant Float := Sqrt (Norm_Squared (Psi));
    begin
-      return Long_Float (Arctan (Float (Get_N_Glass (Arm) / N_Air)));
-   end Brewster_Angle;
+      return (Ex => Psi.Ex / Mag, Ey => Psi.Ey / Mag);
 
-   function Evaluate_Ray (Arm : Polarizer_Arm;
-      Theta_I : Long_Float; Psi : Long_Float := 0.0)
-      return Ray_Transmittance is
-      N_Glass     : constant Long_Float := Get_N_Glass (Arm);
-      Attenuation : constant Long_Float := 1.0 - Get_Plate_Loss (Arm);
-      Sin_I       : Long_Float;
-      Cos_I       : Long_Float;
-      Sin_T       : Long_Float;
-      Cos_T       : Long_Float;
-      Rs          : Long_Float;
-      Rp          : Long_Float;
-      T_Plate_P   : Long_Float;  --  Parrallel
-      T_Plate_S   : Long_Float;  --  Perpendicular
-      Cos_Psi_Sq  : Long_Float;
-      Sin_Psi_Sq  : Long_Float;
-      Res         : Ray_Transmittance;
+   end Normalize;
+
+   --  2. Construct Freedman Pile-of-Plates Polarizer
+   function Create_Freedman_Polarizer
+     (Angle_Deg, Eps_Major, Eps_Minor : Float;
+      Inserted   : Boolean := True) return Pile_Of_Plates_Polarizer is
+      Rad        : constant Float := To_Radians (Angle_Deg);
+      C          : constant Float := Cos (Rad);
+      S          : constant Float := Sin (Rad);
+      Amp_Maj    : constant Float := Sqrt (Eps_Major);
+      Amp_min    : constant Float := Sqrt (Eps_Minor);
+      Diff       : constant Float := Amp_Maj - Amp_min;
+      Phi_Matrix : Jones_Matrix;
    begin
-      Sin_I := Long_Float (Sin (Float (Theta_I)));
-      Cos_I := Long_Float (Cos (Float (Theta_I)));
-      Sin_T := (N_Air / N_Glass) * Sin_I;
+      Phi_Matrix (1, 1) :=
+         (Re => Amp_Maj * C * C + Amp_min * S * S, Im => 0.0);
+      Phi_Matrix (1, 2) := (Re => Diff * C * S, Im => 0.0);
+      Phi_Matrix (2, 1) := (Re => Diff * C * S, Im => 0.0);
+      Phi_Matrix (2, 2) := (Re => Amp_Maj * S * S +
+         Amp_min * C * C, Im => 0.0);
 
-      if Sin_T < 1.0 then
-         Cos_T := Long_Float (Sqrt (Float (1.0 - Sin_T * Sin_T)));
-         Rs := ((N_Air * Cos_I - N_Glass * Cos_T) /
-            (N_Air * Cos_I + N_Glass * Cos_T)) ** 2;
-         Rp := ((N_Air * Cos_T - N_Glass * Cos_I) /
-            (N_Air * Cos_T + N_Glass * Cos_I)) ** 2;
+      return (Angle_Deg, Eps_Major, Eps_Minor, Inserted, Phi_Matrix);
 
-         --  Single-plate incoherent multiple-bounce transmittance
-         T_Plate_P := ((1.0 - Rp) / (1.0 + Rp)) * Attenuation;
-         T_Plate_S := ((1.0 - Rs) / (1.0 + Rs)) * Attenuation;
+   end Create_Freedman_Polarizer;
 
-         Res.T_P_Local := T_Plate_P ** Num_Plates;
-         Res.T_S_Local := T_Plate_S ** Num_Plates;
-         --  Project local s/p transmittances onto laboratory polarizer axes
-         Cos_Psi_Sq := Long_Float (Cos (Float (Psi))) ** 2;
-         Sin_Psi_Sq := 1.0 - Cos_Psi_Sq;
-         Res.T_Parallel :=
-            Res.T_P_Local * Cos_Psi_Sq + Res.T_S_Local * Sin_Psi_Sq;
-         Res.T_Perp :=
-            Res.T_P_Local * Sin_Psi_Sq + Res.T_S_Local * Cos_Psi_Sq;
-      end if;
-
-      return Res;
-
-   end Evaluate_Ray;
-
-   procedure Cone_To_Plate_Angles (Tilt_Angle, Alpha, Phi : Long_Float;
-      Theta_I, Psi : out Long_Float) is
-      --  Ray direction unit vector k =
-      --  (sin(alpha)cos(phi), sin(alpha)sin(phi), cos(alpha))
-      --  Plate normal unit vector n = (sin(tilt), 0, cos(tilt))
-      Kx : constant Long_Float :=
-         Long_Float (Sin (Float (Alpha))) * Long_Float (Cos (Float (Phi)));
-      Ky : constant Long_Float :=
-         Long_Float (Sin (Float (Alpha))) * Long_Float (Sin (Float (Phi)));
-      Kz : constant Long_Float :=
-         Long_Float (Cos (Float (Alpha)));
-      Nx : constant Long_Float
-         := Long_Float (Sin (Float (Tilt_Angle)));
-      Nz : constant Long_Float
-         := Long_Float (Cos (Float (Tilt_Angle)));
-      Cos_Theta_I : Long_Float;
+   --  3. Single-Photon Interaction with Pile-of-Plates Polarizer
+   procedure Interact
+     (P   : Pile_Of_Plates_Polarizer; Photon : in out Jones_Vector;
+      Gen : Ada.Numerics.Float_Random.Generator; Transmitted : out Boolean) is
+      Out_State : Jones_Vector;
+      Prob      : Float;
    begin
-      --  Dot product k . n = cos(Theta_I)
-      Cos_Theta_I := Kx * Nx + Kz * Nz;
-      if Cos_Theta_I > 1.0 then
-         Cos_Theta_I := 1.0;
-      elsif Cos_Theta_I < -1.0 then
-         Cos_Theta_I := -1.0;
-      end if;
-
-      Theta_I := Long_Float (Arccos (Float (Cos_Theta_I)));
-      --  Azimuthal rotation of the plane of incidence (k x n) relative to
-      --  the tilt plane (y-axis)
-      if abs (Ky) < 1.0E-12 and then abs (Kx * Nz - Kz * Nx) < 1.0E-12 then
-         Psi := 0.0;
+      --  In Freedman's apparatus, plates could be folded completely out
+      if not P.Inserted then
+         Transmitted := True;
       else
-         Psi := Long_Float (Arctan (Float (Ky), Float (Kx * Nz - Kz * Nx)));
+         Out_State.Ex := P.Matrix (1, 1) * Photon.Ex +
+             P.Matrix (1, 2) * Photon.Ey;
+         Out_State.Ey := P.Matrix (2, 1) * Photon.Ex +
+             P.Matrix (2, 2) * Photon.Ey;
+         Prob := Norm_Squared (Out_State);
+
+         Transmitted := Ada.Numerics.Float_Random.Random (Gen) < Prob;
+         if Transmitted then
+            Photon := Normalize (Out_State);
+         end if;
       end if;
 
-   end Cone_To_Plate_Angles;
+   end Interact;
 
-   function Get_LU_Table return LU_Array is
+   --  4. Simulate Entangled Calcium Cascade Pair:
+   --     |Psi> = 1/sqrt(2) (|HH> + |VV>)
+   --     Measures normalized coincidence rate R(phi) / R_0
+   function Simulate_Freedman_Coincidence
+     (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
+      Seed      : Integer := 1972) return Float is
+      Gen        : Ada.Numerics.Float_Random.Generator;
+      P1         : constant Pile_Of_Plates_Polarizer :=
+        Create_Freedman_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
+      P2         : constant Pile_Of_Plates_Polarizer :=
+        Create_Freedman_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
+      Photon_1   : Jones_Vector;
+      Photon_2   : Jones_Vector;
+      Pass_1     : Boolean;
+      Pass_2     : Boolean;
+      Coinc_Both : Natural := 0;
    begin
-      return LU_Table;
+      Ada.Numerics.Float_Random.Reset (Gen, Seed);
 
-   end Get_LU_Table;
+      for I in 1 .. Num_Pairs loop
+         --  Generate entangled pair in |HH> + |VV> basis
+         --  (Equivalent to |RR> + |LL> in circular basis)
+         if Ada.Numerics.Float_Random.Random (Gen) < 0.5 then
+            --  Both Horizontal (0 deg)
+            Photon_1 := (Ex => (1.0, 0.0), Ey => (0.0, 0.0));
+            Photon_2 := (Ex => (1.0, 0.0), Ey => (0.0, 0.0));
+         else
+            --  Both Vertical (90 deg)
+            Photon_1 := (Ex => (0.0, 0.0), Ey => (1.0, 0.0));
+            Photon_2 := (Ex => (0.0, 0.0), Ey => (1.0, 0.0));
+         end if;
 
-   procedure Load_LU_Table (Arm : Polarizer_Arm) is
-      Tilt_Rad   : constant Long_Float := Brewster_Angle (Arm);
-      Alpha_Deg  : Long_Float;
-      Phi_Deg    : Long_Float;
-      Alpha_Rad  : Long_Float;
-      Phi_Rad    : Long_Float;
-      Theta_I    : Long_Float;
-      Psi        : Long_Float;
-      aRecord    : LU_Record;
-      Result     : Ray_Transmittance;
-   begin
-      for row in 0 .. Alpha_Steps loop
-         Alpha_Deg := (Alpha_Max_Deg * Long_Float (row)) /
-                      Long_Float (Alpha_Steps);
-         Alpha_Rad := Alpha_Deg * Pi / 180.0;
-         for col in 0 .. Phi_Steps loop
-            Phi_Deg :=
-               (360.0 * Long_Float (col)) / Long_Float (Phi_Steps);
-            Phi_Rad := Phi_Deg * Pi / 180.0;
-            Cone_To_Plate_Angles (Tilt_Rad, Alpha_Rad, Phi_Rad, Theta_I, Psi);
-            Result := Evaluate_Ray (Arm, Theta_I, Psi);
+         --  Note: For full rotational invariance of |HH> + |VV> at arbitrary
+         --  angles, we project Photon 2 onto Photon 1's collapsed state if
+         --  Photon 1 passes, or orthogonal state if blocked, followed by P2.
+         --  Equivalently, we generate an isotropic hidden-angle basis:
+         declare
+            Basis_Angle : constant Float :=
+              Ada.Numerics.Float_Random.Random (Gen) * 2.0 * Pi;
+         begin
+            Photon_1 := (Ex => (Cos (Basis_Angle), 0.0),
+                         Ey => (Sin (Basis_Angle), 0.0));
+            Photon_2 := Photon_1;
+         end;
 
-            aRecord.Alpha_Deg := Alpha_Deg;
-            aRecord.Phi_Deg := Phi_Deg * 180.0 / Pi;
-            aRecord.Theta_I_Deg := Theta_I * 180.0 / Pi;
-            aRecord.Psi_Deg := Psi * 180.0 / Pi;
-            aRecord.Tp := Result.T_P_Local;
-            aRecord.Ts := Result.T_S_Local;
-            aRecord.T_Parallel := Result.T_Parallel;
-            aRecord.T_Perp := Result.T_Perp;
-            LU_Table (row, col) := aRecord;
-         end loop;
+         --  Measure Photon 1 at Polarizer 1
+         Interact (P1, Photon_1, Gen, Pass_1);
+
+         if Pass_1 then
+            --  Quantum collapse: Photon 2 collapses to match Photon 1's state
+            Photon_2 := Photon_1;
+            Interact (P2, Photon_2, Gen, Pass_2);
+            if Pass_2 then
+               Coinc_Both := Coinc_Both + 1;
+            end if;
+         end if;
       end loop;
 
-   end Load_LU_Table;
+      --  R_0 is the coincidence rate with
+      --  both polarizers removed (= Num_Pairs)
+      return Float (Coinc_Both) / Float (Num_Pairs);
 
-   procedure Write_Arm_CSV (Arm : Polarizer_Arm; Filename : String) is
-      File       : Ada.Text_IO.File_Type;
-      Tilt_Rad   : constant Long_Float := Brewster_Angle (Arm);
-      Alpha_Deg  : Long_Float;
-      Phi_Deg    : Long_Float;
-      Alpha_Rad  : Long_Float;
-      Phi_Rad    : Long_Float;
-      Theta_I    : Long_Float;
-      Psi        : Long_Float;
-      Result     : Ray_Transmittance;
+   end Simulate_Freedman_Coincidence;
+
+   --  Theoretical Quantum Prediction from Freedman's Thesis Eq. (5):
+   --  R(phi)/R_0 = 1/4 (eM1 + em1)(eM2 + em2) +
+   --  1/4 (eM1 - em1)(eM2 - em2) cos(2*phi)
+   function Freedman_Theory_Ratio (Phi_Deg : Float) return Float is
+      Sum_1  : constant Float := P1_Eps_Maj + P1_Eps_min;
+      Sum_2  : constant Float := P2_Eps_Maj + P2_Eps_min;
+      Diff_1 : constant Float := P1_Eps_Maj - P1_Eps_min;
+      Diff_2 : constant Float := P2_Eps_Maj - P2_Eps_min;
    begin
-      Ada.Text_IO.Create (File, Ada.Text_IO.Out_File, Filename);
+      return 0.25 * (Sum_1 * Sum_2 +
+                      Diff_1 * Diff_2 * Cos (2.0 * To_Radians (Phi_Deg)));
 
-      --  CSV Header
-      Ada.Text_IO.Put_Line (File,
-         "alpha_deg,phi_deg,theta_i_deg,psi_deg,Tp,Ts,T_parallel,T_perp");
-
-      for A_Idx in 0 .. Alpha_Steps loop
-         Alpha_Deg := (Alpha_Max_Deg * Long_Float (A_Idx)) /
-             Long_Float (Alpha_Steps);
-         Alpha_Rad := Alpha_Deg * Pi / 180.0;
-
-         for P_Idx in 0 .. Phi_Steps loop
-            Phi_Deg := (360.0 * Long_Float (P_Idx)) / Long_Float (Phi_Steps);
-            Phi_Rad := Phi_Deg * Pi / 180.0;
-            Cone_To_Plate_Angles (Tilt_Rad, Alpha_Rad, Phi_Rad, Theta_I, Psi);
-            Result := Evaluate_Ray (Arm, Theta_I, Psi);
-
-            --  Write formatted CSV row
-            F_IO.Put (File, Alpha_Deg, Fore => 1, Aft => 4, Exp => 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Phi_Deg, Fore => 1, Aft => 4, Exp => 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Theta_I * 180.0 / Pi, 1, 4, 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Psi * 180.0 / Pi, 1, 4, 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Result.T_P_Local, Fore => 1, Aft => 6, Exp => 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Result.T_S_Local, Fore => 1, Aft => 6, Exp => 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Result.T_Parallel, Fore => 1, Aft => 6, Exp => 0);
-            Ada.Text_IO.Put (File, ",");
-            F_IO.Put (File, Result.T_Perp, Fore => 1, Aft => 6, Exp => 0);
-            Ada.Text_IO.New_Line (File);
-         end loop;
-      end loop;
-
-      Ada.Text_IO.Close (File);
-      Ada.Text_IO.Put_Line ("Generated: " & Filename);
-   end Write_Arm_CSV;
-
-   procedure Generate_LUT is
-   begin
-      Write_Arm_CSV (Green_551nm,  "freedman_lut_551nm.csv");
-      Write_Arm_CSV (Violet_423nm, "freedman_lut_423nm.csv");
-   end Generate_LUT;
+   end Freedman_Theory_Ratio;
 
 end Freedman_Polarizer_Model;

@@ -10,7 +10,24 @@
 --     polarizer's nominal axis, mixing T{p} and T{s} into an effective
 --     laboratory-frame transmittances T{parallel} and T{perp}.
 
+with Ada.Numerics; use Ada.Numerics;
+with Ada.Numerics.Complex_Types; use Ada.Numerics.Complex_Types;
+
 package Freedman_Polarizer_Model is
+   --  1. Quantum & Optical Types
+   type Jones_Vector is record
+      Ex : Complex;
+      Ey : Complex;
+   end record;
+   type Jones_Matrix is array (1 .. 2, 1 .. 2) of Complex;
+
+   type Pile_Of_Plates_Polarizer is record
+      Angle_Deg : Float;
+      Eps_Major : Float;   --  Parallel transmittance (e.g., 0.97)
+      Eps_Minor : Float;   --  Perpendicular leakage (e.g., 0.038)
+      Inserted  : Boolean; --  True = in path, False = folded out of path
+      Matrix    : Jones_Matrix;
+   end record;
 
    Alpha_Steps : constant Integer := 60; -- 0.5 deg steps (0.0 to 30.0 deg)
    Phi_Steps   : constant Integer := 72;  -- 5.0 deg steps (0.0 to 360.0 deg)
@@ -51,24 +68,28 @@ package Freedman_Polarizer_Model is
    --  Evaluate_Ray computes single-ray transmittance for a given local
    --  incidence angle Theta_I (radians) and plane-of-incidence rotation
    --  Psi (radians) relative to the polarizer's transmission axis.
-   function Evaluate_Ray (Arm : Polarizer_Arm;
-      Theta_I : Long_Float; Psi : Long_Float := 0.0)
-       return Ray_Transmittance;
+   --  function Evaluate_Ray (Arm : Polarizer_Arm;
+   --     Theta_I : Long_Float; Psi : Long_Float := 0.0)
+   --      return Ray_Transmittance;
 
    --  Helper: Converts cone polar angle Alpha and azimuth Phi (relative to
    --  optical axis) into local plate incidence angle Theta_I and
    --  plane rotation Psi.
-   procedure Cone_To_Plate_Angles (
-      --  Polarizer tilt relative to optical axis (usually Brewster_Angle)
-      Tilt_Angle : Long_Float;
-      --  Ray polar angle from optical axis (0 .. 30 deg in rad)
-      Alpha      : Long_Float;
-      --  Ray azimuth around optical axis (0 .. 2*Pi)
-      Phi        : Long_Float;
-      --  Rotation of local plane of incidence)
-      Theta_I, Psi        : out Long_Float);
-   procedure Generate_LUT;
-   function Get_LU_Table return LU_Array;
-   procedure Load_LU_Table (Arm : Polarizer_Arm);
+   --  procedure Cone_To_Plate_Angles (
+   --     --  Polarizer tilt relative to optical axis (usually Brewster_Angle)
+   --     Tilt_Angle : Long_Float;
+   --     --  Ray polar angle from optical axis (0 .. 30 deg in rad)
+   --     Alpha      : Long_Float;
+   --     --  Ray azimuth around optical axis (0 .. 2*Pi)
+   --     Phi        : Long_Float;
+   --     --  Rotation of local plane of incidence)
+   --     Theta_I, Psi        : out Long_Float);
+   function Freedman_Theory_Ratio (Phi_Deg : Float) return Float;
+   --  procedure Generate_LUT;
+   --  function Get_LU_Table return LU_Array;
+   --  procedure Load_LU_Table (Arm : Polarizer_Arm);
+   function Simulate_Freedman_Coincidence
+     (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
+      Seed      : Integer := 1972) return Float;
 
 end Freedman_Polarizer_Model;

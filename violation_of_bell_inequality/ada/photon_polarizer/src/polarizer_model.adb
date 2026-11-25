@@ -17,6 +17,7 @@ package body Polarizer_Model is
    begin
       return (Psi.Ex.Re ** 2 + Psi.Ex.Im ** 2) +
              (Psi.Ey.Re ** 2 + Psi.Ey.Im ** 2);
+
    end Norm_Squared;
 
    --  Helper: Normalize a state vector
@@ -27,6 +28,7 @@ package body Polarizer_Model is
          raise Constraint_Error with "Zero-norm quantum state";
       end if;
       return (Ex => Psi.Ex / Mag, Ey => Psi.Ey / Mag);
+
    end Normalize;
 
    --  2. Photon State Constructors
@@ -35,6 +37,7 @@ package body Polarizer_Model is
    begin
       return (Ex => (Re => Cos (Rad), Im => 0.0),
               Ey => (Re => Sin (Rad), Im => 0.0));
+
    end Make_Linear_Photon;
 
    function Make_RHC_Photon return Jones_Vector is
@@ -42,6 +45,7 @@ package body Polarizer_Model is
    begin
       return (Ex => (Re => Inv_Sqrt2, Im => 0.0),
               Ey => (Re => 0.0,       Im => -Inv_Sqrt2));
+
    end Make_RHC_Photon;
 
    function Make_Unpolarized_Photon
@@ -52,6 +56,7 @@ package body Polarizer_Model is
    begin
       return (Ex => (Re => Cos (Random_Rad), Im => 0.0),
               Ey => (Re => Sin (Random_Rad), Im => 0.0));
+
    end Make_Unpolarized_Photon;
 
    --  3. Polarizer Constructor (Ideal or Finite Extinction Ratio)
@@ -74,6 +79,7 @@ package body Polarizer_Model is
       M (2, 2) := (Re => S * S + Leakage * C * C, Im => 0.0);
 
       return (Matrix => M);
+
    end Create_Polarizer;
 
    --  4. Single-Photon Interaction & Quantum State Collapse
@@ -88,10 +94,8 @@ package body Polarizer_Model is
           P.Matrix (1, 1) * Photon.Ex + P.Matrix (1, 2) * Photon.Ey;
       Out_State.Ey :=
           P.Matrix (2, 1) * Photon.Ex + P.Matrix (2, 2) * Photon.Ey;
-
       --  Transmission probability T = <psi_out | psi_out>
       Prob := Norm_Squared (Out_State);
-
       --  Monte Carlo quantum measurement
       Roll := Ada.Numerics.Float_Random.Random (Gen);
       if Roll < Prob then
@@ -102,16 +106,13 @@ package body Polarizer_Model is
          --  Photon is absorbed
          Transmitted := False;
       end if;
+
    end Interact;
 
    --  5. Run Photon-by-Photon Monte Carlo Simulation
-   function Simulate_Beam
-     (Num_Photons     : Positive;
-      Train           : Polarizer_Train;
-      Unpolarized     : Boolean := True;
-      Init_Angle_Deg  : Float   := 0.0;
-      Seed            : Integer := 42) return Float
-   is
+   function Simulate_Beam (Num_Photons : Positive; Train : Polarizer_Train;
+      Unpolarized : Boolean := True; Init_Angle_Deg : Float := 0.0;
+      Seed        : Integer := 42) return Float is
       Gen         : Ada.Numerics.Float_Random.Generator;
       Photon      : Jones_Vector;
       Survived    : Boolean;
@@ -138,6 +139,7 @@ package body Polarizer_Model is
       end loop;
 
       return Float (Trans_Count) / Float (Num_Photons);
+
    end Simulate_Beam;
 
    procedure Print_Result (Label : String; Measured, Theory : Float) is
@@ -147,6 +149,7 @@ package body Polarizer_Model is
       Ada.Text_IO.Put (" | Theory: ");
       Ada.Float_Text_IO.Put (Theory, Fore => 1, Aft => 4, Exp => 0);
       Ada.Text_IO.New_Line;
+
    end Print_Result;
 
 end Polarizer_Model;
