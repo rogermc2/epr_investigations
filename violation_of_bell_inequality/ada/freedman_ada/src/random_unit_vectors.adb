@@ -81,8 +81,8 @@ package body Random_Unit_Vectors is
          Put (Magnitude (Vec), Fore => 1, Aft => 5, Exp => 0);
          New_Line;
       end loop;
-      Put_Line ("Test_Random_Unit_Vectors completed");
-      
+      Put_Line ("Random Unit Vectors Test completed");
+
    end Test_Random_Unit_Vectors;
 
 end Random_Unit_Vectors;
