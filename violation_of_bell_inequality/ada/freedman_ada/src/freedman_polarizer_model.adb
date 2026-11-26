@@ -13,7 +13,6 @@ package body Freedman_Polarizer_Model is
    P1_Eps_min : constant Float := 0.038;
    P2_Eps_Maj : constant Float := 0.96;   --  4227 A channel
    P2_Eps_min : constant Float := 0.037;
-
    Gen        : Ada.Numerics.Float_Random.Generator;
 
    function To_Radians (Deg : Float) return Float is
@@ -62,27 +61,30 @@ package body Freedman_Polarizer_Model is
    end Create_Polarizer;
 
    --  Single-Photon Interaction with Pile-of-Plates Polarizer
-   procedure Polarize
-     (P   : Pile_Of_Plates_Polarizer; Photon : in out Jones_Vector;
-      Gen : Ada.Numerics.Float_Random.Generator; Transmitted : out Boolean) is
-      Out_State : Jones_Vector;
+   function Polarize
+     (Pol : Pile_Of_Plates_Polarizer; Photon : Jones_Vector;
+      Gen : Generator; Transmitted : out Boolean)
+         return Jones_Vector is
       Prob      : Float;
+      Out_State : Jones_Vector;
    begin
       --  In Freedman's apparatus the plates could be folded completely out
-      if not P.Inserted then
+      if not Pol.Inserted then
          Transmitted := True;
       else
-         Out_State.Ex := P.Matrix (1, 1) * Photon.Ex +
-             P.Matrix (1, 2) * Photon.Ey;
-         Out_State.Ey := P.Matrix (2, 1) * Photon.Ex +
-             P.Matrix (2, 2) * Photon.Ey;
+         Out_State.Ex := Pol.Matrix (1, 1) * Photon.Ex +
+             Pol.Matrix (1, 2) * Photon.Ey;
+         Out_State.Ey := Pol.Matrix (2, 1) * Photon.Ex +
+             Pol.Matrix (2, 2) * Photon.Ey;
          Prob := Norm_Squared (Out_State);
 
-         Transmitted := Ada.Numerics.Float_Random.Random (Gen) < Prob;
+         Transmitted := Random (Gen) < Prob;
          if Transmitted then
-            Photon := Normalize (Out_State);
+            Out_State := Normalize (Out_State);
          end if;
       end if;
+
+      return  Out_State;
 
    end Polarize;
 
@@ -93,21 +95,23 @@ package body Freedman_Polarizer_Model is
      (Num_Pairs : Positive; Angle_1, Angle_2 : Float;
       Seed      : Integer := 1972) return Float is
       use Random_Unit_Vectors;
-      P1           : constant Pile_Of_Plates_Polarizer :=
+      K_Vec        : constant Real_Vector_3D := (0.0, 0.0, 1.0);
+      Pol_1        : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_1, P1_Eps_Maj, P1_Eps_min);
-      P2           : constant Pile_Of_Plates_Polarizer :=
+      Pol_2        : constant Pile_Of_Plates_Polarizer :=
         Create_Polarizer (Angle_2, P2_Eps_Maj, P2_Eps_min);
       lambda       : constant Complex_Vector_3D :=
                       Random_Complex_Unit_Vector (Gen);
-      Photon_1     : Jones_Vector :=
-            To_Jones_Vector (lambda, (0.0, 0.0, 1.0));
+      Photon_1     : constant Jones_Vector :=
+            To_Jones_Vector (lambda, K_Vec);
       Photon_2     : Jones_Vector := Photon_1;
-            --  To_Jones_Vector (Opposite (lambda), (0.0, 0.0, 0.0));
+      Photon_1_Out : Jones_Vector;
+      Photon_2_Out : Jones_Vector;
       Pass_1       : Boolean;
       Pass_2       : Boolean;
       Coinc_Both   : Natural := 0;
    begin
-      Ada.Numerics.Float_Random.Reset (Gen, Seed);
+      Reset (Gen, Seed);
 
       for I in 1 .. Num_Pairs loop
          --  Generate entangled pair in |HH> + |VV> basis
@@ -127,21 +131,19 @@ package body Freedman_Polarizer_Model is
          --  Photon 1 passes, or orthogonal state if blocked, followed by P2.
          --  Equivalently, we generate an isotropic hidden-angle basis:
          --  declare
-         --     Basis_Angle : constant Float :=
-         --       Ada.Numerics.Float_Random.Random (Gen) * 2.0 * Pi;
+         --     Basis_Angle : constant Float := Random (Gen) * 2.0 * Pi;
          --  begin
          --     Photon_1 := (Ex => (Cos (Basis_Angle), 0.0),
          --                  Ey => (Sin (Basis_Angle), 0.0));
          --     Photon_2 := Photon_1;
          --  end;
 
-         --  Measure Photon 1 at Polarizer 1
-         Polarize (P1, Photon_1, Gen, Pass_1);
+         Photon_1_Out := Polarize (Pol_1, Photon_1, Gen, Pass_1);
 
          if Pass_1 then
             --  Quantum collapse: Photon 2 collapses to match Photon 1's state
             Photon_2 := Photon_1;
-            Polarize (P2, Photon_2, Gen, Pass_2);
+            Photon_2_Out := Polarize (Pol_2, Photon_2, Gen, Pass_2);
             if Pass_2 then
                Coinc_Both := Coinc_Both + 1;
             end if;
