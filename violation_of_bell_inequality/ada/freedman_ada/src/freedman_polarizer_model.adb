@@ -141,7 +141,6 @@ package body Freedman_Polarizer_Model is
          Photon_1_Out := Polarize (Pol_1, Photon_1, Gen, Pass_1);
 
          if Pass_1 then
-            --  Quantum collapse: Photon 2 collapses to match Photon 1's state
             Photon_2 := Photon_1;
             Photon_2_Out := Polarize (Pol_2, Photon_2, Gen, Pass_2);
             if Pass_2 then

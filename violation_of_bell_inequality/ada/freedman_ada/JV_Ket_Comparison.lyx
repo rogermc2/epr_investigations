@@ -1,0 +1,826 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package none
+\inputencoding auto-legacy
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package prettyref
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 10mm
+\topmargin 10mm
+\rightmargin 10mm
+\bottommargin 15mm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+How does a jones vector relate to a QM spin ket |0,1>?
+\end_layout
+
+\begin_layout Standard
+A Jones vector and a quantum spin-1/2 ket share the same two-dimensional complex vector math (an 
+\begin_inset Formula $\ensuremath{\mathrm{SU}(2)})$
+\end_inset
+
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+spinorstructure)
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\nospellcheck default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ so a column vector like 
+\begin_inset Formula $\left(\begin{matrix}0\\
+1
+\end{matrix}\right)$
+\end_inset
+
+ maps directly between vertical polarization and a basis spin ket like 
+\begin_inset Formula $\vert1\rangle$
+\end_inset
+
+ (or 
+\begin_inset Formula $\vert\downarrow\rangle$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+YouTube·Sander Konijnenberg
+\end_layout
+
+\begin_layout Standard
+05.
+ Polarization (Jones vectors and matrices,
+ partial ...
+\end_layout
+
+\begin_layout Standard
+8 Apr 2018 —
+ 0:42 Vectorial wave equation and polarization 1:40 Jones vector and polarization states 4:54 Jones matrices,
+ polarizers 5:29 Wave ...
+\end_layout
+
+\begin_layout Standard
+Polarization (Jones vectors and matrices,
+ partial polarization,
+ Stokes parameters) :https://www.youtube.com/watch?v=RowMxWt4mVE&t=1373shttps://www.youtube.com/watch?v=RowMxWt4mVE&t=1373s
+\end_layout
+
+\begin_layout Standard
+Jones vectors are commonly use to describe polarization states.
+\end_layout
+
+\begin_layout Section
+1.
+ Direct Mathematical Mapping
+\end_layout
+
+\begin_layout Standard
+• Jones vector:
+ A 2 × 1 complex column vector 
+\backslash
+(
+\backslash
+left(
+\backslash
+begin{matrix}E_{x}
+\backslash
+
+\backslash
+ E_{y}
+\backslash
+end{matrix}
+\backslash
+right)
+\backslash
+) tracking the amplitude and phase of horizontal (x) and vertical (y) electric field components.
+ Vertical polarization is 
+\backslash
+(
+\backslash
+left(
+\backslash
+begin{matrix}0
+\backslash
+
+\backslash
+ 1
+\backslash
+end{matrix}
+\backslash
+right)
+\backslash
+).
+\end_layout
+
+\begin_layout Standard
+• Quantum two-level ket:
+ A state vector in a 2D complex Hilbert space (such as a spin-1/2 qubit or photon polarization qubit),
+ written in a standard basis as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+|0\rangle & \leftrightarrow & \left(\begin{matrix}1\\
+0
+\end{matrix}\right),\\
+|1\rangle & \leftrightarrow & \left(\begin{matrix}0\\
+1
+\end{matrix}\right)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+• Superpositions match:
+ 
+\begin_inset Newline newline
+\end_inset
+
+Diagonal light 
+\begin_inset Formula $\ensuremath{\frac{1}{\sqrt{2}}\begin{pmatrix}1\\
+1
+\end{pmatrix}}mirrors\ensuremath{\frac{1}{\sqrt{2}}(\vert0\rangle+\vert1\rangle)}$
+\end_inset
+
+ and circular light 
+\begin_inset Formula $\frac{1}{\sqrt{2}}\begin{pmatrix}1\\
+\pm i
+\end{pmatrix}$
+\end_inset
+
+ mirrors 
+\begin_inset Formula $\frac{1}{\sqrt{2}}(\vert0\rangle\pm i\vert1\rangle)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Operators and Spheres
+\end_layout
+
+\begin_layout Itemize
+Optical elements vs.
+ quantum gates:
+\begin_inset Newline newline
+\end_inset
+
+ Jones matrices (2 × 2 complex matrices) act on Jones vectors just as unitary operators or Pauli matrices act on two-level kets.
+\end_layout
+
+\begin_layout Itemize
+Poincaré sphere vs.
+ Bloch sphere:
+\begin_inset Newline newline
+\end_inset
+
+ Both map pure states onto a unit sphere where orthogonal states sit at opposite poles.
+ Note the angle-doubling factor:
+ a 90° physical polarization rotation or a 180° spin-1/2 state flip moves 180° around the sphere.
+\end_layout
+
+\begin_layout Section
+Key Physical Differences
+\end_layout
+
+\begin_layout Itemize
+Classical wave vs.
+ quantum state:
+\begin_inset Newline newline
+\end_inset
+
+ A Jones vector describes classical transverse electromagnetic oscillations (or a single photon's polarization degree of freedom) whereas a spin ket describes a quantum state whose squared amplitudes give measurement probabilities.
+\end_layout
+
+\begin_layout Itemize
+• Opposite physical directions on the sphere:
+\begin_inset Newline newline
+\end_inset
+
+ For spin-1/2 opposite poles of the Bloch sphere correspond to opposite physical directions in 3D space (e.g.,
+ +z and -z).
+\begin_inset Newline newline
+\end_inset
+
+ For Jones vectors orthogonal linear polarizations (x and y) are 90° apart in the transverse plane not 180° opposite.
+\end_layout
+
+\begin_layout Itemize
+Mixed / unpolarized light:
+\begin_inset Newline newline
+\end_inset
+
+ A single Jones vector only represents fully polarized light (like a pure ket).
+\begin_inset Newline newline
+\end_inset
+
+ Unpolarized or partially polarized light requires a 2 × 2 coherency/density matrix rather than a single ket.
+\end_layout
+
+\begin_layout Section
+Clarify photon polarization vs.
+ electron spin-1/2
+\end_layout
+
+\begin_layout Standard
+While both photon polarization and electron spin-1/2 act as two-level quantum systems they differ fundamentally in physical spin,
+ transformation angles and how their states map to 3D space.
+\end_layout
+
+\begin_layout Subsection
+Quick Comparison
+\end_layout
+
+\begin_layout Standard
+Photon Polarization Electron Spin-1/2:
+\end_layout
+
+\begin_layout Standard
+Intrinsic Spin Spin-1 (massless boson) Spin-1/2 (massive fermion)
+\end_layout
+
+\begin_layout Standard
+Basis States 
+\begin_inset Formula $\vert H\rangle,\vert V\rangle$
+\end_inset
+
+ (or 
+\begin_inset Formula $\vert R\rangle$
+\end_inset
+
+,
+ 
+\begin_inset Formula $\vert L\rangle$
+\end_inset
+
+) 
+\begin_inset Formula $\vert\uparrow\rangle,\vert\downarrow\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Spatial Orientation of Orthogonal States 90° apart in the transverse plane 180° apart (antiparallel) in 3D space
+\end_layout
+
+\begin_layout Standard
+Rotation Angle for Orthogonal State 90° physical rotation 180° physical rotation
+\end_layout
+
+\begin_layout Standard
+Full 360° Physical Rotation Returns to exact same state (
+\begin_inset Formula $+\vert\psi\rangle$
+\end_inset
+
+) acquires a minus sign (
+\begin_inset Formula $-\vert\psi\rangle$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+Measurement Device Polarizing beam splitter (PBS) Stern–Gerlach magnet
+\end_layout
+
+\begin_layout Subsection
+Why Photons Only Have Two States Despite Being Spin-1
+\end_layout
+
+\begin_layout Itemize
+Normally a spin-1 particle has three spin projections (
+\begin_inset Formula $\ensuremath{-1,0,+1}$
+\end_inset
+
+) along any axis.
+\end_layout
+
+\begin_layout Itemize
+Because a photon is massless and travels at the speed of light,
+ relativistic invariance forbids the 
+\backslash
+(0
+\backslash
+) projection along its direction of motion.
+\end_layout
+
+\begin_layout Itemize
+This leaves only two helicity states (
+\begin_inset Formula $\ensuremath{+1}$
+\end_inset
+
+ and 
+\begin_inset Formula $-1$
+\end_inset
+
+ corresponding to right and left circular polarization) allowing any polarization to be written in a 2D Hilbert space just like a spin-1/2 system.
+\end_layout
+
+\begin_layout Subsection
+Geometry:
+ 90° vs.
+ 180°
+\end_layout
+
+\begin_layout Itemize
+Electrons:
+\begin_inset Newline newline
+\end_inset
+
+ Spin-1/2 states point directly along 3D spatial axes.
+ Spin-up along 
+\begin_inset Formula $+z$
+\end_inset
+
+ (
+\begin_inset Formula $\vert\uparrow\rangle$
+\end_inset
+
+) and spin-down along 
+\begin_inset Formula $-z$
+\end_inset
+
+ (
+\begin_inset Formula $\vert\downarrow\rangle$
+\end_inset
+
+) are physically opposite in space so rotating an electron by 180° turns 
+\begin_inset Formula $\vert{}\uparrow\rangle$
+\end_inset
+
+ into 
+\begin_inset Formula $\vert\downarrow\rangle$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Photons:
+\begin_inset Newline newline
+\end_inset
+
+ Linear polarization is restricted to the 2D plane perpendicular to the beam.
+\begin_inset Newline newline
+\end_inset
+
+ Horizontal (
+\begin_inset Formula $\vert H\rangle$
+\end_inset
+
+) and vertical (
+\begin_inset Formula $\vert V\rangle$
+\end_inset
+
+) polarizations are orthogonal quantum states even though their electric fields are only 90° apart physically.
+\end_layout
+
+\begin_layout Subsection
+Behavior Under a 360° Rotation
+\end_layout
+
+\begin_layout Itemize
+Photons:
+\begin_inset Newline newline
+\end_inset
+
+ Rotating a polarizer or photon state by 360° leaves the state completely unchanged (
+\begin_inset Formula $\vert\psi\rangle\to+\vert\psi\rangle$
+\end_inset
+
+,
+ which is the hallmark of an integer-spin boson.
+\end_layout
+
+\begin_layout Itemize
+Electrons:
+\begin_inset Newline newline
+\end_inset
+
+ Rotating a spin-1/2 particle by 360° multiplies its quantum state by 
+\begin_inset Formula $\ensuremath{-1}(\ensuremath{\vert\psi\rangle\to-\vert\psi\rangle}$
+\end_inset
+
+).
+ It takes a 720° rotation to bring the spinor back to its original sign,
+ ifference observable in neutron and electron interferometry.
+\end_layout
+
+\begin_layout Section
+Walk through of a Pauli matrix vs.
+ Jones matrix example
+\end_layout
+
+\begin_layout Standard
+A half-wave plate (HWP) rotated at 45° has the same matrix representation as the Pauli-
+\begin_inset Formula $X$
+\end_inset
+
+ matrix swapping horizontal and vertical polarization just as 
+\begin_inset Formula $\sigma_{x}$
+\end_inset
+
+ flips spin-up and spin-down.
+\end_layout
+
+\begin_layout Subsection
+1The Matrix Setup
+\end_layout
+
+\begin_layout Standard
+In both systems,
+ we use the standard two-element basis:
+\end_layout
+
+\begin_layout Itemize
+Optics basis:
+ 
+\begin_inset Formula $\vert{}H\rangle=\begin{pmatrix}1\\
+0
+\end{pmatrix}$
+\end_inset
+
+,
+ 
+\begin_inset Formula $\vert V\rangle=\begin{pmatrix}0\\
+1
+\end{pmatrix}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Quantum spin basis:
+ 
+\begin_inset Formula $\vert0\rangle=\begin{pmatrix}1\\
+0
+\end{pmatrix}$
+\end_inset
+
+,
+ 
+\begin_inset Formula $\vert1\rangle=\begin{pmatrix}0\\
+1
+\end{pmatrix}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Pauli-
+\begin_inset Formula $X$
+\end_inset
+
+ matrix is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\sigma_{x}=\left(\begin{matrix}0 & 1\\
+1 & 0
+\end{matrix}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For a half-wave plate with its fast axis tilted at an angle 
+\begin_inset Formula $\ensuremath{\theta}$
+\end_inset
+
+ from horizontal the general Jones matrix (up to a global phase) is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+J_{\text{HWP}}(\theta) & = & \left(\begin{matrix}\cos2\theta & \sin2\theta\\
+\sin2\theta & -\cos2\theta
+\end{matrix}\right)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Setting 
+\begin_inset Formula $\theta=45^{\circ}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Plugging 
+\begin_inset Formula $\theta=45^{\circ}$
+\end_inset
+
+ (
+\begin_inset Formula $2\theta=90^{\circ}$
+\end_inset
+
+) into the Jones matrix gives 
+\begin_inset Formula $\ensuremath{\cos90^{\circ}=0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sin90^{\circ}=1$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+J_{\text{HWP}}(45^{\circ}) & = & \left(\begin{matrix}0 & 1\\
+1 & 0
+\end{matrix}\right)\\
+ & = & \sigma_{x}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Step-by-Step Action on a State
+\end_layout
+
+\begin_layout Standard
+Start with horizontally polarized light,
+ 
+\begin_inset Formula $\vert{}H\rangle=\begin{pmatrix}1\\
+0
+\end{pmatrix}$
+\end_inset
+
+,
+ and send it through the 45°-tilted half-wave plate:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+J_{\text{HWP}}(45^{\circ})|H\rangle & = & \left(\begin{matrix}0 & 1\\
+1 & 0
+\end{matrix}\right)\left(\begin{matrix}1\\
+0
+\end{matrix}\right)\\
+ & = & \left(\begin{matrix}0\cdot1+1\cdot0\\
+1\cdot1+0\cdot0
+\end{matrix}\right)\\
+ & = & \left(\begin{matrix}0\\
+1
+\end{matrix}\right)\\
+ & = & |V\rangle
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+In optics:
+ 
+\begin_inset Newline newline
+\end_inset
+
+The plate introduces a 
+\backslash
+(
+\backslash
+pi 
+\backslash
+) (half-wavelength) phase shift between the fast and slow axes at
+\begin_inset Formula $\ensuremath{\pm45^{\circ}\$}$
+\end_inset
+
+) rotating the polarization vector by
+\begin_inset Formula $2\theta=90^{\circ}$
+\end_inset
+
+ from horizontal to vertical.
+\end_layout
+
+\begin_layout Itemize
+In quantum mechanics:
+\begin_inset Newline newline
+\end_inset
+
+ Applying 
+\begin_inset Formula $\sigma_{x}$
+\end_inset
+
+ to 
+\begin_inset Formula $\vert0\rangle$
+\end_inset
+
+ flips the ket to 
+\begin_inset Formula $\vert1\rangle$
+\end_inset
+
+ thereby rotating the state vector by 
+\begin_inset Formula $180^{\circ}$
+\end_inset
+
+ around the 
+\begin_inset Formula $x$
+\end_inset
+
+-axis of the Bloch sphere.
+\end_layout
+
+\begin_layout Subsection
+Other Direct Pauli–Jones Matches
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\sigma_{z}=\begin{pmatrix}1 & 0\\
+0 & -1
+\end{pmatrix}$
+\end_inset
+
+:
+ 
+\begin_inset Newline newline
+\end_inset
+
+A half-wave plate at 
+\backslash
+(
+\backslash
+theta = 0^
+\backslash
+circ
+\backslash
+) (fast axis horizontal),
+ which leaves 
+\backslash
+(
+\backslash
+vert{}H
+\backslash
+rangle
+\backslash
+) untouched and flips the phase of 
+\backslash
+(
+\backslash
+vert{}V
+\backslash
+rangle
+\backslash
+) by 
+\backslash
+(-1
+\backslash
+).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\sigma_{y}=\begin{pmatrix}0 & -i\\
+i & 0
+\end{pmatrix}$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+ A 90° polarization rotator (such as a Faraday rotator or optical activity) combined with a global phase factor,
+ rotating states around the circular-polarization (
+\begin_inset Formula $y$
+\end_inset
+
+) axis of the Poincaré sphere.
+\end_layout
+
+\end_body
+\end_document

@@ -1873,7 +1873,7 @@ Effectively,
 \end_layout
 
 \begin_layout Section
-Derivation Of Coincidence Rates Expected Values 
+Derivation Of The Expected Values Of Coincidence Rates 
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Derivation-Of-Equation"
@@ -1896,13 +1896,13 @@ literal "false"
 :
 \begin_inset Formula 
 \begin{eqnarray}
-\left|\text{\gamma_{1}\gamma_{2}}\right\rangle  & = & \frac{1}{\sqrt{2}}\left[\begin{pmatrix}1\\
+\left|\gamma_{1}\otimes\gamma_{2}\right\rangle  & = & \frac{1}{\sqrt{2}}\left[\begin{pmatrix}1\\
 0
-\end{pmatrix}_{1}\begin{pmatrix}1\\
+\end{pmatrix}_{1}\otimes\begin{pmatrix}1\\
 0
 \end{pmatrix}_{2}-\begin{pmatrix}0\\
 1
-\end{pmatrix}_{1}\begin{pmatrix}0\\
+\end{pmatrix}_{1}\otimes\begin{pmatrix}0\\
 1
 \end{pmatrix}_{2}\right]\label{eq:FI.7}
 \end{eqnarray}
@@ -1920,7 +1920,7 @@ where:
 \begin_inset Formula $\text{\gamma_{2}}$
 \end_inset
 
- represent the wave functions of a correlated pair of photons traveling in opposite directions.
+ represent the wave functions of a correlated pair of photons traveling in opposite directions,
 \end_layout
 
 \begin_layout Standard
@@ -1929,7 +1929,7 @@ where:
 \end{pmatrix}_{i}$
 \end_inset
 
-represents one polarization state of photon 
+represents the linear horizonal polarization state of photon 
 \begin_inset Formula $i$
 \end_inset
 
@@ -1942,7 +1942,7 @@ represents one polarization state of photon
 \end{pmatrix}_{i}$
 \end_inset
 
-represents the opposite polarization state of photon 
+represents the linear vertical polarization state of photon 
 \begin_inset Formula $i$
 \end_inset
 
@@ -1950,7 +1950,7 @@ represents the opposite polarization state of photon
 \end_layout
 
 \begin_layout Standard
-The observation of transmission or non-transmission of a photon through polarizer 
+The transmission or non-transmission of a photon through polarizer 
 \begin_inset Formula $i$
 \end_inset
 
@@ -1984,7 +1984,7 @@ Transforming
 \begin_inset Formula $\phi_{i}$
 \end_inset
 
- about the z axis defines an operator 
+ about the z axis defines the operator 
 \begin_inset Formula $\pi_{i}\left(\phi_{i}\right)$
 \end_inset
 
@@ -2011,35 +2011,6 @@ where
 \end_inset
 
  are defined in different right-handed coordinate frames.
-\end_layout
-
-\begin_layout Standard
-The probability 
-\begin_inset Formula $P\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
-\end_inset
-
- that both photons are transmitted by the respective polarizers is defined by the matrix element 
-\begin_inset Formula $\left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle $
-\end_inset
-
-
-\begin_inset CommandInset citation
-LatexCommand cite
-after "equation (II.9)"
-key "Freedman1972"
-literal "false"
-
-\end_inset
-
-:
-\begin_inset Formula 
-\begin{eqnarray}
-P\left(\frac{R\left(\phi\right)}{R_{0}}\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9-1}
-\end{eqnarray}
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -2202,6 +2173,182 @@ literal "false"
 E\left(\frac{R\left(\phi\right)}{R_{0}}\right)_{\Lambda} & = & \left(0.251\pm0.004\right)+\left(0.213\pm0.004\right)Cos\left(2\phi\right)\label{eq:FIV.1}\\
 E\left(\frac{R_{1}}{R_{0}}\right)_{\varLambda} & = & 0.504\pm0.005\label{eq:FIV.2}\\
 E\left(\frac{R_{2}}{R_{0}}\right)_{\varLambda} & = & 0.499\pm0.005\label{eq:FIV.3}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Derivation
+\end_layout
+
+\begin_layout Standard
+Define 
+\begin_inset Formula $\vert\gamma_{1}\gamma_{2}\rangle\equiv\vert\gamma_{1}\rangle\otimes\vert\gamma_{2}\rangle\in\mathcal{H}_{1}\otimes\mathcal{H}_{2}$
+\end_inset
+
+ denote the bipartite product state where 
+\begin_inset Formula $\mathcal{H}_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathcal{H}_{2}$
+\end_inset
+
+ are separate Hilbert vector spaces containing the states 
+\begin_inset Formula $\vert\gamma_{1}\rangle$
+\end_inset
+
+ and 
+\begin_inset Formula $\vert\gamma_{2}\rangle$
+\end_inset
+
+ respectively.
+ 
+\end_layout
+
+\begin_layout Standard
+For local operators 
+\begin_inset Formula $\pi_{1}\left(\phi_{1}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $\pi_{2}\left(\phi_{2}\right)$
+\end_inset
+
+ acting on the Hilbert spaces 
+\begin_inset Formula $\mathcal{H}_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathcal{H}_{2}$
+\end_inset
+
+ respectively the matrix element factorizes via the inner product structure of the composite Hilbert space
+\begin_inset Formula 
+\begin{eqnarray}
+\left\langle \gamma_{1}\gamma_{2}\right|\pi_{1}\left(\phi_{1}\right)\otimes\pi_{2}\left(\phi_{2}\right)\left|\gamma_{2}\gamma_{1}\right\rangle  & = & \left(\left\langle \gamma_{1}\right|\otimes\left\langle \gamma_{2}\right|\right)\left(\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \otimes\pi_{2}\left(\phi_{2}\right)\left|\gamma_{1}\right\rangle \right)\\
+ & = & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \left\langle \gamma_{2}\right|\pi_{2}\left(\phi_{2}\right)\left|\gamma_{1}\right\rangle 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Formula $\begin{bmatrix}\gamma_{1H} & \gamma_{1V} & \gamma_{2H} & \gamma_{2V}\end{bmatrix}\begin{bmatrix}\pi_{1}\left(\phi_{1}\right)_{1,1} & \pi_{1}\left(\phi_{1}\right)_{1,2} & 0 & 0\\
+\pi_{1}\left(\phi_{1}\right)_{2,1} & \pi_{1}\left(\phi_{1}\right)_{2,2} & 0 & 0\\
+0 & 0 & \pi_{2}\left(\phi_{2}\right)_{1,1} & \pi_{2}\left(\phi_{2}\right)_{1,2}\\
+0 & 0 & \pi_{2}\left(\phi_{2}\right)_{2,1} & \pi_{2}\left(\phi_{2}\right)_{2,2}
+\end{bmatrix}\begin{bmatrix}\gamma_{1H}\\
+\gamma_{1V}\\
+\gamma_{2H}\\
+\gamma_{2V}
+\end{bmatrix}$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+ &  & \begin{bmatrix}\gamma_{1H}\pi_{1}\left(\phi_{1}\right)_{1,1}+\gamma_{1V}\pi_{1}\left(\phi_{1}\right)_{2,1}\\
+\gamma_{1H}\pi_{1}\left(\phi_{1}\right)_{1,2}+\gamma_{1V}\pi_{1}\left(\phi_{1}\right)_{2,2}\\
+\gamma_{2H}\pi_{2}\left(\phi_{2}\right)_{1,1}+\gamma_{2V}\pi_{2}\left(\phi_{2}\right)_{2,1}\\
+\gamma_{2H}\pi_{2}\left(\phi_{2}\right)_{1,2}+\gamma_{2V}\pi_{2}\left(\phi_{3}\right)_{2,2}
+\end{bmatrix}^{T}\begin{bmatrix}\gamma_{1H}\\
+\gamma_{1V}\\
+\gamma_{2H}\\
+\gamma_{2V}
+\end{bmatrix}\\
+ & = & \gamma^{2}_{1H}\pi_{1}\left(\phi_{1}\right)_{1,1}+\gamma_{1H}\gamma_{1V}\pi_{1}\left(\phi_{1}\right)_{2,1}+\gamma_{1V}\gamma_{1H}\pi_{1}\left(\phi_{1}\right)_{1,2}+\gamma^{2}_{1V}\pi_{1}\left(\phi_{1}\right)_{2,2}\\
+ &  & +\gamma^{2}_{2H}\pi_{2}\left(\phi_{2}\right)_{1,1}+\gamma_{2H}\gamma_{2V}\pi_{2}\left(\phi_{2}\right)_{2,1}+\gamma_{2H}\gamma_{2V}\pi_{2}\left(\phi_{2}\right)_{1,2}+\gamma_{^{2}2V}\pi_{2}\left(\phi_{3}\right)_{2,2}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The probability 
+\begin_inset Formula $P\left(\frac{R\left(\phi\right)}{R_{0}}\right)$
+\end_inset
+
+ that both photons are transmitted by the respective polarizers is defined by the matrix element 
+\begin_inset Formula $\left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle $
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+after "equation (II.9)"
+key "Freedman1972"
+literal "false"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(\pi_{1}\left(\phi_{1}\right)\pi_{2}\left(\phi_{2}\right)\right) & = & \left\langle \gamma_{1}\gamma_{2}\left|\pi_{1}\left(\phi_{1}\right)\otimes\pi_{2}\left(\phi_{2}\right)\right|\gamma_{1}\gamma_{2}\right\rangle \label{eq:FII.9-1}
+\end{eqnarray}
+
+\end_inset
+
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+\left\langle \gamma_{1}\gamma_{2}\right|\pi_{1}\left(\phi_{1}\right)\otimes\pi_{2}\left(\phi_{2}\right)\left|\gamma_{2}\gamma_{1}\right\rangle  & = & \left(\left\langle \gamma_{1}\right|\otimes\left\langle \gamma_{2}\right|\right)\left(\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \otimes\pi_{2}\left(\phi_{2}\right)\left|\gamma_{1}\right\rangle \right)\\
+ & = & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \left\langle \gamma_{2}\right|\pi_{2}\left(\phi_{2}\right)\left|\gamma_{1}\right\rangle 
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+ &  & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \\
+ & = & \left\langle \gamma_{1}\right|\begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon_{m}\right)cos\left(2\phi_{1}\right)
+\end{bmatrix}\left|\gamma_{2}\right\rangle 
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray}
+ &  & \begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon_{m}\right)cos\left(2\phi_{1}\right)
+\end{bmatrix}\frac{1}{\sqrt{2}}\left[\begin{pmatrix}1\\
+0
+\end{pmatrix}_{2}-\begin{pmatrix}0\\
+1
+\end{pmatrix}_{2}\right]\\
+ & = & \frac{1}{\sqrt{2}}\begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
+\end{bmatrix}\begin{pmatrix}1\\
+0
+\end{pmatrix}_{2}\\
+ &  & -\frac{1}{\sqrt{2}}\begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{i}\right)
+\end{bmatrix}\begin{pmatrix}0\\
+1
+\end{pmatrix}_{2}\\
+ & = & \frac{1}{\sqrt{2}}\left(\begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)
+\end{bmatrix}-\begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
+\end{bmatrix}\right)\\
+ & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
+\end{bmatrix}\\
+ & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{1}\right)\right)-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)
+\end{bmatrix}
 \end{eqnarray}
 
 \end_inset
@@ -2507,7 +2654,7 @@ From basic probability theory,
 \begin_inset Formula 
 \begin{eqnarray}
 E\left(A\left(\hat{a},\lambda\right)B\left(\hat{b},\lambda\right)\right)_{\lambda} & = & \left(+1\right)\left(\hat{a},\hat{b}\right)+\left(-1\right)P_{+-}\left(\hat{a},\hat{b}\right)+\left(-1\right)P_{-+}\left(\hat{a},\hat{b}\right)+\left(+1\right)P_{--}\left(\hat{a},\hat{b}\right)\\
- & = & P_{++}\left(\hat{a},\hat{b}\right)-P_{+-}\left(\hat{a},\hat{b}\right)-P_{-+}\left(\hat{a},\hat{b}\right)+P_{--}\left(\hat{a},\hat{b}\right)
+ & = & P_{++}\left(\hat{a},\hat{b}\right)-P_{+-}\left(\hat{a},\hat{b}\right)-P_{-+}\left(\hat{a},\hat{b}\right)+P_{--}\left(\hat{a},\hat{b}\right)\label{eq:EAB}
 \end{eqnarray}
 
 \end_inset
@@ -2527,32 +2674,23 @@ P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)+P_{-+}\lef
 \begin_inset Formula $P_{++}\left(\hat{a},\hat{b}\right)$
 \end_inset
 
- is defined as the probability of joint passage of the photons through the polarizers.
+ is defined as the coincidence probability of both photons being transmitted through the two polarizers.
 \end_layout
 
 \begin_layout Standard
-Define:
-\begin_inset Formula 
-\begin{eqnarray}
-P_{1}\left(\hat{a}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)\\
-P_{2}\left(\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\hat{a},\hat{b}\right)
-\end{eqnarray}
+Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:EAB"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+tuple "list"
 
 \end_inset
 
-where 
-\begin_inset Formula $P_{1}\left(\hat{a}\right)$
-\end_inset
-
- and 
-\begin_inset Formula $P_{2}\left(\hat{b}\right)$
-\end_inset
-
- are the probabilities of joint passage when one of the polarizers is absent.
-\end_layout
-
-\begin_layout Standard
-Expressing the correlation function in terms of the probabilities of joint passage 
+can be expressed 
 \begin_inset CommandInset citation
 LatexCommand cite
 after "equation (II.5)"
@@ -2569,7 +2707,32 @@ P\left(\hat{a},\hat{b}\right) & = & 4P_{++}\left(\hat{a},\hat{b}\right)-2P_{1}\l
 
 \end_inset
 
-Substitution equation 
+
+\end_layout
+
+\begin_layout Standard
+where:
+\begin_inset Formula 
+\begin{eqnarray}
+P_{1}\left(\hat{a}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{+-}\left(\hat{a},\hat{b}\right)\\
+P_{2}\left(\hat{b}\right) & = & P_{++}\left(\hat{a},\hat{b}\right)+P_{-+}\left(\hat{a},\hat{b}\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula $P_{1}\left(\hat{a}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $P_{2}\left(\hat{b}\right)$
+\end_inset
+
+ represent coincidence probabilities when one of the polarizers is absent.
+\end_layout
+
+\begin_layout Standard
+Substituting equation 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:FII.5"
@@ -2650,8 +2813,7 @@ tuple "list"
 \end_layout
 
 \begin_layout Standard
-In the experiment under consideration the efficiencies of the detectors are less than 30% so all transmitted photons are not detected and the probabilities of joint passage to experimental count rates involves an additional assumption that the detection probability for a photon is independent of whether or not the photon has passed through a polarizer.The following equations reproduce this step in his derivation,
- using the notation of the original thesis.
+In the experiment under consideration the efficiencies of the detectors are less than 30% so all transmitted photons are not detected and the probabilities of joint passage to experimental count rates involves an additional assumption that the detection probability for a photon is independent of whether or not the photon has passed through a polarizer.The following equations reproduce this step in his derivation using the notation of the original thesis.
 \end_layout
 
 \begin_layout Standard
