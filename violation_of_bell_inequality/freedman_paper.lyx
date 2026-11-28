@@ -2413,7 +2413,41 @@ where:
 
 \end_inset
 
- 
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+ &  & \left\langle \gamma_{1}\right|\frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+\end{bmatrix}\\
+ & = & \frac{1}{2\sqrt{2}}\frac{1}{\sqrt{2}}\left(\begin{bmatrix}1\\
+0
+\end{bmatrix}_{1}-\begin{bmatrix}0\\
+1
+\end{bmatrix}_{1}\right)\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+\end{bmatrix}\\
+ & = & \frac{1}{4}\begin{bmatrix}1 & 0\end{bmatrix}_{1}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+\end{bmatrix}\\
+ &  & -\frac{1}{4}\begin{bmatrix}0 & 1\end{bmatrix}_{1}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+\end{bmatrix}\\
+ & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\right)\\
+ &  & -\frac{1}{4}\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)\right)\\
+ & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)\right)\\
+ & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{i}\right)\right)\\
+ & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)+cos\left(2\phi_{i}\right)\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)+cos\left(2\phi_{i}\right)\right)\right)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula $cos\left(\theta\right)-sin\left(\theta\right)$
 \end_inset
 
