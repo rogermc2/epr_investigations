@@ -2055,7 +2055,7 @@ where
 \begin_inset Formula $\phi_{2}$
 \end_inset
 
- are defined in different right-handed coordinate frames.
+ are rotations about the local z-axis of polarizers 1 and 2 respectively.
 \end_layout
 
 \begin_layout Standard
@@ -2271,7 +2271,7 @@ For local operators
 \begin_inset Formula $\mathcal{H}_{2}$
 \end_inset
 
- respectively the matrix element factorizes via the inner product structure of the composite Hilbert space
+ respectively the matrix element factorizes via the inner product structure of the composite Hilbert space:
 \begin_inset Formula 
 \begin{eqnarray}
 \pi_{i}\left(\phi_{i}\right) & = & \begin{bmatrix}\frac{1}{2}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
@@ -2365,10 +2365,10 @@ where:
 
 \begin_inset Formula 
 \begin{eqnarray}
- &  & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \\
+ &  & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{1}\right\rangle \\
  & = & \left\langle \gamma_{1}\right|\begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
 \frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon_{m}\right)cos\left(2\phi_{1}\right)
-\end{bmatrix}\left|\gamma_{2}\right\rangle 
+\end{bmatrix}\left|\gamma_{1}\right\rangle 
 \end{eqnarray}
 
 \end_inset
@@ -2376,38 +2376,38 @@ where:
 
 \begin_inset Formula 
 \begin{eqnarray}
- &  & \begin{bmatrix}\frac{1}{2}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
-\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)-\frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right)
-\end{bmatrix}\left|\gamma_{2}\right\rangle \\
- & = & \frac{1}{2}\begin{bmatrix}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right)
+ &  & \begin{bmatrix}\frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
+\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\frac{1}{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
+\end{bmatrix}\left|\gamma_{1}\right\rangle \\
+ & = & \frac{1}{2}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
 \end{bmatrix}\\
  &  & \times\frac{1}{\sqrt{2}}\left(\begin{bmatrix}1\\
 0
-\end{bmatrix}_{2}-\begin{bmatrix}0\\
+\end{bmatrix}_{1}-\begin{bmatrix}0\\
 1
-\end{bmatrix}\right)\\
- & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right)
+\end{bmatrix}_{1}\right)\\
+ & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
 \end{bmatrix}\begin{bmatrix}1\\
 0
-\end{bmatrix}_{2}\\
- &  & -\frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right)
+\end{bmatrix}_{1}\\
+ &  & -\frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right) & \left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right) & \left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
 \end{bmatrix}\begin{bmatrix}0\\
 1
-\end{bmatrix}_{2}\\
+\end{bmatrix}_{1}\\
  & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)\\
 \left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)
 \end{bmatrix}\\
  &  & -\frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right),\\
-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{i}\right)
+\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)
 \end{bmatrix}\\
  & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)\\
-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)-\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{i}\right)\right)
+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)-\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)\right)
 \end{bmatrix}\\
  & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
--\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{1}\right)\right)
 \end{bmatrix}
 \end{eqnarray}
 
@@ -2419,7 +2419,8 @@ where:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
- &  & \left\langle \gamma_{1}\right|\frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
+ &  & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{1}\right\rangle \\
+ & = & \left\langle \gamma_{1}\right|\frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
 -\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
 \end{bmatrix}\\
  & = & \frac{1}{2\sqrt{2}}\frac{1}{\sqrt{2}}\left(\begin{bmatrix}1\\
@@ -2430,16 +2431,17 @@ where:
 -\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
 \end{bmatrix}\\
  & = & \frac{1}{4}\begin{bmatrix}1 & 0\end{bmatrix}_{1}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
--\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{1}\right)\right)
 \end{bmatrix}\\
  &  & -\frac{1}{4}\begin{bmatrix}0 & 1\end{bmatrix}_{1}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\\
--\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)
+-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{1}\right)\right)
 \end{bmatrix}\\
  & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\right)\\
- &  & -\frac{1}{4}\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)\right)\\
- & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{i}\right)\right)\right)\\
- & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)sin\left(2\phi_{1}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{i}\right)\right)\\
- & = & \frac{1}{4}\left(\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)+cos\left(2\phi_{i}\right)\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)+cos\left(2\phi_{i}\right)\right)\right)
+ &  & -\frac{1}{4}\left(-\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{1}\right)\right)\right)\\
+ & = & \frac{1}{4}\left(2\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(sin\left(2\phi_{1}\right)-cos\left(2\phi_{1}\right)\right)\right)\\
+ & = & \frac{1}{4}\left(2\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)+cos\left(2\phi_{1}\right)\right)\right)\\
+ & = & \frac{1}{4}\left(2\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+2\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\right)\\
+ & = & \frac{1}{2}\left(\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\left(cos\left(2\phi_{1}\right)-sin\left(2\phi_{1}\right)\right)\right)
 \end{eqnarray}
 
 \end_inset
@@ -2458,59 +2460,6 @@ cos\left(\theta\right)-sin\left(\theta\right) & = & \sqrt{2}\left(\frac{1}{\sqrt
  & = & \sqrt{2}\left(cos\left(\theta\right)cos\left(\frac{\pi}{4}\right)-sin\left(\theta\right)sin\left(\frac{\pi}{4}\right)\right)\\
 cos\left(\alpha+\beta\right) & = & cos\left(\alpha\right)cos\left(\beta\right)-sin\left(\alpha\right)sin\left(\beta\right)\\
 \therefore cos\left(\theta\right)-sin\left(\theta\right) & = & \sqrt{2}\left(cos\left(\theta+\frac{\pi}{4}\right)\right)
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Therefore:
-\begin_inset Formula 
-\begin{eqnarray}
- &  & \pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \\
- & = & \frac{1}{2}\begin{bmatrix}\left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)+\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right)\\
-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)sin\left(2\phi_{i}\right) & \left(\varepsilon^{i}_{M}+\varepsilon^{i}_{m}\right)-\left(\varepsilon^{i}_{M}-\varepsilon^{i}_{m}\right)cos\left(2\phi_{i}\right)
-\end{bmatrix}\left|\gamma_{2}\right\rangle \\
- & = & \frac{1}{2\sqrt{2}}\begin{bmatrix}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sqrt{2}cos\left(2\phi_{1}+\frac{\pi}{4}\right), & -\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sqrt{2}cos\left(2\phi_{1}+\frac{\pi}{4}\right)\end{bmatrix}\\
- & = & \frac{1}{2}\begin{bmatrix}\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}+\frac{\pi}{4}\right), & -\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)cos\left(2\phi_{1}+\frac{\pi}{4}\right)\end{bmatrix}
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
- &  & \left\langle \gamma_{1}\right|\pi_{1}\left(\phi_{1}\right)\left|\gamma_{2}\right\rangle \\
- & = & \frac{1}{2}\left\langle \gamma_{1}\right|\begin{bmatrix}\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)\\
--\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)
-\end{bmatrix}\\
- & = & \frac{1}{2\sqrt{2}}\left[\begin{pmatrix}1\\
-0
-\end{pmatrix}_{1}-\begin{pmatrix}0\\
-1
-\end{pmatrix}_{1}\right]\begin{bmatrix}\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)\\
--\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)+\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)
-\end{bmatrix}\\
- & = & \frac{1}{2\sqrt{2}}\left(\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)+\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)\right)\\
- & = & \frac{1}{4}\left(2\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-2\sqrt{2}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)\right)\\
- & = & \frac{1}{2}\left(\varepsilon^{1}_{M}+\varepsilon^{1}_{m}\right)-\frac{1}{\sqrt{2}}\left(\varepsilon^{1}_{M}-\varepsilon^{1}_{m}\right)\sin\left(2\phi_{1}-\frac{\pi}{4}\right)
-\end{eqnarray}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Similarly:
-\begin_inset Formula 
-\begin{eqnarray}
-\left\langle \gamma_{2}\right|\pi_{2}\left(\phi_{2}\right)\left|\gamma_{1}\right\rangle  & = & \frac{1}{2}\left(\varepsilon^{2}_{M}+\varepsilon^{2}_{m}\right)-\frac{1}{\sqrt{2}}\left(\varepsilon^{2}_{M}-\varepsilon^{2}_{m}\right)\sin\left(2\phi_{2}-\frac{\pi}{4}\right)
 \end{eqnarray}
 
 \end_inset
